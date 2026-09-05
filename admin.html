@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrative Operations - Matrimonial Network</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #FF7E7E;
+      --secondary: #FFA259;
+      --accent: #FFCB56;
+      --surface-light: #FFEDB9;
+      --bg: #FDFBF8;
+      --dark: #2B2321;
+      --muted: #7A6F6D;
+      --border: #F1DEC7;
+      --white: #FFFFFF;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; }
+
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .main-container {
+      max-width: 1400px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+
+    .toolbar {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      padding: 0.5rem 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-decoration: none;
+    }
+
+    .btn-primary { background: var(--primary); color: var(--white); }
+    .btn-secondary { background: var(--secondary); color: var(--white); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--dark); }
+    .btn-danger { background: #C5221F; color: var(--white); }
+
+    .badge {
+      padding: 0.2rem 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .badge-active { background: #E6F4EA; color: #137333; }
+    .badge-pending { background: #FEF7E0; color: #B06000; }
+    .badge-deleted { background: #FCE8E6; color: #C5221F; }
+
+    .data-table-wrapper {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--surface-light);
+      padding: 0.75rem 1rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tr:hover { background-color: #FFFAEE; }
+
+    .action-cell { display: flex; gap: 0.35rem; }
+
+    .input-field {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      max-width: 480px;
+      width: 100%;
+      padding: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <h2 style="font-size: 1.25rem; color: var(--primary);">Administrative Operations</h2>
+      <p style="font-size: 0.8rem; color: var(--muted);">Candidate Management & Communication Center</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <input type="password" id="adminPin" placeholder="Enter Administrative PIN" class="input-field">
+      <button class="btn btn-primary" onclick="loadProfiles()">Authenticate</button>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <div class="toolbar">
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <input type="text" id="adminSearch" placeholder="Search candidate records..." oninput="filterProfiles()" class="input-field" style="width: 250px;">
+        <select id="statusFilter" onchange="filterProfiles()" class="input-field">
+          <option value="">All Statuses</option>
+          <option value="Active">Active</option>
+          <option value="Pending">Pending</option>
+          <option value="Deleted">Deleted</option>
+        </select>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn btn-secondary" onclick="openEmailModal()">Email Selected</button>
+        <button class="btn btn-danger" onclick="bulkDeleteRecords()">Soft Delete Selected</button>
+      </div>
+    </div>
+
+    <div class="data-table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th width="40"><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+            <th>ID</th>
+            <th>Candidate</th>
+            <th>Demographics</th>
+            <th>Career & Education</th>
+            <th>Location</th>
+            <th>Contact Details</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 2rem; color: var(--muted);">
+              Authenticate using your PIN to query and manage candidate records.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Email Portfolio Modal -->
+  <div class="modal-overlay" id="emailModal">
+    <div class="modal-box">
+      <h3 style="margin-bottom: 0.5rem;">Distribute Profiles via Email</h3>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Send structured biodata summaries to matching candidates or representatives.</p>
+      
+      <label style="font-size: 0.75rem; font-weight: 700;">Recipient Addresses (Comma Separated)</label>
+      <input type="text" id="emailRecipients" class="input-field" style="width: 100%; margin: 0.35rem 0 1rem 0;" placeholder="client1@domain.com, client2@domain.com">
+
+      <label style="font-size: 0.75rem; font-weight: 700;">Email Subject</label>
+      <input type="text" id="emailSubject" class="input-field" style="width: 100%; margin: 0.35rem 0 1.25rem 0;" value="Curated Candidate Biodata Selection">
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button class="btn btn-outline" onclick="closeEmailModal()">Dismiss</button>
+        <button class="btn btn-primary" onclick="dispatchEmailPortfolio()">Send Email</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_ENDPOINT = "https://script.google.com/macros/s/YOUR_DEPLOYED_APP_SCRIPT_ID/exec";
+
+    let records = [];
+    let visibleRecords = [];
+
+    async function loadProfiles() {
+      const pin = document.getElementById('adminPin').value;
+      if (!pin) {
+        alert("Administrative PIN required.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(pin)}`);
+        const data = await res.json();
+        if (data.success) {
+          records = data.profiles;
+          visibleRecords = [...records];
+          renderAdminTable();
+        } else {
+          alert("Authorization failed: " + data.error);
+        }
+      } catch (err) {
+        alert("Database connection error.");
+      }
+    }
+
+    function renderAdminTable() {
+      const body = document.getElementById('tableBody');
+      if (visibleRecords.length === 0) {
+        body.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem;">No matching candidate records found.</td></tr>`;
+        return;
+      }
+
+      body.innerHTML = visibleRecords.map(p => {
+        let badgeClass = 'badge-pending';
+        if (p.status === 'Active') badgeClass = 'badge-active';
+        if (p.status === 'Deleted') badgeClass = 'badge-deleted';
+
+        return `
+          <tr>
+            <td><input type="checkbox" class="row-checkbox" value="${p.id}"></td>
+            <td><code>${p.id}</code></td>
+            <td>
+              <strong>${p.fullName}</strong><br>
+              <span style="font-size: 0.75rem; color: var(--muted);">${p.gender}</span>
+            </td>
+            <td>${p.age} Yrs &bull; ${p.height || 'N/A'}<br><span style="font-size: 0.75rem;">${p.maritalStatus}</span></td>
+            <td>${p.profession}<br><span style="font-size: 0.75rem; color: var(--muted);">${p.education}</span></td>
+            <td>${p.city}, ${p.state}</td>
+            <td>
+              <strong>${p.phone || 'No Phone'}</strong><br>
+              <span style="font-size: 0.75rem; color: var(--muted);">${p.email || 'No Email'}</span>
+            </td>
+            <td><span class="badge ${badgeClass}">${p.status}</span></td>
+            <td>
+              <div class="action-cell">
+                <button class="btn btn-outline" onclick="shareWhatsApp('${p.id}')">WhatsApp</button>
+                <button class="btn btn-outline" onclick="updateStatus('${p.id}', '${p.status === 'Active' ? 'Pending' : 'Active'}')">
+                  ${p.status === 'Active' ? 'Hold' : 'Approve'}
+                </button>
+                <button class="btn btn-danger" onclick="softDeleteRecord('${p.id}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterProfiles() {
+      const q = document.getElementById('adminSearch').value.toLowerCase();
+      const status = document.getElementById('statusFilter').value;
+
+      visibleRecords = records.filter(p => {
+        if (status && p.status !== status) return false;
+        if (q) {
+          const matchString = `${p.fullName} ${p.profession} ${p.city} ${p.education} ${p.email} ${p.phone}`.toLowerCase();
+          return matchString.includes(q);
+        }
+        return true;
+      });
+      renderAdminTable();
+    }
+
+    function toggleSelectAll() {
+      const checked = document.getElementById('selectAll').checked;
+      document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = checked);
+    }
+
+    function getSelectedIds() {
+      return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+    }
+
+    async function updateStatus(profileId, targetStatus) {
+      const pin = document.getElementById('adminPin').value;
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'updateProfileStatus',
+            adminPin: pin,
+            data: { profileId: profileId, status: targetStatus }
+          })
+        });
+        const out = await res.json();
+        if (out.success) {
+          const item = records.find(p => p.id === profileId);
+          if (item) item.status = targetStatus;
+          filterProfiles();
+        }
+      } catch (err) {
+        alert("Failed to update profile status.");
+      }
+    }
+
+    async function softDeleteRecord(profileId) {
+      if (!confirm("Are you sure you want to deactivate this record? It will be removed from public view but preserved in the database.")) return;
+      const pin = document.getElementById('adminPin').value;
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'deleteProfile',
+            adminPin: pin,
+            data: { profileId: profileId, isAdmin: true }
+          })
+        });
+        const out = await res.json();
+        if (out.success) {
+          const item = records.find(p => p.id === profileId);
+          if (item) item.status = 'Deleted';
+          filterProfiles();
+        }
+      } catch (err) {
+        alert("Operation failure.");
+      }
+    }
+
+    function bulkDeleteRecords() {
+      const ids = getSelectedIds();
+      if (ids.length === 0) {
+        alert("Please select at least one record.");
+        return;
+      }
+      ids.forEach(id => softDeleteRecord(id));
+    }
+
+    function shareWhatsApp(profileId) {
+      const p = records.find(item => item.id === profileId);
+      if (!p) return;
+
+      const message = `*Candidate Biodata Summary*\n` +
+                      `Name: ${p.fullName}\n` +
+                      `Age/Height: ${p.age} Yrs | ${p.height}\n` +
+                      `Profession: ${p.profession}\n` +
+                      `Education: ${p.education}\n` +
+                      `Location: ${p.city}, ${p.state}\n` +
+                      `Marital Status: ${p.maritalStatus}\n` +
+                      `Direct Contact: ${p.phone} | ${p.email}`;
+
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function openEmailModal() {
+      if (getSelectedIds().length === 0) {
+        alert("Please select at least one profile to email.");
+        return;
+      }
+      document.getElementById('emailModal').classList.add('active');
+    }
+
+    function closeEmailModal() {
+      document.getElementById('emailModal').classList.remove('active');
+    }
+
+    async function dispatchEmailPortfolio() {
+      const pin = document.getElementById('adminPin').value;
+      const recipients = document.getElementById('emailRecipients').value.split(',').map(e => e.trim()).filter(Boolean);
+      const subject = document.getElementById('emailSubject').value;
+      const selected = records.filter(p => getSelectedIds().includes(p.id));
+
+      if (recipients.length === 0) {
+        alert("At least one valid recipient address is required.");
+        return;
+      }
+
+      let html = `<h2>Matrimonial Candidate Portfolio</h2><p>Curated candidate records matching your preferences:</p><hr>`;
+      selected.forEach(p => {
+        html += `
+          <div style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 15px;">
+            <h3>${p.fullName} (${p.age} Yrs, ${p.height})</h3>
+            <p><strong>Profession:</strong> ${p.profession} | <strong>Education:</strong> ${p.education}</p>
+            <p><strong>Location:</strong> ${p.city}, ${p.state}, ${p.country}</p>
+            <p><strong>Marital Status:</strong> ${p.maritalStatus}</p>
+            <p><strong>Family:</strong> ${p.familyDetails || 'Not specified'}</p>
+            <p><strong>Partner Preferences:</strong> ${p.partnerPreferences || 'Not specified'}</p>
+          </div>
+        `;
+      });
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'dispatchEmail',
+            adminPin: pin,
+            data: { recipients: recipients, subject: subject, messageBody: html }
+          })
+        });
+        const out = await res.json();
+        if (out.success) {
+          alert(`Portfolio emailed successfully to ${out.dispatchedCount} recipient(s).`);
+          closeEmailModal();
+        }
+      } catch (err) {
+        alert("Failed to send email dispatch.");
+      }
+    }
+  </script>
+</body>
+</html>
