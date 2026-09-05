@@ -215,15 +215,15 @@
     </div>
   </div>
 
-  <!-- Screenshot Preview Modal -->
+  <!-- Screenshot Preview Modal (Direct Base64 Render) -->
   <div class="modal-overlay" id="screenshotModal">
     <div class="modal-card" style="max-width: 550px; text-align: center;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h3>Payment Screenshot</h3>
         <button class="btn btn-outline" onclick="closeModal('screenshotModal')">Close</button>
       </div>
-      <div style="max-height: 65vh; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 5px; background: #000;">
-        <img id="screenshotModalImg" src="" alt="Payment Receipt" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+      <div style="max-height: 65vh; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 5px; background: #222;">
+        <img id="screenshotModalImg" src="" alt="Payment Receipt" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 4px;">
       </div>
       <div style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
         <span id="screenshotModalProfileId" style="font-size: 0.85rem; font-weight: 700;"></span>
@@ -339,6 +339,8 @@
         if (p.status === 'Active') badgeClass = 'badge-active';
         if (p.status === 'Deleted') badgeClass = 'badge-deleted';
 
+        const hasScreenshot = p.paymentReceiptUrl && p.paymentReceiptUrl.startsWith("data:image");
+
         return `
           <tr>
             <td><input type="checkbox" class="row-checkbox" value="${p.id}"></td>
@@ -351,11 +353,11 @@
             <td>${p.profession}<br><span style="font-size: 0.75rem; color: var(--muted);">${p.education}</span></td>
             <td style="background: #F8FAFF;">
               <strong>₹${p.paymentAmount || '1999'}</strong><br>
-              ${p.paymentReceiptUrl ? `
-                <button class="btn btn-screenshot" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; margin: 0.2rem 0;" onclick="viewPaymentScreenshot('${p.id}', '${p.paymentReceiptUrl}')">
+              ${hasScreenshot ? `
+                <button class="btn btn-screenshot" style="padding: 0.2rem 0.5rem; font-size: 0.7rem; margin: 0.2rem 0;" onclick="viewPaymentScreenshot('${p.id}')">
                   View Screenshot
                 </button><br>
-              ` : `<span style="font-size: 0.75rem; color: #C5221F;">No Screenshot Uploaded</span><br>`}
+              ` : `<span style="font-size: 0.75rem; color: #C5221F;">No Screenshot in Cell</span><br>`}
               <span class="badge ${p.paymentStatus === 'Verified' ? 'badge-active' : 'badge-pending'}">${p.paymentStatus || 'Unverified'}</span>
             </td>
             <td>${p.city}, ${p.state}, ${p.country}</td>
@@ -396,10 +398,13 @@
       renderAdminTable();
     }
 
-    function viewPaymentScreenshot(profileId, url) {
+    function viewPaymentScreenshot(profileId) {
+      const p = records.find(item => item.id === profileId);
+      if (!p || !p.paymentReceiptUrl) return;
+
       activeModalProfileId = profileId;
       document.getElementById('screenshotModalProfileId').innerText = "Candidate: " + profileId;
-      document.getElementById('screenshotModalImg').src = url;
+      document.getElementById('screenshotModalImg').src = p.paymentReceiptUrl; // Direct Base64 source
       document.getElementById('screenshotModal').classList.add('active');
     }
 
@@ -462,16 +467,19 @@
       if (currentMatches.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem;">No automatic partner matches found.</td></tr>`;
       } else {
-        tbody.innerHTML = currentMatches.map(m => `
-          <tr>
-            <td><input type="checkbox" class="match-checkbox" value="${m.id}" checked></td>
-            <td><img src="${m.photoUrl}" crossorigin="anonymous" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
-            <td><strong>${m.fullName}</strong></td>
-            <td>${m.age} Yrs &bull; ${m.height || 'N/A'}</td>
-            <td>${m.profession} &bull; ${m.education}</td>
-            <td>${m.city}, ${m.state}, ${m.country}</td>
-          </tr>
-        `).join('');
+        tbody.innerHTML = currentMatches.map(m => {
+          const imgSrc = m.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
+          return `
+            <tr>
+              <td><input type="checkbox" class="match-checkbox" value="${m.id}" checked></td>
+              <td><img src="${imgSrc}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
+              <td><strong>${m.fullName}</strong></td>
+              <td>${m.age} Yrs &bull; ${m.height || 'N/A'}</td>
+              <td>${m.profession} &bull; ${m.education}</td>
+              <td>${m.city}, ${m.state}, ${m.country}</td>
+            </tr>
+          `;
+        }).join('');
       }
 
       document.getElementById('matchModal').classList.add('active');
@@ -500,41 +508,44 @@
           <p style="font-size: 0.85rem; color: #7A6F6D; text-transform: uppercase;">Curated Partner Selection Portfolio</p>
           <p style="font-size: 0.8rem; margin-top: 0.25rem;">Specially compiled for: <strong>${currentTargetCandidate.fullName}</strong></p>
         </div>
-      ` + selectedProfiles.map(p => `
-        <div class="sanitized-card">
-          <div class="sanitized-header">
-            <img src="${p.photoUrl}" crossorigin="anonymous" class="sanitized-photo">
-            <div>
-              <h2 style="font-size: 1.25rem; color: #2B2321;">${p.fullName}</h2>
-              <p style="font-size: 0.85rem; color: #FFA259; font-weight: 600;">${p.age} Years &bull; ${p.height || 'Height N/A'}</p>
-              <p style="font-size: 0.8rem; color: #7A6F6D;">Location: ${p.city}, ${p.state}, ${p.country}</p>
+      ` + selectedProfiles.map(p => {
+        const photoSrc = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
+        return `
+          <div class="sanitized-card">
+            <div class="sanitized-header">
+              <img src="${photoSrc}" class="sanitized-photo">
+              <div>
+                <h2 style="font-size: 1.25rem; color: #2B2321;">${p.fullName}</h2>
+                <p style="font-size: 0.85rem; color: #FFA259; font-weight: 600;">${p.age} Years &bull; ${p.height || 'Height N/A'}</p>
+                <p style="font-size: 0.8rem; color: #7A6F6D;">Location: ${p.city}, ${p.state}, ${p.country}</p>
+              </div>
+            </div>
+            <table style="width: 100%; font-size: 0.85rem; margin-bottom: 1rem;">
+              <tr><td style="width: 35%; color: #7A6F6D; padding: 4px 0;"><strong>Education:</strong></td><td>${p.education}</td></tr>
+              <tr><td style="color: #7A6F6D; padding: 4px 0;"><strong>Profession:</strong></td><td>${p.profession}</td></tr>
+              <tr><td style="color: #7A6F6D; padding: 4px 0;"><strong>Annual Income:</strong></td><td>${p.annualIncome || 'Undisclosed'}</td></tr>
+              <tr><td style="color: #7A6F6D; padding: 4px 0;"><strong>Marital Status:</strong></td><td>${p.maritalStatus}</td></tr>
+            </table>
+            <div style="font-size: 0.8rem; border-top: 1px solid #F1DEC7; padding-top: 0.5rem;">
+              <strong>Family Details:</strong>
+              <p style="margin-top: 0.2rem; color: #2B2321;">${p.familyDetails || 'Details shared upon mutual consent.'}</p>
+            </div>
+            <div style="font-size: 0.8rem; border-top: 1px solid #F1DEC7; padding-top: 0.5rem; margin-top: 0.5rem;">
+              <strong>Partner Preferences:</strong>
+              <p style="margin-top: 0.2rem; color: #2B2321;">${p.partnerPreferences || 'Culturally compatible alliance.'}</p>
+            </div>
+            <div style="margin-top: 1rem; background: #FFEDB9; padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; text-align: center; color: #2B2321;">
+              To connect with this family, contact Chitransh Mahasabha Administrative Office quoting Profile ID: <strong>${p.id}</strong>
             </div>
           </div>
-          <table style="width: 100%; font-size: 0.85rem; margin-bottom: 1rem;">
-            <tr><td style="width: 35%; color: #7A6F6D; padding: 4px 0;"><strong>Education:</strong></td><td>${p.education}</td></tr>
-            <tr><td style="color: #7A6F6D; padding: 4px 0;"><strong>Profession:</strong></td><td>${p.profession}</td></tr>
-            <tr><td style="color: #7A6F6D; padding: 4px 0;"><strong>Annual Income:</strong></td><td>${p.annualIncome || 'Undisclosed'}</td></tr>
-            <tr><td style="color: #7A6F6D; padding: 4px 0;"><strong>Marital Status:</strong></td><td>${p.maritalStatus}</td></tr>
-          </table>
-          <div style="font-size: 0.8rem; border-top: 1px solid #F1DEC7; padding-top: 0.5rem;">
-            <strong>Family Details:</strong>
-            <p style="margin-top: 0.2rem; color: #2B2321;">${p.familyDetails || 'Details shared upon mutual consent.'}</p>
-          </div>
-          <div style="font-size: 0.8rem; border-top: 1px solid #F1DEC7; padding-top: 0.5rem; margin-top: 0.5rem;">
-            <strong>Partner Preferences:</strong>
-            <p style="margin-top: 0.2rem; color: #2B2321;">${p.partnerPreferences || 'Culturally compatible alliance.'}</p>
-          </div>
-          <div style="margin-top: 1rem; background: #FFEDB9; padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; text-align: center; color: #2B2321;">
-            To connect with this family, contact Chitransh Mahasabha Administrative Office quoting Profile ID: <strong>${p.id}</strong>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
 
       const opt = {
         margin: [10, 10, 10, 10],
         filename: `Matched_Partners_For_${currentTargetCandidate.fullName.replace(/\s+/g, '_')}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
@@ -556,12 +567,11 @@
         message += `• Age/Height: ${p.age} Yrs | ${p.height || 'N/A'}\n`;
         message += `• Education: ${p.education}\n`;
         message += `• Profession: ${p.profession}\n`;
-        message += `• Income: ${p.annualIncome || 'Undisclosed'}\n`;
         message += `• Location: ${p.city}, ${p.state}, ${p.country}\n`;
         message += `• Marital Status: ${p.maritalStatus}\n\n`;
       });
 
-      message += `_Note: Contact numbers and exact addresses are retained by the central registry for privacy. Contact Chitransh Mahasabha office with Profile ID to proceed._`;
+      message += `_Note: Contact numbers and exact residential addresses are held confidentially. Contact Chitransh Mahasabha desk with Profile ID to proceed._`;
 
       const targetPhone = (currentTargetCandidate.phone || '').replace(/[^0-9]/g, '');
       const url = targetPhone 
@@ -581,7 +591,6 @@
       message += `• Age/Height: ${p.age} Yrs | ${p.height || 'N/A'}\n`;
       message += `• Profession: ${p.profession}\n`;
       message += `• Education: ${p.education}\n`;
-      message += `• Income: ${p.annualIncome || 'Undisclosed'}\n`;
       message += `• Location: ${p.city}, ${p.state}, ${p.country}\n`;
       message += `• Marital Status: ${p.maritalStatus}\n\n`;
       message += `_Contact numbers and residential addresses are protected by Chitransh Mahasabha. Reach our desk to initiate conversation._`;
