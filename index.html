@@ -66,10 +66,8 @@
     }
     .user-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
 
-    /* Animated Loader */
     .loader-container {
-      grid-column: 1 / -1;
-      display: flex; flex-direction: column;
+      grid-column: 1 / -1; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       padding: 4rem 1rem; gap: 1rem; color: var(--muted);
     }
@@ -148,7 +146,6 @@
     .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; }
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
-    /* Payment Stage Box */
     .upi-box {
       border: 2px dashed var(--secondary);
       background: var(--surface-light);
@@ -211,7 +208,7 @@
 
         <div class="filter-control">
           <label>Education</label>
-          <input type="text" id="filterEducation" placeholder="Degree / Field" oninput="applyFilters()">
+          <input type="text" id="filterEducation" placeholder="Degree / Qualification" oninput="applyFilters()">
         </div>
 
         <div class="filter-control">
@@ -248,7 +245,7 @@
     <div class="profile-grid" id="profilesContainer">
       <div class="loader-container">
         <div class="spinner"></div>
-        <p>Retrieving verified candidate records...</p>
+        <p>Loading active candidate records...</p>
       </div>
     </div>
   </main>
@@ -287,7 +284,7 @@
         <p id="bioPreferences" style="font-size: 0.85rem; line-height: 1.4;">-</p>
 
         <div style="margin-top: 1rem; background: var(--surface-light); padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; text-align: center;">
-          Contact telephone numbers and exact residences are held centrally. Contact Chitransh Mahasabha Desk to connect.
+          Contact telephone numbers and exact residential addresses are held centrally. Contact Chitransh Mahasabha Desk to connect.
         </div>
       </div>
 
@@ -303,7 +300,7 @@
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
       <h2 style="margin-bottom: 0.25rem;">Profile Registration</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Step 1: Submit candidate particulars. Profiles go live following onboarding verification.</p>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Exact address and contact details remain confidential. Fixed registration fee: ₹1999.</p>
 
       <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
         <div class="form-row-2">
@@ -358,15 +355,9 @@
           </div>
         </div>
 
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Annual Income *</label>
-            <input type="text" id="regIncome" required placeholder="e.g. 8 Lakhs PA">
-          </div>
-          <div class="form-group">
-            <label>Registration Fee (INR) *</label>
-            <input type="number" id="regFeeAmount" required value="500" placeholder="500">
-          </div>
+        <div class="form-group">
+          <label>Annual Income *</label>
+          <input type="text" id="regIncome" required placeholder="e.g. 8 Lakhs PA">
         </div>
 
         <div class="form-row-2">
@@ -392,7 +383,7 @@
 
         <div class="form-group">
           <label>Upload Profile Photo *</label>
-          <input type="file" id="regPhotoFile" accept="image/*" required onchange="handleImageSelection(event)">
+          <input type="file" id="regPhotoFile" accept="image/*" required onchange="handleProfilePhotoSelection(event)">
           <div id="imagePreviewBox" style="display: none; margin-top: 0.5rem; text-align: center;">
             <img id="imagePreviewElement" src="" alt="Selected Preview" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
           </div>
@@ -420,45 +411,53 @@
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="regSubmitBtn">
-          Proceed to Onboarding Payment
+          Proceed to Pay ₹1999
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Dynamic UPI Payment Checkout Modal -->
+  <!-- Dynamic UPI Payment & Screenshot Upload Modal -->
   <div class="modal-overlay" id="paymentModal">
     <div class="modal-card" style="max-width: 440px; text-align: center;">
       <button class="modal-close-btn" onclick="closeModal('paymentModal')">&times;</button>
-      <h2 style="font-size: 1.3rem; color: var(--primary);">Complete Registration</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Profile ID: <strong id="payProfileId">-</strong></p>
+      <h2 style="font-size: 1.3rem; color: var(--primary);">Registration Payment</h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Profile Reference: <strong id="payProfileId">-</strong></p>
 
       <div class="upi-box">
-        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Registration Fee</p>
-        <h1 style="font-size: 2rem; color: var(--dark); margin: 0.25rem 0;">₹<span id="payAmountDisplay">500</span></h1>
+        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Payable Amount</p>
+        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.25rem 0;">₹1999</h1>
         
-        <!-- Dynamic UPI QR Code -->
         <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-          <img id="upiQrCodeImg" src="" alt="Scan UPI QR" style="width: 100%; height: 100%;">
+          <img id="upiQrCodeImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
         </div>
 
         <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">UPI ID: <code>sinha361@icici</code></p>
         
-        <!-- Direct Mobile Intent Link -->
         <a id="upiIntentBtn" href="#" class="btn btn-primary" style="width: 100%; margin-top: 0.75rem;">
-          Pay with Any UPI App
+          Pay ₹1999 via UPI App
         </a>
       </div>
 
       <div style="text-align: left; margin-top: 1rem;">
-        <label style="font-size: 0.75rem; font-weight: 700; color: var(--dark);">Enter UPI Reference / UTR Number *</label>
-        <input type="text" id="payUtrNumber" placeholder="12-digit UPI Ref / UTR No" class="input-field" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); margin: 0.35rem 0 1rem 0;">
+        <div class="form-group">
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--dark);">Upload Payment Screenshot *</label>
+          <input type="file" id="payScreenshotFile" accept="image/*" required onchange="handleScreenshotSelection(event)">
+          <div id="screenshotPreviewBox" style="display: none; margin-top: 0.5rem; text-align: center;">
+            <img id="screenshotPreviewElement" src="" alt="Receipt Preview" style="max-width: 120px; border-radius: 6px; border: 1px solid var(--border);">
+          </div>
+        </div>
 
-        <button class="btn btn-primary" style="width: 100%;" id="submitUtrBtn" onclick="submitUtrVerification()">
-          Confirm Payment & Submit
+        <div class="form-group" style="margin-top: 0.75rem;">
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--dark);">UPI Transaction ID / UTR (Optional)</label>
+          <input type="text" id="payUtrNumber" placeholder="12-digit UPI Ref / UTR No" class="input-field" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+        </div>
+
+        <button class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="submitProofBtn" onclick="submitPaymentProof()">
+          Submit Screenshot for Approval
         </button>
         <p style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; text-align: center;">
-          Your profile will be reviewed and activated by the administrative team upon UTR verification.
+          The administration will verify your receipt and activate your profile.
         </p>
       </div>
     </div>
@@ -479,8 +478,9 @@
     const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
 
     let state = { profiles: [], filtered: [], savedIds: new Set(), user: null, mode: 'all' };
-    let selectedBase64Image = "";
-    let activeRegistrationPayload = null;
+    let selectedProfileImage = "";
+    let selectedScreenshotImage = "";
+    let registeredProfileId = "";
 
     window.addEventListener('DOMContentLoaded', () => {
       checkUserSession();
@@ -584,19 +584,28 @@
       }
     }
 
-    function handleImageSelection(event) {
-      const file = event.target.files[0];
-      if (!file) {
-        selectedBase64Image = "";
-        document.getElementById('imagePreviewBox').style.display = 'none';
-        return;
-      }
+    function handleProfilePhotoSelection(event) {
+      compressImage(event.target.files[0], 800, (base64) => {
+        selectedProfileImage = base64;
+        document.getElementById('imagePreviewElement').src = base64;
+        document.getElementById('imagePreviewBox').style.display = 'block';
+      });
+    }
 
+    function handleScreenshotSelection(event) {
+      compressImage(event.target.files[0], 1000, (base64) => {
+        selectedScreenshotImage = base64;
+        document.getElementById('screenshotPreviewElement').src = base64;
+        document.getElementById('screenshotPreviewBox').style.display = 'block';
+      });
+    }
+
+    function compressImage(file, maxDim, callback) {
+      if (!file) return;
       const reader = new FileReader();
       reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-          const maxDim = 800;
           let w = img.width, h = img.height;
           if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
           else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
@@ -605,10 +614,7 @@
           canvas.width = w; canvas.height = h;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, w, h);
-
-          selectedBase64Image = canvas.toDataURL('image/jpeg', 0.8);
-          document.getElementById('imagePreviewElement').src = selectedBase64Image;
-          document.getElementById('imagePreviewBox').style.display = 'block';
+          callback(canvas.toDataURL('image/jpeg', 0.8));
         };
         img.src = e.target.result;
       };
@@ -753,16 +759,14 @@
 
     async function handleRegistrationSubmit(e) {
       e.preventDefault();
-      if (!selectedBase64Image) {
+      if (!selectedProfileImage) {
         alert("Please upload a profile photograph.");
         return;
       }
 
       const btn = document.getElementById('regSubmitBtn');
-      btn.innerText = "Processing Details...";
+      btn.innerText = "Submitting Details...";
       btn.disabled = true;
-
-      const feeAmount = document.getElementById('regFeeAmount').value || "500";
 
       const profilePayload = {
         fullName: document.getElementById('regFullName').value,
@@ -774,12 +778,11 @@
         education: document.getElementById('regEducation').value,
         profession: document.getElementById('regProfession').value,
         annualIncome: document.getElementById('regIncome').value,
-        customAmount: feeAmount,
         city: document.getElementById('regCity').value,
         state: document.getElementById('regState').value,
         country: document.getElementById('regCountry').value,
         exactAddress: document.getElementById('regExactAddress').value,
-        imageBase64: selectedBase64Image,
+        imageBase64: selectedProfileImage,
         email: document.getElementById('regEmail').value,
         phone: document.getElementById('regPhone').value,
         familyDetails: document.getElementById('regFamily').value,
@@ -794,11 +797,11 @@
         });
         const out = await res.json();
         if (out.success) {
-          activeRegistrationPayload = out;
+          registeredProfileId = out.profileId;
           closeModal('registrationModal');
           document.getElementById('regForm').reset();
           document.getElementById('imagePreviewBox').style.display = 'none';
-          selectedBase64Image = "";
+          selectedProfileImage = "";
 
           // Launch UPI Payment Modal
           openPaymentModal(out.profileId, out.paymentAmount, out.upiId);
@@ -808,57 +811,61 @@
       } catch (err) {
         alert("Transmission failure. Check connection.");
       } finally {
-        btn.innerText = "Proceed to Onboarding Payment";
+        btn.innerText = "Proceed to Pay ₹1999";
         btn.disabled = false;
       }
     }
 
     function openPaymentModal(profileId, amount, upiId) {
       document.getElementById('payProfileId').innerText = profileId;
-      document.getElementById('payAmountDisplay').innerText = amount;
-      
-      const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Chitransh Mahasabha')}&am=${encodeURIComponent(amount)}&cu=INR&tn=${encodeURIComponent('Profile Onboarding ' + profileId)}`;
-      
-      // Generate Dynamic QR Code Image
+      const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Chitransh Mahasabha')}&am=1999&cu=INR&tn=${encodeURIComponent('Registration ' + profileId)}`;
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUrl)}`;
+      
       document.getElementById('upiQrCodeImg').src = qrUrl;
       document.getElementById('upiIntentBtn').href = upiUrl;
-
       document.getElementById('paymentModal').classList.add('active');
     }
 
-    async function submitUtrVerification() {
-      const utr = document.getElementById('payUtrNumber').value.trim();
-      if (!utr) {
-        alert("Please enter the 12-digit UPI UTR / Reference ID from your payment app.");
+    async function submitPaymentProof() {
+      if (!selectedScreenshotImage) {
+        alert("Please upload your payment confirmation screenshot.");
         return;
       }
 
-      const btn = document.getElementById('submitUtrBtn');
-      btn.innerText = "Confirming Transaction...";
+      const btn = document.getElementById('submitProofBtn');
+      btn.innerText = "Uploading Receipt...";
       btn.disabled = true;
+
+      const utr = document.getElementById('payUtrNumber').value.trim();
 
       try {
         const res = await fetch(API_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
-            action: 'submitPaymentDetails',
-            data: { profileId: activeRegistrationPayload.profileId, utr: utr }
+            action: 'submitPaymentProof',
+            data: {
+              profileId: registeredProfileId,
+              screenshotBase64: selectedScreenshotImage,
+              utr: utr
+            }
           })
         });
         const out = await res.json();
         if (out.success) {
-          alert("Payment recorded! Your profile is pending verification and will be published live by our desk shortly.");
+          alert("Payment screenshot uploaded! The administrative team will verify your receipt and make your profile live.");
           closeModal('paymentModal');
           document.getElementById('payUtrNumber').value = "";
+          document.getElementById('payScreenshotFile').value = "";
+          document.getElementById('screenshotPreviewBox').style.display = 'none';
+          selectedScreenshotImage = "";
         } else {
           alert("Error: " + out.error);
         }
       } catch (err) {
         alert("Network communication error.");
       } finally {
-        btn.innerText = "Confirm Payment & Submit";
+        btn.innerText = "Submit Screenshot for Approval";
         btn.disabled = false;
       }
     }
