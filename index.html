@@ -33,19 +33,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg); color: var(--dark); line-height: 1.5; }
 
-    .navbar {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-      padding: 0.85rem 1.5rem;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-
-    .brand { font-size: 1.25rem; font-weight: 700; color: var(--primary); text-decoration: none; }
-    .brand span { color: var(--secondary); }
-    .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
-
     .btn {
       padding: 0.55rem 1.15rem; font-size: 0.85rem; font-weight: 600;
       border-radius: var(--radius-sm); cursor: pointer; border: none;
@@ -66,6 +53,16 @@
     }
     .user-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
 
+    .top-action-bar {
+      max-width: 1200px;
+      margin: 1.5rem auto 0.5rem auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
     .loader-container {
       grid-column: 1 / -1; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
@@ -80,7 +77,7 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .filter-wrapper { max-width: 1200px; margin: 1.5rem auto 1rem auto; padding: 0 1rem; }
+    .filter-wrapper { max-width: 1200px; margin: 0.75rem auto 1rem auto; padding: 0 1rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm); }
     .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 0.75rem; }
     .filter-control { display: flex; flex-direction: column; gap: 0.35rem; }
@@ -158,15 +155,13 @@
 </head>
 <body>
 
-  <nav class="navbar">
-    <a href="#" class="brand">Chitransh<span>Mahasabha</span></a>
-    <div class="nav-actions">
-      <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
-      <div id="authActions">
-        <button class="btn btn-primary" onclick="openLoginModal()">Sign In</button>
-      </div>
+  <!-- Top Action Bar (Replacing the Main Navigation Header) -->
+  <div class="top-action-bar">
+    <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
+    <div id="authActions">
+      <button class="btn btn-primary" onclick="openLoginModal()">Sign In</button>
     </div>
-  </nav>
+  </div>
 
   <div class="filter-wrapper">
     <div class="filter-container">
@@ -584,7 +579,6 @@
       }
     }
 
-    // Compresses to max 400px width/height and 0.6 quality (ensuring string is under 35,000 characters)
     function handleProfilePhotoSelection(event) {
       compressImage(event.target.files[0], 400, 0.6, (base64) => {
         selectedProfileImage = base64;
@@ -593,7 +587,6 @@
       });
     }
 
-    // Compresses to max 500px and 0.55 quality (ensuring string is under 35,000 characters)
     function handleScreenshotSelection(event) {
       compressImage(event.target.files[0], 500, 0.55, (base64) => {
         selectedScreenshotImage = base64;
@@ -785,7 +778,7 @@
         state: document.getElementById('regState').value,
         country: document.getElementById('regCountry').value,
         exactAddress: document.getElementById('regExactAddress').value,
-        imageBase64: selectedProfileImage, // Raw Base64 string
+        imageBase64: selectedProfileImage,
         email: document.getElementById('regEmail').value,
         phone: document.getElementById('regPhone').value,
         familyDetails: document.getElementById('regFamily').value,
@@ -806,7 +799,6 @@
           document.getElementById('imagePreviewBox').style.display = 'none';
           selectedProfileImage = "";
 
-          // Launch UPI Payment Modal
           openPaymentModal(out.profileId, out.paymentAmount, out.upiId);
         } else {
           alert("Submission error: " + out.error);
@@ -849,7 +841,7 @@
             action: 'submitPaymentProof',
             data: {
               profileId: registeredProfileId,
-              screenshotBase64: selectedScreenshotImage, // Raw Base64 string directly stored
+              screenshotBase64: selectedScreenshotImage,
               utr: utr
             }
           })
