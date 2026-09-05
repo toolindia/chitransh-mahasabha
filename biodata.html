@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official Matrimonial Biodata - Chitransh Mahasabha</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #FF7E7E;
+      --secondary: #FFA259;
+      --accent: #FFCB56;
+      --surface-light: #FFEDB9;
+      --bg: #FFFDF9;
+      --dark: #2B2321;
+      --muted: #7A6F6D;
+      --border: #F5DEC2;
+      --white: #FFFFFF;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --shadow-sm: 0 4px 12px rgba(255, 126, 126, 0.08);
+      --shadow-md: 0 10px 28px rgba(43, 35, 33, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding: 2rem 1rem; }
+
+    .biodata-container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.65rem 1.35rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: var(--white);
+    }
+    .btn-whatsapp:hover { background: #20BA5A; }
+
+    .btn-outline {
+      background: var(--white);
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { background: var(--surface-light); }
+
+    /* Printable Official Biodata Sheet */
+    .biodata-sheet {
+      background: var(--white);
+      border: 2px solid var(--secondary);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .biodata-header-banner {
+      text-align: center;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .biodata-header-banner h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.75rem;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .biodata-header-banner p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+
+    .candidate-hero {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      background: linear-gradient(180deg, #FFF9F2 0%, var(--white) 100%);
+      padding: 1.25rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 1.75rem;
+    }
+
+    .candidate-photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+      background-color: var(--surface-light);
+    }
+
+    .candidate-meta h2 {
+      font-size: 1.4rem;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .candidate-meta .sub-text {
+      font-size: 0.92rem;
+      color: var(--secondary);
+      font-weight: 700;
+    }
+
+    .candidate-meta .loc-text {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .section-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 1.5rem 0 0.5rem 0;
+      border-bottom: 1.5px solid var(--surface-light);
+      padding-bottom: 0.35rem;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .data-table tr {
+      border-bottom: 1px solid #FAF0E4;
+    }
+
+    .data-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .data-table td {
+      padding: 0.55rem 0;
+    }
+
+    .data-table td:first-child {
+      color: var(--muted);
+      width: 38%;
+      font-weight: 600;
+    }
+
+    .data-table td:last-child {
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .narrative-box {
+      font-size: 0.9rem;
+      color: var(--dark);
+      line-height: 1.55;
+      padding: 0.5rem 0;
+    }
+
+    .privacy-footer-note {
+      margin-top: 2rem;
+      background: var(--surface-light);
+      border: 1px dashed var(--secondary);
+      padding: 0.85rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      text-align: center;
+      color: var(--dark);
+      line-height: 1.45;
+    }
+
+    .loader-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5rem 1rem;
+      gap: 1rem;
+      color: var(--muted);
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid var(--surface-light);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <div class="biodata-container">
+
+    <!-- Top Action Toolbar -->
+    <div class="action-bar" id="actionBar" style="display: none;">
+      <button class="btn btn-outline" onclick="window.close(); history.back();">&larr; Back to Directory</button>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <a id="connectWhatsAppBtn" href="#" target="_blank" class="btn btn-whatsapp">💬 Express Interest (WhatsApp)</a>
+        <button class="btn btn-primary" onclick="exportToPdf()">Download PDF</button>
+      </div>
+    </div>
+
+    <!-- Status / Loading Indicator -->
+    <div id="loadingBox" class="loader-container">
+      <div class="spinner"></div>
+      <p>Fetching authentic candidate record...</p>
+    </div>
+
+    <!-- Printable Official Biodata Sheet -->
+    <div id="biodataSheet" class="biodata-sheet" style="display: none;">
+      
+      <div class="biodata-header-banner">
+        <h1>CHITRANSH MAHASABHA</h1>
+        <p>Official Matrimonial Biodata Portfolio</p>
+        <span id="bioProfileId" style="font-size: 0.72rem; font-weight: 700; color: var(--muted); letter-spacing: 0.5px;"></span>
+      </div>
+
+      <div class="candidate-hero">
+        <img id="bioPhoto" class="candidate-photo" src="" alt="Candidate Photo">
+        <div class="candidate-meta">
+          <h2 id="bioFullName">-</h2>
+          <div class="sub-text" id="bioSubtitle">-</div>
+          <div class="loc-text" id="bioLocation">-</div>
+        </div>
+      </div>
+
+      <div class="section-title">Personal & Demographics</div>
+      <table class="data-table">
+        <tr><td>Date of Birth:</td><td id="bioDob">-</td></tr>
+        <tr><td>Height:</td><td id="bioHeight">-</td></tr>
+        <tr><td>Marital Status:</td><td id="bioMarital">-</td></tr>
+      </table>
+
+      <div class="section-title">Education & Career</div>
+      <table class="data-table">
+        <tr><td>Highest Education:</td><td id="bioEducation">-</td></tr>
+        <tr><td>Occupation / Profession:</td><td id="bioProfession">-</td></tr>
+        <tr><td>Annual Income:</td><td id="bioIncome">-</td></tr>
+      </table>
+
+      <div class="section-title">Family Overview</div>
+      <div class="narrative-box" id="bioFamily">-</div>
+
+      <div class="section-title">Partner Expectations</div>
+      <div class="narrative-box" id="bioPreferences">-</div>
+
+      <div class="privacy-footer-note">
+        <strong>Privacy Assurance:</strong> Residential street addresses and personal phone numbers are withheld by Ghaziabad Chitransh Mahasabha. To initiate family conversations, connect with our administrative desk quoting the Profile Reference ID above.
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
+
+    let loadedProfile = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const profileId = urlParams.get('id');
+
+      if (!profileId) {
+        document.getElementById('loadingBox').innerHTML = `
+          <h3 style="color: var(--primary);">No Profile Specified</h3>
+          <p style="font-size: 0.85rem;">Please select a candidate from the directory.</p>
+        `;
+        return;
+      }
+
+      loadCandidateData(profileId);
+    });
+
+    async function loadCandidateData(id) {
+      try {
+        const res = await fetch(`${API_ENDPOINT}?action=getProfiles`);
+        const data = await res.json();
+
+        if (data.success) {
+          const profile = data.profiles.find(p => p.id === id);
+          if (profile) {
+            loadedProfile = profile;
+            populateBiodata(profile);
+          } else {
+            document.getElementById('loadingBox').innerHTML = `
+              <h3 style="color: var(--primary);">Candidate Not Found</h3>
+              <p style="font-size: 0.85rem;">This profile may be pending review or deactivated.</p>
+            `;
+          }
+        } else {
+          throw new Error(data.error);
+        }
+      } catch (err) {
+        document.getElementById('loadingBox').innerHTML = `
+          <h3 style="color: var(--primary);">Data Access Error</h3>
+          <p style="font-size: 0.85rem;">Unable to load biodata. Please verify internet connection.</p>
+        `;
+      }
+    }
+
+    function populateBiodata(p) {
+      document.getElementById('bioProfileId').innerText = `REFERENCE ID: ${p.id}`;
+      document.getElementById('bioFullName').innerText = p.fullName;
+      document.getElementById('bioSubtitle').innerText = `${p.age} Years • ${p.gender} • ${p.maritalStatus}`;
+      document.getElementById('bioLocation').innerText = `${p.city}, ${p.state}, ${p.country}`;
+      document.getElementById('bioPhoto').src = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
+
+      document.getElementById('bioDob').innerText = p.dob || 'Undisclosed';
+      document.getElementById('bioHeight').innerText = p.height || 'Height Not Mentioned';
+      document.getElementById('bioMarital').innerText = p.maritalStatus;
+
+      document.getElementById('bioEducation').innerText = p.education;
+      document.getElementById('bioProfession').innerText = p.profession;
+      document.getElementById('bioIncome').innerText = p.annualIncome || 'Undisclosed';
+
+      document.getElementById('bioFamily').innerText = p.familyDetails || 'Family background shared upon mutual consent.';
+      document.getElementById('bioPreferences').innerText = p.partnerPreferences || 'Culturally compatible alliance within Kayastha community.';
+
+      // Set WhatsApp Desk link pre-filled with candidate reference
+      const waMessage = `Hello, I am interested in connecting regarding Candidate: ${p.fullName} (Profile ID: ${p.id}). Please facilitate introduction.`;
+      document.getElementById('connectWhatsAppBtn').href = `https://wa.me/919891513359?text=${encodeURIComponent(waMessage)}`;
+
+      // Reveal content
+      document.getElementById('loadingBox').style.display = 'none';
+      document.getElementById('actionBar').style.display = 'flex';
+      document.getElementById('biodataSheet').style.display = 'block';
+    }
+
+    function exportToPdf() {
+      if (!loadedProfile) return;
+      const element = document.getElementById('biodataSheet');
+      const filename = `Biodata_${loadedProfile.fullName.replace(/\s+/g, '_')}_${loadedProfile.id}.pdf`;
+
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save();
+    }
+  </script>
+</body>
+</html>
