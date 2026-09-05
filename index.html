@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curated Matrimony Network</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- PDF Generator & Google Identity Services -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <style>
+    :root {
+      --primary: #FF7E7E;
+      --secondary: #FFA259;
+      --accent: #FFCB56;
+      --surface-light: #FFEDB9;
+      --bg: #FFFDF9;
+      --dark: #2B2321;
+      --muted: #7A6F6D;
+      --border: #F5DEC2;
+      --white: #FFFFFF;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --shadow-sm: 0 2px 8px rgba(255, 126, 126, 0.08);
+      --shadow-md: 0 8px 24px rgba(255, 126, 126, 0.12);
+      --shadow-lg: 0 16px 36px rgba(255, 162, 89, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--dark);
+      line-height: 1.5;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .brand span {
+      color: var(--secondary);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 0.55rem 1.15rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-light);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--dark);
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface-light);
+      padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+      border-radius: 20px;
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Filter Engine */
+    .filter-wrapper {
+      max-width: 1200px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+    }
+
+    .filter-container {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .filter-control {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .filter-control label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .filter-control select, .filter-control input {
+      padding: 0.55rem 0.65rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background-color: var(--bg);
+      font-size: 0.85rem;
+      color: var(--dark);
+      outline: none;
+    }
+
+    /* Grid Layout */
+    .catalog-wrapper {
+      max-width: 1200px;
+      margin: 1rem auto 3rem auto;
+      padding: 0 1rem;
+    }
+
+    .catalog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .profile-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .profile-img-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      background-color: var(--surface-light);
+    }
+
+    .profile-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .shortlist-tag-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.3rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    .shortlist-tag-btn.active {
+      background: var(--primary);
+      color: var(--white);
+      border-color: var(--primary);
+    }
+
+    .profile-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 0.35rem;
+    }
+
+    .profile-name-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .profile-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .profile-age {
+      font-size: 0.85rem;
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    .profile-meta-line {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .profile-badge {
+      background: var(--surface-light);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--dark);
+      display: inline-block;
+      margin-top: 0.35rem;
+      width: fit-content;
+    }
+
+    /* Modal System */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+      padding: 1.75rem;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .biodata-sheet {
+      border: 2px solid var(--secondary);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      background: #FFFFFF;
+      margin-bottom: 1.25rem;
+    }
+
+    .biodata-header {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      border-bottom: 2px solid var(--surface-light);
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .biodata-photo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+
+    .biodata-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0.85rem 0 0.35rem 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.2rem;
+    }
+
+    .biodata-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .biodata-table td {
+      padding: 0.35rem 0;
+    }
+
+    .biodata-table td:first-child {
+      color: var(--muted);
+      width: 40%;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="#" class="brand">Curated<span>Matrimony</span></a>
+    <div class="nav-actions">
+      <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
+      <div id="authActions">
+        <button class="btn btn-primary" onclick="openLoginModal()">Sign In</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Filter Module -->
+  <div class="filter-wrapper">
+    <div class="filter-container">
+      <div class="filter-grid">
+        <div class="filter-control">
+          <label>Gender</label>
+          <select id="filterGender" onchange="applyFilters()">
+            <option value="">All Genders</option>
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+          </select>
+        </div>
+
+        <div class="filter-control">
+          <label>Age Bracket</label>
+          <select id="filterAge" onchange="applyFilters()">
+            <option value="">Any Age</option>
+            <option value="21-25">21 - 25</option>
+            <option value="26-30">26 - 30</option>
+            <option value="31-35">31 - 35</option>
+            <option value="36-45">36 - 45</option>
+          </select>
+        </div>
+
+        <div class="filter-control">
+          <label>Marital Status</label>
+          <select id="filterMarital" onchange="applyFilters()">
+            <option value="">Any Status</option>
+            <option value="Never Married">Never Married</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Widowed">Widowed</option>
+          </select>
+        </div>
+
+        <div class="filter-control">
+          <label>Location</label>
+          <input type="text" id="filterLocation" placeholder="City or State" oninput="applyFilters()">
+        </div>
+
+        <div class="filter-control">
+          <label>Education</label>
+          <input type="text" id="filterEducation" placeholder="Degree / Field" oninput="applyFilters()">
+        </div>
+
+        <div class="filter-control">
+          <label>Profession</label>
+          <input type="text" id="filterProfession" placeholder="Occupation" oninput="applyFilters()">
+        </div>
+
+        <div class="filter-control">
+          <label>Min Height</label>
+          <select id="filterHeight" onchange="applyFilters()">
+            <option value="">Any Height</option>
+            <option value="5.0">Above 5'0"</option>
+            <option value="5.4">Above 5'4"</option>
+            <option value="5.8">Above 5'8"</option>
+            <option value="6.0">Above 6'0"</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profiles Catalog -->
+  <main class="catalog-wrapper">
+    <div class="catalog-header">
+      <div>
+        <h2 style="font-size: 1.25rem;">Candidate Registry</h2>
+        <p style="font-size: 0.8rem; color: var(--muted);" id="profileCounter">Loading active records...</p>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn btn-outline" id="tabAll" onclick="switchCatalogMode('all')">All Profiles</button>
+        <button class="btn btn-ghost" id="tabSaved" onclick="switchCatalogMode('saved')">Saved Profiles (<span id="savedCounter">0</span>)</button>
+      </div>
+    </div>
+
+    <div class="profile-grid" id="profilesContainer">
+      <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted);">
+        Connecting to database records...
+      </div>
+    </div>
+  </main>
+
+  <!-- Biodata Modal -->
+  <div class="modal-overlay" id="biodataModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeModal('biodataModal')">&times;</button>
+      <div id="biodataPrintSurface" class="biodata-sheet">
+        <div class="biodata-header">
+          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate Picture">
+          <div>
+            <h2 id="bioName" style="font-size: 1.25rem;">Candidate Name</h2>
+            <p id="bioBasic" style="font-size: 0.85rem; color: var(--secondary); font-weight: 600;">Age - Height</p>
+            <p id="bioLocation" style="font-size: 0.8rem; color: var(--muted);">City, State, Country</p>
+          </div>
+        </div>
+
+        <div class="biodata-title">Professional & Educational Overview</div>
+        <table class="biodata-table">
+          <tr><td>Education</td><td id="bioEdu">-</td></tr>
+          <tr><td>Profession</td><td id="bioProf">-</td></tr>
+          <tr><td>Annual Income</td><td id="bioIncome">-</td></tr>
+          <tr><td>Marital Status</td><td id="bioMarital">-</td></tr>
+        </table>
+
+        <div class="biodata-title">Family Overview</div>
+        <p id="bioFamily" style="font-size: 0.85rem; line-height: 1.4;">-</p>
+
+        <div class="biodata-title">Partner Preferences</div>
+        <p id="bioPreferences" style="font-size: 0.85rem; line-height: 1.4;">-</p>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+        <button class="btn btn-outline" onclick="closeModal('biodataModal')">Close</button>
+        <button class="btn btn-primary" onclick="exportBiodataPdf()">Download Biodata (PDF)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Form Modal -->
+  <div class="modal-overlay" id="registrationModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
+      <h2 style="margin-bottom: 0.25rem;">Profile Registration</h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Submit candidate credentials. Personal contacts remain confidential.</p>
+
+      <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Candidate Name *</label>
+            <input type="text" id="regFullName" required placeholder="Full name">
+          </div>
+          <div class="form-group">
+            <label>Gender *</label>
+            <select id="regGender" required>
+              <option value="">Select</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" id="regDob">
+          </div>
+          <div class="form-group">
+            <label>Age *</label>
+            <input type="number" id="regAge" min="18" max="80" required placeholder="Years">
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Height (e.g. 5'7") *</label>
+            <input type="text" id="regHeight" required placeholder="5'7&quot;">
+          </div>
+          <div class="form-group">
+            <label>Marital Status *</label>
+            <select id="regMarital" required>
+              <option value="Never Married">Never Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Widowed">Widowed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Highest Education *</label>
+            <input type="text" id="regEducation" required placeholder="Degree / Field">
+          </div>
+          <div class="form-group">
+            <label>Profession *</label>
+            <input type="text" id="regProfession" required placeholder="Occupation">
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>City *</label>
+            <input type="text" id="regCity" required placeholder="City">
+          </div>
+          <div class="form-group">
+            <label>State *</label>
+            <input type="text" id="regState" required placeholder="State">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Country *</label>
+          <input type="text" id="regCountry" required value="India">
+        </div>
+
+        <div class="form-group">
+          <label>Profile Picture URL</label>
+          <input type="url" id="regPhoto" placeholder="https://example.com/photo.jpg">
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Contact Email (Private) *</label>
+            <input type="email" id="regEmail" required placeholder="address@domain.com">
+          </div>
+          <div class="form-group">
+            <label>Phone / WhatsApp (Private) *</label>
+            <input type="tel" id="regPhone" required placeholder="+91 00000 00000">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Family Details</label>
+          <textarea id="regFamily" rows="2" placeholder="Summary of family background and values"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Partner Expectations</label>
+          <textarea id="regPreferences" rows="2" placeholder="Educational, professional, and cultural preferences"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="regSubmitBtn">
+          Complete Profile Registration
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Google Authentication Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-card" style="max-width: 380px; text-align: center;">
+      <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
+      <h2 style="margin-bottom: 0.25rem;">Account Access</h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem;">
+        Authenticate with Google to manage candidate shortlists and your profile.
+      </p>
+
+      <div id="googleButtonDiv" style="display: flex; justify-content: center;"></div>
+    </div>
+  </div>
+
+  <!-- Client Script Engine -->
+  <script>
+    // Set your deployed Web App API URL and Google Client ID
+    const API_ENDPOINT = "https://script.google.com/macros/s/YOUR_DEPLOYED_APP_SCRIPT_ID/exec";
+    const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+
+    let state = {
+      profiles: [],
+      filtered: [],
+      savedIds: new Set(),
+      user: null,
+      mode: 'all'
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      checkUserSession();
+      fetchActiveProfiles();
+    });
+
+    window.addEventListener('load', () => {
+      if (window.google && GOOGLE_CLIENT_ID !== "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com") {
+        google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleAuthResponse
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("googleButtonDiv"),
+          { theme: "outline", size: "large", width: 280, text: "continue_with" }
+        );
+      }
+    });
+
+    function checkUserSession() {
+      const stored = localStorage.getItem('matrimony_client_session');
+      if (stored) {
+        state.user = JSON.parse(stored);
+        renderNavUser();
+        fetchUserShortlists();
+      }
+    }
+
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
+    }
+
+    async function handleGoogleAuthResponse(response) {
+      const payload = parseJwt(response.credential);
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'googleAuth',
+            data: { email: payload.email, name: payload.name, picture: payload.picture }
+          })
+        });
+        const out = await res.json();
+        if (out.success) {
+          state.user = out.user;
+          localStorage.setItem('matrimony_client_session', JSON.stringify(out.user));
+          renderNavUser();
+          closeModal('authModal');
+          fetchUserShortlists();
+        }
+      } catch (err) {
+        alert("Authentication failed. Please verify API configuration.");
+      }
+    }
+
+    function renderNavUser() {
+      const container = document.getElementById('authActions');
+      if (state.user) {
+        container.innerHTML = `
+          <div class="user-pill">
+            <img src="${state.user.pictureUrl || 'https://via.placeholder.com/28'}" class="user-avatar" alt="Avatar">
+            <span style="font-size: 0.8rem; font-weight: 600;">${state.user.fullName.split(' ')[0]}</span>
+          </div>
+          <button class="btn btn-ghost" onclick="signOut()">Sign Out</button>
+        `;
+      } else {
+        container.innerHTML = `<button class="btn btn-primary" onclick="openLoginModal()">Sign In</button>`;
+      }
+    }
+
+    function signOut() {
+      localStorage.removeItem('matrimony_client_session');
+      state.user = null;
+      state.savedIds.clear();
+      renderNavUser();
+      renderProfileList();
+    }
+
+    async function fetchActiveProfiles() {
+      try {
+        const res = await fetch(`${API_ENDPOINT}?action=getProfiles`);
+        const data = await res.json();
+        if (data.success) {
+          state.profiles = data.profiles;
+          applyFilters();
+        }
+      } catch (err) {
+        document.getElementById('profilesContainer').innerHTML = 
+          `<div style="grid-column: 1/-1; text-align: center; color: var(--primary);">Database synchronization error.</div>`;
+      }
+    }
+
+    async function fetchUserShortlists() {
+      if (!state.user) return;
+      try {
+        const res = await fetch(`${API_ENDPOINT}?action=getShortlists&email=${encodeURIComponent(state.user.email)}`);
+        const data = await res.json();
+        if (data.success) {
+          state.savedIds = new Set(data.profileIds);
+          document.getElementById('savedCounter').innerText = state.savedIds.size;
+          renderProfileList();
+        }
+      } catch (err) {
+        console.error("Shortlist fetch failed", err);
+      }
+    }
+
+    function applyFilters() {
+      const gender = document.getElementById('filterGender').value;
+      const ageBracket = document.getElementById('filterAge').value;
+      const marital = document.getElementById('filterMarital').value;
+      const loc = document.getElementById('filterLocation').value.toLowerCase().trim();
+      const edu = document.getElementById('filterEducation').value.toLowerCase().trim();
+      const prof = document.getElementById('filterProfession').value.toLowerCase().trim();
+      const height = document.getElementById('filterHeight').value;
+
+      state.filtered = state.profiles.filter(p => {
+        if (gender && p.gender !== gender) return false;
+        if (marital && p.maritalStatus !== marital) return false;
+        if (ageBracket) {
+          const [min, max] = ageBracket.split('-').map(Number);
+          if (p.age < min || p.age > max) return false;
+        }
+        if (loc) {
+          const locationString = `${p.city} ${p.state} ${p.country}`.toLowerCase();
+          if (!locationString.includes(loc)) return false;
+        }
+        if (edu && !p.education.toLowerCase().includes(edu)) return false;
+        if (prof && !p.profession.toLowerCase().includes(prof)) return false;
+        if (height) {
+          const parsedHeight = parseFloat(p.height.replace(/[^0-9.]/g, ''));
+          if (!isNaN(parsedHeight) && parsedHeight < parseFloat(height)) return false;
+        }
+        return true;
+      });
+
+      renderProfileList();
+    }
+
+    function renderProfileList() {
+      const container = document.getElementById('profilesContainer');
+      let dataset = state.filtered;
+
+      if (state.mode === 'saved') {
+        dataset = dataset.filter(p => state.savedIds.has(p.id));
+      }
+
+      document.getElementById('profileCounter').innerText = `Displaying ${dataset.length} candidate files`;
+      document.getElementById('savedCounter').innerText = state.savedIds.size;
+
+      if (dataset.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--muted);">
+            <h3>No profiles found</h3>
+            <p style="font-size: 0.85rem; margin-top: 0.25rem;">Adjust your filter preferences to view more results.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = dataset.map(p => {
+        const isSaved = state.savedIds.has(p.id);
+        return `
+          <div class="profile-card">
+            <div class="profile-img-container">
+              <img class="profile-img" src="${p.photoUrl}" alt="${p.fullName}">
+              <button class="shortlist-tag-btn ${isSaved ? 'active' : ''}" onclick="toggleShortlistRecord('${p.id}')">
+                ${isSaved ? 'SAVED' : 'SAVE'}
+              </button>
+            </div>
+            <div class="profile-body">
+              <div class="profile-name-row">
+                <h3 class="profile-name">${p.fullName}</h3>
+                <span class="profile-age">${p.age} Yrs</span>
+              </div>
+              <div class="profile-meta-line">${p.height || 'Height N/A'} &bull; ${p.maritalStatus}</div>
+              <div class="profile-meta-line" style="font-weight: 600; color: var(--dark);">${p.profession}</div>
+              <div class="profile-meta-line">${p.education}</div>
+              <span class="profile-badge">${p.city}, ${p.state}</span>
+              
+              <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                <button class="btn btn-outline" style="flex: 1;" onclick="openBiodataModal('${p.id}')">View Biodata</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function toggleShortlistRecord(profileId) {
+      if (!state.user) {
+        alert("Please sign in with Google to bookmark profiles.");
+        openLoginModal();
+        return;
+      }
+
+      if (state.savedIds.has(profileId)) {
+        state.savedIds.delete(profileId);
+      } else {
+        state.savedIds.add(profileId);
+      }
+      renderProfileList();
+
+      try {
+        await fetch(API_ENDPOINT, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'toggleShortlist',
+            data: { userEmail: state.user.email, profileId: profileId }
+          })
+        });
+      } catch (err) {
+        console.error("Shortlist update failure", err);
+      }
+    }
+
+    function switchCatalogMode(mode) {
+      state.mode = mode;
+      document.getElementById('tabAll').className = mode === 'all' ? 'btn btn-outline' : 'btn btn-ghost';
+      document.getElementById('tabSaved').className = mode === 'saved' ? 'btn btn-outline' : 'btn btn-ghost';
+      renderProfileList();
+    }
+
+    function openBiodataModal(profileId) {
+      const p = state.profiles.find(item => item.id === profileId);
+      if (!p) return;
+
+      document.getElementById('bioName').innerText = p.fullName;
+      document.getElementById('bioBasic').innerText = `${p.age} Years • ${p.height || 'Height Unspecified'}`;
+      document.getElementById('bioLocation').innerText = `${p.city}, ${p.state}, ${p.country}`;
+      document.getElementById('bioPhoto').src = p.photoUrl;
+      document.getElementById('bioEdu').innerText = p.education;
+      document.getElementById('bioProf').innerText = p.profession;
+      document.getElementById('bioIncome').innerText = p.annualIncome || "Undisclosed";
+      document.getElementById('bioMarital').innerText = p.maritalStatus;
+      document.getElementById('bioFamily').innerText = p.familyDetails || "Available upon request.";
+      document.getElementById('bioPreferences').innerText = p.partnerPreferences || "Open to culturally compatible matches.";
+
+      document.getElementById('biodataModal').classList.add('active');
+    }
+
+    function exportBiodataPdf() {
+      const element = document.getElementById('biodataPrintSurface');
+      const candidateName = document.getElementById('bioName').innerText.replace(/\s+/g, '_');
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `Biodata_${candidateName}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
+
+    async function handleRegistrationSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('regSubmitBtn');
+      btn.innerText = "Submitting Details...";
+      btn.disabled = true;
+
+      const profilePayload = {
+        fullName: document.getElementById('regFullName').value,
+        gender: document.getElementById('regGender').value,
+        dob: document.getElementById('regDob').value,
+        age: parseInt(document.getElementById('regAge').value),
+        height: document.getElementById('regHeight').value,
+        maritalStatus: document.getElementById('regMarital').value,
+        education: document.getElementById('regEducation').value,
+        profession: document.getElementById('regProfession').value,
+        city: document.getElementById('regCity').value,
+        state: document.getElementById('regState').value,
+        country: document.getElementById('regCountry').value,
+        photoUrl: document.getElementById('regPhoto').value,
+        email: document.getElementById('regEmail').value,
+        phone: document.getElementById('regPhone').value,
+        familyDetails: document.getElementById('regFamily').value,
+        partnerPreferences: document.getElementById('regPreferences').value
+      };
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'registerProfile', data: profilePayload })
+        });
+        const out = await res.json();
+        if (out.success) {
+          alert("Profile submission received and added to the database.");
+          closeModal('registrationModal');
+          document.getElementById('regForm').reset();
+          fetchActiveProfiles();
+        }
+      } catch (err) {
+        alert("Transmission failure.");
+      } finally {
+        btn.innerText = "Complete Profile Registration";
+        btn.disabled = false;
+      }
+    }
+
+    function openRegistrationModal() { document.getElementById('registrationModal').classList.add('active'); }
+    function openLoginModal() { document.getElementById('authModal').classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+  </script>
+</body>
+</html>
