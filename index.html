@@ -116,14 +116,12 @@
     .profile-meta-line { font-size: 0.85rem; color: var(--muted); }
     .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: var(--dark); width: fit-content; }
 
-    /* Standard Centered Modals (Registration, Biodata, Payment) */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
       z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem;
     }
     .modal-overlay.active { display: flex; }
-    
     .modal-card {
       background: var(--white); border-radius: var(--radius-md);
       max-width: 600px; width: 100%; max-height: 90vh;
@@ -131,7 +129,6 @@
     }
     .modal-close-btn { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; font-size: 1.25rem; font-weight: 700; cursor: pointer; color: var(--muted); }
 
-    /* TOP-ALIGNED HEADER LOGIN POPUP */
     #authModal.modal-overlay {
       align-items: flex-start;
       justify-content: center;
@@ -139,20 +136,14 @@
     }
 
     #authModal .modal-card {
-      animation: slideDownHeader 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: slideDownHeader 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       border: 2px solid var(--primary);
       box-shadow: 0 12px 36px rgba(255, 126, 126, 0.25);
     }
 
     @keyframes slideDownHeader {
-      from {
-        opacity: 0;
-        transform: translateY(-24px) scale(0.97);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      from { opacity: 0; transform: translateY(-20px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .biodata-sheet { border: 2px solid var(--secondary); border-radius: var(--radius-md); padding: 1.75rem; background: #FFF; margin-bottom: 1.25rem; }
@@ -190,7 +181,6 @@
 </head>
 <body>
 
-  <!-- Top Action Controls -->
   <div class="top-action-bar">
     <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
     <div id="authActions">
@@ -280,7 +270,7 @@
     </div>
   </main>
 
-  <!-- Biodata Modal -->
+  <!-- Biodata Quick Preview Modal -->
   <div class="modal-overlay" id="biodataModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('biodataModal')">&times;</button>
@@ -503,7 +493,6 @@
         <div class="auth-tab" id="tabRegister" onclick="switchAuthView('register')">Sign Up</div>
       </div>
 
-      <!-- Sign In View -->
       <div id="viewLogin">
         <form onsubmit="handleUserLoginSubmit(event)">
           <div class="form-group">
@@ -523,7 +512,6 @@
         </form>
       </div>
 
-      <!-- Sign Up View -->
       <div id="viewRegister" style="display: none;">
         <form onsubmit="handleUserRegisterSubmit(event)">
           <div class="form-group">
@@ -544,7 +532,6 @@
         </form>
       </div>
 
-      <!-- Forgot Password View (OTP Verification) -->
       <div id="viewForgot" style="display: none;">
         <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Reset Password</h3>
         <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Enter your email to receive a 4-digit code.</p>
@@ -1046,12 +1033,18 @@
     }
 
     function openPaymentModal(profileId, amount, upiId) {
+      const finalUpiId = upiId || "sinha361@icici";
+      const finalAmount = amount || "1999";
+      const payeeName = "Chitransh Mahasabha";
+      const note = "Registration " + profileId;
+
       document.getElementById('payProfileId').innerText = profileId;
-      const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Chitransh Mahasabha')}&am=1999&cu=INR&tn=${encodeURIComponent('Registration ' + profileId)}`;
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUrl)}`;
-      
+
+      const upiIntentUri = `upi://pay?pa=${finalUpiId}&pn=${encodeURIComponent(payeeName)}&am=${finalAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+      const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiIntentUri)}&size=220`;
+
       document.getElementById('upiQrCodeImg').src = qrUrl;
-      document.getElementById('upiIntentBtn').href = upiUrl;
+      document.getElementById('upiIntentBtn').href = upiIntentUri;
       document.getElementById('paymentModal').classList.add('active');
     }
 
