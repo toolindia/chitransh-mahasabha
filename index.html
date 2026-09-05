@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elite Matrimony - Curated Life Partner Network</title>
+  <title>Chitransh Mahasabha - Matrimonial Network</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- PDF Engine & Google Identity Services -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
@@ -31,392 +30,115 @@
       --shadow-lg: 0 16px 36px rgba(255, 162, 89, 0.16);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--dark);
-      line-height: 1.5;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; }
 
     .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
       padding: 0.85rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
     }
 
-    .brand {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--primary);
-      text-decoration: none;
-      letter-spacing: -0.5px;
-    }
+    .brand { font-size: 1.25rem; font-weight: 700; color: var(--primary); text-decoration: none; }
+    .brand span { color: var(--secondary); }
 
-    .brand span {
-      color: var(--secondary);
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 0.75rem;
-      align-items: center;
-    }
+    .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
 
     .btn {
-      padding: 0.55rem 1.15rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      padding: 0.55rem 1.15rem; font-size: 0.85rem; font-weight: 600;
+      border-radius: var(--radius-sm); cursor: pointer; border: none;
+      transition: all 0.2s ease; text-decoration: none;
+      display: inline-flex; align-items: center; justify-content: center;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: var(--white);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--primary);
-      border: 1px solid var(--primary);
-    }
-
-    .btn-outline:hover {
-      background: var(--surface-light);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--dark);
-    }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); box-shadow: var(--shadow-sm); }
+    .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+    .btn-outline:hover { background: var(--surface-light); }
+    .btn-ghost { background: transparent; color: var(--dark); }
 
     .user-pill {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--surface-light);
-      padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--surface-light); padding: 0.25rem 0.75rem 0.25rem 0.25rem;
       border-radius: 20px;
     }
 
-    .user-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
+    .user-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
 
-    /* Filter Engine */
-    .filter-wrapper {
-      max-width: 1200px;
-      margin: 1.5rem auto 1rem auto;
-      padding: 0 1rem;
-    }
-
-    .filter-container {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1.25rem;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .filter-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
-      gap: 0.75rem;
-    }
-
-    .filter-control {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-
-    .filter-control label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
+    .filter-wrapper { max-width: 1200px; margin: 1.5rem auto 1rem auto; padding: 0 1rem; }
+    .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm); }
+    .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 0.75rem; }
+    .filter-control { display: flex; flex-direction: column; gap: 0.35rem; }
+    .filter-control label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted); }
     .filter-control select, .filter-control input {
-      padding: 0.55rem 0.65rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background-color: var(--bg);
-      font-size: 0.85rem;
-      color: var(--dark);
-      outline: none;
+      padding: 0.55rem 0.65rem; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background-color: var(--bg);
+      font-size: 0.85rem; color: var(--dark); outline: none;
     }
 
-    .filter-control select:focus, .filter-control input:focus {
-      border-color: var(--primary);
-    }
-
-    /* Catalog View */
-    .catalog-wrapper {
-      max-width: 1200px;
-      margin: 1rem auto 3rem auto;
-      padding: 0 1rem;
-    }
-
-    .catalog-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.25rem;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .profile-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 1.25rem;
-    }
+    .catalog-wrapper { max-width: 1200px; margin: 1rem auto 3rem auto; padding: 0 1rem; }
+    .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
+    .profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.25rem; }
 
     .profile-card {
-      background: var(--white);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: var(--white); border-radius: var(--radius-md);
+      border: 1px solid var(--border); overflow: hidden;
+      box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
+      position: relative; transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .profile-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .profile-img-container {
-      position: relative;
-      width: 100%;
-      height: 250px;
-      background-color: var(--surface-light);
-    }
-
-    .profile-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .profile-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .profile-img-container { position: relative; width: 100%; height: 250px; background-color: var(--surface-light); }
+    .profile-img { width: 100%; height: 100%; object-fit: cover; }
 
     .shortlist-tag-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 0.3rem 0.65rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--dark);
-      transition: all 0.2s ease;
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(255, 255, 255, 0.95); border: 1px solid var(--border);
+      border-radius: 20px; padding: 0.3rem 0.65rem; font-size: 0.75rem;
+      font-weight: 700; cursor: pointer; color: var(--dark);
     }
+    .shortlist-tag-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
-    .shortlist-tag-btn.active {
-      background: var(--primary);
-      color: var(--white);
-      border-color: var(--primary);
-    }
+    .profile-body { padding: 1rem; display: flex; flex-direction: column; flex-grow: 1; gap: 0.35rem; }
+    .profile-name-row { display: flex; justify-content: space-between; align-items: baseline; }
+    .profile-name { font-size: 1.1rem; font-weight: 700; color: var(--dark); }
+    .profile-age { font-size: 0.85rem; color: var(--secondary); font-weight: 600; }
+    .profile-meta-line { font-size: 0.85rem; color: var(--muted); }
+    .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: var(--dark); width: fit-content; }
 
-    .profile-body {
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      gap: 0.35rem;
-    }
-
-    .profile-name-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .profile-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--dark);
-    }
-
-    .profile-age {
-      font-size: 0.85rem;
-      color: var(--secondary);
-      font-weight: 600;
-    }
-
-    .profile-meta-line {
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    .profile-badge {
-      background: var(--surface-light);
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--dark);
-      display: inline-block;
-      margin-top: 0.35rem;
-      width: fit-content;
-    }
-
-    /* Modals */
     .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
+      z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem;
     }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
+    .modal-overlay.active { display: flex; }
     .modal-card {
-      background: var(--white);
-      border-radius: var(--radius-md);
-      max-width: 600px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
-      box-shadow: var(--shadow-lg);
-      padding: 1.75rem;
+      background: var(--white); border-radius: var(--radius-md);
+      max-width: 600px; width: 100%; max-height: 90vh;
+      overflow-y: auto; position: relative; box-shadow: var(--shadow-lg); padding: 1.75rem;
     }
+    .modal-close-btn { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; font-size: 1.25rem; font-weight: 700; cursor: pointer; color: var(--muted); }
 
-    .modal-close-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: transparent;
-      border: none;
-      font-size: 1.25rem;
-      font-weight: 700;
-      cursor: pointer;
-      color: var(--muted);
-    }
+    .biodata-sheet { border: 2px solid var(--secondary); border-radius: var(--radius-md); padding: 1.75rem; background: #FFF; margin-bottom: 1.25rem; }
+    .biodata-header { display: flex; align-items: center; gap: 1.25rem; border-bottom: 2px solid var(--surface-light); padding-bottom: 1rem; margin-bottom: 1rem; }
+    .biodata-photo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+    .biodata-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--primary); margin: 0.85rem 0 0.35rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
+    .biodata-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .biodata-table td { padding: 0.35rem 0; }
+    .biodata-table td:first-child { color: var(--muted); width: 40%; font-weight: 600; }
 
-    /* Biodata Sheet View */
-    .biodata-sheet {
-      border: 2px solid var(--secondary);
-      border-radius: var(--radius-md);
-      padding: 1.75rem;
-      background: #FFFFFF;
-      margin-bottom: 1.25rem;
-    }
-
-    .biodata-header {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      border-bottom: 2px solid var(--surface-light);
-      padding-bottom: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .biodata-photo {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--primary);
-    }
-
-    .biodata-title {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-weight: 700;
-      color: var(--primary);
-      margin: 0.85rem 0 0.35rem 0;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 0.2rem;
-    }
-
-    .biodata-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
-
-    .biodata-table td {
-      padding: 0.35rem 0;
-    }
-
-    .biodata-table td:first-child {
-      color: var(--muted);
-      width: 40%;
-      font-weight: 600;
-    }
-
-    /* Forms */
-    .form-group {
-      margin-bottom: 0.85rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .form-group label {
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .form-group input, .form-group select, .form-group textarea {
-      padding: 0.55rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      outline: none;
-    }
-
-    .form-row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-    }
+    .form-group { margin-bottom: 0.85rem; display: flex; flex-direction: column; gap: 0.25rem; }
+    .form-group label { font-size: 0.75rem; font-weight: 600; }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   </style>
 </head>
 <body>
 
   <nav class="navbar">
-    <a href="#" class="brand">Curated<span>Matrimony</span></a>
+    <a href="#" class="brand">Chitransh<span>Mahasabha</span></a>
     <div class="nav-actions">
       <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
       <div id="authActions">
@@ -425,7 +147,7 @@
     </div>
   </nav>
 
-  <!-- Complete Filter Options -->
+  <!-- Complete Filter Engine -->
   <div class="filter-wrapper">
     <div class="filter-container">
       <div class="filter-grid">
@@ -439,7 +161,7 @@
         </div>
 
         <div class="filter-control">
-          <label>Age</label>
+          <label>Age Bracket</label>
           <select id="filterAge" onchange="applyFilters()">
             <option value="">Any Age</option>
             <option value="21-25">21 - 25</option>
@@ -461,7 +183,7 @@
 
         <div class="filter-control">
           <label>City / Location</label>
-          <input type="text" id="filterLocation" placeholder="City or State" oninput="applyFilters()">
+          <input type="text" id="filterLocation" placeholder="Search City / State" oninput="applyFilters()">
         </div>
 
         <div class="filter-control">
@@ -475,7 +197,7 @@
         </div>
 
         <div class="filter-control">
-          <label>Height</label>
+          <label>Min Height</label>
           <select id="filterHeight" onchange="applyFilters()">
             <option value="">Any Height</option>
             <option value="5.0">Above 5'0"</option>
@@ -491,7 +213,7 @@
   <main class="catalog-wrapper">
     <div class="catalog-header">
       <div>
-        <h2 style="font-size: 1.25rem;">Candidate Directory</h2>
+        <h2 style="font-size: 1.25rem;">Candidate Registry</h2>
         <p style="font-size: 0.8rem; color: var(--muted);" id="profileCounter">Connecting to database...</p>
       </div>
       <div style="display: flex; gap: 0.5rem;">
@@ -501,19 +223,22 @@
     </div>
 
     <div class="profile-grid" id="profilesContainer">
-      <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted);">
-        Loading active database records...
-      </div>
+      <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted);">Loading database...</div>
     </div>
   </main>
 
-  <!-- Biodata View / Download Modal -->
+  <!-- Biodata Modal -->
   <div class="modal-overlay" id="biodataModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('biodataModal')">&times;</button>
       <div id="biodataPrintSurface" class="biodata-sheet">
+        <div style="text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+          <h1 style="font-size: 1.35rem; color: var(--primary); font-weight: 700;">CHITRANSH MAHASABHA</h1>
+          <p style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Official Matrimonial Biodata</p>
+        </div>
+
         <div class="biodata-header">
-          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate Picture">
+          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate">
           <div>
             <h2 id="bioName" style="font-size: 1.25rem;">Candidate Name</h2>
             <p id="bioBasic" style="font-size: 0.85rem; color: var(--secondary); font-weight: 600;">Age - Height</p>
@@ -534,6 +259,10 @@
 
         <div class="biodata-title">Partner Preferences</div>
         <p id="bioPreferences" style="font-size: 0.85rem; line-height: 1.4;">-</p>
+
+        <div style="margin-top: 1rem; background: var(--surface-light); padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; text-align: center;">
+          Contact telephone numbers and exact residential addresses are held centrally. Contact Chitransh Mahasabha Desk to connect.
+        </div>
       </div>
 
       <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
@@ -543,17 +272,17 @@
     </div>
   </div>
 
-  <!-- Profile Registration Form Modal -->
+  <!-- Registration Form Modal -->
   <div class="modal-overlay" id="registrationModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
       <h2 style="margin-bottom: 0.25rem;">Profile Registration</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Join the matrimonial registry. Personal contact details remain confidential.</p>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Exact address and contact details remain strictly confidential and visible to administrators only.</p>
 
       <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
         <div class="form-row-2">
           <div class="form-group">
-            <label>Full Name *</label>
+            <label>Candidate Name *</label>
             <input type="text" id="regFullName" required placeholder="Full Name">
           </div>
           <div class="form-group">
@@ -595,42 +324,50 @@
         <div class="form-row-2">
           <div class="form-group">
             <label>Highest Education *</label>
-            <input type="text" id="regEducation" required placeholder="e.g. Master of Science">
+            <input type="text" id="regEducation" required placeholder="Degree / Qualification">
           </div>
           <div class="form-group">
             <label>Profession *</label>
-            <input type="text" id="regProfession" required placeholder="e.g. Software Consultant">
+            <input type="text" id="regProfession" required placeholder="Designation / Occupation">
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>City *</label>
+            <label>City (Public) *</label>
             <input type="text" id="regCity" required placeholder="City">
           </div>
           <div class="form-group">
-            <label>State *</label>
+            <label>State (Public) *</label>
             <input type="text" id="regState" required placeholder="State">
           </div>
         </div>
 
         <div class="form-group">
-          <label>Country *</label>
+          <label>Country (Public) *</label>
           <input type="text" id="regCountry" required value="India">
         </div>
 
         <div class="form-group">
-          <label>Profile Image URL</label>
-          <input type="url" id="regPhoto" placeholder="https://images.unsplash.com/photo-...">
+          <label>Exact Residential Address (Admin Confidential - Never Shown to Public) *</label>
+          <input type="text" id="regExactAddress" required placeholder="House/Flat No, Landmark, Street, Pincode">
+        </div>
+
+        <div class="form-group">
+          <label>Upload Profile Photo *</label>
+          <input type="file" id="regPhotoFile" accept="image/*" required onchange="handleImageSelection(event)">
+          <div id="imagePreviewBox" style="display: none; margin-top: 0.5rem; text-align: center;">
+            <img id="imagePreviewElement" src="" alt="Selected Preview" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
+          </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Contact Email (Private) *</label>
-            <input type="email" id="regEmail" required placeholder="contact@domain.com">
+            <label>Email Address (Admin Confidential) *</label>
+            <input type="email" id="regEmail" required placeholder="name@domain.com">
           </div>
           <div class="form-group">
-            <label>Contact Phone (Private) *</label>
+            <label>Phone / WhatsApp (Admin Confidential) *</label>
             <input type="tel" id="regPhone" required placeholder="+91 00000 00000">
           </div>
         </div>
@@ -642,7 +379,7 @@
 
         <div class="form-group">
           <label>Partner Preferences</label>
-          <textarea id="regPreferences" rows="2" placeholder="Preferences regarding education, profession, location, and outlook"></textarea>
+          <textarea id="regPreferences" rows="2" placeholder="Expectations regarding education, profession, location, and outlook"></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="regSubmitBtn">
@@ -657,50 +394,39 @@
     <div class="modal-card" style="max-width: 380px; text-align: center;">
       <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
       <h2 style="margin-bottom: 0.25rem;">Account Access</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem;">
-        Authenticate with Google to manage your candidate shortlists.
-      </p>
-
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem;">Authenticate with Google to manage your candidate shortlists.</p>
       <div id="googleButtonDiv" style="display: flex; justify-content: center;"></div>
     </div>
   </div>
 
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
-    const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // Replace with your Google Cloud Web Client ID
+    const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // Replace with your real Google Cloud OAuth Client ID
 
-    let state = {
-      profiles: [],
-      filtered: [],
-      savedIds: new Set(),
-      user: null,
-      mode: 'all'
-    };
+    let state = { profiles: [], filtered: [], savedIds: new Set(), user: null, mode: 'all' };
+    let selectedBase64Image = "";
 
     window.addEventListener('DOMContentLoaded', () => {
       checkUserSession();
       fetchActiveProfiles();
     });
 
-    window.addEventListener('load', () => {
-      if (window.google && GOOGLE_CLIENT_ID !== "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com") {
-        google.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: handleGoogleAuthResponse
-        });
-        google.accounts.id.renderButton(
-          document.getElementById("googleButtonDiv"),
-          { theme: "outline", size: "large", width: 280, text: "continue_with" }
-        );
-      }
-    });
-
     function checkUserSession() {
-      const stored = localStorage.getItem('matrimony_client_session');
+      const stored = localStorage.getItem('cm_session');
       if (stored) {
         state.user = JSON.parse(stored);
         renderNavUser();
         fetchUserShortlists();
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById('authModal').classList.add('active');
+      if (window.google && GOOGLE_CLIENT_ID && !GOOGLE_CLIENT_ID.includes("YOUR_GOOGLE_CLIENT_ID")) {
+        google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleAuthResponse });
+        google.accounts.id.renderButton(document.getElementById("googleButtonDiv"), { theme: "outline", size: "large", width: 280, text: "continue_with" });
+      } else {
+        document.getElementById("googleButtonDiv").innerHTML = `<p style="font-size: 0.8rem; color: var(--muted);">Add your Google Client ID to activate authentication.</p>`;
       }
     }
 
@@ -715,15 +441,13 @@
       try {
         const res = await fetch(API_ENDPOINT, {
           method: 'POST',
-          body: JSON.stringify({
-            action: 'googleAuth',
-            data: { email: payload.email, name: payload.name, picture: payload.picture }
-          })
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'googleAuth', data: { email: payload.email, name: payload.name, picture: payload.picture } })
         });
         const out = await res.json();
         if (out.success) {
           state.user = out.user;
-          localStorage.setItem('matrimony_client_session', JSON.stringify(out.user));
+          localStorage.setItem('cm_session', JSON.stringify(out.user));
           renderNavUser();
           closeModal('authModal');
           fetchUserShortlists();
@@ -738,7 +462,7 @@
       if (state.user) {
         container.innerHTML = `
           <div class="user-pill">
-            <img src="${state.user.pictureUrl || 'https://via.placeholder.com/28'}" class="user-avatar" alt="Avatar">
+            <img src="${state.user.pictureUrl || 'https://via.placeholder.com/28'}" class="user-avatar" alt="User">
             <span style="font-size: 0.8rem; font-weight: 600;">${state.user.fullName.split(' ')[0]}</span>
           </div>
           <button class="btn btn-ghost" onclick="signOut()">Sign Out</button>
@@ -749,7 +473,7 @@
     }
 
     function signOut() {
-      localStorage.removeItem('matrimony_client_session');
+      localStorage.removeItem('cm_session');
       state.user = null;
       state.savedIds.clear();
       renderNavUser();
@@ -765,8 +489,7 @@
           applyFilters();
         }
       } catch (err) {
-        document.getElementById('profilesContainer').innerHTML = 
-          `<div style="grid-column: 1/-1; text-align: center; color: var(--primary);">Database connection failure.</div>`;
+        document.getElementById('profilesContainer').innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--primary);">Database synchronization error.</div>`;
       }
     }
 
@@ -781,8 +504,40 @@
           renderProfileList();
         }
       } catch (err) {
-        console.error("Shortlist fetch failed", err);
+        console.error("Shortlist error", err);
       }
+    }
+
+    // Client-side image compression: keeps payload under 200KB to ensure fast network transfers
+    function handleImageSelection(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        selectedBase64Image = "";
+        document.getElementById('imagePreviewBox').style.display = 'none';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const maxDim = 800;
+          let w = img.width, h = img.height;
+          if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
+          else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+
+          selectedBase64Image = canvas.toDataURL('image/jpeg', 0.8);
+          document.getElementById('imagePreviewElement').src = selectedBase64Image;
+          document.getElementById('imagePreviewBox').style.display = 'block';
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
 
     function applyFilters() {
@@ -808,33 +563,24 @@
         if (edu && !p.education.toLowerCase().includes(edu)) return false;
         if (prof && !p.profession.toLowerCase().includes(prof)) return false;
         if (height) {
-          const parsedHeight = parseFloat(p.height.replace(/[^0-9.]/g, ''));
-          if (!isNaN(parsedHeight) && parsedHeight < parseFloat(height)) return false;
+          const parsed = parseFloat(p.height.replace(/[^0-9.]/g, ''));
+          if (!isNaN(parsed) && parsed < parseFloat(height)) return false;
         }
         return true;
       });
-
       renderProfileList();
     }
 
     function renderProfileList() {
       const container = document.getElementById('profilesContainer');
       let dataset = state.filtered;
+      if (state.mode === 'saved') dataset = dataset.filter(p => state.savedIds.has(p.id));
 
-      if (state.mode === 'saved') {
-        dataset = dataset.filter(p => state.savedIds.has(p.id));
-      }
-
-      document.getElementById('profileCounter').innerText = `Displaying ${dataset.length} candidate files`;
+      document.getElementById('profileCounter').innerText = `Displaying ${dataset.length} candidates`;
       document.getElementById('savedCounter').innerText = state.savedIds.size;
 
       if (dataset.length === 0) {
-        container.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--muted);">
-            <h3>No profiles found</h3>
-            <p style="font-size: 0.85rem; margin-top: 0.25rem;">Adjust search filters to view more results.</p>
-          </div>
-        `;
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--muted);"><h3>No candidate profiles found</h3><p style="font-size: 0.85rem;">Adjust search filters to view more profiles.</p></div>`;
         return;
       }
 
@@ -884,10 +630,8 @@
       try {
         await fetch(API_ENDPOINT, {
           method: 'POST',
-          body: JSON.stringify({
-            action: 'toggleShortlist',
-            data: { userEmail: state.user.email, profileId: profileId }
-          })
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'toggleShortlist', data: { userEmail: state.user.email, profileId: profileId } })
         });
       } catch (err) {
         console.error("Shortlist update failed", err);
@@ -913,7 +657,7 @@
       document.getElementById('bioProf').innerText = p.profession;
       document.getElementById('bioIncome').innerText = p.annualIncome || "Undisclosed";
       document.getElementById('bioMarital').innerText = p.maritalStatus;
-      document.getElementById('bioFamily').innerText = p.familyDetails || "Available upon personal family request.";
+      document.getElementById('bioFamily').innerText = p.familyDetails || "Available upon personal request.";
       document.getElementById('bioPreferences').innerText = p.partnerPreferences || "Open to culturally compatible matches.";
 
       document.getElementById('biodataModal').classList.add('active');
@@ -934,6 +678,11 @@
 
     async function handleRegistrationSubmit(e) {
       e.preventDefault();
+      if (!selectedBase64Image) {
+        alert("Please upload a profile photograph.");
+        return;
+      }
+
       const btn = document.getElementById('regSubmitBtn');
       btn.innerText = "Transmitting Details...";
       btn.disabled = true;
@@ -950,7 +699,8 @@
         city: document.getElementById('regCity').value,
         state: document.getElementById('regState').value,
         country: document.getElementById('regCountry').value,
-        photoUrl: document.getElementById('regPhoto').value,
+        exactAddress: document.getElementById('regExactAddress').value,
+        imageBase64: selectedBase64Image,
         email: document.getElementById('regEmail').value,
         phone: document.getElementById('regPhone').value,
         familyDetails: document.getElementById('regFamily').value,
@@ -960,6 +710,7 @@
       try {
         const res = await fetch(API_ENDPOINT, {
           method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'registerProfile', data: profilePayload })
         });
         const out = await res.json();
@@ -967,10 +718,14 @@
           alert("Profile submission received and recorded into the database.");
           closeModal('registrationModal');
           document.getElementById('regForm').reset();
+          document.getElementById('imagePreviewBox').style.display = 'none';
+          selectedBase64Image = "";
           fetchActiveProfiles();
+        } else {
+          alert("Submission error: " + out.error);
         }
       } catch (err) {
-        alert("Transmission failure.");
+        alert("Transmission failure. Check connection.");
       } finally {
         btn.innerText = "Complete Profile Registration";
         btn.disabled = false;
@@ -978,7 +733,6 @@
     }
 
     function openRegistrationModal() { document.getElementById('registrationModal').classList.add('active'); }
-    function openLoginModal() { document.getElementById('authModal').classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
   </script>
 </body>
