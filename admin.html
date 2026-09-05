@@ -51,15 +51,25 @@
 
     .container { max-width: 1300px; margin: 1.5rem auto; padding: 0 1rem; }
 
+    /* Top-Aligned Header Auth Overlay */
     #authOverlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.85); backdrop-filter: blur(5px);
-      z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem;
+      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
+      z-index: 9999; display: flex; align-items: flex-start; justify-content: center;
+      padding-top: 1.5rem;
     }
 
     .auth-box {
-      background: var(--white); border-radius: var(--radius-md); padding: 2rem;
-      max-width: 360px; width: 100%; text-align: center; box-shadow: var(--shadow-md);
+      background: var(--white); border-radius: var(--radius-md); padding: 1.75rem;
+      max-width: 380px; width: 100%; text-align: center;
+      border: 2px solid var(--primary);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      animation: slideDownTop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideDownTop {
+      from { opacity: 0; transform: translateY(-25px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .btn {
@@ -122,11 +132,12 @@
 </head>
 <body>
 
+  <!-- Top-Header PIN Access Gate -->
   <div id="authOverlay">
     <div class="auth-box">
-      <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Admin Desk</h2>
-      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem;">Enter administrator PIN to unlock controls.</p>
-      <input type="password" id="adminPinInput" placeholder="Enter PIN" style="width: 100%; padding: 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; text-align: center; font-size: 1rem;">
+      <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.25rem;">Admin Desk</h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Enter administrator PIN to unlock controls.</p>
+      <input type="password" id="adminPinInput" placeholder="Enter PIN" onkeydown="if(event.key==='Enter') unlockAdminPortal()" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 0.85rem; text-align: center; font-size: 0.95rem; outline: none;">
       <button class="btn btn-primary" style="width: 100%;" onclick="unlockAdminPortal()">Unlock Dashboard</button>
     </div>
   </div>
