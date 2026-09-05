@@ -44,17 +44,17 @@
 
     .brand { font-size: 1.25rem; font-weight: 700; color: var(--primary); text-decoration: none; }
     .brand span { color: var(--secondary); }
-
     .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
 
     .btn {
       padding: 0.55rem 1.15rem; font-size: 0.85rem; font-weight: 600;
       border-radius: var(--radius-sm); cursor: pointer; border: none;
       transition: all 0.2s ease; text-decoration: none;
-      display: inline-flex; align-items: center; justify-content: center;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
 
     .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); box-shadow: var(--shadow-sm); }
+    .btn-primary:hover { opacity: 0.95; }
     .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
     .btn-outline:hover { background: var(--surface-light); }
     .btn-ghost { background: transparent; color: var(--dark); }
@@ -64,8 +64,23 @@
       background: var(--surface-light); padding: 0.25rem 0.75rem 0.25rem 0.25rem;
       border-radius: 20px;
     }
-
     .user-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+
+    /* Animated Loader */
+    .loader-container {
+      grid-column: 1 / -1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 4rem 1rem; gap: 1rem; color: var(--muted);
+    }
+    .spinner {
+      width: 44px; height: 44px;
+      border: 4px solid var(--surface-light);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .filter-wrapper { max-width: 1200px; margin: 1.5rem auto 1rem auto; padding: 0 1rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm); }
@@ -88,7 +103,6 @@
       box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
       position: relative; transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
     .profile-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
     .profile-img-container { position: relative; width: 100%; height: 250px; background-color: var(--surface-light); }
     .profile-img { width: 100%; height: 100%; object-fit: cover; }
@@ -133,6 +147,16 @@
     .form-group label { font-size: 0.75rem; font-weight: 600; }
     .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; }
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+    /* Payment Stage Box */
+    .upi-box {
+      border: 2px dashed var(--secondary);
+      background: var(--surface-light);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      text-align: center;
+      margin: 1rem 0;
+    }
   </style>
 </head>
 <body>
@@ -147,7 +171,6 @@
     </div>
   </nav>
 
-  <!-- Complete Filter Engine -->
   <div class="filter-wrapper">
     <div class="filter-container">
       <div class="filter-grid">
@@ -188,7 +211,7 @@
 
         <div class="filter-control">
           <label>Education</label>
-          <input type="text" id="filterEducation" placeholder="Degree / Qualification" oninput="applyFilters()">
+          <input type="text" id="filterEducation" placeholder="Degree / Field" oninput="applyFilters()">
         </div>
 
         <div class="filter-control">
@@ -223,7 +246,10 @@
     </div>
 
     <div class="profile-grid" id="profilesContainer">
-      <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted);">Loading database...</div>
+      <div class="loader-container">
+        <div class="spinner"></div>
+        <p>Retrieving verified candidate records...</p>
+      </div>
     </div>
   </main>
 
@@ -238,7 +264,7 @@
         </div>
 
         <div class="biodata-header">
-          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate">
+          <img id="bioPhoto" class="biodata-photo" crossorigin="anonymous" src="" alt="Candidate">
           <div>
             <h2 id="bioName" style="font-size: 1.25rem;">Candidate Name</h2>
             <p id="bioBasic" style="font-size: 0.85rem; color: var(--secondary); font-weight: 600;">Age - Height</p>
@@ -261,7 +287,7 @@
         <p id="bioPreferences" style="font-size: 0.85rem; line-height: 1.4;">-</p>
 
         <div style="margin-top: 1rem; background: var(--surface-light); padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; text-align: center;">
-          Contact telephone numbers and exact residential addresses are held centrally. Contact Chitransh Mahasabha Desk to connect.
+          Contact telephone numbers and exact residences are held centrally. Contact Chitransh Mahasabha Desk to connect.
         </div>
       </div>
 
@@ -277,7 +303,7 @@
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
       <h2 style="margin-bottom: 0.25rem;">Profile Registration</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Exact address and contact details remain strictly confidential and visible to administrators only.</p>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Step 1: Submit candidate particulars. Profiles go live following onboarding verification.</p>
 
       <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
         <div class="form-row-2">
@@ -334,6 +360,17 @@
 
         <div class="form-row-2">
           <div class="form-group">
+            <label>Annual Income *</label>
+            <input type="text" id="regIncome" required placeholder="e.g. 8 Lakhs PA">
+          </div>
+          <div class="form-group">
+            <label>Registration Fee (INR) *</label>
+            <input type="number" id="regFeeAmount" required value="500" placeholder="500">
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
             <label>City (Public) *</label>
             <input type="text" id="regCity" required placeholder="City">
           </div>
@@ -349,7 +386,7 @@
         </div>
 
         <div class="form-group">
-          <label>Exact Residential Address (Admin Confidential - Never Shown to Public) *</label>
+          <label>Exact Residential Address (Admin Confidential) *</label>
           <input type="text" id="regExactAddress" required placeholder="House/Flat No, Landmark, Street, Pincode">
         </div>
 
@@ -383,9 +420,47 @@
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="regSubmitBtn">
-          Complete Profile Registration
+          Proceed to Onboarding Payment
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- Dynamic UPI Payment Checkout Modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal-card" style="max-width: 440px; text-align: center;">
+      <button class="modal-close-btn" onclick="closeModal('paymentModal')">&times;</button>
+      <h2 style="font-size: 1.3rem; color: var(--primary);">Complete Registration</h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Profile ID: <strong id="payProfileId">-</strong></p>
+
+      <div class="upi-box">
+        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Registration Fee</p>
+        <h1 style="font-size: 2rem; color: var(--dark); margin: 0.25rem 0;">₹<span id="payAmountDisplay">500</span></h1>
+        
+        <!-- Dynamic UPI QR Code -->
+        <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+          <img id="upiQrCodeImg" src="" alt="Scan UPI QR" style="width: 100%; height: 100%;">
+        </div>
+
+        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">UPI ID: <code>sinha361@icici</code></p>
+        
+        <!-- Direct Mobile Intent Link -->
+        <a id="upiIntentBtn" href="#" class="btn btn-primary" style="width: 100%; margin-top: 0.75rem;">
+          Pay with Any UPI App
+        </a>
+      </div>
+
+      <div style="text-align: left; margin-top: 1rem;">
+        <label style="font-size: 0.75rem; font-weight: 700; color: var(--dark);">Enter UPI Reference / UTR Number *</label>
+        <input type="text" id="payUtrNumber" placeholder="12-digit UPI Ref / UTR No" class="input-field" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); margin: 0.35rem 0 1rem 0;">
+
+        <button class="btn btn-primary" style="width: 100%;" id="submitUtrBtn" onclick="submitUtrVerification()">
+          Confirm Payment & Submit
+        </button>
+        <p style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; text-align: center;">
+          Your profile will be reviewed and activated by the administrative team upon UTR verification.
+        </p>
+      </div>
     </div>
   </div>
 
@@ -394,17 +469,18 @@
     <div class="modal-card" style="max-width: 380px; text-align: center;">
       <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
       <h2 style="margin-bottom: 0.25rem;">Account Access</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem;">Authenticate with Google to manage your candidate shortlists.</p>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem;">Authenticate with Google to manage candidate shortlists.</p>
       <div id="googleButtonDiv" style="display: flex; justify-content: center;"></div>
     </div>
   </div>
 
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
-    const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"; // Replace with your real Google Cloud OAuth Client ID
+    const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
 
     let state = { profiles: [], filtered: [], savedIds: new Set(), user: null, mode: 'all' };
     let selectedBase64Image = "";
+    let activeRegistrationPayload = null;
 
     window.addEventListener('DOMContentLoaded', () => {
       checkUserSession();
@@ -426,7 +502,7 @@
         google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleAuthResponse });
         google.accounts.id.renderButton(document.getElementById("googleButtonDiv"), { theme: "outline", size: "large", width: 280, text: "continue_with" });
       } else {
-        document.getElementById("googleButtonDiv").innerHTML = `<p style="font-size: 0.8rem; color: var(--muted);">Add your Google Client ID to activate authentication.</p>`;
+        document.getElementById("googleButtonDiv").innerHTML = `<p style="font-size: 0.8rem; color: var(--muted);">Google Client ID not configured.</p>`;
       }
     }
 
@@ -489,7 +565,7 @@
           applyFilters();
         }
       } catch (err) {
-        document.getElementById('profilesContainer').innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--primary);">Database synchronization error.</div>`;
+        document.getElementById('profilesContainer').innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--primary);">Database connection error.</div>`;
       }
     }
 
@@ -508,7 +584,6 @@
       }
     }
 
-    // Client-side image compression: keeps payload under 200KB to ensure fast network transfers
     function handleImageSelection(event) {
       const file = event.target.files[0];
       if (!file) {
@@ -576,7 +651,7 @@
       let dataset = state.filtered;
       if (state.mode === 'saved') dataset = dataset.filter(p => state.savedIds.has(p.id));
 
-      document.getElementById('profileCounter').innerText = `Displaying ${dataset.length} candidates`;
+      document.getElementById('profileCounter').innerText = `Displaying ${dataset.length} active candidate profiles`;
       document.getElementById('savedCounter').innerText = state.savedIds.size;
 
       if (dataset.length === 0) {
@@ -589,7 +664,7 @@
         return `
           <div class="profile-card">
             <div class="profile-img-container">
-              <img class="profile-img" src="${p.photoUrl}" alt="${p.fullName}">
+              <img class="profile-img" crossorigin="anonymous" src="${p.photoUrl}" alt="${p.fullName}">
               <button class="shortlist-tag-btn ${isSaved ? 'active' : ''}" onclick="toggleShortlistRecord('${p.id}')">
                 ${isSaved ? 'SAVED' : 'SAVE'}
               </button>
@@ -670,7 +745,7 @@
         margin: [10, 10, 10, 10],
         filename: `Biodata_${candidateName}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
       html2pdf().set(opt).from(element).save();
@@ -684,8 +759,10 @@
       }
 
       const btn = document.getElementById('regSubmitBtn');
-      btn.innerText = "Transmitting Details...";
+      btn.innerText = "Processing Details...";
       btn.disabled = true;
+
+      const feeAmount = document.getElementById('regFeeAmount').value || "500";
 
       const profilePayload = {
         fullName: document.getElementById('regFullName').value,
@@ -696,6 +773,8 @@
         maritalStatus: document.getElementById('regMarital').value,
         education: document.getElementById('regEducation').value,
         profession: document.getElementById('regProfession').value,
+        annualIncome: document.getElementById('regIncome').value,
+        customAmount: feeAmount,
         city: document.getElementById('regCity').value,
         state: document.getElementById('regState').value,
         country: document.getElementById('regCountry').value,
@@ -715,19 +794,71 @@
         });
         const out = await res.json();
         if (out.success) {
-          alert("Profile submission received and recorded into the database.");
+          activeRegistrationPayload = out;
           closeModal('registrationModal');
           document.getElementById('regForm').reset();
           document.getElementById('imagePreviewBox').style.display = 'none';
           selectedBase64Image = "";
-          fetchActiveProfiles();
+
+          // Launch UPI Payment Modal
+          openPaymentModal(out.profileId, out.paymentAmount, out.upiId);
         } else {
           alert("Submission error: " + out.error);
         }
       } catch (err) {
         alert("Transmission failure. Check connection.");
       } finally {
-        btn.innerText = "Complete Profile Registration";
+        btn.innerText = "Proceed to Onboarding Payment";
+        btn.disabled = false;
+      }
+    }
+
+    function openPaymentModal(profileId, amount, upiId) {
+      document.getElementById('payProfileId').innerText = profileId;
+      document.getElementById('payAmountDisplay').innerText = amount;
+      
+      const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Chitransh Mahasabha')}&am=${encodeURIComponent(amount)}&cu=INR&tn=${encodeURIComponent('Profile Onboarding ' + profileId)}`;
+      
+      // Generate Dynamic QR Code Image
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUrl)}`;
+      document.getElementById('upiQrCodeImg').src = qrUrl;
+      document.getElementById('upiIntentBtn').href = upiUrl;
+
+      document.getElementById('paymentModal').classList.add('active');
+    }
+
+    async function submitUtrVerification() {
+      const utr = document.getElementById('payUtrNumber').value.trim();
+      if (!utr) {
+        alert("Please enter the 12-digit UPI UTR / Reference ID from your payment app.");
+        return;
+      }
+
+      const btn = document.getElementById('submitUtrBtn');
+      btn.innerText = "Confirming Transaction...";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'submitPaymentDetails',
+            data: { profileId: activeRegistrationPayload.profileId, utr: utr }
+          })
+        });
+        const out = await res.json();
+        if (out.success) {
+          alert("Payment recorded! Your profile is pending verification and will be published live by our desk shortly.");
+          closeModal('paymentModal');
+          document.getElementById('payUtrNumber').value = "";
+        } else {
+          alert("Error: " + out.error);
+        }
+      } catch (err) {
+        alert("Network communication error.");
+      } finally {
+        btn.innerText = "Confirm Payment & Submit";
         btn.disabled = false;
       }
     }
