@@ -51,7 +51,6 @@
 
     .container { max-width: 1300px; margin: 1.5rem auto; padding: 0 1rem; }
 
-    /* Auth Gate */
     #authOverlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(43, 35, 33, 0.85); backdrop-filter: blur(5px);
@@ -75,8 +74,8 @@
     .btn-danger { background: var(--danger); color: var(--white); }
     .btn-whatsapp { background: #25D366; color: var(--white); }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--dark); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Filter Bar */
     .filter-strip {
       background: var(--white); border: 1px solid var(--border);
       border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;
@@ -90,7 +89,6 @@
     }
     .tab-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
-    /* Table / Grid */
     .profile-card {
       background: var(--white); border: 1px solid var(--border);
       border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;
@@ -109,7 +107,6 @@
     .badge-Unpublished { background: #F1F3F4; color: #5F6368; }
     .badge-Deleted { background: #FCE8E6; color: #C5221F; }
 
-    /* Modals */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
@@ -125,12 +122,11 @@
 </head>
 <body>
 
-  <!-- ADMIN PASSCODE GATE -->
   <div id="authOverlay">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Admin Desk</h2>
       <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem;">Enter administrator PIN to unlock controls.</p>
-      <input type="password" id="adminPinInput" placeholder="Enter PIN (e.g. ADMIN@9821)" style="width: 100%; padding: 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; text-align: center; font-size: 1rem;">
+      <input type="password" id="adminPinInput" placeholder="Enter PIN" style="width: 100%; padding: 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; text-align: center; font-size: 1rem;">
       <button class="btn btn-primary" style="width: 100%;" onclick="unlockAdminPortal()">Unlock Dashboard</button>
     </div>
   </div>
@@ -138,14 +134,13 @@
   <header class="header">
     <div class="brand">Chitransh<span>Mahasabha</span> <span style="font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-left: 0.5rem;">Admin Panel</span></div>
     <div style="display: flex; gap: 0.5rem;">
-      <button class="btn btn-outline" onclick="fetchAdminProfiles()">🔄 Refresh Data</button>
+      <button id="refreshBtn" class="btn btn-outline" onclick="triggerManualRefresh()">Refresh Data</button>
       <button class="btn btn-danger" onclick="lockPortal()">Lock</button>
     </div>
   </header>
 
   <div class="container">
     
-    <!-- Filter Strip -->
     <div class="filter-strip">
       <div class="filter-tabs">
         <button class="tab-btn active" onclick="filterByStatus('all', this)">All Records (<span id="countAll">0</span>)</button>
@@ -157,14 +152,12 @@
       <input type="text" id="adminSearchInput" oninput="applyAdminSearch()" placeholder="Search by name, city, ID..." style="padding: 0.45rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; min-width: 200px;">
     </div>
 
-    <!-- Candidate List -->
     <div id="adminProfilesContainer">
       <p style="text-align: center; color: var(--muted); padding: 3rem 0;">Connecting to central records...</p>
     </div>
 
   </div>
 
-  <!-- RECEIPT SCREENSHOT MODAL -->
   <div class="modal-overlay" id="receiptModal">
     <div class="modal-card" style="max-width: 440px; text-align: center;">
       <button class="close-btn" onclick="closeModal('receiptModal')">&times;</button>
@@ -177,21 +170,18 @@
     </div>
   </div>
 
-  <!-- MATCHMAKING POPUP MODAL -->
   <div class="modal-overlay" id="matchingModal">
     <div class="modal-card">
       <button class="close-btn" onclick="closeModal('matchingModal')">&times;</button>
       <h3 style="margin-bottom: 0.25rem;">Candidate Matching Desk</h3>
       <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Compatible matrimonial matches for: <strong id="matchCandidateName">-</strong></p>
 
-      <div id="matchingResultsList" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 420px; overflow-y: auto; margin-bottom: 1.25rem; padding-right: 0.5rem;">
-        <!-- Injected via JS -->
-      </div>
+      <div id="matchingResultsList" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 420px; overflow-y: auto; margin-bottom: 1.25rem; padding-right: 0.5rem;"></div>
 
       <div style="display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap;">
         <button class="btn btn-outline" onclick="closeModal('matchingModal')">Close</button>
         <button class="btn btn-primary" onclick="exportSanitizedMatchPdf()">Download Clean PDF</button>
-        <button class="btn btn-whatsapp" onclick="sendSelectedMatchesViaWhatsApp()">💬 Send to Client via WhatsApp</button>
+        <button class="btn btn-whatsapp" onclick="sendSelectedMatchesViaWhatsApp()">Send to Client via WhatsApp</button>
       </div>
     </div>
   </div>
@@ -225,9 +215,20 @@
       document.getElementById('adminPinInput').value = "";
     }
 
+    async function triggerManualRefresh() {
+      const btn = document.getElementById('refreshBtn');
+      btn.innerText = "Refreshing...";
+      btn.disabled = true;
+      await fetchAdminProfiles();
+      btn.innerText = "Refresh Data";
+      btn.disabled = false;
+    }
+
     async function fetchAdminProfiles() {
+      if (!adminState.pin) return;
       try {
-        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(adminState.pin)}`);
+        const timestamp = new Date().getTime();
+        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(adminState.pin)}&_nocache=${timestamp}`);
         const data = await res.json();
         if (data.success) {
           adminState.profiles = data.profiles;
@@ -347,7 +348,6 @@
       }).join('');
     }
 
-    // STATUS UPDATES: UNPUBLISH / PUBLISH / APPROVE / DELETE
     async function updateStatus(profileId, newStatus) {
       if (!confirm(`Are you sure you want to set profile ${profileId} to "${newStatus}"?`)) return;
 
@@ -387,7 +387,7 @@
         });
         const out = await res.json();
         if (out.success) {
-          alert("Profile approved and published live!");
+          alert("Profile approved and published live.");
           fetchAdminProfiles();
         } else {
           alert("Approval failed: " + out.error);
@@ -398,7 +398,7 @@
     }
 
     async function deleteCandidate(profileId) {
-      if (!confirm(`Are you sure you want to permanently deactivate profile ${profileId}?`)) return;
+      if (!confirm(`Are you sure you want to deactivate profile ${profileId}?`)) return;
       try {
         const res = await fetch(API_ENDPOINT, {
           method: 'POST',
@@ -427,7 +427,6 @@
       document.getElementById('receiptModal').classList.add('active');
     }
 
-    // MATCHMAKING DESK & BULLETPROOF WHATSAPP BUTTON
     function openMatchmakingDesk(profileId) {
       const client = adminState.profiles.find(p => p.id === profileId);
       if (!client) return;
@@ -435,7 +434,6 @@
       adminState.activeMatchClient = client;
       document.getElementById('matchCandidateName').innerText = `${client.fullName} (${client.gender}, ${client.age} Yrs)`;
 
-      // Matchmaking Criteria: Opposite gender + Active profiles + Age alignment
       const targetGender = client.gender === "Male" ? "Female" : "Male";
       const matches = adminState.profiles.filter(p => {
         if (p.status !== "Active" || p.gender !== targetGender) return false;
@@ -479,7 +477,6 @@
       return selected;
     }
 
-    // SANITIZED WHATSAPP DISPATCH (PHONE NUMBER FORMATTED & CLEANED)
     function sendSelectedMatchesViaWhatsApp() {
       const client = adminState.activeMatchClient;
       if (!client || !client.phone) {
@@ -493,7 +490,6 @@
         return;
       }
 
-      // Sanitize phone number (strip spaces, +, symbols)
       let cleanPhone = client.phone.toString().replace(/[^0-9]/g, '');
       if (cleanPhone.length === 10) {
         cleanPhone = "91" + cleanPhone;
@@ -515,14 +511,12 @@
 
       const waUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`;
 
-      // Safe pop-up / redirection
       const win = window.open(waUrl, '_blank');
       if (!win || win.closed || typeof win.closed === 'undefined') {
         window.location.href = waUrl;
       }
     }
 
-    // SANITIZED PRINTABLE PDF GENERATION
     function exportSanitizedMatchPdf() {
       const client = adminState.activeMatchClient;
       const selected = getSelectedMatchedCandidates();
