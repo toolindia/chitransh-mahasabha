@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Official Matrimonial Biodata - Chitransh Mahasabha</title>
+  <title>Candidate Biodata Registration - Chitransh Mahasabha</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
     :root {
@@ -31,23 +29,102 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding: 2rem 1rem; }
 
-    .biodata-container {
-      max-width: 720px;
+    .form-container {
+      max-width: 680px;
       margin: 0 auto;
+      background: var(--white);
+      border: 2px solid var(--secondary);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
     }
 
-    .action-bar {
+    .form-header {
+      text-align: center;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.85rem;
+      color: var(--primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .form-header p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+      margin: 1.75rem 0 0.75rem 0;
+      border-bottom: 1px solid var(--surface-light);
+      padding-bottom: 0.35rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      outline: none;
+      background: var(--bg);
+      color: var(--dark);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      background: var(--white);
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 1rem;
     }
 
+    @media (max-width: 580px) {
+      .form-row-2 { grid-template-columns: 1fr; }
+      .form-container { padding: 1.5rem; }
+    }
+
+    .privacy-tag {
+      font-size: 0.7rem;
+      color: #C5221F;
+      font-weight: 600;
+      margin-left: 0.3rem;
+    }
+
     .btn {
-      padding: 0.65rem 1.35rem;
-      font-size: 0.88rem;
+      padding: 0.85rem 1.6rem;
+      font-size: 0.95rem;
       font-weight: 700;
       border-radius: var(--radius-sm);
       cursor: pointer;
@@ -58,6 +135,7 @@
       justify-content: center;
       gap: 0.5rem;
       transition: all 0.2s ease;
+      width: 100%;
     }
 
     .btn-primary {
@@ -65,236 +143,204 @@
       color: var(--white);
       box-shadow: var(--shadow-sm);
     }
+
     .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
 
-    .btn-whatsapp {
-      background: #25D366;
-      color: var(--white);
-    }
-    .btn-whatsapp:hover { background: #20BA5A; }
-
-    .btn-outline {
-      background: var(--white);
-      color: var(--dark);
-      border: 1px solid var(--border);
-    }
-    .btn-outline:hover { background: var(--surface-light); }
-
-    /* Printable Official Biodata Sheet */
-    .biodata-sheet {
-      background: var(--white);
-      border: 2px solid var(--secondary);
+    /* Payment Panel */
+    .upi-box {
+      display: none;
+      background: var(--surface-light);
+      border: 2px dashed var(--secondary);
       border-radius: var(--radius-md);
-      padding: 2.5rem;
-      box-shadow: var(--shadow-md);
-      position: relative;
-    }
-
-    .biodata-header-banner {
+      padding: 1.75rem;
       text-align: center;
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 1rem;
-      margin-bottom: 1.75rem;
+      margin-top: 1.5rem;
     }
 
-    .biodata-header-banner h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.75rem;
-      color: var(--primary);
-      font-weight: 700;
-      letter-spacing: 0.5px;
+    .preview-box {
+      display: none;
+      margin-top: 0.5rem;
+      text-align: center;
     }
 
-    .biodata-header-banner p {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-      margin-top: 0.2rem;
-    }
-
-    .candidate-hero {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      background: linear-gradient(180deg, #FFF9F2 0%, var(--white) 100%);
-      padding: 1.25rem;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      margin-bottom: 1.75rem;
-    }
-
-    .candidate-photo {
-      width: 110px;
-      height: 110px;
+    .preview-img {
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid var(--primary);
-      box-shadow: var(--shadow-sm);
-      flex-shrink: 0;
-      background-color: var(--surface-light);
+      border: 2px solid var(--primary);
     }
-
-    .candidate-meta h2 {
-      font-size: 1.4rem;
-      color: var(--dark);
-      margin-bottom: 0.25rem;
-    }
-
-    .candidate-meta .sub-text {
-      font-size: 0.92rem;
-      color: var(--secondary);
-      font-weight: 700;
-    }
-
-    .candidate-meta .loc-text {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-top: 0.2rem;
-    }
-
-    .section-title {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.75px;
-      font-weight: 800;
-      color: var(--primary);
-      margin: 1.5rem 0 0.5rem 0;
-      border-bottom: 1.5px solid var(--surface-light);
-      padding-bottom: 0.35rem;
-    }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
-
-    .data-table tr {
-      border-bottom: 1px solid #FAF0E4;
-    }
-
-    .data-table tr:last-child {
-      border-bottom: none;
-    }
-
-    .data-table td {
-      padding: 0.55rem 0;
-    }
-
-    .data-table td:first-child {
-      color: var(--muted);
-      width: 38%;
-      font-weight: 600;
-    }
-
-    .data-table td:last-child {
-      color: var(--dark);
-      font-weight: 600;
-    }
-
-    .narrative-box {
-      font-size: 0.9rem;
-      color: var(--dark);
-      line-height: 1.55;
-      padding: 0.5rem 0;
-    }
-
-    .privacy-footer-note {
-      margin-top: 2rem;
-      background: var(--surface-light);
-      border: 1px dashed var(--secondary);
-      padding: 0.85rem 1.25rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.78rem;
-      text-align: center;
-      color: var(--dark);
-      line-height: 1.45;
-    }
-
-    .loader-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 5rem 1rem;
-      gap: 1rem;
-      color: var(--muted);
-    }
-
-    .spinner {
-      width: 44px;
-      height: 44px;
-      border: 4px solid var(--surface-light);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-  <div class="biodata-container">
-
-    <!-- Top Action Toolbar -->
-    <div class="action-bar" id="actionBar" style="display: none;">
-      <button class="btn btn-outline" onclick="window.close(); history.back();">&larr; Back to Directory</button>
-      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-        <a id="connectWhatsAppBtn" href="#" target="_blank" class="btn btn-whatsapp">💬 Express Interest (WhatsApp)</a>
-        <button class="btn btn-primary" onclick="exportToPdf()">Download PDF</button>
-      </div>
+  <div class="form-container">
+    
+    <div class="form-header">
+      <h1>CHITRANSH MAHASABHA</h1>
+      <p>Candidate Biodata Submission Portal</p>
     </div>
 
-    <!-- Status / Loading Indicator -->
-    <div id="loadingBox" class="loader-container">
-      <div class="spinner"></div>
-      <p>Fetching authentic candidate record...</p>
-    </div>
-
-    <!-- Printable Official Biodata Sheet -->
-    <div id="biodataSheet" class="biodata-sheet" style="display: none;">
+    <!-- MAIN BIODATA FORM -->
+    <form id="biodataForm" onsubmit="submitBiodata(event)">
       
-      <div class="biodata-header-banner">
-        <h1>CHITRANSH MAHASABHA</h1>
-        <p>Official Matrimonial Biodata Portfolio</p>
-        <span id="bioProfileId" style="font-size: 0.72rem; font-weight: 700; color: var(--muted); letter-spacing: 0.5px;"></span>
-      </div>
+      <div class="section-title">1. Basic Details</div>
 
-      <div class="candidate-hero">
-        <img id="bioPhoto" class="candidate-photo" src="" alt="Candidate Photo">
-        <div class="candidate-meta">
-          <h2 id="bioFullName">-</h2>
-          <div class="sub-text" id="bioSubtitle">-</div>
-          <div class="loc-text" id="bioLocation">-</div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Candidate Full Name *</label>
+          <input type="text" id="fullName" required placeholder="Full Name">
+        </div>
+        <div class="form-group">
+          <label>Gender *</label>
+          <select id="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+          </select>
         </div>
       </div>
 
-      <div class="section-title">Personal & Demographics</div>
-      <table class="data-table">
-        <tr><td>Date of Birth:</td><td id="bioDob">-</td></tr>
-        <tr><td>Height:</td><td id="bioHeight">-</td></tr>
-        <tr><td>Marital Status:</td><td id="bioMarital">-</td></tr>
-      </table>
-
-      <div class="section-title">Education & Career</div>
-      <table class="data-table">
-        <tr><td>Highest Education:</td><td id="bioEducation">-</td></tr>
-        <tr><td>Occupation / Profession:</td><td id="bioProfession">-</td></tr>
-        <tr><td>Annual Income:</td><td id="bioIncome">-</td></tr>
-      </table>
-
-      <div class="section-title">Family Overview</div>
-      <div class="narrative-box" id="bioFamily">-</div>
-
-      <div class="section-title">Partner Expectations</div>
-      <div class="narrative-box" id="bioPreferences">-</div>
-
-      <div class="privacy-footer-note">
-        <strong>Privacy Assurance:</strong> Residential street addresses and personal phone numbers are withheld by Ghaziabad Chitransh Mahasabha. To initiate family conversations, connect with our administrative desk quoting the Profile Reference ID above.
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" id="dob">
+        </div>
+        <div class="form-group">
+          <label>Age (in Years) *</label>
+          <input type="number" id="age" min="18" max="75" required placeholder="e.g. 27">
+        </div>
       </div>
 
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Height *</label>
+          <input type="text" id="height" required placeholder="e.g. 5'6&quot;">
+        </div>
+        <div class="form-group">
+          <label>Marital Status *</label>
+          <select id="maritalStatus" required>
+            <option value="Never Married">Never Married</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Widowed">Widowed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-title">2. Education & Profession</div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Highest Qualification *</label>
+          <input type="text" id="education" required placeholder="e.g. B.Tech / MBA / MBBS">
+        </div>
+        <div class="form-group">
+          <label>Occupation / Profession *</label>
+          <input type="text" id="profession" required placeholder="e.g. Software Engineer / Govt Officer">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Annual Income *</label>
+        <input type="text" id="income" required placeholder="e.g. 12 LPA / ₹10 Lakhs PA">
+      </div>
+
+      <div class="section-title">3. Location & Confidential Contact</div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>City (Public) *</label>
+          <input type="text" id="city" required placeholder="City">
+        </div>
+        <div class="form-group">
+          <label>State (Public) *</label>
+          <input type="text" id="state" required placeholder="State">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Country (Public) *</label>
+        <input type="text" id="country" required value="India">
+      </div>
+
+      <div class="form-group">
+        <label>Complete House Address <span class="privacy-tag">[Admin Confidential]</span> *</label>
+        <input type="text" id="exactAddress" required placeholder="House/Flat No, Landmark, Sector/Area, Pincode">
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Email Address <span class="privacy-tag">[Admin Confidential]</span> *</label>
+          <input type="email" id="email" required placeholder="name@domain.com">
+        </div>
+        <div class="form-group">
+          <label>Phone / WhatsApp <span class="privacy-tag">[Admin Confidential]</span> *</label>
+          <input type="tel" id="phone" required placeholder="+91 00000 00000">
+        </div>
+      </div>
+
+      <div class="section-title">4. Family, Preferences & Photo</div>
+
+      <div class="form-group">
+        <label>Upload Candidate Photograph *</label>
+        <input type="file" id="photoFile" accept="image/*" required onchange="handlePhotoUpload(event)">
+        <div id="photoPreviewBox" class="preview-box">
+          <img id="photoPreviewImg" class="preview-img" src="" alt="Preview">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Family Background</label>
+        <textarea id="familyDetails" rows="2" placeholder="Summary of parents, siblings, native place, and background"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Partner Preferences</label>
+        <textarea id="partnerPreferences" rows="2" placeholder="Education, profession, outlook expectations"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="submitBtn" style="margin-top: 1rem;">
+        Submit Biodata & Proceed to Pay ₹1999
+      </button>
+
+    </form>
+
+    <!-- STEP 2: UPI PAYMENT & PROOF SUBMISSION -->
+    <div id="paymentBox" class="upi-box">
+      <h2 style="font-size: 1.3rem; color: var(--primary); margin-bottom: 0.25rem;">Verify & Activate Profile</h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Profile ID: <strong id="assignedProfileId">-</strong></p>
+
+      <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Registration Amount</p>
+      <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;">₹1999</h1>
+
+      <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+        <img id="upiQrImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
+      </div>
+
+      <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code>sinha361@icici</code></p>
+      
+      <a id="upiPayLink" href="#" class="btn btn-primary" style="margin-bottom: 1.5rem;">
+        Pay ₹1999 via Any UPI App
+      </a>
+
+      <div style="text-align: left; border-top: 1px solid var(--border); padding-top: 1.25rem;">
+        <div class="form-group">
+          <label>Upload Payment Screenshot *</label>
+          <input type="file" id="screenshotFile" accept="image/*" required onchange="handleScreenshotUpload(event)">
+          <div id="screenshotPreviewBox" class="preview-box">
+            <img id="screenshotPreviewImg" src="" style="max-width: 120px; border-radius: 6px; border: 1px solid var(--border);">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>UPI Transaction / UTR No. (Optional)</label>
+          <input type="text" id="utrNo" placeholder="12-digit UPI reference number">
+        </div>
+
+        <button type="button" class="btn btn-primary" id="proofBtn" onclick="submitProof()">
+          Submit for Admin Approval
+        </button>
+      </div>
     </div>
 
   </div>
@@ -302,92 +348,162 @@
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
-    let loadedProfile = null;
+    let candidateBase64 = "";
+    let screenshotBase64 = "";
+    let savedProfileId = "";
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const profileId = urlParams.get('id');
+    // Candidate Photo compression (max 400px, 0.6 quality) to fit in sheet cell
+    function handlePhotoUpload(event) {
+      compressImage(event.target.files[0], 400, 0.6, (base64) => {
+        candidateBase64 = base64;
+        document.getElementById('photoPreviewImg').src = base64;
+        document.getElementById('photoPreviewBox').style.display = 'block';
+      });
+    }
 
-      if (!profileId) {
-        document.getElementById('loadingBox').innerHTML = `
-          <h3 style="color: var(--primary);">No Profile Specified</h3>
-          <p style="font-size: 0.85rem;">Please select a candidate from the directory.</p>
-        `;
+    // Receipt Screenshot compression (max 500px, 0.55 quality)
+    function handleScreenshotUpload(event) {
+      compressImage(event.target.files[0], 500, 0.55, (base64) => {
+        screenshotBase64 = base64;
+        document.getElementById('screenshotPreviewImg').src = base64;
+        document.getElementById('screenshotPreviewBox').style.display = 'block';
+      });
+    }
+
+    function compressImage(file, maxDim, quality, callback) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          let w = img.width, h = img.height;
+          if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
+          else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          callback(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // SUBMIT STEP 1: ADD BIODATA TO GOOGLE SHEET
+    async function submitBiodata(e) {
+      e.preventDefault();
+
+      if (!candidateBase64) {
+        alert("Please select and upload candidate photograph.");
         return;
       }
 
-      loadCandidateData(profileId);
-    });
+      const btn = document.getElementById('submitBtn');
+      btn.innerText = "Submitting Biodata...";
+      btn.disabled = true;
 
-    async function loadCandidateData(id) {
+      const payload = {
+        fullName: document.getElementById('fullName').value.trim(),
+        gender: document.getElementById('gender').value,
+        dob: document.getElementById('dob').value,
+        age: parseInt(document.getElementById('age').value),
+        height: document.getElementById('height').value.trim(),
+        maritalStatus: document.getElementById('maritalStatus').value,
+        education: document.getElementById('education').value.trim(),
+        profession: document.getElementById('profession').value.trim(),
+        annualIncome: document.getElementById('income').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        state: document.getElementById('state').value.trim(),
+        country: document.getElementById('country').value.trim(),
+        exactAddress: document.getElementById('exactAddress').value.trim(),
+        imageBase64: candidateBase64,
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        familyDetails: document.getElementById('familyDetails').value.trim(),
+        partnerPreferences: document.getElementById('partnerPreferences').value.trim()
+      };
+
       try {
-        const res = await fetch(`${API_ENDPOINT}?action=getProfiles`);
-        const data = await res.json();
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'registerProfile', data: payload })
+        });
+        const out = await res.json();
+        if (out.success) {
+          savedProfileId = out.profileId;
+          document.getElementById('assignedProfileId').innerText = savedProfileId;
 
-        if (data.success) {
-          const profile = data.profiles.find(p => p.id === id);
-          if (profile) {
-            loadedProfile = profile;
-            populateBiodata(profile);
-          } else {
-            document.getElementById('loadingBox').innerHTML = `
-              <h3 style="color: var(--primary);">Candidate Not Found</h3>
-              <p style="font-size: 0.85rem;">This profile may be pending review or deactivated.</p>
-            `;
-          }
+          // Set Dynamic QR Code for ₹1999
+          const upiUrl = `upi://pay?pa=${encodeURIComponent(out.upiId)}&pn=${encodeURIComponent('Chitransh Mahasabha')}&am=1999&cu=INR&tn=${encodeURIComponent('Registration ' + savedProfileId)}`;
+          document.getElementById('upiQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUrl)}`;
+          document.getElementById('upiPayLink').href = upiUrl;
+
+          // Hide Form & Show Payment Box
+          document.getElementById('biodataForm').style.display = 'none';
+          document.getElementById('paymentBox').style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-          throw new Error(data.error);
+          alert("Submission Error: " + out.error);
         }
       } catch (err) {
-        document.getElementById('loadingBox').innerHTML = `
-          <h3 style="color: var(--primary);">Data Access Error</h3>
-          <p style="font-size: 0.85rem;">Unable to load biodata. Please verify internet connection.</p>
-        `;
+        alert("Failed to submit biodata. Check internet connection.");
+      } finally {
+        btn.innerText = "Submit Biodata & Proceed to Pay ₹1999";
+        btn.disabled = false;
       }
     }
 
-    function populateBiodata(p) {
-      document.getElementById('bioProfileId').innerText = `REFERENCE ID: ${p.id}`;
-      document.getElementById('bioFullName').innerText = p.fullName;
-      document.getElementById('bioSubtitle').innerText = `${p.age} Years • ${p.gender} • ${p.maritalStatus}`;
-      document.getElementById('bioLocation').innerText = `${p.city}, ${p.state}, ${p.country}`;
-      document.getElementById('bioPhoto').src = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
+    // SUBMIT STEP 2: UPLOAD SCREENSHOT FOR ADMIN VERIFICATION
+    async function submitProof() {
+      if (!screenshotBase64) {
+        alert("Please upload your payment confirmation screenshot.");
+        return;
+      }
 
-      document.getElementById('bioDob').innerText = p.dob || 'Undisclosed';
-      document.getElementById('bioHeight').innerText = p.height || 'Height Not Mentioned';
-      document.getElementById('bioMarital').innerText = p.maritalStatus;
+      const btn = document.getElementById('proofBtn');
+      btn.innerText = "Submitting Proof...";
+      btn.disabled = true;
 
-      document.getElementById('bioEducation').innerText = p.education;
-      document.getElementById('bioProfession').innerText = p.profession;
-      document.getElementById('bioIncome').innerText = p.annualIncome || 'Undisclosed';
+      const utr = document.getElementById('utrNo').value.trim();
 
-      document.getElementById('bioFamily').innerText = p.familyDetails || 'Family background shared upon mutual consent.';
-      document.getElementById('bioPreferences').innerText = p.partnerPreferences || 'Culturally compatible alliance within Kayastha community.';
-
-      // Set WhatsApp Desk link pre-filled with candidate reference
-      const waMessage = `Hello, I am interested in connecting regarding Candidate: ${p.fullName} (Profile ID: ${p.id}). Please facilitate introduction.`;
-      document.getElementById('connectWhatsAppBtn').href = `https://wa.me/919891513359?text=${encodeURIComponent(waMessage)}`;
-
-      // Reveal content
-      document.getElementById('loadingBox').style.display = 'none';
-      document.getElementById('actionBar').style.display = 'flex';
-      document.getElementById('biodataSheet').style.display = 'block';
-    }
-
-    function exportToPdf() {
-      if (!loadedProfile) return;
-      const element = document.getElementById('biodataSheet');
-      const filename = `Biodata_${loadedProfile.fullName.replace(/\s+/g, '_')}_${loadedProfile.id}.pdf`;
-
-      const opt = {
-        margin: [10, 10, 10, 10],
-        filename: filename,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      html2pdf().set(opt).from(element).save();
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'submitPaymentProof',
+            data: {
+              profileId: savedProfileId,
+              screenshotBase64: screenshotBase64,
+              utr: utr
+            }
+          })
+        });
+        const out = await res.json();
+        if (out.success) {
+          document.getElementById('paymentBox').innerHTML = `
+            <div style="padding: 1.5rem 0;">
+              <h2 style="color: #137333; font-size: 1.6rem; margin-bottom: 0.5rem;">Biodata Submitted!</h2>
+              <p style="font-size: 0.95rem; color: var(--dark); margin-bottom: 0.5rem;">
+                Your Profile ID is: <strong>${savedProfileId}</strong>
+              </p>
+              <p style="font-size: 0.85rem; color: var(--muted); line-height: 1.5;">
+                Your details and payment receipt have been sent to the Chitransh Mahasabha Admin Portal for verification. Once approved, your profile will be live on the matrimonial directory.
+              </p>
+            </div>
+          `;
+        } else {
+          alert("Error: " + out.error);
+        }
+      } catch (err) {
+        alert("Upload failed. Try again.");
+      } finally {
+        btn.innerText = "Submit for Admin Approval";
+        btn.disabled = false;
+      }
     }
   </script>
 </body>
