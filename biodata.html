@@ -146,7 +146,6 @@
 
     .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
 
-    /* Payment Panel */
     .upi-box {
       display: none;
       background: var(--surface-light);
@@ -181,7 +180,7 @@
       <p>Candidate Biodata Submission Portal</p>
     </div>
 
-    <!-- MAIN BIODATA FORM -->
+    <!-- MAIN REGISTRATION FORM -->
     <form id="biodataForm" onsubmit="submitBiodata(event)">
       
       <div class="section-title">1. Basic Details</div>
@@ -305,7 +304,7 @@
 
     </form>
 
-    <!-- STEP 2: UPI PAYMENT & PROOF SUBMISSION -->
+    <!-- STEP 2: DYNAMIC UPI PAYMENT PANEL -->
     <div id="paymentBox" class="upi-box">
       <h2 style="font-size: 1.3rem; color: var(--primary); margin-bottom: 0.25rem;">Verify & Activate Profile</h2>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Profile ID: <strong id="assignedProfileId">-</strong></p>
@@ -352,7 +351,6 @@
     let screenshotBase64 = "";
     let savedProfileId = "";
 
-    // Candidate Photo compression (max 400px, 0.6 quality) to fit in sheet cell
     function handlePhotoUpload(event) {
       compressImage(event.target.files[0], 400, 0.6, (base64) => {
         candidateBase64 = base64;
@@ -361,7 +359,6 @@
       });
     }
 
-    // Receipt Screenshot compression (max 500px, 0.55 quality)
     function handleScreenshotUpload(event) {
       compressImage(event.target.files[0], 500, 0.55, (base64) => {
         screenshotBase64 = base64;
@@ -391,7 +388,6 @@
       reader.readAsDataURL(file);
     }
 
-    // SUBMIT STEP 1: ADD BIODATA TO GOOGLE SHEET
     async function submitBiodata(e) {
       e.preventDefault();
 
@@ -436,12 +432,17 @@
           savedProfileId = out.profileId;
           document.getElementById('assignedProfileId').innerText = savedProfileId;
 
-          // Set Dynamic QR Code for ₹1999
-          const upiUrl = `upi://pay?pa=${encodeURIComponent(out.upiId)}&pn=${encodeURIComponent('Chitransh Mahasabha')}&am=1999&cu=INR&tn=${encodeURIComponent('Registration ' + savedProfileId)}`;
-          document.getElementById('upiQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUrl)}`;
-          document.getElementById('upiPayLink').href = upiUrl;
+          const finalUpiId = out.upiId || "sinha361@icici";
+          const finalAmount = out.paymentAmount || "1999";
+          const payeeName = "Chitransh Mahasabha";
+          const note = "Registration " + savedProfileId;
 
-          // Hide Form & Show Payment Box
+          const upiIntentUri = `upi://pay?pa=${finalUpiId}&pn=${encodeURIComponent(payeeName)}&am=${finalAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+          const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiIntentUri)}&size=220`;
+
+          document.getElementById('upiQrImg').src = qrUrl;
+          document.getElementById('upiPayLink').href = upiIntentUri;
+
           document.getElementById('biodataForm').style.display = 'none';
           document.getElementById('paymentBox').style.display = 'block';
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -456,7 +457,6 @@
       }
     }
 
-    // SUBMIT STEP 2: UPLOAD SCREENSHOT FOR ADMIN VERIFICATION
     async function submitProof() {
       if (!screenshotBase64) {
         alert("Please upload your payment confirmation screenshot.");
