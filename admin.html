@@ -37,7 +37,7 @@
       gap: 1rem;
     }
 
-    .main-container { max-width: 1440px; margin: 1.5rem auto; padding: 0 1rem; }
+    .main-container { max-width: 1480px; margin: 1.5rem auto; padding: 0 1rem; }
 
     .toolbar {
       background: var(--white);
@@ -53,23 +53,39 @@
     }
 
     .btn {
-      padding: 0.5rem 0.85rem;
-      font-size: 0.8rem;
+      padding: 0.55rem 1rem;
+      font-size: 0.85rem;
       font-weight: 600;
       border-radius: var(--radius);
       border: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      text-decoration: none;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
     }
+    .btn:active { transform: scale(0.98); }
 
-    .btn-primary { background: var(--primary); color: var(--white); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      box-shadow: 0 2px 6px rgba(255, 126, 126, 0.25);
+    }
+    .btn-approve { background: #137333; color: var(--white); }
     .btn-secondary { background: var(--secondary); color: var(--white); }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--dark); }
     .btn-danger { background: #C5221F; color: var(--white); }
     .btn-match { background: #6200EA; color: var(--white); }
+
+    .btn-spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #FFF;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
 
     .badge {
       padding: 0.2rem 0.5rem;
@@ -77,8 +93,8 @@
       font-weight: 700;
       border-radius: 4px;
       text-transform: uppercase;
+      display: inline-block;
     }
-
     .badge-active { background: #E6F4EA; color: #137333; }
     .badge-pending { background: #FEF7E0; color: #B06000; }
     .badge-deleted { background: #FCE8E6; color: #C5221F; }
@@ -103,55 +119,46 @@
       outline: none;
     }
 
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      display: none;
+    .loader-container {
+      display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
+      padding: 3rem 1rem;
+      gap: 0.75rem;
+      color: var(--muted);
     }
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--surface-light);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 1000;
+      display: none; align-items: center; justify-content: center; padding: 1rem;
+    }
     .modal-overlay.active { display: flex; }
-
     .modal-box {
-      background: var(--white);
-      border-radius: var(--radius);
-      max-width: 900px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 1.5rem;
-      position: relative;
+      background: var(--white); border-radius: var(--radius);
+      max-width: 900px; width: 100%; max-height: 90vh;
+      overflow-y: auto; padding: 1.5rem; position: relative;
     }
 
     .sanitized-card {
-      border: 2px solid var(--secondary);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      background: #FFF;
-      margin-bottom: 1.5rem;
-      page-break-after: always;
+      border: 2px solid var(--secondary); border-radius: var(--radius);
+      padding: 1.5rem; background: #FFF; margin-bottom: 1.5rem; page-break-after: always;
     }
-
     .sanitized-header {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      border-bottom: 2px solid var(--surface-light);
-      padding-bottom: 1rem;
-      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      border-bottom: 2px solid var(--surface-light); padding-bottom: 1rem; margin-bottom: 1rem;
     }
-
-    .sanitized-photo {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--primary);
-    }
+    .sanitized-photo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
   </style>
 </head>
 <body>
@@ -159,11 +166,13 @@
   <header>
     <div>
       <h2 style="font-size: 1.25rem; color: var(--primary);">Chitransh Mahasabha Desk</h2>
-      <p style="font-size: 0.8rem; color: var(--muted);">Candidate Database, Matchmaking & Dispatch</p>
+      <p style="font-size: 0.8rem; color: var(--muted);">Moderation, Payment Verification & Matchmaking Control</p>
     </div>
     <div style="display: flex; gap: 0.5rem; align-items: center;">
       <input type="password" id="adminPin" placeholder="Administrative PIN" class="input-field">
-      <button class="btn btn-primary" onclick="loadProfiles()">Authenticate</button>
+      <button class="btn btn-primary" id="authBtn" onclick="loadProfiles()">
+        <span id="authBtnText">Authenticate</span>
+      </button>
     </div>
   </header>
 
@@ -173,8 +182,8 @@
         <input type="text" id="adminSearch" placeholder="Search candidates..." oninput="filterProfiles()" class="input-field" style="width: 240px;">
         <select id="statusFilter" onchange="filterProfiles()" class="input-field">
           <option value="">All Statuses</option>
-          <option value="Active">Active</option>
-          <option value="Pending">Pending</option>
+          <option value="Pending">Pending Payment / Approval</option>
+          <option value="Active">Active (Live)</option>
           <option value="Deleted">Deleted</option>
         </select>
       </div>
@@ -193,7 +202,8 @@
             <th>Candidate</th>
             <th>Demographics</th>
             <th>Profession</th>
-            <th>Location (Public)</th>
+            <th style="background: #E8F0FE;">Payment Verification</th>
+            <th>Location</th>
             <th style="background: #FFE8E8;">Exact Address (Admin)</th>
             <th style="background: #FFE8E8;">Contact Details (Admin)</th>
             <th>Status</th>
@@ -202,8 +212,8 @@
         </thead>
         <tbody id="tableBody">
           <tr>
-            <td colspan="10" style="text-align: center; padding: 2.5rem; color: var(--muted);">
-              Enter Administrative PIN to query candidate records.
+            <td colspan="11" style="text-align: center; padding: 2.5rem; color: var(--muted);">
+              Authenticate with Administrative PIN to view candidate files and UTR payments.
             </td>
           </tr>
         </tbody>
@@ -211,7 +221,7 @@
     </div>
   </div>
 
-  <!-- Partner Matchmaking & Shortlisting Modal -->
+  <!-- Partner Matchmaking Modal -->
   <div class="modal-overlay" id="matchModal">
     <div class="modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -222,7 +232,7 @@
         <button class="btn btn-outline" onclick="closeModal('matchModal')">Close</button>
       </div>
 
-      <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; justify-content: space-between; align-items: center;">
+      <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; justify-content: space-between; align-items: center; flex-wrap: wrap;">
         <span style="font-size: 0.85rem; font-weight: 600;" id="matchCountLabel">Matches found</span>
         <div style="display: flex; gap: 0.5rem;">
           <button class="btn btn-primary" onclick="generateMatchedPdf()">Download Clean PDF Booklet</button>
@@ -248,7 +258,6 @@
     </div>
   </div>
 
-  <!-- Hidden Container for Clean Sanitized PDF Generation (No Phone, No Exact Address) -->
   <div style="display: none;">
     <div id="pdfPrintSurface"></div>
   </div>
@@ -262,11 +271,28 @@
     let currentMatches = [];
 
     async function loadProfiles() {
-      const pin = document.getElementById('adminPin').value;
+      const pinInput = document.getElementById('adminPin');
+      const authBtn = document.getElementById('authBtn');
+      const authBtnText = document.getElementById('authBtnText');
+      const pin = pinInput.value.trim();
+
       if (!pin) {
         alert("Administrative PIN required.");
         return;
       }
+
+      authBtn.disabled = true;
+      authBtnText.innerHTML = `<div class="btn-spinner"></div> Authenticating...`;
+      document.getElementById('tableBody').innerHTML = `
+        <tr>
+          <td colspan="11">
+            <div class="loader-container">
+              <div class="spinner"></div>
+              <p>Authenticating and loading database records...</p>
+            </div>
+          </td>
+        </tr>
+      `;
 
       try {
         const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(pin)}`);
@@ -277,16 +303,22 @@
           renderAdminTable();
         } else {
           alert("Authorization failed: " + data.error);
+          document.getElementById('tableBody').innerHTML = `
+            <tr><td colspan="11" style="text-align: center; padding: 2rem; color: #C5221F;">Access rejected. Invalid passcode.</td></tr>
+          `;
         }
       } catch (err) {
         alert("Database connection error.");
+      } finally {
+        authBtn.disabled = false;
+        authBtnText.innerText = "Authenticate";
       }
     }
 
     function renderAdminTable() {
       const body = document.getElementById('tableBody');
       if (visibleRecords.length === 0) {
-        body.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 2rem;">No profiles available.</td></tr>`;
+        body.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 2rem;">No profiles available.</td></tr>`;
         return;
       }
 
@@ -305,8 +337,13 @@
             </td>
             <td>${p.age} Yrs &bull; ${p.height || 'N/A'}<br><span style="font-size: 0.75rem;">${p.maritalStatus}</span></td>
             <td>${p.profession}<br><span style="font-size: 0.75rem; color: var(--muted);">${p.education}</span></td>
+            <td style="background: #F8FAFF;">
+              <strong>₹${p.paymentAmount || '500'}</strong><br>
+              <span style="font-size: 0.75rem;">UTR: <strong>${p.paymentUtr || '<span style="color:#C5221F;">Unpaid / No UTR</span>'}</strong></span><br>
+              <span class="badge ${p.paymentStatus === 'Verified' ? 'badge-active' : 'badge-pending'}">${p.paymentStatus || 'Unverified'}</span>
+            </td>
             <td>${p.city}, ${p.state}, ${p.country}</td>
-            <td style="background: #FFF5F5; font-size: 0.75rem; max-width: 180px;">${p.exactAddress || 'Not Provided'}</td>
+            <td style="background: #FFF5F5; font-size: 0.75rem; max-width: 170px;">${p.exactAddress || 'Not Provided'}</td>
             <td style="background: #FFF5F5;">
               <strong>${p.phone || 'No Phone'}</strong><br>
               <span style="font-size: 0.75rem; color: var(--muted);">${p.email || 'No Email'}</span>
@@ -314,7 +351,11 @@
             <td><span class="badge ${badgeClass}">${p.status}</span></td>
             <td>
               <div style="display: flex; gap: 0.25rem; flex-direction: column;">
-                <button class="btn btn-match" style="padding: 0.25rem 0.5rem;" onclick="openMatchmaking('${p.id}')">Find Matches</button>
+                ${p.status !== 'Active' ? `
+                  <button class="btn btn-approve" style="padding: 0.25rem 0.5rem;" onclick="approveCandidate('${p.id}')">Approve & Live</button>
+                ` : `
+                  <button class="btn btn-match" style="padding: 0.25rem 0.5rem;" onclick="openMatchmaking('${p.id}')">Find Matches</button>
+                `}
                 <button class="btn btn-outline" style="padding: 0.25rem 0.5rem;" onclick="sendSingleSanitizedWhatsApp('${p.id}')">WhatsApp</button>
                 <button class="btn btn-danger" style="padding: 0.25rem 0.5rem;" onclick="softDeleteRecord('${p.id}')">Delete</button>
               </div>
@@ -331,7 +372,7 @@
       visibleRecords = records.filter(p => {
         if (status && p.status !== status) return false;
         if (q) {
-          const combined = `${p.fullName} ${p.profession} ${p.city} ${p.education} ${p.email} ${p.phone} ${p.exactAddress}`.toLowerCase();
+          const combined = `${p.fullName} ${p.profession} ${p.city} ${p.education} ${p.email} ${p.phone} ${p.exactAddress} ${p.paymentUtr}`.toLowerCase();
           return combined.includes(q);
         }
         return true;
@@ -339,7 +380,33 @@
       renderAdminTable();
     }
 
-    // MATCHMAKING ENGINE
+    async function approveCandidate(profileId) {
+      const pin = document.getElementById('adminPin').value.trim();
+      if (!confirm(`Verify payment and activate Profile ${profileId} live on the directory?`)) return;
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'approveProfile', adminPin: pin, data: { profileId: profileId } })
+        });
+        const out = await res.json();
+        if (out.success) {
+          const item = records.find(p => p.id === profileId);
+          if (item) {
+            item.status = 'Active';
+            item.paymentStatus = 'Verified';
+          }
+          filterProfiles();
+          alert("Profile is now Active and publicly visible!");
+        } else {
+          alert("Approval error: " + out.error);
+        }
+      } catch (err) {
+        alert("Communication failure.");
+      }
+    }
+
     function openMatchmaking(targetProfileId) {
       currentTargetCandidate = records.find(p => p.id === targetProfileId);
       if (!currentTargetCandidate) return;
@@ -369,7 +436,7 @@
         tbody.innerHTML = currentMatches.map(m => `
           <tr>
             <td><input type="checkbox" class="match-checkbox" value="${m.id}" checked></td>
-            <td><img src="${m.photoUrl}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
+            <td><img src="${m.photoUrl}" crossorigin="anonymous" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
             <td><strong>${m.fullName}</strong></td>
             <td>${m.age} Yrs &bull; ${m.height || 'N/A'}</td>
             <td>${m.profession} &bull; ${m.education}</td>
@@ -390,7 +457,6 @@
       return currentMatches.filter(m => selectedIds.includes(m.id));
     }
 
-    // SANITIZED PDF GENERATOR (Masks Phone and Exact Address)
     function generateMatchedPdf() {
       const selectedProfiles = getSelectedMatchedProfiles();
       if (selectedProfiles.length === 0) {
@@ -408,7 +474,7 @@
       ` + selectedProfiles.map(p => `
         <div class="sanitized-card">
           <div class="sanitized-header">
-            <img src="${p.photoUrl}" class="sanitized-photo">
+            <img src="${p.photoUrl}" crossorigin="anonymous" class="sanitized-photo">
             <div>
               <h2 style="font-size: 1.25rem; color: #2B2321;">${p.fullName}</h2>
               <p style="font-size: 0.85rem; color: #FFA259; font-weight: 600;">${p.age} Years &bull; ${p.height || 'Height N/A'}</p>
@@ -439,14 +505,13 @@
         margin: [10, 10, 10, 10],
         filename: `Matched_Partners_For_${currentTargetCandidate.fullName.replace(/\s+/g, '_')}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
       html2pdf().set(opt).from(surface).save();
     }
 
-    // SANITIZED WHATSAPP SHARING (NO PHONE, NO EXACT ADDRESS)
     function shareMatchedOnWhatsApp() {
       const selected = getSelectedMatchedProfiles();
       if (selected.length === 0) {
@@ -466,7 +531,7 @@
         message += `• Marital Status: ${p.maritalStatus}\n\n`;
       });
 
-      message += `_Note: Contact details and exact addresses are retained by the central registry for privacy. Contact Chitransh Mahasabha office with Profile ID to proceed._`;
+      message += `_Note: Contact numbers and exact residential addresses are held confidentially. Contact Chitransh Mahasabha desk with Profile ID to proceed._`;
 
       const targetPhone = (currentTargetCandidate.phone || '').replace(/[^0-9]/g, '');
       const url = targetPhone 
@@ -488,7 +553,7 @@
       message += `• Education: ${p.education}\n`;
       message += `• Location: ${p.city}, ${p.state}, ${p.country}\n`;
       message += `• Marital Status: ${p.maritalStatus}\n\n`;
-      message += `_Contact numbers and exact residences are protected by Chitransh Mahasabha. Reach our desk to initiate contact._`;
+      message += `_Contact numbers and residential addresses are protected by Chitransh Mahasabha. Reach our desk to initiate conversation._`;
 
       window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
     }
