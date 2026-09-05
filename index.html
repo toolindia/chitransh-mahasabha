@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -23,8 +23,7 @@
       --border: #F5DEC2;
       --white: #FFFFFF;
       --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
+      --radius-md: 12px;
       --shadow-sm: 0 2px 8px rgba(255, 126, 126, 0.08);
       --shadow-md: 0 8px 24px rgba(255, 126, 126, 0.12);
       --shadow-lg: 0 16px 36px rgba(255, 162, 89, 0.16);
@@ -34,17 +33,23 @@
     body { background-color: var(--bg); color: var(--dark); line-height: 1.5; }
 
     .btn {
-      padding: 0.6rem 1.25rem; font-size: 0.85rem; font-weight: 600;
+      padding: 0.55rem 1.15rem; font-size: 0.85rem; font-weight: 600;
       border-radius: var(--radius-sm); cursor: pointer; border: none;
       transition: all 0.2s ease; text-decoration: none;
       display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
 
     .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); box-shadow: var(--shadow-sm); }
-    .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
-    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+    .btn-primary:hover { opacity: 0.95; }
+    .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
     .btn-outline:hover { background: var(--surface-light); }
     .btn-ghost { background: transparent; color: var(--dark); }
+
+    .user-pill {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--surface-light); padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+      border-radius: 20px;
+    }
 
     .top-action-bar {
       max-width: 1200px;
@@ -54,86 +59,7 @@
       justify-content: flex-end;
       align-items: center;
       gap: 0.75rem;
-    }
-
-    /* Top Prominent Auth Box */
-    .auth-hero-wrapper {
-      max-width: 1200px;
-      margin: 1rem auto 1.5rem auto;
-      padding: 0 1rem;
-    }
-
-    .auth-hero-card {
-      background: var(--white);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem;
-      box-shadow: var(--shadow-sm);
       position: relative;
-    }
-
-    .auth-tabs-row {
-      display: flex;
-      gap: 1rem;
-      border-bottom: 2px solid var(--surface-light);
-      margin-bottom: 1.25rem;
-    }
-
-    .auth-tab-btn {
-      background: transparent;
-      border: none;
-      padding: 0.5rem 0.25rem;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--muted);
-      cursor: pointer;
-      position: relative;
-      transition: color 0.2s;
-    }
-
-    .auth-tab-btn.active {
-      color: var(--primary);
-    }
-
-    .auth-tab-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--primary);
-    }
-
-    .auth-form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      align-items: flex-end;
-    }
-
-    /* Logged In State Banner */
-    .user-welcome-banner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: linear-gradient(135deg, #FFF9F2 0%, var(--surface-light) 100%);
-      border: 1px solid var(--accent);
-      border-radius: var(--radius-md);
-      padding: 1.25rem 1.75rem;
-      box-shadow: var(--shadow-sm);
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .user-welcome-info h3 {
-      font-size: 1.15rem;
-      color: var(--dark);
-    }
-
-    .user-welcome-info p {
-      font-size: 0.85rem;
-      color: var(--muted);
     }
 
     .loader-container {
@@ -190,18 +116,44 @@
     .profile-meta-line { font-size: 0.85rem; color: var(--muted); }
     .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: var(--dark); width: fit-content; }
 
+    /* Standard Centered Modals (Registration, Biodata, Payment) */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
       z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem;
     }
     .modal-overlay.active { display: flex; }
+    
     .modal-card {
       background: var(--white); border-radius: var(--radius-md);
       max-width: 600px; width: 100%; max-height: 90vh;
       overflow-y: auto; position: relative; box-shadow: var(--shadow-lg); padding: 1.75rem;
     }
     .modal-close-btn { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; font-size: 1.25rem; font-weight: 700; cursor: pointer; color: var(--muted); }
+
+    /* TOP-ALIGNED HEADER LOGIN POPUP */
+    #authModal.modal-overlay {
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 2rem;
+    }
+
+    #authModal .modal-card {
+      animation: slideDownHeader 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      border: 2px solid var(--primary);
+      box-shadow: 0 12px 36px rgba(255, 126, 126, 0.25);
+    }
+
+    @keyframes slideDownHeader {
+      from {
+        opacity: 0;
+        transform: translateY(-24px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
 
     .biodata-sheet { border: 2px solid var(--secondary); border-radius: var(--radius-md); padding: 1.75rem; background: #FFF; margin-bottom: 1.25rem; }
     .biodata-header { display: flex; align-items: center; gap: 1.25rem; border-bottom: 2px solid var(--surface-light); padding-bottom: 1rem; margin-bottom: 1rem; }
@@ -224,123 +176,28 @@
       text-align: center;
       margin: 1rem 0;
     }
+
+    .auth-tab-row {
+      display: flex; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border);
+    }
+    .auth-tab {
+      padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; border-bottom: 2px solid transparent; color: var(--muted);
+    }
+    .auth-tab.active {
+      color: var(--primary); border-bottom-color: var(--primary);
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Action Button -->
+  <!-- Top Action Controls -->
   <div class="top-action-bar">
-    <button class="btn btn-primary" onclick="openRegistrationModal()">+ Register Candidate Profile</button>
+    <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
+    <div id="authActions">
+      <button class="btn btn-primary" onclick="openLoginModal()">Sign In</button>
+    </div>
   </div>
 
-  <!-- TOP PROMINENT AUTH BOX (Sign In / Sign Up / Forgot Password) -->
-  <div class="auth-hero-wrapper" id="topAuthArea">
-    
-    <!-- State 1: Logged Out Form Box -->
-    <div class="auth-hero-card" id="guestAuthBox">
-      <div class="auth-tabs-row">
-        <button class="auth-tab-btn active" id="tabTopLogin" onclick="switchTopAuth('login')">Sign In to Account</button>
-        <button class="auth-tab-btn" id="tabTopRegister" onclick="switchTopAuth('register')">Create New Account</button>
-        <button class="auth-tab-btn" id="tabTopForgot" onclick="switchTopAuth('forgot')">Forgot Password?</button>
-      </div>
-
-      <!-- Top Login Form -->
-      <div id="topLoginForm">
-        <form onsubmit="handleTopLogin(event)">
-          <div class="auth-form-grid">
-            <div class="form-group" style="margin-bottom: 0;">
-              <label>Email Address</label>
-              <input type="email" id="topLoginEmail" required placeholder="name@domain.com">
-            </div>
-            <div class="form-group" style="margin-bottom: 0;">
-              <label>Password</label>
-              <input type="password" id="topLoginPass" required placeholder="Enter password">
-            </div>
-            <div>
-              <button type="submit" class="btn btn-primary" style="width: 100%; height: 40px;" id="topLoginBtn">
-                Sign In
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <!-- Top Register Form -->
-      <div id="topRegisterForm" style="display: none;">
-        <form onsubmit="handleTopRegister(event)">
-          <div class="auth-form-grid">
-            <div class="form-group" style="margin-bottom: 0;">
-              <label>Full Name</label>
-              <input type="text" id="topRegName" required placeholder="Your full name">
-            </div>
-            <div class="form-group" style="margin-bottom: 0;">
-              <label>Email Address</label>
-              <input type="email" id="topRegEmail" required placeholder="name@domain.com">
-            </div>
-            <div class="form-group" style="margin-bottom: 0;">
-              <label>Create Password</label>
-              <input type="password" id="topRegPass" required minlength="4" placeholder="Min 4 characters">
-            </div>
-            <div>
-              <button type="submit" class="btn btn-primary" style="width: 100%; height: 40px;" id="topRegBtn">
-                Sign Up
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <!-- Top Forgot Password Form -->
-      <div id="topForgotForm" style="display: none;">
-        <div id="topForgotStep1">
-          <div class="auth-form-grid">
-            <div class="form-group" style="margin-bottom: 0; grid-column: span 2;">
-              <label>Enter Registered Email</label>
-              <input type="email" id="topForgotEmail" required placeholder="name@domain.com">
-            </div>
-            <div>
-              <button type="button" class="btn btn-primary" style="width: 100%; height: 40px;" id="topSendOtpBtn" onclick="handleTopForgotOtp()">
-                Send Reset Code
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div id="topForgotStep2" style="display: none; margin-top: 1rem;">
-          <div class="auth-form-grid">
-            <div class="form-group" style="margin-bottom: 0;">
-              <label>4-Digit Email Code</label>
-              <input type="text" id="topResetOtp" maxlength="4" placeholder="e.g. 5839">
-            </div>
-            <div class="form-group" style="margin-bottom: 0;">
-              <label>New Password</label>
-              <input type="password" id="topResetNewPass" minlength="4" placeholder="Enter new password">
-            </div>
-            <div>
-              <button type="button" class="btn btn-primary" style="width: 100%; height: 40px;" id="topSavePassBtn" onclick="handleTopResetSave()">
-                Save Password
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- State 2: Logged In Banner Box -->
-    <div class="user-welcome-banner" id="userActiveBanner" style="display: none;">
-      <div class="user-welcome-info">
-        <h3>Welcome, <span id="welcomeUserName">-</span></h3>
-        <p><span id="welcomeUserEmail">-</span> &bull; Manage shortlists and candidate profiles freely.</p>
-      </div>
-      <div style="display: flex; gap: 0.5rem; align-items: center;">
-        <button class="btn btn-outline" onclick="switchCatalogMode('saved')">Saved Profiles (<span id="userSavedBadge">0</span>)</button>
-        <button class="btn btn-ghost" onclick="signOut()">Sign Out</button>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Filter Controls -->
   <div class="filter-wrapper">
     <div class="filter-container">
       <div class="filter-grid">
@@ -636,6 +493,94 @@
     </div>
   </div>
 
+  <!-- Top-Header Positioned Authentication Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-card" style="max-width: 380px;">
+      <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
+
+      <div class="auth-tab-row" id="authTabsHeader">
+        <div class="auth-tab active" id="tabLogin" onclick="switchAuthView('login')">Sign In</div>
+        <div class="auth-tab" id="tabRegister" onclick="switchAuthView('register')">Sign Up</div>
+      </div>
+
+      <!-- Sign In View -->
+      <div id="viewLogin">
+        <form onsubmit="handleUserLoginSubmit(event)">
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" id="loginEmail" required placeholder="name@domain.com">
+          </div>
+          <div class="form-group">
+            <label>Password *</label>
+            <input type="password" id="loginPass" required placeholder="Enter password">
+          </div>
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 0.75rem;">
+            <a href="#" onclick="switchAuthView('forgot')" style="font-size: 0.75rem; color: var(--primary); text-decoration: none;">Forgot Password?</a>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;" id="loginSubmitBtn">
+            Sign In & Continue
+          </button>
+        </form>
+      </div>
+
+      <!-- Sign Up View -->
+      <div id="viewRegister" style="display: none;">
+        <form onsubmit="handleUserRegisterSubmit(event)">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="regUserName" required placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" id="regUserEmail" required placeholder="name@domain.com">
+          </div>
+          <div class="form-group">
+            <label>Create Password *</label>
+            <input type="password" id="regUserPass" required minlength="4" placeholder="Min 4 characters">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="regUserSubmitBtn">
+            Create Account
+          </button>
+        </form>
+      </div>
+
+      <!-- Forgot Password View (OTP Verification) -->
+      <div id="viewForgot" style="display: none;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Reset Password</h3>
+        <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Enter your email to receive a 4-digit code.</p>
+
+        <div id="forgotStep1">
+          <div class="form-group">
+            <label>Registered Email *</label>
+            <input type="email" id="forgotEmail" required placeholder="name@domain.com">
+          </div>
+          <button type="button" class="btn btn-primary" style="width: 100%;" id="sendOtpBtn" onclick="requestResetOtp()">
+            Send Reset Code
+          </button>
+        </div>
+
+        <div id="forgotStep2" style="display: none; margin-top: 1rem;">
+          <div class="form-group">
+            <label>4-Digit Email Code *</label>
+            <input type="text" id="resetOtpCode" required placeholder="e.g. 5839" maxlength="4">
+          </div>
+          <div class="form-group">
+            <label>New Password *</label>
+            <input type="password" id="resetNewPass" required minlength="4" placeholder="Enter new password">
+          </div>
+          <button type="button" class="btn btn-primary" style="width: 100%;" id="confirmResetBtn" onclick="confirmPasswordReset()">
+            Save New Password
+          </button>
+        </div>
+
+        <div style="text-align: center; margin-top: 1rem;">
+          <a href="#" onclick="switchAuthView('login')" style="font-size: 0.8rem; color: var(--muted); text-decoration: none;">&larr; Back to Login</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
@@ -653,43 +598,36 @@
       const stored = localStorage.getItem('cm_session');
       if (stored) {
         state.user = JSON.parse(stored);
-        renderTopAuthView();
+        renderNavUser();
         fetchUserShortlists();
-      } else {
-        renderTopAuthView();
       }
     }
 
-    // Switch between Sign In, Sign Up, and Forgot Password at the Top
-    function switchTopAuth(view) {
-      document.getElementById('topLoginForm').style.display = view === 'login' ? 'block' : 'none';
-      document.getElementById('topRegisterForm').style.display = view === 'register' ? 'block' : 'none';
-      document.getElementById('topForgotForm').style.display = view === 'forgot' ? 'block' : 'none';
+    function switchAuthView(view) {
+      document.getElementById('viewLogin').style.display = view === 'login' ? 'block' : 'none';
+      document.getElementById('viewRegister').style.display = view === 'register' ? 'block' : 'none';
+      document.getElementById('viewForgot').style.display = view === 'forgot' ? 'block' : 'none';
+      document.getElementById('authTabsHeader').style.display = view === 'forgot' ? 'none' : 'flex';
 
-      document.getElementById('tabTopLogin').classList.toggle('active', view === 'login');
-      document.getElementById('tabTopRegister').classList.toggle('active', view === 'register');
-      document.getElementById('tabTopForgot').classList.toggle('active', view === 'forgot');
-    }
-
-    function renderTopAuthView() {
-      if (state.user) {
-        document.getElementById('guestAuthBox').style.display = 'none';
-        document.getElementById('userActiveBanner').style.display = 'flex';
-        document.getElementById('welcomeUserName').innerText = state.user.fullName;
-        document.getElementById('welcomeUserEmail').innerText = state.user.email;
-        document.getElementById('userSavedBadge').innerText = state.savedIds.size;
-      } else {
-        document.getElementById('guestAuthBox').style.display = 'block';
-        document.getElementById('userActiveBanner').style.display = 'none';
+      if (view === 'login') {
+        document.getElementById('tabLogin').classList.add('active');
+        document.getElementById('tabRegister').classList.remove('active');
+      } else if (view === 'register') {
+        document.getElementById('tabRegister').classList.add('active');
+        document.getElementById('tabLogin').classList.remove('active');
       }
     }
 
-    // TOP LOGIN ACTION
-    async function handleTopLogin(e) {
+    function openLoginModal() {
+      switchAuthView('login');
+      document.getElementById('authModal').classList.add('active');
+    }
+
+    async function handleUserLoginSubmit(e) {
       e.preventDefault();
-      const email = document.getElementById('topLoginEmail').value.trim();
-      const password = document.getElementById('topLoginPass').value.trim();
-      const btn = document.getElementById('topLoginBtn');
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPass').value.trim();
+      const btn = document.getElementById('loginSubmitBtn');
 
       btn.innerText = "Signing in...";
       btn.disabled = true;
@@ -704,28 +642,28 @@
         if (out.success) {
           state.user = out.user;
           localStorage.setItem('cm_session', JSON.stringify(out.user));
-          renderTopAuthView();
+          renderNavUser();
+          closeModal('authModal');
           fetchUserShortlists();
         } else {
           alert(out.error);
         }
       } catch (err) {
-        alert("Authentication error. Check connection.");
+        alert("Authentication error. Please check your connection.");
       } finally {
-        btn.innerText = "Sign In";
+        btn.innerText = "Sign In & Continue";
         btn.disabled = false;
       }
     }
 
-    // TOP REGISTER ACTION
-    async function handleTopRegister(e) {
+    async function handleUserRegisterSubmit(e) {
       e.preventDefault();
-      const name = document.getElementById('topRegName').value.trim();
-      const email = document.getElementById('topRegEmail').value.trim();
-      const password = document.getElementById('topRegPass').value.trim();
-      const btn = document.getElementById('topRegBtn');
+      const name = document.getElementById('regUserName').value.trim();
+      const email = document.getElementById('regUserEmail').value.trim();
+      const password = document.getElementById('regUserPass').value.trim();
+      const btn = document.getElementById('regUserSubmitBtn');
 
-      btn.innerText = "Registering...";
+      btn.innerText = "Creating Account...";
       btn.disabled = true;
 
       try {
@@ -739,7 +677,8 @@
           alert("Account created successfully!");
           state.user = out.user;
           localStorage.setItem('cm_session', JSON.stringify(out.user));
-          renderTopAuthView();
+          renderNavUser();
+          closeModal('authModal');
           fetchUserShortlists();
         } else {
           alert(out.error);
@@ -747,20 +686,19 @@
       } catch (err) {
         alert("Registration failed.");
       } finally {
-        btn.innerText = "Sign Up";
+        btn.innerText = "Create Account";
         btn.disabled = false;
       }
     }
 
-    // TOP FORGOT PASSWORD STEP 1
-    async function handleTopForgotOtp() {
-      const email = document.getElementById('topForgotEmail').value.trim();
+    async function requestResetOtp() {
+      const email = document.getElementById('forgotEmail').value.trim();
       if (!email) {
-        alert("Please enter your registered email address.");
+        alert("Please enter your registered email.");
         return;
       }
 
-      const btn = document.getElementById('topSendOtpBtn');
+      const btn = document.getElementById('sendOtpBtn');
       btn.innerText = "Sending Code...";
       btn.disabled = true;
 
@@ -773,8 +711,8 @@
         const out = await res.json();
         if (out.success) {
           alert("A 4-digit reset code has been sent to your email.");
-          document.getElementById('topForgotStep1').style.display = 'none';
-          document.getElementById('topForgotStep2').style.display = 'block';
+          document.getElementById('forgotStep1').style.display = 'none';
+          document.getElementById('forgotStep2').style.display = 'block';
         } else {
           alert(out.error);
         }
@@ -786,19 +724,18 @@
       }
     }
 
-    // TOP FORGOT PASSWORD STEP 2
-    async function handleTopResetSave() {
-      const email = document.getElementById('topForgotEmail').value.trim();
-      const otp = document.getElementById('topResetOtp').value.trim();
-      const newPass = document.getElementById('topResetNewPass').value.trim();
+    async function confirmPasswordReset() {
+      const email = document.getElementById('forgotEmail').value.trim();
+      const otp = document.getElementById('resetOtpCode').value.trim();
+      const newPass = document.getElementById('resetNewPass').value.trim();
 
       if (!otp || !newPass) {
-        alert("Please fill in both the code and new password.");
+        alert("Please enter both the code and your new password.");
         return;
       }
 
-      const btn = document.getElementById('topSavePassBtn');
-      btn.innerText = "Saving...";
+      const btn = document.getElementById('confirmResetBtn');
+      btn.innerText = "Updating...";
       btn.disabled = true;
 
       try {
@@ -810,19 +747,33 @@
         const out = await res.json();
         if (out.success) {
           alert(out.message);
-          document.getElementById('topForgotStep1').style.display = 'block';
-          document.getElementById('topForgotStep2').style.display = 'none';
-          document.getElementById('topResetOtp').value = '';
-          document.getElementById('topResetNewPass').value = '';
-          switchTopAuth('login');
+          document.getElementById('forgotStep1').style.display = 'block';
+          document.getElementById('forgotStep2').style.display = 'none';
+          document.getElementById('resetOtpCode').value = '';
+          document.getElementById('resetNewPass').value = '';
+          switchAuthView('login');
         } else {
           alert(out.error);
         }
       } catch (err) {
-        alert("Failed to update password.");
+        alert("Reset failed.");
       } finally {
-        btn.innerText = "Save Password";
+        btn.innerText = "Save New Password";
         btn.disabled = false;
+      }
+    }
+
+    function renderNavUser() {
+      const container = document.getElementById('authActions');
+      if (state.user) {
+        container.innerHTML = `
+          <div class="user-pill">
+            <span style="font-size: 0.8rem; font-weight: 600; padding: 0 0.5rem;">${state.user.fullName.split(' ')[0]}</span>
+          </div>
+          <button class="btn btn-ghost" onclick="signOut()">Sign Out</button>
+        `;
+      } else {
+        container.innerHTML = `<button class="btn btn-primary" onclick="openLoginModal()">Sign In</button>`;
       }
     }
 
@@ -830,7 +781,7 @@
       localStorage.removeItem('cm_session');
       state.user = null;
       state.savedIds.clear();
-      renderTopAuthView();
+      renderNavUser();
       renderProfileList();
     }
 
@@ -855,9 +806,6 @@
         if (data.success) {
           state.savedIds = new Set(data.profileIds);
           document.getElementById('savedCounter').innerText = state.savedIds.size;
-          if (document.getElementById('userSavedBadge')) {
-            document.getElementById('userSavedBadge').innerText = state.savedIds.size;
-          }
           renderProfileList();
         }
       } catch (err) {
@@ -978,8 +926,8 @@
 
     async function toggleShortlistRecord(profileId) {
       if (!state.user) {
-        alert("Please sign in or create an account using the box at the top to save profiles.");
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        alert("Please sign in to save profiles.");
+        openLoginModal();
         return;
       }
 
@@ -989,9 +937,6 @@
         state.savedIds.add(profileId);
       }
       renderProfileList();
-      if (document.getElementById('userSavedBadge')) {
-        document.getElementById('userSavedBadge').innerText = state.savedIds.size;
-      }
 
       try {
         await fetch(API_ENDPOINT, {
@@ -1137,7 +1082,7 @@
         });
         const out = await res.json();
         if (out.success) {
-          alert("Payment screenshot uploaded directly! The administration will review your receipt and activate your profile.");
+          alert("Payment screenshot uploaded directly! The administration will verify your receipt and make your profile live.");
           closeModal('paymentModal');
           document.getElementById('payUtrNumber').value = "";
           document.getElementById('payScreenshotFile').value = "";
