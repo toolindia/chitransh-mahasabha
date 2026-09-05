@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administrative Operations - Matrimonial Network</title>
+  <title>Administrative Desk - Matrimonial Network</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -151,11 +151,11 @@
 
   <header>
     <div>
-      <h2 style="font-size: 1.25rem; color: var(--primary);">Administrative Operations</h2>
-      <p style="font-size: 0.8rem; color: var(--muted);">Candidate Management & Communication Center</p>
+      <h2 style="font-size: 1.25rem; color: var(--primary);">Administrative Desk</h2>
+      <p style="font-size: 0.8rem; color: var(--muted);">Candidate Database & Operations Control</p>
     </div>
     <div style="display: flex; gap: 0.5rem; align-items: center;">
-      <input type="password" id="adminPin" placeholder="Enter Administrative PIN" class="input-field">
+      <input type="password" id="adminPin" placeholder="Administrative PIN" class="input-field">
       <button class="btn btn-primary" onclick="loadProfiles()">Authenticate</button>
     </div>
   </header>
@@ -196,7 +196,7 @@
         <tbody id="tableBody">
           <tr>
             <td colspan="9" style="text-align: center; padding: 2rem; color: var(--muted);">
-              Authenticate using your PIN to query and manage candidate records.
+              Authenticate using your PIN to query candidate records.
             </td>
           </tr>
         </tbody>
@@ -208,7 +208,7 @@
   <div class="modal-overlay" id="emailModal">
     <div class="modal-box">
       <h3 style="margin-bottom: 0.5rem;">Distribute Profiles via Email</h3>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Send structured biodata summaries to matching candidates or representatives.</p>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Send structured biodata summaries directly to matching candidates or representatives.</p>
       
       <label style="font-size: 0.75rem; font-weight: 700;">Recipient Addresses (Comma Separated)</label>
       <input type="text" id="emailRecipients" class="input-field" style="width: 100%; margin: 0.35rem 0 1rem 0;" placeholder="client1@domain.com, client2@domain.com">
@@ -224,7 +224,7 @@
   </div>
 
   <script>
-    const API_ENDPOINT = "https://script.google.com/macros/s/YOUR_DEPLOYED_APP_SCRIPT_ID/exec";
+    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
     let records = [];
     let visibleRecords = [];
@@ -335,12 +335,12 @@
           filterProfiles();
         }
       } catch (err) {
-        alert("Failed to update profile status.");
+        alert("Failed to update status.");
       }
     }
 
     async function softDeleteRecord(profileId) {
-      if (!confirm("Are you sure you want to deactivate this record? It will be removed from public view but preserved in the database.")) return;
+      if (!confirm("Are you sure you want to soft delete this profile? It will be removed from public view but retained in database history.")) return;
       const pin = document.getElementById('adminPin').value;
 
       try {
@@ -359,7 +359,7 @@
           filterProfiles();
         }
       } catch (err) {
-        alert("Operation failure.");
+        alert("Deletion failed.");
       }
     }
 
@@ -407,7 +407,7 @@
       const selected = records.filter(p => getSelectedIds().includes(p.id));
 
       if (recipients.length === 0) {
-        alert("At least one valid recipient address is required.");
+        alert("At least one recipient address is required.");
         return;
       }
 
