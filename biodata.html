@@ -242,8 +242,10 @@
       <p id="portalSubheader">Candidate Biodata Submission Portal</p>
     </div>
 
+    <!-- MAIN BIODATA FORM -->
     <form id="biodataForm" onsubmit="submitBiodata(event)">
       
+      <!-- MEMBERSHIP PLAN SELECTOR -->
       <div id="planSelectionSection">
         <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Tier</label>
         <div class="membership-tier-container">
@@ -308,11 +310,11 @@
       <div class="form-row-2">
         <div class="form-group">
           <label>Highest Qualification *</label>
-          <input type="text" id="education" required placeholder="e.g. B.Tech / MBA / MBBS">
+          <select id="education" required></select>
         </div>
         <div class="form-group">
           <label>Occupation / Profession *</label>
-          <input type="text" id="profession" required placeholder="e.g. Software Engineer / Govt Officer">
+          <select id="profession" required></select>
         </div>
       </div>
 
@@ -321,7 +323,36 @@
         <input type="text" id="income" required placeholder="e.g. 12 LPA / ₹10 Lakhs PA">
       </div>
 
-      <div class="section-title">3. Location & Confidential Contact</div>
+      <div class="section-title">3. Parental & Family Background</div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Father's Name *</label>
+          <input type="text" id="fatherName" required placeholder="Father's Full Name">
+        </div>
+        <div class="form-group">
+          <label>Father's Occupation *</label>
+          <select id="fatherOccupation" required></select>
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Mother's Name *</label>
+          <input type="text" id="motherName" required placeholder="Mother's Full Name">
+        </div>
+        <div class="form-group">
+          <label>Mother's Occupation *</label>
+          <select id="motherOccupation" required></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Other Family Details</label>
+        <textarea id="familyDetails" rows="2" placeholder="Siblings, native place, family status, etc."></textarea>
+      </div>
+
+      <div class="section-title">4. Location & Confidential Contact</div>
 
       <div class="form-row-2">
         <div class="form-group">
@@ -360,7 +391,7 @@
         </div>
       </div>
 
-      <div class="section-title">4. Family, Preferences & Photo</div>
+      <div class="section-title">5. Preferences & Photograph</div>
 
       <div class="form-group">
         <label>Upload Candidate Photograph *</label>
@@ -368,11 +399,6 @@
         <div id="photoPreviewBox" class="preview-box">
           <img id="photoPreviewImg" class="preview-img" src="" alt="Preview">
         </div>
-      </div>
-
-      <div class="form-group">
-        <label>Family Background</label>
-        <textarea id="familyDetails" rows="2" placeholder="Summary of parents, siblings, native place, and background"></textarea>
       </div>
 
       <div class="form-group">
@@ -387,6 +413,7 @@
     </form>
   </div>
 
+  <!-- STEP 2A: DYNAMIC UPI PAYMENT MODAL (If Paid Mode Active) -->
   <div class="modal-overlay" id="paymentModal">
     <div class="modal-card">
       <h2 style="font-size: 1.3rem; color: var(--primary); margin-bottom: 0.25rem;">Verify & Activate Profile</h2>
@@ -428,6 +455,7 @@
     </div>
   </div>
 
+  <!-- STEP 2B: FREE MODE CONFIRMATION MODAL (If Free Mode Active) -->
   <div class="modal-overlay" id="freeSuccessModal">
     <div class="modal-card" style="padding: 2.5rem 1.5rem;">
       <h2 style="color: var(--success); font-size: 1.5rem; margin-bottom: 0.4rem;">Biodata Submitted!</h2>
@@ -443,6 +471,21 @@
 
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
+
+    const EDUCATION_OPTIONS = [
+      "10th", "12th", "Diploma", "ITI", "B.A.", "B.Com", "B.Sc.", "B.Tech / B.E.",
+      "BCA", "BBA", "M.A.", "M.Com", "M.Sc.", "MCA", "MBA", "M.Tech", "M.E.",
+      "MBBS", "BDS", "LLB", "LLM", "PhD", "Other"
+    ];
+
+    const OCCUPATION_OPTIONS = [
+      "Software Engineer / IT Professional", "Doctor", "Dentist", "Engineer",
+      "Teacher / Professor", "Government Employee", "Civil Services", "Chartered Accountant",
+      "Lawyer", "Architect", "Business Owner / Entrepreneur", "Banking / Finance Professional",
+      "Consultant", "Marketing / Sales Professional", "HR Professional", "Designer",
+      "Researcher / Scientist", "Defence / Armed Forces", "Police", "Freelancer",
+      "Homemaker", "Retired", "Student", "Other"
+    ];
 
     const LOCATION_DATA = {
       "Uttar Pradesh": ["Ghaziabad", "Noida", "Lucknow", "Kanpur", "Varanasi", "Prayagraj", "Agra", "Meerut", "Bareilly", "Gorakhpur", "Aligarh", "Moradabad", "Other"],
@@ -475,9 +518,26 @@
     };
 
     window.addEventListener('DOMContentLoaded', () => {
+      initDropdownOptions();
       initLocationDropdown();
       fetchLiveSettings();
     });
+
+    function initDropdownOptions() {
+      populateSelect('education', EDUCATION_OPTIONS, 'Select Qualification');
+      populateSelect('profession', OCCUPATION_OPTIONS, 'Select Occupation');
+      populateSelect('fatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
+      populateSelect('motherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
+    }
+
+    function populateSelect(elemId, options, defaultPlaceholder) {
+      const el = document.getElementById(elemId);
+      if (!el) return;
+      el.innerHTML = defaultPlaceholder ? `<option value="">${defaultPlaceholder}</option>` : '';
+      options.forEach(opt => {
+        el.innerHTML += `<option value="${opt}">${opt}</option>`;
+      });
+    }
 
     async function fetchLiveSettings() {
       try {
@@ -633,8 +693,8 @@
         age: parseInt(document.getElementById('age').value),
         height: document.getElementById('height').value.trim(),
         maritalStatus: document.getElementById('maritalStatus').value,
-        education: document.getElementById('education').value.trim(),
-        profession: document.getElementById('profession').value.trim(),
+        education: document.getElementById('education').value,
+        profession: document.getElementById('profession').value,
         annualIncome: document.getElementById('income').value.trim(),
         city: cityVal,
         state: stateVal,
@@ -643,6 +703,10 @@
         imageBase64: candidateBase64,
         email: document.getElementById('email').value.trim(),
         phone: document.getElementById('phone').value.trim(),
+        fatherName: document.getElementById('fatherName').value.trim(),
+        fatherOccupation: document.getElementById('fatherOccupation').value,
+        motherName: document.getElementById('motherName').value.trim(),
+        motherOccupation: document.getElementById('motherOccupation').value,
         familyDetails: document.getElementById('familyDetails').value.trim(),
         partnerPreferences: document.getElementById('partnerPreferences').value.trim(),
         membershipPlan: systemSettings.isFreeRegistration ? "Free" : selectedPlan
@@ -659,11 +723,9 @@
           savedProfileId = out.profileId;
 
           if (out.isFree) {
-            // Free Registration route
             document.getElementById('freeAssignedProfileId').innerText = savedProfileId;
             document.getElementById('freeSuccessModal').classList.add('active');
           } else {
-            // Paid Membership QR route
             document.getElementById('assignedProfileId').innerText = savedProfileId;
             document.getElementById('assignedPlanDisplay').innerText = `${out.plan} Plan`;
             document.getElementById('displayPayAmount').innerText = `₹${out.paymentAmount}`;
