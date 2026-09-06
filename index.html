@@ -98,14 +98,7 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Filter & Search Wrapper with Header Anchor */
-    .filter-wrapper { 
-      max-width: 1200px; 
-      margin: 1rem auto 1rem auto; 
-      padding: 0 1rem; 
-      position: relative; 
-    }
-    
+    .filter-wrapper { max-width: 1200px; margin: 1rem auto 1rem auto; padding: 0 1rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
     
     .search-action-row {
@@ -165,7 +158,6 @@
     .profile-meta-line { font-size: 0.82rem; color: var(--muted); }
     .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--dark); width: fit-content; }
 
-    /* HEADER-ANCHORED POPUP UI STYLES */
     .modal-overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -278,30 +270,30 @@
     }
   </style>
 </head>
-<body>
+<body onclick="checkPageInteraction(event)">
 
-  <header class="portal-header-bar" onclick="checkHeaderAuth(event)">
+  <header class="portal-header-bar">
     <div class="brand-title">Chitransh<span>Mahasabha</span></div>
     <div class="header-right-actions">
-      <button class="btn btn-outline" onclick="guardedAction(() => openRegistrationModal())">Register Profile</button>
+      <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
       <div id="authActions">
         <button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>
       </div>
     </div>
   </header>
 
-  <div class="filter-wrapper" onclick="checkHeaderAuth(event)">
+  <div class="filter-wrapper">
     <div class="filter-container">
       <div class="search-action-row">
-        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onkeydown="if(event.key==='Enter') guardedAction(() => applyFilters())" onfocus="checkGuestGate()" style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
-        <button class="btn btn-primary" style="min-height: 40px;" onclick="guardedAction(() => applyFilters())">Search</button>
-        <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
+        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
+        <button class="btn btn-primary" style="min-height: 40px;" onclick="applyFilters()">Search</button>
+        <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="toggleFilterDrawer()">Filters ▾</button>
       </div>
 
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label>Gender</label>
-          <select id="filterGender" onchange="guardedAction(() => applyFilters())">
+          <select id="filterGender" onchange="applyFilters()">
             <option value="">All Genders</option>
             <option value="Female">Female</option>
             <option value="Male">Male</option>
@@ -310,7 +302,7 @@
 
         <div class="filter-control">
           <label>Age Bracket</label>
-          <select id="filterAge" onchange="guardedAction(() => applyFilters())">
+          <select id="filterAge" onchange="applyFilters()">
             <option value="">Any Age</option>
             <option value="21-25">21 - 25</option>
             <option value="26-30">26 - 30</option>
@@ -321,7 +313,7 @@
 
         <div class="filter-control">
           <label>Marital Status</label>
-          <select id="filterMarital" onchange="guardedAction(() => applyFilters())">
+          <select id="filterMarital" onchange="applyFilters()">
             <option value="">Any Status</option>
             <option value="Never Married">Never Married</option>
             <option value="Divorced">Divorced</option>
@@ -331,21 +323,21 @@
 
         <div class="filter-control">
           <label>Education</label>
-          <select id="filterEducation" onchange="guardedAction(() => applyFilters())">
+          <select id="filterEducation" onchange="applyFilters()">
             <option value="">All Qualifications</option>
           </select>
         </div>
 
         <div class="filter-control">
           <label>Profession</label>
-          <select id="filterProfession" onchange="guardedAction(() => applyFilters())">
+          <select id="filterProfession" onchange="applyFilters()">
             <option value="">All Occupations</option>
           </select>
         </div>
 
         <div class="filter-control">
           <label>Min Height</label>
-          <select id="filterHeight" onchange="guardedAction(() => applyFilters())">
+          <select id="filterHeight" onchange="applyFilters()">
             <option value="">Any Height</option>
             <option value="5.0">Above 5'0"</option>
             <option value="5.4">Above 5'4"</option>
@@ -355,7 +347,7 @@
         </div>
 
         <div class="filter-control">
-          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="guardedAction(() => resetFilters())">Reset Filters</button>
+          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="resetFilters()">Reset Filters</button>
         </div>
       </div>
     </div>
@@ -368,8 +360,8 @@
         <p style="font-size: 0.78rem; color: var(--muted);" id="profileCounter">Connecting to database...</p>
       </div>
       <div style="display: flex; gap: 0.4rem;">
-        <button class="btn btn-outline" id="tabAll" onclick="guardedAction(() => switchCatalogMode('all'))">All</button>
-        <button class="btn btn-ghost" id="tabSaved" onclick="guardedAction(() => switchCatalogMode('saved'))">Saved (<span id="savedCounter">0</span>)</button>
+        <button class="btn btn-outline" id="tabAll" onclick="switchCatalogMode('all')">All</button>
+        <button class="btn btn-ghost" id="tabSaved" onclick="switchCatalogMode('saved')">Saved (<span id="savedCounter">0</span>)</button>
       </div>
     </div>
 
@@ -818,6 +810,20 @@
       fetchActiveProfiles();
     });
 
+    // INTERACTION & SCROLL LOCK GATE
+    function checkPageInteraction(e) {
+      if (!state.user) {
+        // If user clicks anywhere on the page while logged out, trigger popup
+        triggerInstantGuestLock();
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!state.user) {
+        triggerInstantGuestLock();
+      }
+    }, { passive: true });
+
     function triggerInstantGuestLock() {
       if (state.user) return;
       openLoginModal('login');
@@ -826,29 +832,6 @@
         err.innerText = "Please Sign In or Register to view directory profiles.";
         err.style.display = "block";
       }
-    }
-
-    function checkGuestGate() {
-      if (!state.user) {
-        triggerInstantGuestLock();
-        return false;
-      }
-      return true;
-    }
-
-    function checkHeaderAuth(e) {
-      if (!state.user) {
-        e.stopPropagation();
-        triggerInstantGuestLock();
-      }
-    }
-
-    function guardedAction(callback) {
-      if (!state.user) {
-        triggerInstantGuestLock();
-        return;
-      }
-      if (callback) callback();
     }
 
     function initDropdownOptions() {
@@ -1330,10 +1313,10 @@
         const isRestricted = (!state.user && idx >= 2);
 
         return `
-          <div class="profile-card ${isRestricted ? 'guest-restricted-blur' : ''}" onclick="guardedAction(() => openContextualBiodata('${p.id}'))">
+          <div class="profile-card ${isRestricted ? 'guest-restricted-blur' : ''}">
             <div class="profile-img-container">
               <img class="profile-img" src="${photoSrc}" alt="${p.fullName}">
-              <button class="shortlist-tag-btn ${isSaved ? 'active' : ''}" onclick="event.stopPropagation(); guardedAction(() => toggleShortlistRecord('${p.id}'))">
+              <button class="shortlist-tag-btn ${isSaved ? 'active' : ''}" onclick="event.stopPropagation(); toggleShortlistRecord('${p.id}')">
                 ${isSaved ? 'SAVED' : 'SAVE'}
               </button>
             </div>
@@ -1348,7 +1331,7 @@
               <span class="profile-badge">${p.city}, ${p.state}</span>
               
               <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
-                <button class="btn btn-outline" style="flex: 1;" onclick="event.stopPropagation(); guardedAction(() => openContextualBiodata('${p.id}'))">View Biodata</button>
+                <button class="btn btn-outline" style="flex: 1;" onclick="openContextualBiodata('${p.id}')">View Biodata</button>
               </div>
             </div>
           </div>
