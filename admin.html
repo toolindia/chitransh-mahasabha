@@ -186,6 +186,48 @@
       border: 1px solid var(--border); background-color: var(--bg); font-size: 0.82rem; outline: none;
     }
 
+    /* Password Input with Eye */
+    .password-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+    .password-input-wrapper input {
+      width: 100%;
+      height: 42px;
+      padding: 0.6rem 2.4rem 0.6rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      text-align: center;
+      font-size: 1rem;
+      outline: none;
+    }
+    .toggle-password-btn {
+      position: absolute;
+      right: 0.65rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+    }
+
+    .auth-error-box {
+      display: none;
+      background-color: #FCE8E6;
+      border: 1px solid #D93025;
+      color: #C5221F;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.85rem;
+      text-align: center;
+    }
+
     .profile-card {
       background: var(--white); border: 1px solid var(--border);
       border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.15rem;
@@ -262,8 +304,8 @@
     </div>
   </div>
 
-  <!-- Contextual Edit Modal -->
-  <div id="contextEditCard" class="contextual-card" style="width: 95%; max-width: 580px;">
+  <!-- Contextual Edit Modal with Parent Background Details -->
+  <div id="contextEditCard" class="contextual-card" style="width: 95%; max-width: 620px;">
     <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
     <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Edit Candidate Details</h3>
@@ -315,11 +357,11 @@
       <div class="form-row-2">
         <div class="form-group">
           <label>Highest Education *</label>
-          <input type="text" id="editEducation" required>
+          <select id="editEducation" required></select>
         </div>
         <div class="form-group">
-          <label>Profession *</label>
-          <input type="text" id="editProfession" required>
+          <label>Profession / Occupation *</label>
+          <select id="editProfession" required></select>
         </div>
       </div>
 
@@ -349,6 +391,38 @@
         <input type="text" id="editAddress" required>
       </div>
 
+      <!-- PARENT BACKGROUND SECTION -->
+      <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">
+        Parental & Family Background
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Father's Name</label>
+          <input type="text" id="editFatherName">
+        </div>
+        <div class="form-group">
+          <label>Father's Occupation</label>
+          <select id="editFatherOccupation"></select>
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Mother's Name</label>
+          <input type="text" id="editMotherName">
+        </div>
+        <div class="form-group">
+          <label>Mother's Occupation</label>
+          <select id="editMotherOccupation"></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Other Family Details</label>
+        <textarea id="editFamily" rows="2"></textarea>
+      </div>
+
       <div class="form-row-2">
         <div class="form-group">
           <label>Email Address *</label>
@@ -363,11 +437,6 @@
       <div class="form-group">
         <label>Update Photo (Leave blank to keep current)</label>
         <input type="file" id="editPhotoFile" accept="image/*" onchange="handleAdminEditPhoto(event)">
-      </div>
-
-      <div class="form-group">
-        <label>Family Details</label>
-        <textarea id="editFamily" rows="2"></textarea>
       </div>
 
       <div class="form-group">
@@ -481,19 +550,26 @@
     </div>
   </div>
 
-  <!-- PIN Unlock Gate -->
+  <!-- PIN Unlock Gate with Show/Hide Eye and Explicit Error -->
   <div id="authOverlay" class="modal-overlay active">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;">Admin Desk</h2>
       <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.2rem;">Enter administrator PIN to unlock controls.</p>
-      <input type="password" id="adminPinInput" placeholder="Enter PIN" onkeydown="if(event.key==='Enter') unlockAdminPortal()" style="width: 100%; height: 44px; padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; text-align: center; font-size: 1.1rem; outline: none;">
+
+      <div id="adminPinErrorAlert" class="auth-error-box"></div>
+
+      <div class="password-input-wrapper">
+        <input type="password" id="adminPinInput" placeholder="Enter PIN" onkeydown="if(event.key==='Enter') unlockAdminPortal()">
+        <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('adminPinInput', this)">👁</button>
+      </div>
+
       <button class="btn btn-primary" style="width: 100%; min-height: 44px;" onclick="unlockAdminPortal()">Unlock Dashboard</button>
     </div>
   </div>
 
-  <!-- Add Member Modal -->
+  <!-- Direct Candidate Enrolment Modal -->
   <div class="modal-overlay" id="addMemberModal">
-    <div class="auth-box" style="max-width: 600px; text-align: left; position: relative;">
+    <div class="auth-box" style="max-width: 620px; text-align: left; position: relative;">
       <button class="close-btn" onclick="closeModal('addMemberModal')">&times;</button>
       <h3 style="margin-bottom: 0.25rem;">Direct Candidate Enrolment</h3>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Directly add candidates with automated verified status.</p>
@@ -542,11 +618,11 @@
         <div class="form-row-2">
           <div class="form-group">
             <label>Highest Education *</label>
-            <input type="text" id="addEducation" required placeholder="Degree / Qualification">
+            <select id="addEducation" required></select>
           </div>
           <div class="form-group">
-            <label>Profession *</label>
-            <input type="text" id="addProfession" required placeholder="Occupation">
+            <label>Profession / Occupation *</label>
+            <select id="addProfession" required></select>
           </div>
         </div>
 
@@ -576,6 +652,38 @@
           <input type="text" id="addAddress" required placeholder="Residential details">
         </div>
 
+        <!-- PARENT & FAMILY BACKGROUND SECTION -->
+        <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">
+          Parental & Family Background
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Father's Name *</label>
+            <input type="text" id="addFatherName" required placeholder="Father's Full Name">
+          </div>
+          <div class="form-group">
+            <label>Father's Occupation *</label>
+            <select id="addFatherOccupation" required></select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Mother's Name *</label>
+            <input type="text" id="addMotherName" required placeholder="Mother's Full Name">
+          </div>
+          <div class="form-group">
+            <label>Mother's Occupation *</label>
+            <select id="addMotherOccupation" required></select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Other Family Details</label>
+          <textarea id="addFamily" rows="2" placeholder="Siblings, native place, background, etc."></textarea>
+        </div>
+
         <div class="form-row-2">
           <div class="form-group">
             <label>Email Address *</label>
@@ -590,11 +698,6 @@
         <div class="form-group">
           <label>Candidate Photo *</label>
           <input type="file" id="addPhotoFile" accept="image/*" required onchange="handleAdminAddPhoto(event)">
-        </div>
-
-        <div class="form-group">
-          <label>Family Details</label>
-          <textarea id="addFamily" rows="2" placeholder="Family background"></textarea>
         </div>
 
         <div class="form-group">
@@ -693,6 +796,21 @@
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
+    const EDUCATION_OPTIONS = [
+      "10th", "12th", "Diploma", "ITI", "B.A.", "B.Com", "B.Sc.", "B.Tech / B.E.",
+      "BCA", "BBA", "M.A.", "M.Com", "M.Sc.", "MCA", "MBA", "M.Tech", "M.E.",
+      "MBBS", "BDS", "LLB", "LLM", "PhD", "Other"
+    ];
+
+    const OCCUPATION_OPTIONS = [
+      "Software Engineer / IT Professional", "Doctor", "Dentist", "Engineer",
+      "Teacher / Professor", "Government Employee", "Civil Services", "Chartered Accountant",
+      "Lawyer", "Architect", "Business Owner / Entrepreneur", "Banking / Finance Professional",
+      "Consultant", "Marketing / Sales Professional", "HR Professional", "Designer",
+      "Researcher / Scientist", "Defence / Armed Forces", "Police", "Freelancer",
+      "Homemaker", "Retired", "Student", "Other"
+    ];
+
     const LOCATION_DATA = {
       "Uttar Pradesh": ["Ghaziabad", "Noida", "Lucknow", "Kanpur", "Varanasi", "Prayagraj", "Agra", "Meerut", "Bareilly", "Gorakhpur", "Aligarh", "Moradabad", "Other"],
       "Delhi NCR": ["Central Delhi", "East Delhi", "New Delhi", "North Delhi", "South Delhi", "West Delhi", "Gurugram", "Faridabad", "Other"],
@@ -735,6 +853,17 @@
       el.style.background = isErr ? "#C5221F" : "#137333";
       el.style.display = "block";
       setTimeout(() => { el.style.display = "none"; }, 3500);
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerText = '🙈';
+      } else {
+        input.type = 'password';
+        btn.innerText = '👁';
+      }
     }
 
     function toggleMobileFilters() {
@@ -793,10 +922,31 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      initDropdownOptions();
       initLocationDropdown('addState');
       initLocationDropdown('editState');
       initAdminFilterStates();
     });
+
+    function initDropdownOptions() {
+      populateSelect('addEducation', EDUCATION_OPTIONS, 'Select Qualification');
+      populateSelect('addProfession', OCCUPATION_OPTIONS, 'Select Occupation');
+      populateSelect('addFatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
+      populateSelect('addMotherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
+      populateSelect('editEducation', EDUCATION_OPTIONS, 'Select Qualification');
+      populateSelect('editProfession', OCCUPATION_OPTIONS, 'Select Occupation');
+      populateSelect('editFatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
+      populateSelect('editMotherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
+    }
+
+    function populateSelect(elemId, options, defaultPlaceholder) {
+      const el = document.getElementById(elemId);
+      if (!el) return;
+      el.innerHTML = defaultPlaceholder ? `<option value="">${defaultPlaceholder}</option>` : '';
+      options.forEach(opt => {
+        el.innerHTML += `<option value="${opt}">${opt}</option>`;
+      });
+    }
 
     function initLocationDropdown(selId) {
       const stateSel = document.getElementById(selId);
@@ -892,21 +1042,43 @@
       reader.readAsDataURL(file);
     }
 
-    function unlockAdminPortal() {
+    async function unlockAdminPortal() {
+      const errorBox = document.getElementById('adminPinErrorAlert');
+      errorBox.style.display = 'none';
+      errorBox.innerText = '';
+
       const pin = document.getElementById('adminPinInput').value.trim();
       if (!pin) {
-        showNotice("Please enter PIN.", true);
+        errorBox.innerText = "Please enter Admin PIN.";
+        errorBox.style.display = 'block';
         return;
       }
-      adminState.pin = pin;
-      document.getElementById('authOverlay').classList.remove('active');
-      fetchAdminProfiles();
+
+      try {
+        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(pin)}&_nocache=${new Date().getTime()}`);
+        const data = await res.json();
+        if (data.success) {
+          adminState.pin = pin;
+          adminState.profiles = data.profiles;
+          if (data.settings) adminState.settings = data.settings;
+          document.getElementById('authOverlay').classList.remove('active');
+          updateTabCounts();
+          executeAdminSearch();
+        } else {
+          errorBox.innerText = "Incorrect Admin PIN. Please try again.";
+          errorBox.style.display = 'block';
+        }
+      } catch (err) {
+        errorBox.innerText = "Connection error. Please try again.";
+        errorBox.style.display = 'block';
+      }
     }
 
     function lockPortal() {
       adminState.pin = "";
       document.getElementById('authOverlay').classList.add('active');
       document.getElementById('adminPinInput').value = "";
+      document.getElementById('adminPinErrorAlert').style.display = 'none';
     }
 
     async function triggerManualRefresh() {
@@ -1073,6 +1245,14 @@
                 <span class="data-val">${p.city}, ${p.state}</span>
               </div>
               <div class="data-cell">
+                <span class="data-label">Father</span>
+                <span class="data-val">${p.fatherName ? p.fatherName + ' (' + (p.fatherOccupation || 'N/A') + ')' : 'N/A'}</span>
+              </div>
+              <div class="data-cell">
+                <span class="data-label">Mother</span>
+                <span class="data-val">${p.motherName ? p.motherName + ' (' + (p.motherOccupation || 'N/A') + ')' : 'N/A'}</span>
+              </div>
+              <div class="data-cell">
                 <span class="data-label">Phone</span>
                 <span class="data-val"><a href="tel:${p.phone}">${p.phone}</a></span>
               </div>
@@ -1217,6 +1397,10 @@
               <th>Education</th>
               <th>Profession</th>
               <th>Annual Income</th>
+              <th>Father Name</th>
+              <th>Father Occupation</th>
+              <th>Mother Name</th>
+              <th>Mother Occupation</th>
               <th>Phone</th>
               <th>Email</th>
               <th>City</th>
@@ -1226,7 +1410,7 @@
               <th>Payment Status</th>
               <th>Payment UTR</th>
               <th>Fee Amount</th>
-              <th>Family Details</th>
+              <th>Other Family Details</th>
               <th>Partner Preferences</th>
             </tr>
       `;
@@ -1248,6 +1432,10 @@
             <td>${p.education || ''}</td>
             <td>${p.profession || ''}</td>
             <td>${p.annualIncome || ''}</td>
+            <td>${p.fatherName || ''}</td>
+            <td>${p.fatherOccupation || ''}</td>
+            <td>${p.motherName || ''}</td>
+            <td>${p.motherOccupation || ''}</td>
             <td>${p.phone || ''}</td>
             <td>${p.email || ''}</td>
             <td>${p.city || ''}</td>
@@ -1418,6 +1606,10 @@
       document.getElementById('editAddress').value = p.exactAddress || "";
       document.getElementById('editEmail').value = p.email || "";
       document.getElementById('editPhone').value = p.phone || "";
+      document.getElementById('editFatherName').value = p.fatherName || "";
+      document.getElementById('editFatherOccupation').value = p.fatherOccupation || "";
+      document.getElementById('editMotherName').value = p.motherName || "";
+      document.getElementById('editMotherOccupation').value = p.motherOccupation || "";
       document.getElementById('editFamily').value = p.familyDetails || "";
       document.getElementById('editPreferences').value = p.partnerPreferences || "";
 
@@ -1446,8 +1638,8 @@
         age: parseInt(document.getElementById('editAge').value),
         height: document.getElementById('editHeight').value.trim(),
         maritalStatus: document.getElementById('editMarital').value,
-        education: document.getElementById('editEducation').value.trim(),
-        profession: document.getElementById('editProfession').value.trim(),
+        education: document.getElementById('editEducation').value,
+        profession: document.getElementById('editProfession').value,
         annualIncome: document.getElementById('editIncome').value.trim(),
         state: stateVal,
         city: cityVal,
@@ -1455,6 +1647,10 @@
         exactAddress: document.getElementById('editAddress').value.trim(),
         email: document.getElementById('editEmail').value.trim(),
         phone: document.getElementById('editPhone').value.trim(),
+        fatherName: document.getElementById('editFatherName').value.trim(),
+        fatherOccupation: document.getElementById('editFatherOccupation').value,
+        motherName: document.getElementById('editMotherName').value.trim(),
+        motherOccupation: document.getElementById('editMotherOccupation').value,
         familyDetails: document.getElementById('editFamily').value.trim(),
         partnerPreferences: document.getElementById('editPreferences').value.trim()
       };
@@ -1543,6 +1739,7 @@
       return selected;
     }
 
+    // UPDATED WHATSAPP MESSAGE FORMAT
     function sendSelectedMatchesViaWhatsApp() {
       const client = adminState.activeMatchClient;
       if (!client || !client.phone) {
@@ -1559,27 +1756,24 @@
       let cleanPhone = client.phone.toString().replace(/[^0-9]/g, '');
       if (cleanPhone.length === 10) cleanPhone = "91" + cleanPhone;
 
-      let msg = `*KAYASTHA VIVAH PATRIKA*\n`;
-      msg += `*शुभ विवाह | दो परिवारों का पवित्र बंधन*\n\n`;
+      let msg = `*KAYASTHA VIVAH PATRIKA*\n\n`;
       msg += `Namaste ${client.fullName},\n`;
       msg += `Aapke anuroop chune gaye sambandhon ka vivaran:\n\n`;
 
       selected.forEach((m, idx) => {
         msg += `*${idx + 1}. ${m.fullName}* (ID: ${m.id})\n`;
-        msg += `• Age / Height: ${m.age} Yrs, ${m.height || 'N/A'}\n`;
-        msg += `• Education: ${m.education}\n`;
-        msg += `• Profession: ${m.profession}\n`;
-        msg += `• Location: ${m.city}, ${m.state}\n\n`;
+        msg += `* Age / Height: ${m.age} Yrs, ${m.height || 'N/A'}\n`;
+        msg += `* Education: ${m.education}\n`;
+        msg += `* Profession: ${m.profession}\n`;
+        msg += `* Location: ${m.city}, ${m.state}\n\n`;
       });
 
-      msg += `_Candidate contact numbers & residential addresses are withheld for privacy. Contact desk quoting Profile ID._\n`;
-      msg += `*TRADITION | VALUES | TOGETHERNESS*`;
+      msg += `_Candidate contact numbers & other confidential details are withheld for privacy. Contact Ghaziabad Chitransh Mahasabha desk quoting Profile ID._`;
 
       const waUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`;
       window.open(waUrl, '_blank') || (window.location.href = waUrl);
     }
 
-    // COMPLETE BIODATA PDF (CENTERED ROYAL A4 LAYOUT WITH FULL CANDIDATE DETAILS)
     function exportSanitizedMatchPdf() {
       const client = adminState.activeMatchClient;
       const selected = getSelectedMatchedCandidates();
@@ -1648,8 +1842,13 @@
             </div>
           </div>
 
-          <div style="font-size: 12px; color: #2B2321; margin-bottom: 10px;">
+          <div style="font-size: 12px; color: #2B2321; margin-bottom: 8px;">
             <strong style="color: #800020;">&#128205; Location:</strong> ${m.city}, ${m.state}, ${m.country || 'India'}
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11.5px; color: #2B2321; background: #FFF8EE; padding: 8px 12px; border-radius: 6px; margin-bottom: 8px;">
+            <div><strong style="color: #800020;">Father:</strong> ${m.fatherName ? m.fatherName + ' (' + (m.fatherOccupation || 'N/A') + ')' : 'On Record'}</div>
+            <div><strong style="color: #800020;">Mother:</strong> ${m.motherName ? m.motherName + ' (' + (m.motherOccupation || 'N/A') + ')' : 'On Record'}</div>
           </div>
 
           <div style="background: #FFFDF9; border: 1px solid #F5DEC2; border-radius: 8px; padding: 10px 14px; font-size: 11.5px; color: #333; line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
@@ -1681,10 +1880,6 @@
 
           <div style="width: 260px; height: 1.5px; background: linear-gradient(to right, transparent, #D4AF37, transparent); margin: 0 auto 8px auto;"></div>
 
-          <div style="display: inline-block; border: 1px solid #D4AF37; border-radius: 20px; padding: 3px 20px; background: #FFF8EE; margin-bottom: 10px;">
-            <span style="font-family: 'Rozha One', 'Plus Jakarta Sans', serif; font-size: 12px; color: #800020; font-weight: 700;">&#10047; शुभ विवाह | दो परिवारों का पवित्र बंधन &#10047;</span>
-          </div>
-
           <p style="font-size: 11.5px; color: #666; margin: 0;">Prepared for: <strong style="color: #2B2321;">${client.fullName}</strong> (${client.id})</p>
         </div>
 
@@ -1694,17 +1889,14 @@
           <div style="page-break-inside: avoid; background: #FFF2F4; border-left: 4px solid #800020; border-radius: 6px; padding: 12px 16px; margin-top: 10px; display: flex; align-items: center; gap: 14px;">
             <div style="font-size: 20px; color: #800020; line-height: 1;">&#128737;</div>
             <div style="font-size: 11px; color: #6B4E54; line-height: 1.45;">
-              Candidate contact numbers, email, and exact house addresses are withheld for privacy.<br>
-              Please contact the administrative desk quoting the specific <strong>Profile ID</strong> to initiate communication with the family.
+              Candidate contact numbers & other confidential details are withheld for privacy.<br>
+              Please contact Ghaziabad Chitransh Mahasabha desk quoting the specific <strong>Profile ID</strong>.
             </div>
           </div>
         </div>
 
         <div style="page-break-inside: avoid; text-align: center; padding-top: 20px; padding-bottom: 10px;">
           <div style="color: #D4AF37; font-size: 13px; margin-bottom: 4px;">&#10048;</div>
-          <p style="font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3.5px; color: #800020; font-weight: 800; margin: 0;">
-            TRADITION &nbsp;|&nbsp; VALUES &nbsp;|&nbsp; TOGETHERNESS
-          </p>
         </div>
       `;
 
@@ -1762,8 +1954,8 @@
         age: parseInt(document.getElementById('addAge').value),
         height: document.getElementById('addHeight').value.trim(),
         maritalStatus: document.getElementById('addMarital').value,
-        education: document.getElementById('addEducation').value.trim(),
-        profession: document.getElementById('addProfession').value.trim(),
+        education: document.getElementById('addEducation').value,
+        profession: document.getElementById('addProfession').value,
         annualIncome: document.getElementById('addIncome').value.trim(),
         state: stateVal,
         city: cityVal,
@@ -1771,7 +1963,10 @@
         exactAddress: document.getElementById('addAddress').value.trim(),
         email: document.getElementById('addEmail').value.trim(),
         phone: document.getElementById('addPhone').value.trim(),
-        imageBase64: adminAddPhotoBase64,
+        fatherName: document.getElementById('addFatherName').value.trim(),
+        fatherOccupation: document.getElementById('addFatherOccupation').value,
+        motherName: document.getElementById('addMotherName').value.trim(),
+        motherOccupation: document.getElementById('addMotherOccupation').value,
         familyDetails: document.getElementById('addFamily').value.trim(),
         partnerPreferences: document.getElementById('addPreferences').value.trim(),
         status: "Active"
