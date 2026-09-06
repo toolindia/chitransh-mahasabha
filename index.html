@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -24,6 +24,7 @@
       --white: #FFFFFF;
       --radius-sm: 8px;
       --radius-md: 12px;
+      --radius-lg: 18px;
       --shadow-sm: 0 2px 8px rgba(255, 126, 126, 0.08);
       --shadow-md: 0 8px 24px rgba(255, 126, 126, 0.12);
       --shadow-lg: 0 16px 36px rgba(255, 162, 89, 0.16);
@@ -41,7 +42,7 @@
 
     .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); box-shadow: var(--shadow-sm); }
     .btn-primary:hover { opacity: 0.95; }
-    .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
     .btn-outline:hover { background: var(--surface-light); }
     .btn-ghost { background: transparent; color: var(--dark); }
 
@@ -116,35 +117,31 @@
     .profile-meta-line { font-size: 0.85rem; color: var(--muted); }
     .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: var(--dark); width: fit-content; }
 
+    /* ALL MODALS ANCHORED DIRECTLY TO TOP HEADER */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);
-      z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem;
+      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
+      z-index: 2000; display: none; align-items: flex-start; justify-content: center;
+      padding: 1.5rem 1rem 3rem 1rem; overflow-y: auto;
     }
     .modal-overlay.active { display: flex; }
+    
     .modal-card {
       background: var(--white); border-radius: var(--radius-md);
-      max-width: 600px; width: 100%; max-height: 90vh;
-      overflow-y: auto; position: relative; box-shadow: var(--shadow-lg); padding: 1.75rem;
-    }
-    .modal-close-btn { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; font-size: 1.25rem; font-weight: 700; cursor: pointer; color: var(--muted); }
-
-    #authModal.modal-overlay {
-      align-items: flex-start;
-      justify-content: center;
-      padding-top: 2rem;
-    }
-
-    #authModal .modal-card {
-      animation: slideDownHeader 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      max-width: 620px; width: 100%; max-height: 88vh;
+      overflow-y: auto; position: relative;
       border: 2px solid var(--primary);
-      box-shadow: 0 12px 36px rgba(255, 126, 126, 0.25);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      padding: 1.75rem;
+      animation: slideDownHeader 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     @keyframes slideDownHeader {
-      from { opacity: 0; transform: translateY(-20px) scale(0.98); }
+      from { opacity: 0; transform: translateY(-24px) scale(0.98); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
+
+    .modal-close-btn { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; font-size: 1.35rem; font-weight: 700; cursor: pointer; color: var(--muted); }
 
     .biodata-sheet { border: 2px solid var(--secondary); border-radius: var(--radius-md); padding: 1.75rem; background: #FFF; margin-bottom: 1.25rem; }
     .biodata-header { display: flex; align-items: center; gap: 1.25rem; border-bottom: 2px solid var(--surface-light); padding-bottom: 1rem; margin-bottom: 1rem; }
@@ -155,7 +152,7 @@
     .biodata-table td:first-child { color: var(--muted); width: 40%; font-weight: 600; }
 
     .form-group { margin-bottom: 0.85rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
-    .form-group label { font-size: 0.75rem; font-weight: 600; }
+    .form-group label { font-size: 0.75rem; font-weight: 700; }
     .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; }
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
@@ -270,7 +267,7 @@
     </div>
   </main>
 
-  <!-- Biodata Quick Preview Modal -->
+  <!-- Biodata Header-Docked Quick Preview Modal -->
   <div class="modal-overlay" id="biodataModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('biodataModal')">&times;</button>
@@ -315,7 +312,7 @@
     </div>
   </div>
 
-  <!-- Registration Form Modal -->
+  <!-- Registration Header-Docked Form Modal -->
   <div class="modal-overlay" id="registrationModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
@@ -340,11 +337,11 @@
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Date of Birth</label>
-            <input type="date" id="regDob">
+            <label>Date of Birth *</label>
+            <input type="date" id="regDob" required onchange="calculateAutoAge('regDob', 'regAge')">
           </div>
           <div class="form-group">
-            <label>Age *</label>
+            <label>Age (Auto-Calculated) *</label>
             <input type="number" id="regAge" min="18" max="80" required placeholder="Years">
           </div>
         </div>
@@ -380,19 +377,25 @@
           <input type="text" id="regIncome" required placeholder="e.g. 8 Lakhs PA">
         </div>
 
+        <!-- DEPENDENT STATE AND CITY DROPDOWNS -->
         <div class="form-row-2">
           <div class="form-group">
-            <label>City (Public) *</label>
-            <input type="text" id="regCity" required placeholder="City">
+            <label>State *</label>
+            <select id="regState" required onchange="populateCities('regState', 'regCity', 'regCityCustom')">
+              <option value="">Select State</option>
+            </select>
           </div>
           <div class="form-group">
-            <label>State (Public) *</label>
-            <input type="text" id="regState" required placeholder="State">
+            <label>City *</label>
+            <select id="regCity" required onchange="checkCustomCity('regCity', 'regCityCustom')">
+              <option value="">Select City</option>
+            </select>
+            <input type="text" id="regCityCustom" placeholder="Type city name" style="display: none; margin-top: 0.35rem;">
           </div>
         </div>
 
         <div class="form-group">
-          <label>Country (Public) *</label>
+          <label>Country *</label>
           <input type="text" id="regCountry" required value="India">
         </div>
 
@@ -437,7 +440,7 @@
     </div>
   </div>
 
-  <!-- Dynamic UPI Payment Modal -->
+  <!-- Dynamic UPI Payment Header-Docked Modal -->
   <div class="modal-overlay" id="paymentModal">
     <div class="modal-card" style="max-width: 440px; text-align: center;">
       <button class="modal-close-btn" onclick="closeModal('paymentModal')">&times;</button>
@@ -470,7 +473,7 @@
 
         <div class="form-group" style="margin-top: 0.75rem;">
           <label style="font-size: 0.8rem; font-weight: 700; color: var(--dark);">UPI Transaction ID / UTR (Optional)</label>
-          <input type="text" id="payUtrNumber" placeholder="12-digit UPI Ref / UTR No" class="input-field" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+          <input type="text" id="payUtrNumber" placeholder="12-digit UPI Ref / UTR No" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm);">
         </div>
 
         <button class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="submitProofBtn" onclick="submitPaymentProof()">
@@ -571,15 +574,86 @@
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
+    // STATE AND CITY REPOSITORY
+    const LOCATION_DATA = {
+      "Uttar Pradesh": ["Ghaziabad", "Noida", "Lucknow", "Kanpur", "Varanasi", "Prayagraj", "Agra", "Meerut", "Bareilly", "Gorakhpur", "Aligarh", "Moradabad", "Other"],
+      "Delhi NCR": ["Central Delhi", "East Delhi", "New Delhi", "North Delhi", "South Delhi", "West Delhi", "Gurugram", "Faridabad", "Other"],
+      "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga", "Bihar Sharif", "Ara", "Begusarai", "Katihar", "Other"],
+      "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Satna", "Ratlam", "Other"],
+      "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Navi Mumbai", "Solapur", "Other"],
+      "Rajasthan": ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Ajmer", "Udaipur", "Bhilwara", "Alwar", "Other"],
+      "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri", "Other"],
+      "Karnataka": ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru", "Belagavi", "Other"],
+      "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Other"],
+      "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Other"],
+      "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Deoghar", "Hazaribagh", "Other"],
+      "Uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani", "Rishikesh", "Other"],
+      "Haryana": ["Faridabad", "Gurugram", "Panipat", "Ambala", "Karnal", "Hisar", "Rohtak", "Other"],
+      "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali", "Other"],
+      "Other": ["Other"]
+    };
+
     let state = { profiles: [], filtered: [], savedIds: new Set(), user: null, mode: 'all' };
     let selectedProfileImage = "";
     let selectedScreenshotImage = "";
     let registeredProfileId = "";
 
     window.addEventListener('DOMContentLoaded', () => {
+      initLocationDropdowns();
       checkUserSession();
       fetchActiveProfiles();
     });
+
+    function initLocationDropdowns() {
+      const stateSel = document.getElementById('regState');
+      if (!stateSel) return;
+      stateSel.innerHTML = `<option value="">Select State</option>`;
+      Object.keys(LOCATION_DATA).forEach(st => {
+        stateSel.innerHTML += `<option value="${st}">${st}</option>`;
+      });
+    }
+
+    function populateCities(stateId, cityId, customId) {
+      const stateVal = document.getElementById(stateId).value;
+      const citySel = document.getElementById(cityId);
+      const customInput = document.getElementById(customId);
+      
+      citySel.innerHTML = `<option value="">Select City</option>`;
+      if (customInput) customInput.style.display = "none";
+
+      if (stateVal && LOCATION_DATA[stateVal]) {
+        LOCATION_DATA[stateVal].forEach(ct => {
+          citySel.innerHTML += `<option value="${ct}">${ct}</option>`;
+        });
+      }
+    }
+
+    function checkCustomCity(cityId, customId) {
+      const cityVal = document.getElementById(cityId).value;
+      const customInput = document.getElementById(customId);
+      if (cityVal === "Other") {
+        customInput.style.display = "block";
+        customInput.required = true;
+      } else {
+        customInput.style.display = "none";
+        customInput.required = false;
+      }
+    }
+
+    function calculateAutoAge(dobInputId, ageInputId) {
+      const dobVal = document.getElementById(dobInputId).value;
+      if (!dobVal) return;
+      const dobDate = new Date(dobVal);
+      const today = new Date();
+      let age = today.getFullYear() - dobDate.getFullYear();
+      const m = today.getMonth() - dobDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+        age--;
+      }
+      if (age >= 18 && age <= 100) {
+        document.getElementById(ageInputId).value = age;
+      }
+    }
 
     function checkUserSession() {
       const stored = localStorage.getItem('cm_session');
@@ -985,25 +1059,31 @@
       btn.innerText = "Submitting Details...";
       btn.disabled = true;
 
+      const stateVal = document.getElementById('regState').value;
+      let cityVal = document.getElementById('regCity').value;
+      if (cityVal === "Other") {
+        cityVal = document.getElementById('regCityCustom').value.trim();
+      }
+
       const profilePayload = {
-        fullName: document.getElementById('regFullName').value,
+        fullName: document.getElementById('regFullName').value.trim(),
         gender: document.getElementById('regGender').value,
         dob: document.getElementById('regDob').value,
         age: parseInt(document.getElementById('regAge').value),
-        height: document.getElementById('regHeight').value,
+        height: document.getElementById('regHeight').value.trim(),
         maritalStatus: document.getElementById('regMarital').value,
-        education: document.getElementById('regEducation').value,
-        profession: document.getElementById('regProfession').value,
-        annualIncome: document.getElementById('regIncome').value,
-        city: document.getElementById('regCity').value,
-        state: document.getElementById('regState').value,
-        country: document.getElementById('regCountry').value,
-        exactAddress: document.getElementById('regExactAddress').value,
+        education: document.getElementById('regEducation').value.trim(),
+        profession: document.getElementById('regProfession').value.trim(),
+        annualIncome: document.getElementById('regIncome').value.trim(),
+        city: cityVal,
+        state: stateVal,
+        country: document.getElementById('regCountry').value.trim(),
+        exactAddress: document.getElementById('regExactAddress').value.trim(),
         imageBase64: selectedProfileImage,
-        email: document.getElementById('regEmail').value,
-        phone: document.getElementById('regPhone').value,
-        familyDetails: document.getElementById('regFamily').value,
-        partnerPreferences: document.getElementById('regPreferences').value
+        email: document.getElementById('regEmail').value.trim(),
+        phone: document.getElementById('regPhone').value.trim(),
+        familyDetails: document.getElementById('regFamily').value.trim(),
+        partnerPreferences: document.getElementById('regPreferences').value.trim()
       };
 
       try {
@@ -1075,7 +1155,7 @@
         });
         const out = await res.json();
         if (out.success) {
-          alert("Payment screenshot uploaded directly! The administration will verify your receipt and make your profile live.");
+          alert("Payment screenshot uploaded successfully! The administration will verify your receipt and publish your profile live.");
           closeModal('paymentModal');
           document.getElementById('payUtrNumber').value = "";
           document.getElementById('payScreenshotFile').value = "";
