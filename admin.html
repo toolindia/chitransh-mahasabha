@@ -481,7 +481,7 @@
     </div>
   </div>
 
-  <!-- PIN Gate -->
+  <!-- PIN Unlock Gate -->
   <div id="authOverlay" class="modal-overlay active">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;">Admin Desk</h2>
@@ -1579,7 +1579,7 @@
       window.open(waUrl, '_blank') || (window.location.href = waUrl);
     }
 
-    // LUXURY BALANCED A4 PDF RENDERER (CENTRAL ALIGNMENT FIX)
+    // COMPLETE BIODATA PDF (CENTERED ROYAL A4 LAYOUT WITH FULL CANDIDATE DETAILS)
     function exportSanitizedMatchPdf() {
       const client = adminState.activeMatchClient;
       const selected = getSelectedMatchedCandidates();
@@ -1588,7 +1588,6 @@
         return;
       }
 
-      // Invisible Print Mount Area in DOM
       const mount = document.createElement('div');
       mount.id = "pdfMountContainer";
       mount.style.position = "fixed";
@@ -1600,19 +1599,14 @@
 
       const surface = document.createElement('div');
       surface.style.width = "794px";
-      surface.style.minHeight = "1122px"; // Exact A4 96dpi height
-      surface.style.height = "1122px";
       surface.style.backgroundColor = "#FDFBF7";
       surface.style.boxSizing = "border-box";
-      surface.style.padding = "24px";
+      surface.style.padding = "28px 24px";
       surface.style.position = "relative";
-      surface.style.overflow = "hidden";
-      surface.style.display = "flex";
-      surface.style.flexDirection = "column";
-      surface.style.justifyContent = "space-between";
+      surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
 
       const chitraguptaEmblem = `
-        <svg width="68" height="68" viewBox="0 0 100 100" style="margin: 0 auto; display: block;">
+        <svg width="65" height="65" viewBox="0 0 100 100" style="margin: 0 auto; display: block;">
           <circle cx="50" cy="50" r="47" fill="#FFF9EF" stroke="#D4AF37" stroke-width="2.5"/>
           <circle cx="50" cy="50" r="42" fill="none" stroke="#800020" stroke-width="1.5" stroke-dasharray="3,3"/>
           <path d="M50 16 C38 16 34 26 34 32 C34 40 40 46 50 46 C60 46 66 40 66 32 C66 26 62 16 50 16 Z" fill="#D4AF37"/>
@@ -1623,97 +1617,92 @@
         </svg>
       `;
 
-      let cardsHtml = selected.slice(0, 2).map((m, i) => `
-        <div style="border: 1.5px solid #EEDBBE; border-radius: 14px; background: #FFFFFF; padding: 20px 24px; margin-bottom: 16px; position: relative; box-shadow: 0 4px 14px rgba(212,175,55,0.06);">
-          <div style="position: absolute; top: 0; left: 0; width: 40px; height: 40px; border-top: 3.5px solid #800020; border-left: 3.5px solid #800020; border-top-left-radius: 12px;"></div>
+      let cardsHtml = selected.map((m, i) => `
+        <div style="page-break-inside: avoid; border: 1.5px solid #EEDBBE; border-radius: 12px; background: #FFFFFF; padding: 18px 20px; margin-bottom: 20px; position: relative; box-shadow: 0 4px 12px rgba(212,175,55,0.06);">
+          <div style="position: absolute; top: 0; left: 0; width: 35px; height: 35px; border-top: 3px solid #800020; border-left: 3px solid #800020; border-top-left-radius: 10px;"></div>
 
-          <div style="display: flex; align-items: center; gap: 26px;">
-            <div style="position: relative; width: 135px; text-align: center; flex-shrink: 0;">
-              <div style="width: 115px; height: 115px; border-radius: 50%; padding: 4px; background: linear-gradient(135deg, #D4AF37, #FFE8B2); box-shadow: 0 4px 12px rgba(0,0,0,0.12); margin: 0 auto;">
+          <div style="display: flex; align-items: center; gap: 20px; border-bottom: 1px dashed #F0DDB8; padding-bottom: 14px; margin-bottom: 12px;">
+            <div style="position: relative; width: 110px; text-align: center; flex-shrink: 0;">
+              <div style="width: 95px; height: 95px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #D4AF37, #FFE8B2); box-shadow: 0 3px 10px rgba(0,0,0,0.1); margin: 0 auto;">
                 <img src="${m.photoUrl || ''}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #FFF;" crossorigin="anonymous">
               </div>
-              <div style="margin-top: -12px; background: #800020; color: #FFF; font-size: 10px; font-weight: 800; padding: 3px 12px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.22); letter-spacing: 0.5px;">
+              <div style="margin-top: -10px; background: #800020; color: #FFF; font-size: 9px; font-weight: 800; padding: 2px 10px; border-radius: 16px; width: fit-content; margin-left: auto; margin-right: auto;">
                 &#10004; Verified
               </div>
             </div>
 
             <div style="flex: 1; min-width: 0;">
-              <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px;">
-                <h3 style="font-family: 'Cinzel', serif; font-size: 20px; color: #800020; font-weight: 800; margin: 0;">${i + 1}. ${m.fullName}</h3>
+              <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px;">
+                <h3 style="font-family: 'Cinzel', serif; font-size: 19px; color: #800020; font-weight: 800; margin: 0;">${i + 1}. ${m.fullName}</h3>
                 <span style="font-size: 11px; color: #777; font-weight: 600;">(ID: ${m.id})</span>
               </div>
 
-              <div style="display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; color: #2B2321;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <span style="font-size: 14px; width: 22px; text-align: center;">&#128197;</span>
-                  <span style="font-weight: 700; color: #800020; min-width: 95px;">Age / Height:</span>
-                  <span>${m.age} Yrs, ${m.height || 'N/A'}</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <span style="font-size: 14px; width: 22px; text-align: center;">&#127891;</span>
-                  <span style="font-weight: 700; color: #800020; min-width: 95px;">Education:</span>
-                  <span>${m.education}</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <span style="font-size: 14px; width: 22px; text-align: center;">&#128188;</span>
-                  <span style="font-weight: 700; color: #800020; min-width: 95px;">Profession:</span>
-                  <span>${m.profession}</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                  <span style="font-size: 14px; width: 22px; text-align: center;">&#128205;</span>
-                  <span style="font-weight: 700; color: #800020; min-width: 95px;">Location:</span>
-                  <span>${m.city}, ${m.state}, ${m.country || 'India'}</span>
-                </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 12px; color: #2B2321;">
+                <div><strong style="color: #800020;">Age / Height:</strong> ${m.age} Yrs &bull; ${m.height || 'N/A'}</div>
+                <div><strong style="color: #800020;">DOB:</strong> ${m.dob ? new Date(m.dob).toLocaleDateString('en-IN') : 'N/A'}</div>
+                <div><strong style="color: #800020;">Marital Status:</strong> ${m.maritalStatus || 'Never Married'}</div>
+                <div><strong style="color: #800020;">Annual Income:</strong> ${m.annualIncome || 'Confidential'}</div>
+                <div><strong style="color: #800020;">Education:</strong> ${m.education || 'Unspecified'}</div>
+                <div><strong style="color: #800020;">Profession:</strong> ${m.profession || 'Unspecified'}</div>
               </div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: #2B2321; margin-bottom: 10px;">
+            <strong style="color: #800020;">&#128205; Location:</strong> ${m.city}, ${m.state}, ${m.country || 'India'}
+          </div>
+
+          <div style="background: #FFFDF9; border: 1px solid #F5DEC2; border-radius: 8px; padding: 10px 14px; font-size: 11.5px; color: #333; line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
+            <div>
+              <strong style="color: #800020;">Family Background:</strong> 
+              ${m.familyDetails ? m.familyDetails : 'Family information verified on desk records.'}
+            </div>
+            <div style="border-top: 1px dashed #F0DDB8; padding-top: 5px;">
+              <strong style="color: #800020;">Partner Preferences:</strong> 
+              ${m.partnerPreferences ? m.partnerPreferences : 'Looking for a culturally compatible and educated match.'}
             </div>
           </div>
         </div>
       `).join('');
 
       surface.innerHTML = `
-        <!-- Full Page Inner Golden Border Frame -->
-        <div style="position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1.5px solid #D4AF37; pointer-events: none; border-radius: 4px;"></div>
-        <div style="position: absolute; top: 16px; left: 16px; right: 16px; bottom: 16px; border: 0.5px solid #800020; pointer-events: none;"></div>
+        <div style="position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1.5px solid #D4AF37; pointer-events: none; border-radius: 4px;"></div>
+        <div style="position: absolute; top: 14px; left: 14px; right: 14px; bottom: 14px; border: 0.5px solid #800020; pointer-events: none;"></div>
 
-        <!-- Corner Ornaments -->
-        <div style="position: absolute; top: 20px; left: 20px; font-size: 16px; color: #D4AF37;">&#10048;</div>
-        <div style="position: absolute; top: 20px; right: 20px; font-size: 16px; color: #D4AF37;">&#10048;</div>
-        <div style="position: absolute; bottom: 20px; left: 20px; font-size: 16px; color: #D4AF37;">&#10048;</div>
-        <div style="position: absolute; bottom: 20px; right: 20px; font-size: 16px; color: #D4AF37;">&#10048;</div>
+        <div style="position: absolute; top: 18px; left: 18px; font-size: 16px; color: #D4AF37;">&#10048;</div>
+        <div style="position: absolute; top: 18px; right: 18px; font-size: 16px; color: #D4AF37;">&#10048;</div>
+        <div style="position: absolute; bottom: 18px; left: 18px; font-size: 16px; color: #D4AF37;">&#10048;</div>
+        <div style="position: absolute; bottom: 18px; right: 18px; font-size: 16px; color: #D4AF37;">&#10048;</div>
 
-        <!-- Top Header Section -->
-        <div style="text-align: center; padding-top: 15px;">
-          <div style="margin-bottom: 8px;">${chitraguptaEmblem}</div>
-          <h1 style="font-family: 'Cinzel', serif; font-size: 28px; font-weight: 900; color: #800020; letter-spacing: 3px; margin: 0;">KAYASTHA</h1>
-          <h2 style="font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: #800020; letter-spacing: 5px; margin: 4px 0 10px 0;">VIVAH PATRIKA</h2>
+        <div style="text-align: center; padding-top: 12px; margin-bottom: 18px;">
+          <div style="margin-bottom: 6px;">${chitraguptaEmblem}</div>
+          <h1 style="font-family: 'Cinzel', serif; font-size: 26px; font-weight: 900; color: #800020; letter-spacing: 3px; margin: 0;">KAYASTHA</h1>
+          <h2 style="font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: #800020; letter-spacing: 5px; margin: 3px 0 8px 0;">VIVAH PATRIKA</h2>
 
-          <div style="width: 280px; height: 1.5px; background: linear-gradient(to right, transparent, #D4AF37, transparent); margin: 0 auto 10px auto;"></div>
+          <div style="width: 260px; height: 1.5px; background: linear-gradient(to right, transparent, #D4AF37, transparent); margin: 0 auto 8px auto;"></div>
 
-          <div style="display: inline-block; border: 1px solid #D4AF37; border-radius: 20px; padding: 4px 24px; background: #FFF8EE; margin-bottom: 12px;">
-            <span style="font-family: 'Rozha One', 'Plus Jakarta Sans', serif; font-size: 12.5px; color: #800020; font-weight: 700;">&#10047; शुभ विवाह | दो परिवारों का पवित्र बंधन &#10047;</span>
+          <div style="display: inline-block; border: 1px solid #D4AF37; border-radius: 20px; padding: 3px 20px; background: #FFF8EE; margin-bottom: 10px;">
+            <span style="font-family: 'Rozha One', 'Plus Jakarta Sans', serif; font-size: 12px; color: #800020; font-weight: 700;">&#10047; शुभ विवाह | दो परिवारों का पवित्र बंधन &#10047;</span>
           </div>
 
           <p style="font-size: 11.5px; color: #666; margin: 0;">Prepared for: <strong style="color: #2B2321;">${client.fullName}</strong> (${client.id})</p>
         </div>
 
-        <!-- Candidate Cards Section -->
-        <div style="padding: 0 14px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+        <div style="padding: 0 10px;">
           ${cardsHtml}
 
-          <!-- Privacy Shield Notice Box -->
-          <div style="background: #FFF2F4; border-left: 4px solid #800020; border-radius: 6px; padding: 12px 18px; margin-top: 6px; display: flex; align-items: center; gap: 14px;">
+          <div style="page-break-inside: avoid; background: #FFF2F4; border-left: 4px solid #800020; border-radius: 6px; padding: 12px 16px; margin-top: 10px; display: flex; align-items: center; gap: 14px;">
             <div style="font-size: 20px; color: #800020; line-height: 1;">&#128737;</div>
-            <div style="font-size: 11.5px; color: #6B4E54; line-height: 1.45;">
-              Candidate contact numbers and exact street addresses are withheld for privacy.<br>
-              Please contact the administrative desk quoting the specific <strong>Profile ID</strong> to initiate connections.
+            <div style="font-size: 11px; color: #6B4E54; line-height: 1.45;">
+              Candidate contact numbers, email, and exact house addresses are withheld for privacy.<br>
+              Please contact the administrative desk quoting the specific <strong>Profile ID</strong> to initiate communication with the family.
             </div>
           </div>
         </div>
 
-        <!-- Footer Section -->
-        <div style="text-align: center; padding-bottom: 12px;">
-          <div style="color: #D4AF37; font-size: 14px; margin-bottom: 4px;">&#10048;</div>
-          <p style="font-family: 'Cinzel', serif; font-size: 11.5px; letter-spacing: 3.5px; color: #800020; font-weight: 800; margin: 0;">
+        <div style="page-break-inside: avoid; text-align: center; padding-top: 20px; padding-bottom: 10px;">
+          <div style="color: #D4AF37; font-size: 13px; margin-bottom: 4px;">&#10048;</div>
+          <p style="font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3.5px; color: #800020; font-weight: 800; margin: 0;">
             TRADITION &nbsp;|&nbsp; VALUES &nbsp;|&nbsp; TOGETHERNESS
           </p>
         </div>
@@ -1722,7 +1711,7 @@
       mount.appendChild(surface);
 
       const opt = {
-        margin: 0,
+        margin: [10, 0, 10, 0],
         filename: `Kayastha_Vivah_Patrika_${client.fullName.replace(/\s+/g, '_')}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: {
@@ -1730,19 +1719,18 @@
           useCORS: true,
           scrollX: 0,
           scrollY: 0,
-          width: 794,
-          height: 1122
+          width: 794
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      showNotice("Rendering perfectly centered Vivah Patrika...");
+      showNotice("Generating Complete Vivah Patrika...");
       html2pdf().set(opt).from(surface).save().then(() => {
         showNotice("PDF Downloaded successfully!");
-        if (mount) document.body.removeChild(mount);
+        if (mount && mount.parentNode) mount.parentNode.removeChild(mount);
       }).catch(err => {
         showNotice("PDF generation failed: " + err.toString(), true);
-        if (mount) document.body.removeChild(mount);
+        if (mount && mount.parentNode) mount.parentNode.removeChild(mount);
       });
     }
 
