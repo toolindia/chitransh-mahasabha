@@ -33,6 +33,44 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 5rem; position: relative; }
 
+    /* GUEST LOCK WALL STYLES */
+    body.locked {
+      overflow: hidden !important;
+      height: 100vh !important;
+    }
+
+    .guest-gate-overlay {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65vh;
+      background: linear-gradient(to bottom, rgba(253, 251, 247, 0) 0%, rgba(253, 251, 247, 0.92) 20%, rgba(253, 251, 247, 1) 100%);
+      z-index: 1500;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 2.5rem;
+      pointer-events: auto;
+    }
+
+    .guest-gate-box {
+      background: var(--white);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 1.75rem 1.5rem;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      max-width: 440px;
+      width: 90%;
+      animation: bounceUp 0.3s ease;
+    }
+
+    @keyframes bounceUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
     .btn {
       min-height: 38px;
       padding: 0.45rem 1rem; font-size: 0.82rem; font-weight: 700;
@@ -198,7 +236,6 @@
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
     @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
 
-    /* Password Input Wrapper with Eye Icon */
     .password-input-wrapper {
       position: relative;
       display: flex;
@@ -222,7 +259,6 @@
       padding: 0.2rem;
     }
 
-    /* Inline Alert Box */
     .auth-error-box {
       display: none;
       background-color: #FCE8E6;
@@ -261,28 +297,42 @@
 </head>
 <body>
 
+  <!-- GUEST GATE WALL (Auto-shows if unauthenticated visitor scrolls/interacts) -->
+  <div id="guestGateOverlay" class="guest-gate-overlay">
+    <div class="guest-gate-box">
+      <h3 style="color: var(--primary); font-size: 1.25rem; margin-bottom: 0.35rem;">Sign In to Explore Profiles</h3>
+      <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.45;">
+        Chitransh Mahasabha matrimonial candidate details dekhne aur filter karne ke liye kripya Sign In karein ya apna account banayein.
+      </p>
+      <div style="display: flex; gap: 0.65rem;">
+        <button class="btn btn-primary" style="flex: 1;" onclick="openLoginModal('login')">Sign In</button>
+        <button class="btn btn-outline" style="flex: 1;" onclick="openLoginModal('register')">Create Account</button>
+      </div>
+    </div>
+  </div>
+
   <div class="top-action-bar">
-    <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
+    <button class="btn btn-outline" onclick="guardedAction(() => openRegistrationModal())">Register Profile</button>
     <div id="authActions">
-      <button class="btn btn-primary" onclick="openLoginModal()">Sign In</button>
+      <button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>
     </div>
   </div>
 
   <div class="filter-wrapper">
     <div class="filter-container">
       
-      <!-- SEARCH BAR WITH BUTTON AND TOGGLE -->
+      <!-- SEARCH BAR -->
       <div class="search-action-row">
-        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onkeydown="if(event.key==='Enter') applyFilters()" style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
-        <button class="btn btn-primary" style="min-height: 40px;" onclick="applyFilters()">Search</button>
-        <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="toggleFilterDrawer()">Filters ▾</button>
+        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onkeydown="if(event.key==='Enter') guardedAction(() => applyFilters())" onfocus="checkGuestGate()" style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
+        <button class="btn btn-primary" style="min-height: 40px;" onclick="guardedAction(() => applyFilters())">Search</button>
+        <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
       </div>
 
-      <!-- COLLAPSIBLE FILTER PANEL WITH STANDARDIZED DROPDOWNS -->
+      <!-- COLLAPSIBLE FILTER PANEL -->
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label>Gender</label>
-          <select id="filterGender" onchange="applyFilters()">
+          <select id="filterGender" onchange="guardedAction(() => applyFilters())">
             <option value="">All Genders</option>
             <option value="Female">Female</option>
             <option value="Male">Male</option>
@@ -291,7 +341,7 @@
 
         <div class="filter-control">
           <label>Age Bracket</label>
-          <select id="filterAge" onchange="applyFilters()">
+          <select id="filterAge" onchange="guardedAction(() => applyFilters())">
             <option value="">Any Age</option>
             <option value="21-25">21 - 25</option>
             <option value="26-30">26 - 30</option>
@@ -302,7 +352,7 @@
 
         <div class="filter-control">
           <label>Marital Status</label>
-          <select id="filterMarital" onchange="applyFilters()">
+          <select id="filterMarital" onchange="guardedAction(() => applyFilters())">
             <option value="">Any Status</option>
             <option value="Never Married">Never Married</option>
             <option value="Divorced">Divorced</option>
@@ -312,23 +362,21 @@
 
         <div class="filter-control">
           <label>Education</label>
-          <select id="filterEducation" onchange="applyFilters()">
+          <select id="filterEducation" onchange="guardedAction(() => applyFilters())">
             <option value="">All Qualifications</option>
-            <!-- Populated from EDUCATION_LIST -->
           </select>
         </div>
 
         <div class="filter-control">
           <label>Profession</label>
-          <select id="filterProfession" onchange="applyFilters()">
+          <select id="filterProfession" onchange="guardedAction(() => applyFilters())">
             <option value="">All Occupations</option>
-            <!-- Populated from OCCUPATION_LIST -->
           </select>
         </div>
 
         <div class="filter-control">
           <label>Min Height</label>
-          <select id="filterHeight" onchange="applyFilters()">
+          <select id="filterHeight" onchange="guardedAction(() => applyFilters())">
             <option value="">Any Height</option>
             <option value="5.0">Above 5'0"</option>
             <option value="5.4">Above 5'4"</option>
@@ -338,7 +386,7 @@
         </div>
 
         <div class="filter-control">
-          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="resetFilters()">Reset Filters</button>
+          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="guardedAction(() => resetFilters())">Reset Filters</button>
         </div>
       </div>
     </div>
@@ -351,8 +399,8 @@
         <p style="font-size: 0.78rem; color: var(--muted);" id="profileCounter">Connecting to database...</p>
       </div>
       <div style="display: flex; gap: 0.4rem;">
-        <button class="btn btn-outline" id="tabAll" onclick="switchCatalogMode('all')">All</button>
-        <button class="btn btn-ghost" id="tabSaved" onclick="switchCatalogMode('saved')">Saved (<span id="savedCounter">0</span>)</button>
+        <button class="btn btn-outline" id="tabAll" onclick="guardedAction(() => switchCatalogMode('all'))">All</button>
+        <button class="btn btn-ghost" id="tabSaved" onclick="guardedAction(() => switchCatalogMode('saved'))">Saved (<span id="savedCounter">0</span>)</button>
       </div>
     </div>
 
@@ -417,7 +465,7 @@
     </div>
   </div>
 
-  <!-- Registration Modal with Parent Details -->
+  <!-- Registration Modal -->
   <div class="modal-overlay" id="registrationModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
@@ -483,7 +531,6 @@
           </div>
         </div>
 
-        <!-- STANDARDIZED EDUCATION & OCCUPATION DROPDOWNS -->
         <div class="form-row-2">
           <div class="form-group">
             <label>Highest Education *</label>
@@ -526,7 +573,6 @@
           <input type="text" id="regExactAddress" required placeholder="House/Flat No, Landmark, Street, Pincode">
         </div>
 
-        <!-- STRUCTURED PARENT & FAMILY BACKGROUND SECTION -->
         <div style="margin: 1.25rem 0 0.5rem 0; font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; border-bottom: 1px solid var(--surface-light); padding-bottom: 0.25rem;">
           Parental & Family Background
         </div>
@@ -646,7 +692,7 @@
     </div>
   </div>
 
-  <!-- Sign In / Sign Up Modal with Show/Hide Password & Clear Error Box -->
+  <!-- Sign In / Sign Up Modal -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-card" style="max-width: 380px;">
       <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
@@ -804,7 +850,41 @@
       checkUserSession();
       fetchSystemSettings();
       fetchActiveProfiles();
+      setupScrollLockListener();
     });
+
+    // MANDATORY LOGIN GATE LISTENERS
+    function setupScrollLockListener() {
+      window.addEventListener('scroll', () => {
+        if (!state.user && window.scrollY > 150) {
+          triggerGuestLock();
+        }
+      }, { passive: true });
+    }
+
+    function triggerGuestLock() {
+      if (state.user) return;
+      document.body.classList.add('locked');
+      document.getElementById('guestGateOverlay').style.display = 'flex';
+      openLoginModal('login');
+    }
+
+    function checkGuestGate() {
+      if (!state.user) {
+        triggerGuestLock();
+        return false;
+      }
+      return true;
+    }
+
+    // Wrap critical actions: if unauthenticated, intercept and prompt login
+    function guardedAction(callback) {
+      if (!state.user) {
+        triggerGuestLock();
+        return;
+      }
+      if (callback) callback();
+    }
 
     function initDropdownOptions() {
       populateSelect('filterEducation', EDUCATION_OPTIONS, 'All Qualifications');
@@ -824,7 +904,6 @@
       });
     }
 
-    // SHOW / HIDE PASSWORD TOGGLE
     function togglePasswordVisibility(inputId, btn) {
       const input = document.getElementById(inputId);
       if (input.type === 'password') {
@@ -961,6 +1040,8 @@
       const stored = localStorage.getItem('cm_session');
       if (stored) {
         state.user = JSON.parse(stored);
+        document.body.classList.remove('locked');
+        document.getElementById('guestGateOverlay').style.display = 'none';
         renderNavUser();
         fetchUserShortlists();
       }
@@ -982,8 +1063,8 @@
       }
     }
 
-    function openLoginModal() {
-      switchAuthView('login');
+    function openLoginModal(view = 'login') {
+      switchAuthView(view);
       document.getElementById('authModal').classList.add('active');
     }
 
@@ -1007,6 +1088,8 @@
         if (out.success) {
           state.user = out.user;
           localStorage.setItem('cm_session', JSON.stringify(out.user));
+          document.body.classList.remove('locked');
+          document.getElementById('guestGateOverlay').style.display = 'none';
           renderNavUser();
           closeModal('authModal');
           fetchUserShortlists();
@@ -1042,6 +1125,8 @@
         if (out.success) {
           state.user = out.user;
           localStorage.setItem('cm_session', JSON.stringify(out.user));
+          document.body.classList.remove('locked');
+          document.getElementById('guestGateOverlay').style.display = 'none';
           renderNavUser();
           closeModal('authModal');
           fetchUserShortlists();
@@ -1140,7 +1225,7 @@
           <button class="btn btn-ghost" onclick="signOut()">Sign Out</button>
         `;
       } else {
-        container.innerHTML = `<button class="btn btn-primary" onclick="openLoginModal()">Sign In</button>`;
+        container.innerHTML = `<button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>`;
       }
     }
 
@@ -1150,6 +1235,7 @@
       state.savedIds.clear();
       renderNavUser();
       renderProfileList();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     async function fetchActiveProfiles() {
@@ -1217,7 +1303,6 @@
       reader.readAsDataURL(file);
     }
 
-    // PRECISE FILTER AND SEARCH LOGIC
     function applyFilters() {
       const searchTerm = document.getElementById('globalSearchInput').value.toLowerCase().trim();
       const gender = document.getElementById('filterGender').value;
@@ -1278,10 +1363,10 @@
         const isSaved = state.savedIds.has(p.id);
         const photoSrc = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
         return `
-          <div class="profile-card">
+          <div class="profile-card" onclick="guardedAction(() => {})">
             <div class="profile-img-container">
               <img class="profile-img" src="${photoSrc}" alt="${p.fullName}">
-              <button class="shortlist-tag-btn ${isSaved ? 'active' : ''}" onclick="toggleShortlistRecord('${p.id}')">
+              <button class="shortlist-tag-btn ${isSaved ? 'active' : ''}" onclick="event.stopPropagation(); guardedAction(() => toggleShortlistRecord('${p.id}'))">
                 ${isSaved ? 'SAVED' : 'SAVE'}
               </button>
             </div>
@@ -1296,7 +1381,7 @@
               <span class="profile-badge">${p.city}, ${p.state}</span>
               
               <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
-                <button class="btn btn-outline" style="flex: 1;" onclick="openContextualBiodata('${p.id}', this)">View Biodata</button>
+                <button class="btn btn-outline" style="flex: 1;" onclick="event.stopPropagation(); guardedAction(() => openContextualBiodata('${p.id}', this))">View Biodata</button>
               </div>
             </div>
           </div>
@@ -1306,8 +1391,7 @@
 
     async function toggleShortlistRecord(profileId) {
       if (!state.user) {
-        alert("Please sign in to save profiles.");
-        openLoginModal();
+        triggerGuestLock();
         return;
       }
 
@@ -1544,7 +1628,12 @@
       applyPricingUI();
       document.getElementById('registrationModal').classList.add('active'); 
     }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    function closeModal(id) { 
+      document.getElementById(id).classList.remove('active'); 
+      if (!state.user && (id === 'authModal')) {
+        document.body.classList.remove('locked');
+      }
+    }
   </script>
 </body>
 </html>
