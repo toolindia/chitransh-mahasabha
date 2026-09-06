@@ -33,42 +33,10 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 5rem; position: relative; }
 
-    /* GUEST LOCK WALL STYLES */
-    body.locked {
-      overflow: hidden !important;
-      height: 100vh !important;
-    }
-
-    .guest-gate-overlay {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 65vh;
-      background: linear-gradient(to bottom, rgba(253, 251, 247, 0) 0%, rgba(253, 251, 247, 0.92) 20%, rgba(253, 251, 247, 1) 100%);
-      z-index: 1500;
-      align-items: flex-end;
-      justify-content: center;
-      padding-bottom: 2.5rem;
-      pointer-events: auto;
-    }
-
-    .guest-gate-box {
-      background: var(--white);
-      border: 2px solid var(--primary);
-      border-radius: var(--radius-md);
-      padding: 1.75rem 1.5rem;
-      box-shadow: var(--shadow-lg);
-      text-align: center;
-      max-width: 440px;
-      width: 90%;
-      animation: bounceUp 0.3s ease;
-    }
-
-    @keyframes bounceUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    /* Top Sticky Action Banner */
+    .top-action-bar {
+      max-width: 1200px; margin: 1rem auto 0.5rem auto; padding: 0 1rem;
+      display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;
     }
 
     .btn {
@@ -92,11 +60,6 @@
       border-radius: 20px;
     }
 
-    .top-action-bar {
-      max-width: 1200px; margin: 1rem auto 0.5rem auto; padding: 0 1rem;
-      display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;
-    }
-
     .loader-container {
       grid-column: 1 / -1; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
@@ -111,7 +74,7 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Filters & Search */
+    /* Filter & Search */
     .filter-wrapper { max-width: 1200px; margin: 0.5rem auto 1rem auto; padding: 0 1rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
     
@@ -151,6 +114,7 @@
       border: 1px solid var(--border); overflow: hidden;
       box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
       position: relative; transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
     }
     .profile-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
     .profile-img-container { position: relative; width: 100%; height: 260px; background-color: var(--surface-light); }
@@ -171,54 +135,37 @@
     .profile-meta-line { font-size: 0.82rem; color: var(--muted); }
     .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--dark); width: fit-content; }
 
+    /* GOOGLE SITES IFRAME SAFE MODAL LAYER */
     .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px);
-      z-index: 2000; display: none; -webkit-overflow-scrolling: touch;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(43, 35, 33, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
     }
-    .modal-overlay.active { display: block; }
-
-    #authModal.modal-overlay, #registrationModal.modal-overlay, #paymentModal.modal-overlay, #freeSuccessModal.modal-overlay {
-      display: none; align-items: flex-start; justify-content: center;
-      padding: 1.5rem 1rem 3rem 1rem; overflow-y: auto;
-    }
-    #authModal.active, #registrationModal.active, #paymentModal.active, #freeSuccessModal.active { display: flex; }
+    .modal-overlay.active { display: flex !important; }
 
     .modal-card {
-      background: var(--white); border-radius: var(--radius-md);
-      max-width: 620px; width: 100%; max-height: 88vh;
-      overflow-y: auto; position: relative;
+      background: var(--white);
+      border-radius: var(--radius-md);
+      max-width: 620px; width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
       border: 2px solid var(--primary);
       box-shadow: var(--shadow-lg);
       padding: 1.5rem;
-      animation: slideDownHeader 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: modalScaleIn 0.22s ease forwards;
     }
 
-    @keyframes slideDownHeader {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes modalScaleIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
-
-    .contextual-biodata-card {
-      position: absolute; background: var(--white); border: 2px solid var(--primary);
-      border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
-      z-index: 2100; padding: 1.5rem; display: none; max-width: 600px; width: 95%;
-    }
-    .contextual-biodata-card.active { display: block; }
-
-    @media (max-width: 768px) {
-      .contextual-biodata-card {
-        position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important;
-        width: 100% !important; max-width: 100% !important; max-height: 85vh !important;
-        border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
-        border: none !important; border-top: 3px solid var(--primary) !important;
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.3) !important; padding: 1.25rem 1rem 2.5rem 1rem !important;
-        overflow-y: auto !important; animation: slideUpMobile 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-      }
-      @keyframes slideUpMobile { from { transform: translateY(100%); } to { transform: translateY(0); } }
-      .sheet-drag-handle { width: 40px; height: 5px; background: #D9D1CE; border-radius: 10px; margin: -0.25rem auto 1rem auto; display: block !important; }
-    }
-    .sheet-drag-handle { display: none; }
 
     .modal-close-btn { position: absolute; top: 0.75rem; right: 0.75rem; background: transparent; border: none; font-size: 1.4rem; font-weight: 700; cursor: pointer; color: var(--muted); }
 
@@ -293,23 +240,16 @@
     .auth-tab-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
     .auth-tab { padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 700; border-bottom: 2px solid transparent; color: var(--muted); }
     .auth-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    /* Blur Curtain for Guests */
+    .guest-restricted-blur {
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
-
-  <!-- GUEST GATE WALL (Auto-shows if unauthenticated visitor scrolls/interacts) -->
-  <div id="guestGateOverlay" class="guest-gate-overlay">
-    <div class="guest-gate-box">
-      <h3 style="color: var(--primary); font-size: 1.25rem; margin-bottom: 0.35rem;">Sign In to Explore Profiles</h3>
-      <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.45;">
-        Chitransh Mahasabha matrimonial candidate details dekhne aur filter karne ke liye kripya Sign In karein ya apna account banayein.
-      </p>
-      <div style="display: flex; gap: 0.65rem;">
-        <button class="btn btn-primary" style="flex: 1;" onclick="openLoginModal('login')">Sign In</button>
-        <button class="btn btn-outline" style="flex: 1;" onclick="openLoginModal('register')">Create Account</button>
-      </div>
-    </div>
-  </div>
 
   <div class="top-action-bar">
     <button class="btn btn-outline" onclick="guardedAction(() => openRegistrationModal())">Register Profile</button>
@@ -320,15 +260,12 @@
 
   <div class="filter-wrapper">
     <div class="filter-container">
-      
-      <!-- SEARCH BAR -->
       <div class="search-action-row">
         <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onkeydown="if(event.key==='Enter') guardedAction(() => applyFilters())" onfocus="checkGuestGate()" style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
         <button class="btn btn-primary" style="min-height: 40px;" onclick="guardedAction(() => applyFilters())">Search</button>
         <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
       </div>
 
-      <!-- COLLAPSIBLE FILTER PANEL -->
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label>Gender</label>
@@ -404,6 +341,9 @@
       </div>
     </div>
 
+    <!-- Scroll Detection Trigger Line -->
+    <div id="scrollTriggerAnchor" style="width: 100%; height: 2px; margin-bottom: 5px;"></div>
+
     <div class="profile-grid" id="profilesContainer">
       <div class="loader-container">
         <div class="spinner"></div>
@@ -412,60 +352,59 @@
     </div>
   </main>
 
-  <div id="backdropBarrier" class="modal-overlay" onclick="closeAllContextPopups()"></div>
+  <!-- BIODATA VIEW MODAL -->
+  <div class="modal-overlay" id="biodataModal">
+    <div class="modal-card">
+      <button class="modal-close-btn" onclick="closeModal('biodataModal')">&times;</button>
+      
+      <div id="biodataPrintSurface" class="biodata-sheet">
+        <div style="text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 0.4rem; margin-bottom: 0.85rem;">
+          <h1 style="font-size: 1.25rem; color: var(--primary); font-weight: 800;">CHITRANSH MAHASABHA</h1>
+          <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Official Matrimonial Biodata</p>
+        </div>
 
-  <!-- CONTEXTUAL BIODATA POPUP -->
-  <div id="contextBiodataCard" class="contextual-biodata-card">
-    <div class="sheet-drag-handle"></div>
-    <button class="modal-close-btn" onclick="closeAllContextPopups()">&times;</button>
-    
-    <div id="biodataPrintSurface" class="biodata-sheet">
-      <div style="text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 0.4rem; margin-bottom: 0.85rem;">
-        <h1 style="font-size: 1.25rem; color: var(--primary); font-weight: 800;">CHITRANSH MAHASABHA</h1>
-        <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Official Matrimonial Biodata</p>
-      </div>
+        <div class="biodata-header">
+          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate">
+          <div>
+            <h2 id="bioName" style="font-size: 1.15rem; font-weight: 800;">Candidate Name</h2>
+            <p id="bioBasic" style="font-size: 0.82rem; color: var(--secondary); font-weight: 700;">Age - Height</p>
+            <p id="bioLocation" style="font-size: 0.78rem; color: var(--muted);">City, State, Country</p>
+          </div>
+        </div>
 
-      <div class="biodata-header">
-        <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate">
-        <div>
-          <h2 id="bioName" style="font-size: 1.15rem; font-weight: 800;">Candidate Name</h2>
-          <p id="bioBasic" style="font-size: 0.82rem; color: var(--secondary); font-weight: 700;">Age - Height</p>
-          <p id="bioLocation" style="font-size: 0.78rem; color: var(--muted);">City, State, Country</p>
+        <div class="biodata-title">Professional & Educational Record</div>
+        <table class="biodata-table">
+          <tr><td>Education</td><td id="bioEdu">-</td></tr>
+          <tr><td>Profession</td><td id="bioProf">-</td></tr>
+          <tr><td>Annual Income</td><td id="bioIncome">-</td></tr>
+          <tr><td>Marital Status</td><td id="bioMarital">-</td></tr>
+        </table>
+
+        <div class="biodata-title">Parental & Family Background</div>
+        <table class="biodata-table">
+          <tr><td>Father's Name</td><td id="bioFatherName">-</td></tr>
+          <tr><td>Father's Occupation</td><td id="bioFatherOcc">-</td></tr>
+          <tr><td>Mother's Name</td><td id="bioMotherName">-</td></tr>
+          <tr><td>Mother's Occupation</td><td id="bioMotherOcc">-</td></tr>
+          <tr><td>Other Family Details</td><td id="bioFamily">-</td></tr>
+        </table>
+
+        <div class="biodata-title">Partner Preferences</div>
+        <p id="bioPreferences" style="font-size: 0.82rem; line-height: 1.4;">-</p>
+
+        <div style="margin-top: 0.85rem; background: var(--surface-light); padding: 0.45rem; border-radius: 4px; font-size: 0.72rem; text-align: center;">
+          Candidate contact numbers & other confidential details are withheld for privacy. Contact Ghaziabad Chitransh Mahasabha desk quoting Profile ID.
         </div>
       </div>
 
-      <div class="biodata-title">Professional & Educational Record</div>
-      <table class="biodata-table">
-        <tr><td>Education</td><td id="bioEdu">-</td></tr>
-        <tr><td>Profession</td><td id="bioProf">-</td></tr>
-        <tr><td>Annual Income</td><td id="bioIncome">-</td></tr>
-        <tr><td>Marital Status</td><td id="bioMarital">-</td></tr>
-      </table>
-
-      <div class="biodata-title">Parental & Family Background</div>
-      <table class="biodata-table">
-        <tr><td>Father's Name</td><td id="bioFatherName">-</td></tr>
-        <tr><td>Father's Occupation</td><td id="bioFatherOcc">-</td></tr>
-        <tr><td>Mother's Name</td><td id="bioMotherName">-</td></tr>
-        <tr><td>Mother's Occupation</td><td id="bioMotherOcc">-</td></tr>
-        <tr><td>Other Family Details</td><td id="bioFamily">-</td></tr>
-      </table>
-
-      <div class="biodata-title">Partner Preferences</div>
-      <p id="bioPreferences" style="font-size: 0.82rem; line-height: 1.4;">-</p>
-
-      <div style="margin-top: 0.85rem; background: var(--surface-light); padding: 0.45rem; border-radius: 4px; font-size: 0.72rem; text-align: center;">
-        Candidate contact numbers & other confidential details are withheld for privacy. Contact Ghaziabad Chitransh Mahasabha desk quoting Profile ID.
+      <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
+        <button class="btn btn-outline" style="flex: 1;" onclick="closeModal('biodataModal')">Close</button>
+        <button class="btn btn-primary" style="flex: 1;" onclick="exportBiodataPdf()">Download (PDF)</button>
       </div>
-    </div>
-
-    <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
-      <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()">Close</button>
-      <button class="btn btn-primary" style="flex: 1;" onclick="exportBiodataPdf()">Download (PDF)</button>
     </div>
   </div>
 
-  <!-- Registration Modal -->
+  <!-- REGISTRATION MODAL -->
   <div class="modal-overlay" id="registrationModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
@@ -473,7 +412,6 @@
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;" id="regFormSubtitle">Choose membership plan and register candidate.</p>
 
       <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
-        
         <div id="planSelectionWrapper">
           <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Plan</label>
           <div class="membership-tier-container">
@@ -635,7 +573,7 @@
     </div>
   </div>
 
-  <!-- Dynamic UPI Payment Modal -->
+  <!-- PAYMENT MODAL -->
   <div class="modal-overlay" id="paymentModal">
     <div class="modal-card" style="max-width: 440px; text-align: center;">
       <button class="modal-close-btn" onclick="closeModal('paymentModal')">&times;</button>
@@ -678,7 +616,7 @@
     </div>
   </div>
 
-  <!-- Free Registration Success Modal -->
+  <!-- FREE REGISTRATION SUCCESS MODAL -->
   <div class="modal-overlay" id="freeSuccessModal">
     <div class="modal-card" style="max-width: 440px; text-align: center; padding: 2rem 1.5rem;">
       <h2 style="font-size: 1.4rem; color: #1E8E3E; margin-bottom: 0.35rem;">Registration Submitted!</h2>
@@ -692,7 +630,7 @@
     </div>
   </div>
 
-  <!-- Sign In / Sign Up Modal -->
+  <!-- SIGN IN / SIGN UP MODAL (CENTERED VIEWPORT DIALOG) -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-card" style="max-width: 380px;">
       <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
@@ -702,7 +640,6 @@
         <div class="auth-tab" id="tabRegister" onclick="switchAuthView('register')">Sign Up</div>
       </div>
 
-      <!-- INLINE ERROR ALERT -->
       <div id="authErrorAlert" class="auth-error-box"></div>
 
       <div id="viewLogin">
@@ -722,7 +659,7 @@
             <a href="#" onclick="switchAuthView('forgot')" style="font-size: 0.75rem; color: var(--primary); text-decoration: none;">Forgot Password?</a>
           </div>
           <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px;" id="loginSubmitBtn">
-            Sign In & Continue
+            Sign In & Unlock
           </button>
         </form>
       </div>
@@ -850,23 +787,54 @@
       checkUserSession();
       fetchSystemSettings();
       fetchActiveProfiles();
-      setupScrollLockListener();
+      setupIframeGuardGate();
     });
 
-    // MANDATORY LOGIN GATE LISTENERS
-    function setupScrollLockListener() {
-      window.addEventListener('scroll', () => {
-        if (!state.user && window.scrollY > 150) {
+    // 100% RELIABLE IFRAME GUEST LOCK
+    function setupIframeGuardGate() {
+      // 1. Detect mouse wheel movement inside iframe
+      window.addEventListener('wheel', (e) => {
+        if (!state.user && e.deltaY > 10) {
           triggerGuestLock();
         }
       }, { passive: true });
+
+      // 2. Detect touch swipe on mobile screen
+      let startTouchY = 0;
+      window.addEventListener('touchstart', (e) => {
+        startTouchY = e.touches[0].clientY;
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        if (!state.user && (startTouchY - e.touches[0].clientY > 15)) {
+          triggerGuestLock();
+        }
+      }, { passive: true });
+
+      // 3. Fallback IntersectionObserver when anchor passes viewport
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting && !state.user) {
+              triggerGuestLock();
+            }
+          });
+        }, { threshold: 0.1 });
+        
+        const anchor = document.getElementById('scrollTriggerAnchor');
+        if (anchor) observer.observe(anchor);
+      }
     }
 
     function triggerGuestLock() {
       if (state.user) return;
-      document.body.classList.add('locked');
-      document.getElementById('guestGateOverlay').style.display = 'flex';
+      // Immediately display centered login modal in viewport
       openLoginModal('login');
+      const err = document.getElementById('authErrorAlert');
+      if (err) {
+        err.innerText = "Please Sign In or Register to view directory profiles.";
+        err.style.display = "block";
+      }
     }
 
     function checkGuestGate() {
@@ -877,7 +845,6 @@
       return true;
     }
 
-    // Wrap critical actions: if unauthenticated, intercept and prompt login
     function guardedAction(callback) {
       if (!state.user) {
         triggerGuestLock();
@@ -1040,8 +1007,6 @@
       const stored = localStorage.getItem('cm_session');
       if (stored) {
         state.user = JSON.parse(stored);
-        document.body.classList.remove('locked');
-        document.getElementById('guestGateOverlay').style.display = 'none';
         renderNavUser();
         fetchUserShortlists();
       }
@@ -1088,18 +1053,17 @@
         if (out.success) {
           state.user = out.user;
           localStorage.setItem('cm_session', JSON.stringify(out.user));
-          document.body.classList.remove('locked');
-          document.getElementById('guestGateOverlay').style.display = 'none';
           renderNavUser();
           closeModal('authModal');
           fetchUserShortlists();
+          renderProfileList();
         } else {
           showAuthError(out.error || "Incorrect email or password. Please try again.");
         }
       } catch (err) {
         showAuthError("Connection error. Please try again.");
       } finally {
-        btn.innerText = "Sign In & Continue";
+        btn.innerText = "Sign In & Unlock";
         btn.disabled = false;
       }
     }
@@ -1125,16 +1089,15 @@
         if (out.success) {
           state.user = out.user;
           localStorage.setItem('cm_session', JSON.stringify(out.user));
-          document.body.classList.remove('locked');
-          document.getElementById('guestGateOverlay').style.display = 'none';
           renderNavUser();
           closeModal('authModal');
           fetchUserShortlists();
+          renderProfileList();
         } else {
           showAuthError(out.error || "Registration failed.");
         }
       } catch (err) {
-        showAuthError("Registration failed. Please check your internet connection.");
+        showAuthError("Registration failed. Please check connection.");
       } finally {
         btn.innerText = "Create Account";
         btn.disabled = false;
@@ -1235,7 +1198,6 @@
       state.savedIds.clear();
       renderNavUser();
       renderProfileList();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     async function fetchActiveProfiles() {
@@ -1359,11 +1321,15 @@
         return;
       }
 
-      container.innerHTML = dataset.map(p => {
+      container.innerHTML = dataset.map((p, idx) => {
         const isSaved = state.savedIds.has(p.id);
         const photoSrc = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
+        
+        // Show blurred teaser for profiles after the 2nd card if unauthenticated
+        const isRestricted = (!state.user && idx >= 2);
+
         return `
-          <div class="profile-card" onclick="guardedAction(() => {})">
+          <div class="profile-card ${isRestricted ? 'guest-restricted-blur' : ''}" onclick="guardedAction(() => openContextualBiodata('${p.id}'))">
             <div class="profile-img-container">
               <img class="profile-img" src="${photoSrc}" alt="${p.fullName}">
               <button class="shortlist-tag-btn ${isSaved ? 'active' : ''}" onclick="event.stopPropagation(); guardedAction(() => toggleShortlistRecord('${p.id}'))">
@@ -1381,7 +1347,7 @@
               <span class="profile-badge">${p.city}, ${p.state}</span>
               
               <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
-                <button class="btn btn-outline" style="flex: 1;" onclick="event.stopPropagation(); guardedAction(() => openContextualBiodata('${p.id}', this))">View Biodata</button>
+                <button class="btn btn-outline" style="flex: 1;" onclick="event.stopPropagation(); guardedAction(() => openContextualBiodata('${p.id}'))">View Biodata</button>
               </div>
             </div>
           </div>
@@ -1420,7 +1386,7 @@
       renderProfileList();
     }
 
-    function openContextualBiodata(profileId, triggerBtn) {
+    function openContextualBiodata(profileId) {
       const p = state.profiles.find(item => item.id === profileId);
       if (!p) return;
 
@@ -1440,38 +1406,7 @@
       document.getElementById('bioFamily').innerText = p.familyDetails || "Available upon personal request.";
       document.getElementById('bioPreferences').innerText = p.partnerPreferences || "Open to culturally compatible matches.";
 
-      const card = document.getElementById('contextBiodataCard');
-      document.getElementById('backdropBarrier').classList.add('active');
-      card.style.display = 'block';
-      card.classList.add('active');
-
-      if (window.innerWidth > 768) {
-        const rect = triggerBtn.getBoundingClientRect();
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
-
-        let top = rect.bottom + scrollY + 8;
-        let left = rect.left + scrollX - 220;
-
-        const cardWidth = card.offsetWidth || 500;
-        if (left + cardWidth > window.innerWidth - 20) {
-          left = window.innerWidth - cardWidth - 25;
-        }
-        if (left < 15) left = 15;
-
-        card.style.top = `${top}px`;
-        card.style.left = `${left}px`;
-      } else {
-        card.style.top = '';
-        card.style.left = '';
-      }
-    }
-
-    function closeAllContextPopups() {
-      const card = document.getElementById('contextBiodataCard');
-      card.style.display = 'none';
-      card.classList.remove('active');
-      document.getElementById('backdropBarrier').classList.remove('active');
+      document.getElementById('biodataModal').classList.add('active');
     }
 
     function exportBiodataPdf() {
@@ -1628,11 +1563,9 @@
       applyPricingUI();
       document.getElementById('registrationModal').classList.add('active'); 
     }
+
     function closeModal(id) { 
       document.getElementById(id).classList.remove('active'); 
-      if (!state.user && (id === 'authModal')) {
-        document.body.classList.remove('locked');
-      }
     }
   </script>
 </body>
