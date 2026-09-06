@@ -167,14 +167,19 @@
     .search-box-row {
       display: flex; gap: 0.5rem; align-items: center; justify-content: space-between;
     }
+
+    /* Fixed Display Mechanics for Filters */
     .filter-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
-      gap: 0.65rem; align-items: flex-end; margin-top: 0.75rem;
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
+      gap: 0.65rem;
+      align-items: flex-end;
+      margin-top: 0.75rem;
     }
-    @media (max-width: 768px) {
-      .filter-grid { display: none; grid-template-columns: 1fr; }
-      .filter-grid.expanded { display: grid; }
+    .filter-grid.expanded {
+      display: grid !important;
     }
+
     .filter-control { display: flex; flex-direction: column; gap: 0.25rem; }
     .filter-control label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); }
     .filter-control input, .filter-control select {
@@ -624,7 +629,7 @@
         <button class="tab-btn" onclick="filterByStatus('Deleted', this)">Deleted (<span id="countDeleted">0</span>)</button>
       </div>
 
-      <!-- SEARCH BAR WITH BUTTON AND FILTER TOGGLE -->
+      <!-- SEARCH BAR -->
       <div class="search-box-row">
         <input type="text" id="adminSearchInput" onkeydown="if(event.key==='Enter') executeAdminSearch()" placeholder="Search name, ID, city, phone, profession..." style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
         <button class="btn btn-primary" style="min-height: 40px;" onclick="executeAdminSearch()">Search</button>
@@ -733,11 +738,23 @@
       setTimeout(() => { el.style.display = "none"; }, 3500);
     }
 
+    // Direct Toggle Function with Fallback Logic
     function toggleMobileFilters() {
       const panel = document.getElementById('adminFilterPanel');
       const btn = document.getElementById('toggleFilterBtn');
-      panel.classList.toggle('expanded');
-      btn.innerText = panel.classList.contains('expanded') ? 'Filters ▴' : 'Filters ▾';
+      if (!panel || !btn) return;
+
+      const isHidden = window.getComputedStyle(panel).display === 'none';
+      
+      if (isHidden) {
+        panel.classList.add('expanded');
+        panel.style.display = 'grid';
+        btn.innerText = 'Filters ▴';
+      } else {
+        panel.classList.remove('expanded');
+        panel.style.display = 'none';
+        btn.innerText = 'Filters ▾';
+      }
     }
 
     function positionContextualCard(cardElement, triggerButton) {
@@ -940,7 +957,6 @@
       executeAdminSearch();
     }
 
-    // SEARCH & MULTI-FILTER EXECUTION ENGINE
     function executeAdminSearch() {
       const searchTerm = document.getElementById('adminSearchInput').value.toLowerCase().trim();
       const gender = document.getElementById('adminFilterGender').value;
@@ -1565,7 +1581,6 @@
       window.open(waUrl, '_blank') || (window.location.href = waUrl);
     }
 
-    // EXACT "KAYASTHA VIVAH PATRIKA" LUXURY TEMPLATE PDF EXPORT
     function exportSanitizedMatchPdf() {
       const client = adminState.activeMatchClient;
       const selected = getSelectedMatchedCandidates();
@@ -1575,7 +1590,7 @@
       }
 
       const surface = document.createElement('div');
-      surface.style.width = "794px"; // Standard A4 print surface
+      surface.style.width = "794px";
       surface.style.padding = "35px 40px";
       surface.style.background = "#FDFBF7";
       surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
@@ -1583,7 +1598,6 @@
       surface.style.position = "relative";
       surface.style.border = "2px solid #E6D5B8";
 
-      // Lord Chitragupta Ji Icon (SVG Asset)
       const chitraguptaEmblem = `
         <svg width="70" height="70" viewBox="0 0 100 100" style="margin: 0 auto; display: block;">
           <circle cx="50" cy="50" r="46" fill="#FFF8EE" stroke="#D4AF37" stroke-width="3"/>
@@ -1660,7 +1674,6 @@
 
         <div>${cardsHtml}</div>
 
-        <!-- Privacy Shield Disclaimer -->
         <div style="page-break-inside: avoid; background: #FFF2F4; border-left: 4px solid #800020; border-radius: 6px; padding: 12px 16px; margin-top: 15px; display: flex; align-items: center; gap: 14px;">
           <div style="font-size: 20px; color: #800020; line-height: 1;">&#128737;</div>
           <div style="font-size: 11px; color: #6B4E54; line-height: 1.45;">
@@ -1669,7 +1682,6 @@
           </div>
         </div>
 
-        <!-- Decorative Floral Watermark Footer -->
         <div style="margin-top: 30px; text-align: center; border-top: 1px solid #F0DDB8; padding-top: 16px;">
           <div style="color: #D4AF37; font-size: 14px; margin-bottom: 5px;">&#10048;</div>
           <p style="font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; color: #800020; font-weight: 700; margin: 0;">
