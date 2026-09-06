@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Chitransh Mahasabha - Matrimonial Network</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,21 +23,23 @@
       --border: #F5DEC2;
       --white: #FFFFFF;
       --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
       --shadow-sm: 0 2px 8px rgba(255, 126, 126, 0.08);
       --shadow-md: 0 8px 24px rgba(255, 126, 126, 0.12);
-      --shadow-lg: 0 16px 36px rgba(255, 162, 89, 0.16);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.25);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; }
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 5rem; position: relative; }
 
     .btn {
-      padding: 0.55rem 1.15rem; font-size: 0.85rem; font-weight: 600;
+      min-height: 38px;
+      padding: 0.45rem 1rem; font-size: 0.82rem; font-weight: 700;
       border-radius: var(--radius-sm); cursor: pointer; border: none;
       transition: all 0.2s ease; text-decoration: none;
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      user-select: none;
     }
 
     .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); box-shadow: var(--shadow-sm); }
@@ -54,13 +56,12 @@
 
     .top-action-bar {
       max-width: 1200px;
-      margin: 1.25rem auto 0.5rem auto;
+      margin: 1rem auto 0.5rem auto;
       padding: 0 1rem;
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      gap: 0.75rem;
-      position: relative;
+      gap: 0.5rem;
     }
 
     .loader-container {
@@ -69,7 +70,7 @@
       padding: 4rem 1rem; gap: 1rem; color: var(--muted);
     }
     .spinner {
-      width: 44px; height: 44px;
+      width: 42px; height: 42px;
       border: 4px solid var(--surface-light);
       border-top-color: var(--primary);
       border-radius: 50%;
@@ -77,20 +78,45 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* Filter & Search Bar */
     .filter-wrapper { max-width: 1200px; margin: 0.5rem auto 1rem auto; padding: 0 1rem; }
-    .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm); }
-    .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 0.75rem; }
-    .filter-control { display: flex; flex-direction: column; gap: 0.35rem; }
-    .filter-control label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted); }
-    .filter-control select, .filter-control input {
-      padding: 0.55rem 0.65rem; border-radius: var(--radius-sm);
-      border: 1px solid var(--border); background-color: var(--bg);
-      font-size: 0.85rem; color: var(--dark); outline: none;
+    .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
+    
+    .mobile-filter-header {
+      display: flex; gap: 0.5rem; align-items: center; justify-content: space-between;
+    }
+    
+    .filter-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.65rem; margin-top: 0.75rem;
     }
 
+    @media (max-width: 768px) {
+      .filter-grid {
+        display: none;
+        grid-template-columns: 1fr;
+      }
+      .filter-grid.expanded {
+        display: grid;
+      }
+    }
+
+    .filter-control { display: flex; flex-direction: column; gap: 0.25rem; }
+    .filter-control label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); }
+    .filter-control select, .filter-control input {
+      height: 38px; padding: 0.45rem 0.65rem; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background-color: var(--bg);
+      font-size: 0.82rem; color: var(--dark); outline: none;
+    }
+
+    /* Catalog Layout */
     .catalog-wrapper { max-width: 1200px; margin: 1rem auto 3rem auto; padding: 0 1rem; }
-    .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
-    .profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 1.25rem; }
+    .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+    .profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.15rem; }
+
+    @media (max-width: 600px) {
+      .profile-grid { grid-template-columns: 1fr; }
+    }
 
     .profile-card {
       background: var(--white); border-radius: var(--radius-md);
@@ -98,81 +124,111 @@
       box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
       position: relative; transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .profile-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-    .profile-img-container { position: relative; width: 100%; height: 250px; background-color: var(--surface-light); }
+    .profile-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .profile-img-container { position: relative; width: 100%; height: 260px; background-color: var(--surface-light); }
     .profile-img { width: 100%; height: 100%; object-fit: cover; }
 
     .shortlist-tag-btn {
       position: absolute; top: 10px; right: 10px;
       background: rgba(255, 255, 255, 0.95); border: 1px solid var(--border);
-      border-radius: 20px; padding: 0.3rem 0.65rem; font-size: 0.75rem;
-      font-weight: 700; cursor: pointer; color: var(--dark);
+      border-radius: 20px; padding: 0.3rem 0.65rem; font-size: 0.72rem;
+      font-weight: 800; cursor: pointer; color: var(--dark);
     }
     .shortlist-tag-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
     .profile-body { padding: 1rem; display: flex; flex-direction: column; flex-grow: 1; gap: 0.35rem; }
     .profile-name-row { display: flex; justify-content: space-between; align-items: baseline; }
-    .profile-name { font-size: 1.1rem; font-weight: 700; color: var(--dark); }
-    .profile-age { font-size: 0.85rem; color: var(--secondary); font-weight: 600; }
-    .profile-meta-line { font-size: 0.85rem; color: var(--muted); }
-    .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: var(--dark); width: fit-content; }
+    .profile-name { font-size: 1.1rem; font-weight: 800; color: var(--dark); }
+    .profile-age { font-size: 0.85rem; color: var(--secondary); font-weight: 700; }
+    .profile-meta-line { font-size: 0.82rem; color: var(--muted); }
+    .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--dark); width: fit-content; }
 
+    /* Modal Backdrop */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
-      z-index: 2000; display: none; align-items: flex-start; justify-content: center;
+      background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px);
+      z-index: 2000; display: none; -webkit-overflow-scrolling: touch;
+    }
+    .modal-overlay.active { display: block; }
+
+    /* Top-Header Overlays for Sign In, Registration, Payment */
+    #authModal.modal-overlay, #registrationModal.modal-overlay, #paymentModal.modal-overlay {
+      display: none; align-items: flex-start; justify-content: center;
       padding: 1.5rem 1rem 3rem 1rem; overflow-y: auto;
     }
-    .modal-overlay.active { display: flex; }
-    
+    #authModal.active, #registrationModal.active, #paymentModal.active { display: flex; }
+
     .modal-card {
       background: var(--white); border-radius: var(--radius-md);
-      max-width: 620px; width: 100%; max-height: 88vh;
+      max-width: 580px; width: 100%; max-height: 88vh;
       overflow-y: auto; position: relative;
       border: 2px solid var(--primary);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
-      padding: 1.75rem;
-      animation: slideDownHeader 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      box-shadow: var(--shadow-lg);
+      padding: 1.5rem;
+      animation: slideDownHeader 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     @keyframes slideDownHeader {
-      from { opacity: 0; transform: translateY(-24px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .modal-close-btn { position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; font-size: 1.35rem; font-weight: 700; cursor: pointer; color: var(--muted); }
+    /* CONTEXTUAL BIODATA POPUP (Desktop: Anchored to Clicked Card; Mobile: Bottom-Sheet Drawer) */
+    .contextual-biodata-card {
+      position: absolute;
+      background: var(--white);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      z-index: 2100;
+      padding: 1.5rem;
+      display: none;
+      max-width: 600px;
+      width: 95%;
+    }
+    .contextual-biodata-card.active { display: block; }
 
-    .biodata-sheet { border: 2px solid var(--secondary); border-radius: var(--radius-md); padding: 1.75rem; background: #FFF; margin-bottom: 1.25rem; }
-    .biodata-header { display: flex; align-items: center; gap: 1.25rem; border-bottom: 2px solid var(--surface-light); padding-bottom: 1rem; margin-bottom: 1rem; }
-    .biodata-photo { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
-    .biodata-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--primary); margin: 0.85rem 0 0.35rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
-    .biodata-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    .biodata-table td { padding: 0.35rem 0; }
+    @media (max-width: 768px) {
+      .contextual-biodata-card {
+        position: fixed !important;
+        bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important;
+        width: 100% !important; max-width: 100% !important; max-height: 85vh !important;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+        border: none !important; border-top: 3px solid var(--primary) !important;
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.3) !important;
+        padding: 1.25rem 1rem 2.5rem 1rem !important;
+        overflow-y: auto !important;
+        animation: slideUpMobile 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+      }
+      @keyframes slideUpMobile { from { transform: translateY(100%); } to { transform: translateY(0); } }
+      .sheet-drag-handle { width: 40px; height: 5px; background: #D9D1CE; border-radius: 10px; margin: -0.25rem auto 1rem auto; display: block !important; }
+    }
+    .sheet-drag-handle { display: none; }
+
+    .modal-close-btn { position: absolute; top: 0.75rem; right: 0.75rem; background: transparent; border: none; font-size: 1.4rem; font-weight: 700; cursor: pointer; color: var(--muted); }
+
+    .biodata-sheet { border: 1.5px solid var(--secondary); border-radius: var(--radius-md); padding: 1.25rem; background: #FFF; margin-bottom: 1rem; }
+    .biodata-header { display: flex; align-items: center; gap: 1rem; border-bottom: 1.5px solid var(--surface-light); padding-bottom: 0.85rem; margin-bottom: 0.85rem; }
+    .biodata-photo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
+    .biodata-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; color: var(--primary); margin: 0.75rem 0 0.25rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
+    .biodata-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .biodata-table td { padding: 0.3rem 0; }
     .biodata-table td:first-child { color: var(--muted); width: 40%; font-weight: 600; }
 
-    .form-group { margin-bottom: 0.85rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
-    .form-group label { font-size: 0.75rem; font-weight: 700; }
-    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; }
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .form-group { margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
+    .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--dark); }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+    @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
 
     .upi-box {
-      border: 2px dashed var(--secondary);
-      background: var(--surface-light);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      text-align: center;
-      margin: 1rem 0;
+      border: 2px dashed var(--secondary); background: var(--surface-light);
+      border-radius: var(--radius-md); padding: 1.25rem; text-align: center; margin: 1rem 0;
     }
 
-    .auth-tab-row {
-      display: flex; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border);
-    }
-    .auth-tab {
-      padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 600; border-bottom: 2px solid transparent; color: var(--muted);
-    }
-    .auth-tab.active {
-      color: var(--primary); border-bottom-color: var(--primary);
-    }
+    .auth-tab-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .auth-tab { padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 700; border-bottom: 2px solid transparent; color: var(--muted); }
+    .auth-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
   </style>
 </head>
 <body>
@@ -186,7 +242,12 @@
 
   <div class="filter-wrapper">
     <div class="filter-container">
-      <div class="filter-grid">
+      <div class="mobile-filter-header">
+        <input type="text" id="filterLocation" placeholder="Search City, State, or Country..." oninput="applyFilters()" style="flex: 1; height: 38px; padding: 0.45rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg);">
+        <button class="btn btn-outline" id="toggleFilterBtn" onclick="toggleMobileFilters()">Filters ▾</button>
+      </div>
+
+      <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label>Gender</label>
           <select id="filterGender" onchange="applyFilters()">
@@ -218,11 +279,6 @@
         </div>
 
         <div class="filter-control">
-          <label>City / Location</label>
-          <input type="text" id="filterLocation" placeholder="Search City / State" oninput="applyFilters()">
-        </div>
-
-        <div class="filter-control">
           <label>Education</label>
           <input type="text" id="filterEducation" placeholder="Degree / Qualification" oninput="applyFilters()">
         </div>
@@ -249,12 +305,12 @@
   <main class="catalog-wrapper">
     <div class="catalog-header">
       <div>
-        <h2 style="font-size: 1.25rem;">Candidate Registry</h2>
-        <p style="font-size: 0.8rem; color: var(--muted);" id="profileCounter">Connecting to database...</p>
+        <h2 style="font-size: 1.2rem;">Candidate Registry</h2>
+        <p style="font-size: 0.78rem; color: var(--muted);" id="profileCounter">Connecting to database...</p>
       </div>
-      <div style="display: flex; gap: 0.5rem;">
-        <button class="btn btn-outline" id="tabAll" onclick="switchCatalogMode('all')">All Profiles</button>
-        <button class="btn btn-ghost" id="tabSaved" onclick="switchCatalogMode('saved')">Saved Profiles (<span id="savedCounter">0</span>)</button>
+      <div style="display: flex; gap: 0.4rem;">
+        <button class="btn btn-outline" id="tabAll" onclick="switchCatalogMode('all')">All</button>
+        <button class="btn btn-ghost" id="tabSaved" onclick="switchCatalogMode('saved')">Saved (<span id="savedCounter">0</span>)</button>
       </div>
     </div>
 
@@ -266,50 +322,55 @@
     </div>
   </main>
 
-  <div class="modal-overlay" id="biodataModal">
-    <div class="modal-card">
-      <button class="modal-close-btn" onclick="closeModal('biodataModal')">&times;</button>
-      <div id="biodataPrintSurface" class="biodata-sheet">
-        <div style="text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; margin-bottom: 1rem;">
-          <h1 style="font-size: 1.35rem; color: var(--primary); font-weight: 700;">CHITRANSH MAHASABHA</h1>
-          <p style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase;">Official Matrimonial Biodata</p>
-        </div>
+  <!-- Transparent Backdrop Barrier for Contextual Popups -->
+  <div id="backdropBarrier" class="modal-overlay" onclick="closeAllContextPopups()"></div>
 
-        <div class="biodata-header">
-          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate">
-          <div>
-            <h2 id="bioName" style="font-size: 1.25rem;">Candidate Name</h2>
-            <p id="bioBasic" style="font-size: 0.85rem; color: var(--secondary); font-weight: 600;">Age - Height</p>
-            <p id="bioLocation" style="font-size: 0.8rem; color: var(--muted);">City, State, Country</p>
-          </div>
-        </div>
+  <!-- CONTEXTUAL BIODATA POPUP (Anchored near clicked card / Bottom-Sheet on mobile) -->
+  <div id="contextBiodataCard" class="contextual-biodata-card">
+    <div class="sheet-drag-handle"></div>
+    <button class="modal-close-btn" onclick="closeAllContextPopups()">&times;</button>
+    
+    <div id="biodataPrintSurface" class="biodata-sheet">
+      <div style="text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 0.4rem; margin-bottom: 0.85rem;">
+        <h1 style="font-size: 1.25rem; color: var(--primary); font-weight: 800;">CHITRANSH MAHASABHA</h1>
+        <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Official Matrimonial Biodata</p>
+      </div>
 
-        <div class="biodata-title">Professional & Educational Record</div>
-        <table class="biodata-table">
-          <tr><td>Education</td><td id="bioEdu">-</td></tr>
-          <tr><td>Profession</td><td id="bioProf">-</td></tr>
-          <tr><td>Annual Income</td><td id="bioIncome">-</td></tr>
-          <tr><td>Marital Status</td><td id="bioMarital">-</td></tr>
-        </table>
-
-        <div class="biodata-title">Family Overview</div>
-        <p id="bioFamily" style="font-size: 0.85rem; line-height: 1.4;">-</p>
-
-        <div class="biodata-title">Partner Preferences</div>
-        <p id="bioPreferences" style="font-size: 0.85rem; line-height: 1.4;">-</p>
-
-        <div style="margin-top: 1rem; background: var(--surface-light); padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; text-align: center;">
-          Contact numbers and residential addresses are held centrally. Contact Chitransh Mahasabha Desk to connect.
+      <div class="biodata-header">
+        <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate">
+        <div>
+          <h2 id="bioName" style="font-size: 1.15rem; font-weight: 800;">Candidate Name</h2>
+          <p id="bioBasic" style="font-size: 0.82rem; color: var(--secondary); font-weight: 700;">Age - Height</p>
+          <p id="bioLocation" style="font-size: 0.78rem; color: var(--muted);">City, State, Country</p>
         </div>
       </div>
 
-      <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-        <button class="btn btn-outline" onclick="closeModal('biodataModal')">Close</button>
-        <button class="btn btn-primary" onclick="exportBiodataPdf()">Download Biodata (PDF)</button>
+      <div class="biodata-title">Professional & Educational Record</div>
+      <table class="biodata-table">
+        <tr><td>Education</td><td id="bioEdu">-</td></tr>
+        <tr><td>Profession</td><td id="bioProf">-</td></tr>
+        <tr><td>Annual Income</td><td id="bioIncome">-</td></tr>
+        <tr><td>Marital Status</td><td id="bioMarital">-</td></tr>
+      </table>
+
+      <div class="biodata-title">Family Overview</div>
+      <p id="bioFamily" style="font-size: 0.82rem; line-height: 1.4;">-</p>
+
+      <div class="biodata-title">Partner Preferences</div>
+      <p id="bioPreferences" style="font-size: 0.82rem; line-height: 1.4;">-</p>
+
+      <div style="margin-top: 0.85rem; background: var(--surface-light); padding: 0.45rem; border-radius: 4px; font-size: 0.72rem; text-align: center;">
+        Contact numbers and residential addresses are held centrally. Contact Chitransh Mahasabha Desk to connect.
       </div>
+    </div>
+
+    <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
+      <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()">Close</button>
+      <button class="btn btn-primary" style="flex: 1;" onclick="exportBiodataPdf()">Download (PDF)</button>
     </div>
   </div>
 
+  <!-- Registration Modal -->
   <div class="modal-overlay" id="registrationModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
@@ -404,7 +465,7 @@
           <label>Upload Profile Photo *</label>
           <input type="file" id="regPhotoFile" accept="image/*" required onchange="handleProfilePhotoSelection(event)">
           <div id="imagePreviewBox" style="display: none; margin-top: 0.5rem; text-align: center;">
-            <img id="imagePreviewElement" src="" alt="Preview" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
+            <img id="imagePreviewElement" src="" alt="Preview" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
           </div>
         </div>
 
@@ -429,13 +490,14 @@
           <textarea id="regPreferences" rows="2" placeholder="Expectations regarding education, profession, location, and outlook"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="regSubmitBtn">
+        <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="regSubmitBtn">
           Proceed to Pay ₹1999
         </button>
       </form>
     </div>
   </div>
 
+  <!-- Dynamic UPI Payment Modal -->
   <div class="modal-overlay" id="paymentModal">
     <div class="modal-card" style="max-width: 440px; text-align: center;">
       <button class="modal-close-btn" onclick="closeModal('paymentModal')">&times;</button>
@@ -452,7 +514,7 @@
 
         <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">UPI ID: <code>sinha361@icici</code></p>
         
-        <a id="upiIntentBtn" href="#" class="btn btn-primary" style="width: 100%; margin-top: 0.75rem;">
+        <a id="upiIntentBtn" href="#" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.75rem;">
           Pay ₹1999 via UPI App
         </a>
       </div>
@@ -471,7 +533,7 @@
           <input type="text" id="payUtrNumber" placeholder="12-digit UPI Ref / UTR No" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm);">
         </div>
 
-        <button class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="submitProofBtn" onclick="submitPaymentProof()">
+        <button class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="submitProofBtn" onclick="submitPaymentProof()">
           Submit Screenshot for Approval
         </button>
         <p style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; text-align: center;">
@@ -481,6 +543,7 @@
     </div>
   </div>
 
+  <!-- Sign In / Sign Up Modal -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-card" style="max-width: 380px;">
       <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
@@ -503,7 +566,7 @@
           <div style="display: flex; justify-content: flex-end; margin-bottom: 0.75rem;">
             <a href="#" onclick="switchAuthView('forgot')" style="font-size: 0.75rem; color: var(--primary); text-decoration: none;">Forgot Password?</a>
           </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%;" id="loginSubmitBtn">
+          <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px;" id="loginSubmitBtn">
             Sign In & Continue
           </button>
         </form>
@@ -523,7 +586,7 @@
             <label>Create Password *</label>
             <input type="password" id="regUserPass" required minlength="4" placeholder="Min 4 characters">
           </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;" id="regUserSubmitBtn">
+          <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="regUserSubmitBtn">
             Create Account
           </button>
         </form>
@@ -538,7 +601,7 @@
             <label>Registered Email *</label>
             <input type="email" id="forgotEmail" required placeholder="name@domain.com">
           </div>
-          <button type="button" class="btn btn-primary" style="width: 100%;" id="sendOtpBtn" onclick="requestResetOtp()">
+          <button type="button" class="btn btn-primary" style="width: 100%; min-height: 44px;" id="sendOtpBtn" onclick="requestResetOtp()">
             Send Reset Code
           </button>
         </div>
@@ -552,7 +615,7 @@
             <label>New Password *</label>
             <input type="password" id="resetNewPass" required minlength="4" placeholder="Enter new password">
           </div>
-          <button type="button" class="btn btn-primary" style="width: 100%;" id="confirmResetBtn" onclick="confirmPasswordReset()">
+          <button type="button" class="btn btn-primary" style="width: 100%; min-height: 44px;" id="confirmResetBtn" onclick="confirmPasswordReset()">
             Save New Password
           </button>
         </div>
@@ -596,6 +659,13 @@
       checkUserSession();
       fetchActiveProfiles();
     });
+
+    function toggleMobileFilters() {
+      const panel = document.getElementById('mainFilterPanel');
+      const btn = document.getElementById('toggleFilterBtn');
+      panel.classList.toggle('expanded');
+      btn.innerText = panel.classList.contains('expanded') ? 'Filters ▴' : 'Filters ▾';
+    }
 
     function initLocationDropdowns() {
       const stateSel = document.getElementById('regState');
@@ -875,9 +945,8 @@
       });
     }
 
-    // High compression for screenshot to ensure string length < 40,000 characters
     function handleScreenshotSelection(event) {
-      compressImage(event.target.files[0], 350, 0.4, (base64) => {
+      compressImage(event.target.files[0], 350, 0.40, (base64) => {
         selectedScreenshotImage = base64;
         document.getElementById('screenshotPreviewElement').src = base64;
         document.getElementById('screenshotPreviewBox').style.display = 'block';
@@ -971,7 +1040,7 @@
               <span class="profile-badge">${p.city}, ${p.state}</span>
               
               <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
-                <button class="btn btn-outline" style="flex: 1;" onclick="openBiodataModal('${p.id}')">View Biodata</button>
+                <button class="btn btn-outline" style="flex: 1;" onclick="openContextualBiodata('${p.id}', this)">View Biodata</button>
               </div>
             </div>
           </div>
@@ -1011,7 +1080,8 @@
       renderProfileList();
     }
 
-    function openBiodataModal(profileId) {
+    // CONTEXTUAL BIODATA MODAL (Anchored on Desktop, Bottom-Sheet Drawer on Mobile)
+    function openContextualBiodata(profileId, triggerBtn) {
       const p = state.profiles.find(item => item.id === profileId);
       if (!p) return;
 
@@ -1026,7 +1096,38 @@
       document.getElementById('bioFamily').innerText = p.familyDetails || "Available upon personal request.";
       document.getElementById('bioPreferences').innerText = p.partnerPreferences || "Open to culturally compatible matches.";
 
-      document.getElementById('biodataModal').classList.add('active');
+      const card = document.getElementById('contextBiodataCard');
+      document.getElementById('backdropBarrier').classList.add('active');
+      card.style.display = 'block';
+      card.classList.add('active');
+
+      if (window.innerWidth > 768) {
+        const rect = triggerBtn.getBoundingClientRect();
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+
+        let top = rect.bottom + scrollY + 8;
+        let left = rect.left + scrollX - 220;
+
+        const cardWidth = card.offsetWidth || 500;
+        if (left + cardWidth > window.innerWidth - 20) {
+          left = window.innerWidth - cardWidth - 25;
+        }
+        if (left < 15) left = 15;
+
+        card.style.top = `${top}px`;
+        card.style.left = `${left}px`;
+      } else {
+        card.style.top = '';
+        card.style.left = '';
+      }
+    }
+
+    function closeAllContextPopups() {
+      const card = document.getElementById('contextBiodataCard');
+      card.style.display = 'none';
+      card.classList.remove('active');
+      document.getElementById('backdropBarrier').classList.remove('active');
     }
 
     function exportBiodataPdf() {
