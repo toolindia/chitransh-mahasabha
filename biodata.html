@@ -128,7 +128,6 @@
       margin-left: 0.25rem;
     }
 
-    /* Membership Tier Selector */
     .membership-tier-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -181,7 +180,6 @@
     .btn-primary:hover { opacity: 0.95; }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Modal Architecture */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px);
@@ -242,10 +240,8 @@
       <p id="portalSubheader">Candidate Biodata Submission Portal</p>
     </div>
 
-    <!-- MAIN BIODATA FORM -->
     <form id="biodataForm" onsubmit="submitBiodata(event)">
       
-      <!-- MEMBERSHIP PLAN SELECTOR -->
       <div id="planSelectionSection">
         <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Tier</label>
         <div class="membership-tier-container">
@@ -413,7 +409,6 @@
     </form>
   </div>
 
-  <!-- STEP 2A: DYNAMIC UPI PAYMENT MODAL (If Paid Mode Active) -->
   <div class="modal-overlay" id="paymentModal">
     <div class="modal-card">
       <h2 style="font-size: 1.3rem; color: var(--primary); margin-bottom: 0.25rem;">Verify & Activate Profile</h2>
@@ -455,7 +450,6 @@
     </div>
   </div>
 
-  <!-- STEP 2B: FREE MODE CONFIRMATION MODAL (If Free Mode Active) -->
   <div class="modal-overlay" id="freeSuccessModal">
     <div class="modal-card" style="padding: 2.5rem 1.5rem;">
       <h2 style="color: var(--success); font-size: 1.5rem; margin-bottom: 0.4rem;">Biodata Submitted!</h2>
