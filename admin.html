@@ -168,7 +168,6 @@
       display: flex; gap: 0.5rem; align-items: center; justify-content: space-between;
     }
 
-    /* Fixed Display Mechanics for Filters */
     .filter-grid {
       display: none;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
@@ -403,7 +402,7 @@
 
     <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
       <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()">Close</button>
-      <button class="btn btn-primary" style="flex: 1;" onclick="exportSanitizedMatchPdf()">Download PDF</button>
+      <button class="btn btn-primary" style="flex: 1;" onclick="exportSanitizedMatchPdf()">Download Clean PDF</button>
       <button class="btn btn-whatsapp" style="flex: 2; min-width: 180px;" onclick="sendSelectedMatchesViaWhatsApp()">Send via WhatsApp</button>
     </div>
   </div>
@@ -482,7 +481,7 @@
     </div>
   </div>
 
-  <!-- PIN Unlock Gate -->
+  <!-- PIN Gate -->
   <div id="authOverlay" class="modal-overlay active">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;">Admin Desk</h2>
@@ -738,7 +737,6 @@
       setTimeout(() => { el.style.display = "none"; }, 3500);
     }
 
-    // Direct Toggle Function with Fallback Logic
     function toggleMobileFilters() {
       const panel = document.getElementById('adminFilterPanel');
       const btn = document.getElementById('toggleFilterBtn');
@@ -1581,6 +1579,7 @@
       window.open(waUrl, '_blank') || (window.location.href = waUrl);
     }
 
+    // LUXURY BALANCED A4 PDF RENDERER (CENTRAL ALIGNMENT FIX)
     function exportSanitizedMatchPdf() {
       const client = adminState.activeMatchClient;
       const selected = getSelectedMatchedCandidates();
@@ -1589,19 +1588,33 @@
         return;
       }
 
+      // Invisible Print Mount Area in DOM
+      const mount = document.createElement('div');
+      mount.id = "pdfMountContainer";
+      mount.style.position = "fixed";
+      mount.style.top = "-10000px";
+      mount.style.left = "-10000px";
+      mount.style.width = "794px";
+      mount.style.zIndex = "-1";
+      document.body.appendChild(mount);
+
       const surface = document.createElement('div');
       surface.style.width = "794px";
-      surface.style.padding = "35px 40px";
-      surface.style.background = "#FDFBF7";
-      surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
+      surface.style.minHeight = "1122px"; // Exact A4 96dpi height
+      surface.style.height = "1122px";
+      surface.style.backgroundColor = "#FDFBF7";
       surface.style.boxSizing = "border-box";
+      surface.style.padding = "24px";
       surface.style.position = "relative";
-      surface.style.border = "2px solid #E6D5B8";
+      surface.style.overflow = "hidden";
+      surface.style.display = "flex";
+      surface.style.flexDirection = "column";
+      surface.style.justifyContent = "space-between";
 
       const chitraguptaEmblem = `
-        <svg width="70" height="70" viewBox="0 0 100 100" style="margin: 0 auto; display: block;">
-          <circle cx="50" cy="50" r="46" fill="#FFF8EE" stroke="#D4AF37" stroke-width="3"/>
-          <circle cx="50" cy="50" r="41" fill="none" stroke="#800020" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <svg width="68" height="68" viewBox="0 0 100 100" style="margin: 0 auto; display: block;">
+          <circle cx="50" cy="50" r="47" fill="#FFF9EF" stroke="#D4AF37" stroke-width="2.5"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#800020" stroke-width="1.5" stroke-dasharray="3,3"/>
           <path d="M50 16 C38 16 34 26 34 32 C34 40 40 46 50 46 C60 46 66 40 66 32 C66 26 62 16 50 16 Z" fill="#D4AF37"/>
           <circle cx="50" cy="30" r="9" fill="#800020"/>
           <path d="M30 68 L70 68 L64 48 L36 48 Z" fill="#D4AF37"/>
@@ -1610,45 +1623,45 @@
         </svg>
       `;
 
-      let cardsHtml = selected.map((m, i) => `
-        <div style="page-break-inside: avoid; border: 1.5px solid #F0DDB8; border-radius: 14px; background: #FFFFFF; padding: 22px 24px; margin-bottom: 22px; position: relative; box-shadow: 0 4px 15px rgba(212,175,55,0.08);">
-          <div style="position: absolute; top: 0; left: 0; width: 45px; height: 45px; border-top: 3px solid #800020; border-left: 3px solid #800020; border-top-left-radius: 12px;"></div>
+      let cardsHtml = selected.slice(0, 2).map((m, i) => `
+        <div style="border: 1.5px solid #EEDBBE; border-radius: 14px; background: #FFFFFF; padding: 20px 24px; margin-bottom: 16px; position: relative; box-shadow: 0 4px 14px rgba(212,175,55,0.06);">
+          <div style="position: absolute; top: 0; left: 0; width: 40px; height: 40px; border-top: 3.5px solid #800020; border-left: 3.5px solid #800020; border-top-left-radius: 12px;"></div>
 
-          <div style="display: flex; align-items: center; gap: 28px;">
-            <div style="position: relative; width: 140px; text-align: center; flex-shrink: 0;">
-              <div style="width: 120px; height: 120px; border-radius: 50%; padding: 4px; background: linear-gradient(135deg, #D4AF37, #FFEDB9); box-shadow: 0 4px 12px rgba(0,0,0,0.12); margin: 0 auto;">
+          <div style="display: flex; align-items: center; gap: 26px;">
+            <div style="position: relative; width: 135px; text-align: center; flex-shrink: 0;">
+              <div style="width: 115px; height: 115px; border-radius: 50%; padding: 4px; background: linear-gradient(135deg, #D4AF37, #FFE8B2); box-shadow: 0 4px 12px rgba(0,0,0,0.12); margin: 0 auto;">
                 <img src="${m.photoUrl || ''}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #FFF;" crossorigin="anonymous">
               </div>
-              <div style="margin-top: -12px; background: #800020; color: #FFF; font-size: 10px; font-weight: 800; padding: 3px 12px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.25); letter-spacing: 0.5px;">
+              <div style="margin-top: -12px; background: #800020; color: #FFF; font-size: 10px; font-weight: 800; padding: 3px 12px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.22); letter-spacing: 0.5px;">
                 &#10004; Verified
               </div>
             </div>
 
             <div style="flex: 1; min-width: 0;">
-              <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px;">
+              <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px;">
                 <h3 style="font-family: 'Cinzel', serif; font-size: 20px; color: #800020; font-weight: 800; margin: 0;">${i + 1}. ${m.fullName}</h3>
-                <span style="font-size: 11px; color: #666; font-weight: 600;">(ID: ${m.id})</span>
+                <span style="font-size: 11px; color: #777; font-weight: 600;">(ID: ${m.id})</span>
               </div>
 
-              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #333;">
+              <div style="display: flex; flex-direction: column; gap: 7px; font-size: 13.5px; color: #2B2321;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <span style="font-size: 14px; width: 22px; text-align: center;">&#128197;</span>
-                  <span style="font-weight: 700; color: #800020; min-width: 90px;">Age / Height:</span>
+                  <span style="font-weight: 700; color: #800020; min-width: 95px;">Age / Height:</span>
                   <span>${m.age} Yrs, ${m.height || 'N/A'}</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <span style="font-size: 14px; width: 22px; text-align: center;">&#127891;</span>
-                  <span style="font-weight: 700; color: #800020; min-width: 90px;">Education:</span>
+                  <span style="font-weight: 700; color: #800020; min-width: 95px;">Education:</span>
                   <span>${m.education}</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <span style="font-size: 14px; width: 22px; text-align: center;">&#128188;</span>
-                  <span style="font-weight: 700; color: #800020; min-width: 90px;">Profession:</span>
+                  <span style="font-weight: 700; color: #800020; min-width: 95px;">Profession:</span>
                   <span>${m.profession}</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <span style="font-size: 14px; width: 22px; text-align: center;">&#128205;</span>
-                  <span style="font-weight: 700; color: #800020; min-width: 90px;">Location:</span>
+                  <span style="font-weight: 700; color: #800020; min-width: 95px;">Location:</span>
                   <span>${m.city}, ${m.state}, ${m.country || 'India'}</span>
                 </div>
               </div>
@@ -1658,49 +1671,78 @@
       `).join('');
 
       surface.innerHTML = `
-        <div style="text-align: center; margin-bottom: 25px;">
-          <div style="margin-bottom: 10px;">${chitraguptaEmblem}</div>
-          <h1 style="font-family: 'Cinzel', serif; font-size: 26px; font-weight: 900; color: #800020; letter-spacing: 2px; margin: 0;">KAYASTHA</h1>
-          <h2 style="font-family: 'Cinzel', serif; font-size: 19px; font-weight: 700; color: #800020; letter-spacing: 4px; margin: 3px 0 10px 0;">VIVAH PATRIKA</h2>
+        <!-- Full Page Inner Golden Border Frame -->
+        <div style="position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px; border: 1.5px solid #D4AF37; pointer-events: none; border-radius: 4px;"></div>
+        <div style="position: absolute; top: 16px; left: 16px; right: 16px; bottom: 16px; border: 0.5px solid #800020; pointer-events: none;"></div>
 
-          <div style="width: 260px; height: 1px; background: linear-gradient(to right, transparent, #D4AF37, transparent); margin: 0 auto 8px auto;"></div>
+        <!-- Corner Ornaments -->
+        <div style="position: absolute; top: 20px; left: 20px; font-size: 16px; color: #D4AF37;">&#10048;</div>
+        <div style="position: absolute; top: 20px; right: 20px; font-size: 16px; color: #D4AF37;">&#10048;</div>
+        <div style="position: absolute; bottom: 20px; left: 20px; font-size: 16px; color: #D4AF37;">&#10048;</div>
+        <div style="position: absolute; bottom: 20px; right: 20px; font-size: 16px; color: #D4AF37;">&#10048;</div>
 
-          <div style="display: inline-block; border: 1px solid #D4AF37; border-radius: 20px; padding: 4px 22px; background: #FFF8EE; margin-bottom: 15px;">
-            <span style="font-family: 'Rozha One', 'Plus Jakarta Sans', serif; font-size: 12px; color: #800020; font-weight: 700;">&#10047; शुभ विवाह | दो परिवारों का पवित्र बंधन &#10047;</span>
+        <!-- Top Header Section -->
+        <div style="text-align: center; padding-top: 15px;">
+          <div style="margin-bottom: 8px;">${chitraguptaEmblem}</div>
+          <h1 style="font-family: 'Cinzel', serif; font-size: 28px; font-weight: 900; color: #800020; letter-spacing: 3px; margin: 0;">KAYASTHA</h1>
+          <h2 style="font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: #800020; letter-spacing: 5px; margin: 4px 0 10px 0;">VIVAH PATRIKA</h2>
+
+          <div style="width: 280px; height: 1.5px; background: linear-gradient(to right, transparent, #D4AF37, transparent); margin: 0 auto 10px auto;"></div>
+
+          <div style="display: inline-block; border: 1px solid #D4AF37; border-radius: 20px; padding: 4px 24px; background: #FFF8EE; margin-bottom: 12px;">
+            <span style="font-family: 'Rozha One', 'Plus Jakarta Sans', serif; font-size: 12.5px; color: #800020; font-weight: 700;">&#10047; शुभ विवाह | दो परिवारों का पवित्र बंधन &#10047;</span>
           </div>
 
-          <p style="font-size: 11px; color: #777; margin: 0;">Prepared for: <strong style="color: #333;">${client.fullName}</strong> (${client.id})</p>
+          <p style="font-size: 11.5px; color: #666; margin: 0;">Prepared for: <strong style="color: #2B2321;">${client.fullName}</strong> (${client.id})</p>
         </div>
 
-        <div>${cardsHtml}</div>
+        <!-- Candidate Cards Section -->
+        <div style="padding: 0 14px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+          ${cardsHtml}
 
-        <div style="page-break-inside: avoid; background: #FFF2F4; border-left: 4px solid #800020; border-radius: 6px; padding: 12px 16px; margin-top: 15px; display: flex; align-items: center; gap: 14px;">
-          <div style="font-size: 20px; color: #800020; line-height: 1;">&#128737;</div>
-          <div style="font-size: 11px; color: #6B4E54; line-height: 1.45;">
-            Candidate contact numbers and exact street addresses are withheld for privacy.<br>
-            Please contact the administrative desk quoting the specific <strong>Profile ID</strong> to initiate connections.
+          <!-- Privacy Shield Notice Box -->
+          <div style="background: #FFF2F4; border-left: 4px solid #800020; border-radius: 6px; padding: 12px 18px; margin-top: 6px; display: flex; align-items: center; gap: 14px;">
+            <div style="font-size: 20px; color: #800020; line-height: 1;">&#128737;</div>
+            <div style="font-size: 11.5px; color: #6B4E54; line-height: 1.45;">
+              Candidate contact numbers and exact street addresses are withheld for privacy.<br>
+              Please contact the administrative desk quoting the specific <strong>Profile ID</strong> to initiate connections.
+            </div>
           </div>
         </div>
 
-        <div style="margin-top: 30px; text-align: center; border-top: 1px solid #F0DDB8; padding-top: 16px;">
-          <div style="color: #D4AF37; font-size: 14px; margin-bottom: 5px;">&#10048;</div>
-          <p style="font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; color: #800020; font-weight: 700; margin: 0;">
+        <!-- Footer Section -->
+        <div style="text-align: center; padding-bottom: 12px;">
+          <div style="color: #D4AF37; font-size: 14px; margin-bottom: 4px;">&#10048;</div>
+          <p style="font-family: 'Cinzel', serif; font-size: 11.5px; letter-spacing: 3.5px; color: #800020; font-weight: 800; margin: 0;">
             TRADITION &nbsp;|&nbsp; VALUES &nbsp;|&nbsp; TOGETHERNESS
           </p>
         </div>
       `;
 
+      mount.appendChild(surface);
+
       const opt = {
-        margin: [8, 8, 8, 8],
+        margin: 0,
         filename: `Kayastha_Vivah_Patrika_${client.fullName.replace(/\s+/g, '_')}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          scrollX: 0,
+          scrollY: 0,
+          width: 794,
+          height: 1122
+        },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      showNotice("Generating Royal Vivah Patrika PDF...");
+      showNotice("Rendering perfectly centered Vivah Patrika...");
       html2pdf().set(opt).from(surface).save().then(() => {
         showNotice("PDF Downloaded successfully!");
+        if (mount) document.body.removeChild(mount);
+      }).catch(err => {
+        showNotice("PDF generation failed: " + err.toString(), true);
+        if (mount) document.body.removeChild(mount);
       });
     }
 
