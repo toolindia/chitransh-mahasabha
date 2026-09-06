@@ -73,18 +73,23 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* Filters & Search */
     .filter-wrapper { max-width: 1200px; margin: 0.5rem auto 1rem auto; padding: 0 1rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
     
-    .mobile-filter-header { display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; }
-    .filter-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 0.65rem; margin-top: 0.75rem;
+    .search-action-row {
+      display: flex; gap: 0.5rem; align-items: center; justify-content: space-between;
     }
-
-    @media (max-width: 768px) {
-      .filter-grid { display: none; grid-template-columns: 1fr; }
-      .filter-grid.expanded { display: grid; }
+    
+    .filter-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
+      gap: 0.65rem;
+      align-items: flex-end;
+      margin-top: 0.85rem;
+    }
+    .filter-grid.expanded {
+      display: grid !important;
     }
 
     .filter-control { display: flex; flex-direction: column; gap: 0.25rem; }
@@ -193,7 +198,6 @@
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
     @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
 
-    /* Membership Tier Selector */
     .membership-tier-container {
       display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin: 0.5rem 0 1rem 0;
     }
@@ -228,11 +232,15 @@
 
   <div class="filter-wrapper">
     <div class="filter-container">
-      <div class="mobile-filter-header">
-        <input type="text" id="filterLocation" placeholder="Search City, State, or Country..." oninput="applyFilters()" style="flex: 1; height: 38px; padding: 0.45rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg);">
-        <button class="btn btn-outline" id="toggleFilterBtn" onclick="toggleMobileFilters()">Filters ▾</button>
+      
+      <!-- SEARCH BAR WITH BUTTON AND TOGGLE -->
+      <div class="search-action-row">
+        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state, profession..." onkeydown="if(event.key==='Enter') applyFilters()" style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
+        <button class="btn btn-primary" style="min-height: 40px;" onclick="applyFilters()">Search</button>
+        <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="toggleFilterDrawer()">Filters ▾</button>
       </div>
 
+      <!-- COLLAPSIBLE FILTER PANEL -->
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label>Gender</label>
@@ -266,12 +274,12 @@
 
         <div class="filter-control">
           <label>Education</label>
-          <input type="text" id="filterEducation" placeholder="Degree / Qualification" oninput="applyFilters()">
+          <input type="text" id="filterEducation" placeholder="e.g. B.Tech / MBA" onkeydown="if(event.key==='Enter') applyFilters()">
         </div>
 
         <div class="filter-control">
           <label>Profession</label>
-          <input type="text" id="filterProfession" placeholder="Occupation" oninput="applyFilters()">
+          <input type="text" id="filterProfession" placeholder="Occupation" onkeydown="if(event.key==='Enter') applyFilters()">
         </div>
 
         <div class="filter-control">
@@ -283,6 +291,10 @@
             <option value="5.8">Above 5'8"</option>
             <option value="6.0">Above 6'0"</option>
           </select>
+        </div>
+
+        <div class="filter-control">
+          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="resetFilters()">Reset Filters</button>
         </div>
       </div>
     </div>
@@ -355,7 +367,7 @@
     </div>
   </div>
 
-  <!-- Registration Modal with Dynamic Plans and Free Mode Logic -->
+  <!-- Registration Modal -->
   <div class="modal-overlay" id="registrationModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
@@ -364,7 +376,6 @@
 
       <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
         
-        <!-- MEMBERSHIP TIER SELECTION (HIDDEN IF FREE MODE ACTIVE) -->
         <div id="planSelectionWrapper">
           <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Plan</label>
           <div class="membership-tier-container">
@@ -376,7 +387,7 @@
             <div class="tier-card selected" id="tierAnnual" onclick="selectMembershipTier('Annual')">
               <h4>Annual Plan</h4>
               <p id="labelAnnualFee">₹1999</p>
-              <span style="font-size: 0.68rem; color: var(--success); font-weight: 700;">Best Value</span>
+              <span style="font-size: 0.68rem; color: #1E8E3E; font-weight: 700;">Best Value</span>
             </div>
           </div>
         </div>
@@ -500,7 +511,7 @@
     </div>
   </div>
 
-  <!-- Dynamic UPI Payment Modal (Shown when Paid) -->
+  <!-- Dynamic UPI Payment Modal -->
   <div class="modal-overlay" id="paymentModal">
     <div class="modal-card" style="max-width: 440px; text-align: center;">
       <button class="modal-close-btn" onclick="closeModal('paymentModal')">&times;</button>
@@ -543,7 +554,7 @@
     </div>
   </div>
 
-  <!-- Free Registration Success Modal (Shown when Free mode ON) -->
+  <!-- Free Registration Success Modal -->
   <div class="modal-overlay" id="freeSuccessModal">
     <div class="modal-card" style="max-width: 440px; text-align: center; padding: 2rem 1.5rem;">
       <h2 style="font-size: 1.4rem; color: #1E8E3E; margin-bottom: 0.35rem;">Registration Submitted!</h2>
@@ -730,11 +741,22 @@
       applyPricingUI();
     }
 
-    function toggleMobileFilters() {
+    // TOGGLE FILTER DRAWER (WORKS ON BOTH MOBILE & DESKTOP)
+    function toggleFilterDrawer() {
       const panel = document.getElementById('mainFilterPanel');
       const btn = document.getElementById('toggleFilterBtn');
-      panel.classList.toggle('expanded');
-      btn.innerText = panel.classList.contains('expanded') ? 'Filters ▴' : 'Filters ▾';
+      if (!panel || !btn) return;
+
+      const isHidden = window.getComputedStyle(panel).display === 'none';
+      if (isHidden) {
+        panel.classList.add('expanded');
+        panel.style.display = 'grid';
+        btn.innerText = 'Filters ▴';
+      } else {
+        panel.classList.remove('expanded');
+        panel.style.display = 'none';
+        btn.innerText = 'Filters ▾';
+      }
     }
 
     function initLocationDropdowns() {
@@ -1044,11 +1066,12 @@
       reader.readAsDataURL(file);
     }
 
+    // SEARCH & FILTER ENGINE
     function applyFilters() {
+      const searchTerm = document.getElementById('globalSearchInput').value.toLowerCase().trim();
       const gender = document.getElementById('filterGender').value;
       const ageBracket = document.getElementById('filterAge').value;
       const marital = document.getElementById('filterMarital').value;
-      const loc = document.getElementById('filterLocation').value.toLowerCase().trim();
       const edu = document.getElementById('filterEducation').value.toLowerCase().trim();
       const prof = document.getElementById('filterProfession').value.toLowerCase().trim();
       const height = document.getElementById('filterHeight').value;
@@ -1060,19 +1083,31 @@
           const [min, max] = ageBracket.split('-').map(Number);
           if (p.age < min || p.age > max) return false;
         }
-        if (loc) {
-          const locationString = `${p.city} ${p.state} ${p.country}`.toLowerCase();
-          if (!locationString.includes(loc)) return false;
-        }
-        if (edu && !p.education.toLowerCase().includes(edu)) return false;
-        if (prof && !p.profession.toLowerCase().includes(prof)) return false;
+        if (edu && !String(p.education || '').toLowerCase().includes(edu)) return false;
+        if (prof && !String(p.profession || '').toLowerCase().includes(prof)) return false;
         if (height) {
-          const parsed = parseFloat(p.height.replace(/[^0-9.]/g, ''));
+          const parsed = parseFloat(String(p.height || '').replace(/[^0-9.]/g, ''));
           if (!isNaN(parsed) && parsed < parseFloat(height)) return false;
+        }
+        if (searchTerm) {
+          const combined = `${p.fullName || ''} ${p.id || ''} ${p.city || ''} ${p.state || ''} ${p.country || ''} ${p.profession || ''} ${p.education || ''}`.toLowerCase();
+          if (!combined.includes(searchTerm)) return false;
         }
         return true;
       });
+
       renderProfileList();
+    }
+
+    function resetFilters() {
+      document.getElementById('globalSearchInput').value = '';
+      document.getElementById('filterGender').value = '';
+      document.getElementById('filterAge').value = '';
+      document.getElementById('filterMarital').value = '';
+      document.getElementById('filterEducation').value = '';
+      document.getElementById('filterProfession').value = '';
+      document.getElementById('filterHeight').value = '';
+      applyFilters();
     }
 
     function renderProfileList() {
@@ -1266,11 +1301,9 @@
           selectedProfileImage = "";
 
           if (out.isFree) {
-            // FREE MODE DIRECT UNDER-REVIEW SUCCESS SCREEN
             document.getElementById('freeProfileIdDisplay').innerText = out.profileId;
             document.getElementById('freeSuccessModal').classList.add('active');
           } else {
-            // PAID MEMBERSHIP QR
             openPaymentModal(out.profileId, out.paymentAmount, out.plan, out.upiId);
           }
         } else {
