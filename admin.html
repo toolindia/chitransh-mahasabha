@@ -29,10 +29,11 @@
       --radius-md: 12px;
       --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
       --shadow-md: 0 8px 24px rgba(0,0,0,0.1);
+      --shadow-lg: 0 16px 40px rgba(0,0,0,0.25);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 3rem; }
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 5rem; position: relative; }
 
     .header {
       background: var(--white);
@@ -51,35 +52,51 @@
 
     .container { max-width: 1300px; margin: 1.5rem auto; padding: 0 1rem; }
 
-    /* Top-Header Modals */
-    #authOverlay, .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
-      z-index: 2000; display: flex; align-items: flex-start; justify-content: center;
-      padding: 1.5rem 1rem 3rem 1rem; overflow-y: auto;
-    }
-    .modal-overlay { display: none; }
-    .modal-overlay.active { display: flex; }
-
-    .auth-box, .modal-card {
-      background: var(--white); border-radius: var(--radius-md); padding: 1.75rem;
-      max-width: 650px; width: 100%; border: 2px solid var(--primary);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
-      position: relative; max-height: 88vh; overflow-y: auto;
-      animation: slideDownTop 0.25s ease forwards;
-    }
-    .auth-box { max-width: 380px; text-align: center; }
-
-    @keyframes slideDownTop {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Floating Alert Notification */
+    /* In-Page Toast Alert */
     #toastNotice {
       position: fixed; top: 20px; right: 20px; background: #2B2321; color: #fff;
       padding: 0.75rem 1.25rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
       box-shadow: 0 8px 24px rgba(0,0,0,0.25); z-index: 9999; display: none;
+    }
+
+    /* Base Modal Overlays */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(43, 35, 33, 0.6); backdrop-filter: blur(2px);
+      z-index: 2000; display: none;
+    }
+    .modal-overlay.active { display: block; }
+
+    /* Centered Header Overlay for Pin & Add Member */
+    #authOverlay.modal-overlay, #addMemberModal.modal-overlay {
+      display: none; align-items: flex-start; justify-content: center;
+      padding: 2rem 1rem; overflow-y: auto;
+    }
+    #authOverlay.active, #addMemberModal.active { display: flex; }
+
+    .auth-box {
+      background: var(--white); border-radius: var(--radius-md); padding: 1.75rem;
+      max-width: 380px; width: 100%; border: 2px solid var(--primary);
+      box-shadow: var(--shadow-lg); text-align: center;
+    }
+
+    /* CONTEXTUAL POPUPS (ANCHORED TO CLICKED BUTTON) */
+    .contextual-card {
+      position: absolute;
+      background: var(--white);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      z-index: 2100;
+      padding: 1.5rem;
+      display: none;
+      animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .contextual-card.active { display: block; }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.96) translateY(-8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .btn {
@@ -111,9 +128,9 @@
 
     .profile-card {
       background: var(--white); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem;
+      border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;
       display: grid; grid-template-columns: 80px 1.5fr 1.2fr 1fr auto; gap: 1.25rem; align-items: center;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-sm); position: relative;
     }
 
     @media (max-width: 900px) {
@@ -127,30 +144,170 @@
     .badge-Unpublished { background: #F1F3F4; color: #5F6368; }
     .badge-Deleted { background: #FCE8E6; color: #C5221F; }
 
-    .close-btn { position: absolute; top: 1rem; right: 1rem; border: none; background: transparent; font-size: 1.35rem; cursor: pointer; color: var(--muted); }
+    .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; border: none; background: transparent; font-size: 1.25rem; cursor: pointer; color: var(--muted); }
 
-    .form-group { margin-bottom: 0.85rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
+    .form-group { margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.2rem; text-align: left; }
     .form-group label { font-size: 0.75rem; font-weight: 700; }
-    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; }
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.5rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.82rem; outline: none; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
   </style>
 </head>
 <body>
 
   <div id="toastNotice">Notification</div>
 
-  <div class="modal-overlay" id="confirmActionModal">
-    <div class="modal-card" style="max-width: 400px; text-align: center;">
-      <h3 style="margin-bottom: 0.5rem; color: var(--primary);" id="confirmActionTitle">Confirm Action</h3>
-      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem;" id="confirmActionText">Are you sure you want to proceed?</p>
-      <div style="display: flex; gap: 0.75rem; justify-content: center;">
-        <button class="btn btn-outline" onclick="closeModal('confirmActionModal')">Cancel</button>
-        <button class="btn btn-danger" id="confirmActionExecuteBtn">Confirm</button>
-      </div>
+  <div id="backdropBarrier" class="modal-overlay" onclick="closeAllContextPopups()"></div>
+
+  <div id="contextConfirmCard" class="contextual-card" style="width: 320px; text-align: center;">
+    <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
+    <h3 style="font-size: 1.1rem; margin-bottom: 0.35rem; color: var(--primary);" id="contextConfirmTitle">Confirm</h3>
+    <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem;" id="contextConfirmText">Proceed with this update?</p>
+    <div style="display: flex; gap: 0.5rem; justify-content: center;">
+      <button class="btn btn-outline" style="padding: 0.4rem 0.8rem;" onclick="closeAllContextPopups()">Cancel</button>
+      <button class="btn btn-danger" style="padding: 0.4rem 0.9rem;" id="contextConfirmExecuteBtn">Confirm</button>
     </div>
   </div>
 
-  <div id="authOverlay">
+  <div id="contextEditCard" class="contextual-card" style="width: 95%; max-width: 580px;">
+    <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
+    <h3 style="font-size: 1.15rem; margin-bottom: 0.2rem;">Edit Candidate Details</h3>
+    <p style="font-size: 0.75rem; color: var(--muted); margin-bottom: 0.85rem;">Editing: <strong id="editProfileIdRef">-</strong></p>
+
+    <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)">
+      <input type="hidden" id="editProfileId">
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Full Name *</label>
+          <input type="text" id="editName" required>
+        </div>
+        <div class="form-group">
+          <label>Gender *</label>
+          <select id="editGender" required>
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" id="editDob" onchange="calculateAutoAge('editDob', 'editAge')">
+        </div>
+        <div class="form-group">
+          <label>Age *</label>
+          <input type="number" id="editAge" min="18" max="80" required>
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Height *</label>
+          <input type="text" id="editHeight" required>
+        </div>
+        <div class="form-group">
+          <label>Marital Status *</label>
+          <select id="editMarital" required>
+            <option value="Never Married">Never Married</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Widowed">Widowed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Highest Education *</label>
+          <input type="text" id="editEducation" required>
+        </div>
+        <div class="form-group">
+          <label>Profession *</label>
+          <input type="text" id="editProfession" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Annual Income *</label>
+        <input type="text" id="editIncome" required>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>State *</label>
+          <select id="editState" required onchange="populateCities('editState', 'editCity', 'editCityCustom')">
+            <option value="">Select State</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>City *</label>
+          <select id="editCity" required onchange="checkCustomCity('editCity', 'editCityCustom')">
+            <option value="">Select City</option>
+          </select>
+          <input type="text" id="editCityCustom" placeholder="Type city" style="display: none; margin-top: 0.35rem;">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Residential Address *</label>
+        <input type="text" id="editAddress" required>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" id="editEmail" required>
+        </div>
+        <div class="form-group">
+          <label>Phone / WhatsApp *</label>
+          <input type="tel" id="editPhone" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Update Photo (Leave blank to keep current)</label>
+        <input type="file" id="editPhotoFile" accept="image/*" onchange="handleAdminEditPhoto(event)">
+      </div>
+
+      <div class="form-group">
+        <label>Family Details</label>
+        <textarea id="editFamily" rows="2"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Partner Preferences</label>
+        <textarea id="editPreferences" rows="2"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.4rem;" id="editSubmitBtn">Save & Apply Changes</button>
+    </form>
+  </div>
+
+  <div id="contextReceiptCard" class="contextual-card" style="width: 380px; text-align: center;">
+    <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
+    <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Payment Verification</h3>
+    <p style="font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem;">Profile Ref: <strong id="receiptProfileId">-</strong></p>
+    <div style="max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0.35rem; background: #fafafa;">
+      <img id="receiptImage" src="" alt="Proof Screenshot" style="width: 100%; border-radius: 4px;">
+    </div>
+    <p id="receiptUtrText" style="font-weight: 700; margin-top: 0.5rem; font-size: 0.8rem;"></p>
+  </div>
+
+  <div id="contextMatchCard" class="contextual-card" style="width: 95%; max-width: 580px;">
+    <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
+    <h3 style="font-size: 1.15rem; margin-bottom: 0.2rem;">Candidate Matching Desk</h3>
+    <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 0.85rem;">Matches for: <strong id="matchCandidateName">-</strong></p>
+
+    <div id="matchingResultsList" style="display: flex; flex-direction: column; gap: 0.65rem; max-height: 320px; overflow-y: auto; margin-bottom: 1rem; padding-right: 0.4rem;"></div>
+
+    <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
+      <button class="btn btn-outline" onclick="closeAllContextPopups()">Close</button>
+      <button class="btn btn-primary" onclick="exportSanitizedMatchPdf()">Download Clean PDF</button>
+      <button class="btn btn-whatsapp" onclick="sendSelectedMatchesViaWhatsApp()">Send to Client via WhatsApp</button>
+    </div>
+  </div>
+
+  <div id="authOverlay" class="modal-overlay active">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.25rem;">Admin Desk</h2>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Enter administrator PIN to unlock controls.</p>
@@ -159,34 +316,8 @@
     </div>
   </div>
 
-  <header class="header">
-    <div class="brand">Chitransh<span>Mahasabha</span> <span style="font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-left: 0.5rem;">Admin Panel</span></div>
-    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-      <button class="btn btn-primary" onclick="openAddMemberModal()">Add Member</button>
-      <button id="refreshBtn" class="btn btn-outline" onclick="triggerManualRefresh()">Refresh Data</button>
-      <button class="btn btn-danger" onclick="lockPortal()">Lock</button>
-    </div>
-  </header>
-
-  <div class="container">
-    <div class="filter-strip">
-      <div class="filter-tabs">
-        <button class="tab-btn active" onclick="filterByStatus('all', this)">All Records (<span id="countAll">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Pending', this)">Pending Approval (<span id="countPending">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Active', this)">Active / Live (<span id="countActive">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Unpublished', this)">Unpublished (<span id="countUnpublished">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Deleted', this)">Deleted (<span id="countDeleted">0</span>)</button>
-      </div>
-      <input type="text" id="adminSearchInput" oninput="applyAdminSearch()" placeholder="Search by name, city, ID..." style="padding: 0.45rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; min-width: 200px;">
-    </div>
-
-    <div id="adminProfilesContainer">
-      <p style="text-align: center; color: var(--muted); padding: 3rem 0;">Connecting to central records...</p>
-    </div>
-  </div>
-
   <div class="modal-overlay" id="addMemberModal">
-    <div class="modal-card">
+    <div class="auth-box" style="max-width: 600px; text-align: left; position: relative;">
       <button class="close-btn" onclick="closeModal('addMemberModal')">&times;</button>
       <h3 style="margin-bottom: 0.25rem;">Direct Candidate Enrolment</h3>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Directly add candidates with automated verified status.</p>
@@ -235,11 +366,11 @@
         <div class="form-row-2">
           <div class="form-group">
             <label>Highest Education *</label>
-            <input type="text" id="addEducation" required placeholder="e.g. B.Tech / MBA">
+            <input type="text" id="addEducation" required placeholder="Degree / Qualification">
           </div>
           <div class="form-group">
             <label>Profession *</label>
-            <input type="text" id="addProfession" required placeholder="Designation">
+            <input type="text" id="addProfession" required placeholder="Occupation">
           </div>
         </div>
 
@@ -300,148 +431,29 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="editMemberModal">
-    <div class="modal-card">
-      <button class="close-btn" onclick="closeModal('editMemberModal')">&times;</button>
-      <h3 style="margin-bottom: 0.25rem;">Edit Candidate Details</h3>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Editing Profile: <strong id="editProfileIdRef">-</strong></p>
-
-      <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)">
-        <input type="hidden" id="editProfileId">
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Full Name *</label>
-            <input type="text" id="editName" required>
-          </div>
-          <div class="form-group">
-            <label>Gender *</label>
-            <select id="editGender" required>
-              <option value="Female">Female</option>
-              <option value="Male">Male</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Date of Birth</label>
-            <input type="date" id="editDob" onchange="calculateAutoAge('editDob', 'editAge')">
-          </div>
-          <div class="form-group">
-            <label>Age *</label>
-            <input type="number" id="editAge" min="18" max="80" required>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Height *</label>
-            <input type="text" id="editHeight" required>
-          </div>
-          <div class="form-group">
-            <label>Marital Status *</label>
-            <select id="editMarital" required>
-              <option value="Never Married">Never Married</option>
-              <option value="Divorced">Divorced</option>
-              <option value="Widowed">Widowed</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Highest Education *</label>
-            <input type="text" id="editEducation" required>
-          </div>
-          <div class="form-group">
-            <label>Profession *</label>
-            <input type="text" id="editProfession" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Annual Income *</label>
-          <input type="text" id="editIncome" required>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>State *</label>
-            <select id="editState" required onchange="populateCities('editState', 'editCity', 'editCityCustom')">
-              <option value="">Select State</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>City *</label>
-            <select id="editCity" required onchange="checkCustomCity('editCity', 'editCityCustom')">
-              <option value="">Select City</option>
-            </select>
-            <input type="text" id="editCityCustom" placeholder="Type city" style="display: none; margin-top: 0.35rem;">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Residential Address *</label>
-          <input type="text" id="editAddress" required>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Email Address *</label>
-            <input type="email" id="editEmail" required>
-          </div>
-          <div class="form-group">
-            <label>Phone / WhatsApp *</label>
-            <input type="tel" id="editPhone" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Update Photo (Leave empty to keep existing)</label>
-          <input type="file" id="editPhotoFile" accept="image/*" onchange="handleAdminEditPhoto(event)">
-        </div>
-
-        <div class="form-group">
-          <label>Family Details</label>
-          <textarea id="editFamily" rows="2"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Partner Preferences</label>
-          <textarea id="editPreferences" rows="2"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%;" id="editSubmitBtn">Save & Apply Changes</button>
-      </form>
+  <header class="header">
+    <div class="brand">Chitransh<span>Mahasabha</span> <span style="font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-left: 0.5rem;">Admin Panel</span></div>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      <button class="btn btn-primary" onclick="openAddMemberModal()">Add Member</button>
+      <button id="refreshBtn" class="btn btn-outline" onclick="triggerManualRefresh()">Refresh Data</button>
+      <button class="btn btn-danger" onclick="lockPortal()">Lock</button>
     </div>
-  </div>
+  </header>
 
-  <div class="modal-overlay" id="receiptModal">
-    <div class="modal-card" style="max-width: 440px; text-align: center;">
-      <button class="close-btn" onclick="closeModal('receiptModal')">&times;</button>
-      <h3 style="margin-bottom: 0.5rem;">Payment Verification</h3>
-      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Candidate Ref: <strong id="receiptProfileId">-</strong></p>
-      <div style="max-height: 400px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem; background: #fafafa;">
-        <img id="receiptImage" src="" alt="Proof Screenshot" style="width: 100%; border-radius: 4px;">
+  <div class="container">
+    <div class="filter-strip">
+      <div class="filter-tabs">
+        <button class="tab-btn active" onclick="filterByStatus('all', this)">All Records (<span id="countAll">0</span>)</button>
+        <button class="tab-btn" onclick="filterByStatus('Pending', this)">Pending Approval (<span id="countPending">0</span>)</button>
+        <button class="tab-btn" onclick="filterByStatus('Active', this)">Active / Live (<span id="countActive">0</span>)</button>
+        <button class="tab-btn" onclick="filterByStatus('Unpublished', this)">Unpublished (<span id="countUnpublished">0</span>)</button>
+        <button class="tab-btn" onclick="filterByStatus('Deleted', this)">Deleted (<span id="countDeleted">0</span>)</button>
       </div>
-      <p id="receiptUtrText" style="font-weight: 700; margin-top: 0.75rem; font-size: 0.85rem;"></p>
+      <input type="text" id="adminSearchInput" oninput="applyAdminSearch()" placeholder="Search by name, city, ID..." style="padding: 0.45rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; min-width: 200px;">
     </div>
-  </div>
 
-  <div class="modal-overlay" id="matchingModal">
-    <div class="modal-card">
-      <button class="close-btn" onclick="closeModal('matchingModal')">&times;</button>
-      <h3 style="margin-bottom: 0.25rem;">Candidate Matching Desk</h3>
-      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;">Compatible matrimonial matches for: <strong id="matchCandidateName">-</strong></p>
-
-      <div id="matchingResultsList" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 420px; overflow-y: auto; margin-bottom: 1.25rem; padding-right: 0.5rem;"></div>
-
-      <div style="display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap;">
-        <button class="btn btn-outline" onclick="closeModal('matchingModal')">Close</button>
-        <button class="btn btn-primary" onclick="exportSanitizedMatchPdf()">Download Clean PDF</button>
-        <button class="btn btn-whatsapp" onclick="sendSelectedMatchesViaWhatsApp()">Send to Client via WhatsApp</button>
-      </div>
+    <div id="adminProfilesContainer">
+      <p style="text-align: center; color: var(--muted); padding: 3rem 0;">Connecting to central records...</p>
     </div>
   </div>
 
@@ -486,17 +498,39 @@
       setTimeout(() => { el.style.display = "none"; }, 3500);
     }
 
-    // In-Iframe Safe Confirmation Dialog
-    function promptAction(title, text, confirmBtnText, onConfirmCallback) {
-      document.getElementById('confirmActionTitle').innerText = title;
-      document.getElementById('confirmActionText').innerText = text;
-      const btn = document.getElementById('confirmActionExecuteBtn');
-      btn.innerText = confirmBtnText;
-      btn.onclick = async () => {
-        closeModal('confirmActionModal');
-        await onConfirmCallback();
-      };
-      document.getElementById('confirmActionModal').classList.add('active');
+    // CONTEXTUAL POSITIONING LOGIC (Positions card right next to clicked button)
+    function positionContextualCard(cardElement, triggerButton) {
+      closeAllContextPopups();
+      document.getElementById('backdropBarrier').classList.add('active');
+
+      const rect = triggerButton.getBoundingClientRect();
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+
+      cardElement.style.display = 'block';
+      cardElement.classList.add('active');
+
+      // Calculate anchor positioning
+      let top = rect.bottom + scrollY + 8;
+      let left = rect.left + scrollX - 220; // Align slightly towards button
+
+      // Boundary check right side
+      const cardWidth = cardElement.offsetWidth || 340;
+      if (left + cardWidth > window.innerWidth - 20) {
+        left = window.innerWidth - cardWidth - 25;
+      }
+      if (left < 15) left = 15;
+
+      cardElement.style.top = `${top}px`;
+      cardElement.style.left = `${left}px`;
+    }
+
+    function closeAllContextPopups() {
+      document.querySelectorAll('.contextual-card').forEach(c => {
+        c.style.display = 'none';
+        c.classList.remove('active');
+      });
+      document.getElementById('backdropBarrier').classList.remove('active');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -596,13 +630,13 @@
         return;
       }
       adminState.pin = pin;
-      document.getElementById('authOverlay').style.display = 'none';
+      document.getElementById('authOverlay').classList.remove('active');
       fetchAdminProfiles();
     }
 
     function lockPortal() {
       adminState.pin = "";
-      document.getElementById('authOverlay').style.display = 'flex';
+      document.getElementById('authOverlay').classList.add('active');
       document.getElementById('adminPinInput').value = "";
     }
 
@@ -687,26 +721,26 @@
         const photo = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
         
         let actionButtons = `
-          <button class="btn btn-outline" style="font-size: 0.78rem;" onclick="openEditMemberModal('${p.id}')">Edit Details</button>
+          <button class="btn btn-outline" style="font-size: 0.78rem;" onclick="openContextualEdit('${p.id}', this)">Edit Details</button>
         `;
         
         if (p.status === "Pending") {
-          actionButtons += `<button class="btn btn-success" onclick="approveCandidate('${p.id}')">Approve & Live</button>`;
+          actionButtons += `<button class="btn btn-success" onclick="openContextualApprove('${p.id}', this)">Approve & Live</button>`;
         }
         
         if (p.status === "Active") {
           actionButtons += `
-            <button class="btn btn-primary" onclick="openMatchmakingDesk('${p.id}')">Find Matches</button>
-            <button class="btn btn-warning" onclick="updateStatus('${p.id}', 'Unpublished')">Unpublish (Hide)</button>
+            <button class="btn btn-primary" onclick="openContextualMatchmaking('${p.id}', this)">Find Matches</button>
+            <button class="btn btn-warning" onclick="openContextualUnpublish('${p.id}', this)">Unpublish (Hide)</button>
           `;
         } else if (p.status === "Unpublished") {
           actionButtons += `
-            <button class="btn btn-success" onclick="updateStatus('${p.id}', 'Active')">Publish Live</button>
+            <button class="btn btn-success" onclick="openContextualPublish('${p.id}', this)">Publish Live</button>
           `;
         }
 
         if (p.status !== "Deleted") {
-          actionButtons += `<button class="btn btn-danger" onclick="deleteCandidate('${p.id}')">Delete</button>`;
+          actionButtons += `<button class="btn btn-danger" onclick="openContextualDelete('${p.id}', this)">Delete</button>`;
         }
 
         const hasReceipt = (p.paymentReceiptUrl && p.paymentReceiptUrl.length > 20);
@@ -733,7 +767,7 @@
             <div style="font-size: 0.82rem;">
               <div><strong>Payment:</strong> ₹${p.paymentAmount || '1999'}</div>
               <div><strong>Status:</strong> ${p.paymentStatus || 'Unverified'}</div>
-              ${hasReceipt ? `<button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-top: 0.3rem;" onclick="viewReceiptById('${p.id}')">View Receipt</button>` : '<span style="color: var(--muted); font-size: 0.75rem;">No Receipt Attached</span>'}
+              ${hasReceipt ? `<button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-top: 0.3rem;" onclick="openContextualReceipt('${p.id}', this)">View Receipt</button>` : '<span style="color: var(--muted); font-size: 0.75rem;">No Receipt Attached</span>'}
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 0.4rem; justify-content: center;">
@@ -744,84 +778,129 @@
       }).join('');
     }
 
-    function viewReceiptById(profileId) {
-      const p = adminState.profiles.find(x => x.id === profileId);
-      if (!p || !p.paymentReceiptUrl) {
-        showNotice("No receipt found for this profile.", true);
-        return;
-      }
-      document.getElementById('receiptProfileId').innerText = p.id;
-      document.getElementById('receiptImage').src = p.paymentReceiptUrl;
-      document.getElementById('receiptUtrText').innerText = p.paymentUtr ? "UTR / Ref: " + p.paymentUtr : "No UTR Entered";
-      document.getElementById('receiptModal').classList.add('active');
-    }
-
-    function openAddMemberModal() {
-      adminAddPhotoBase64 = "";
-      document.getElementById('adminAddForm').reset();
-      document.getElementById('addMemberModal').classList.add('active');
-    }
-
-    async function handleAdminAddSubmit(e) {
-      e.preventDefault();
-      if (!adminAddPhotoBase64) {
-        showNotice("Please upload a candidate photograph.", true);
-        return;
-      }
-
-      const btn = document.getElementById('addSubmitBtn');
-      btn.innerText = "Adding Candidate...";
-      btn.disabled = true;
-
-      const stateVal = document.getElementById('addState').value;
-      let cityVal = document.getElementById('addCity').value;
-      if (cityVal === "Other") cityVal = document.getElementById('addCityCustom').value.trim();
-
-      const payload = {
-        fullName: document.getElementById('addName').value.trim(),
-        gender: document.getElementById('addGender').value,
-        dob: document.getElementById('addDob').value,
-        age: parseInt(document.getElementById('addAge').value),
-        height: document.getElementById('addHeight').value.trim(),
-        maritalStatus: document.getElementById('addMarital').value,
-        education: document.getElementById('addEducation').value.trim(),
-        profession: document.getElementById('addProfession').value.trim(),
-        annualIncome: document.getElementById('addIncome').value.trim(),
-        state: stateVal,
-        city: cityVal,
-        country: "India",
-        exactAddress: document.getElementById('addAddress').value.trim(),
-        email: document.getElementById('addEmail').value.trim(),
-        phone: document.getElementById('addPhone').value.trim(),
-        imageBase64: adminAddPhotoBase64,
-        familyDetails: document.getElementById('addFamily').value.trim(),
-        partnerPreferences: document.getElementById('addPreferences').value.trim(),
-        status: "Active"
+    // 1. CONTEXTUAL CONFIRM TRIGGER (Approve, Delete, Unpublish right where clicked)
+    function openContextualConfirm(title, text, btnText, triggerEl, callback) {
+      document.getElementById('contextConfirmTitle').innerText = title;
+      document.getElementById('contextConfirmText').innerText = text;
+      const btn = document.getElementById('contextConfirmExecuteBtn');
+      btn.innerText = btnText;
+      btn.onclick = async () => {
+        closeAllContextPopups();
+        await callback();
       };
-
-      try {
-        const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'adminAddProfile', adminPin: adminState.pin, data: payload })
-        });
-        const out = await res.json();
-        if (out.success) {
-          showNotice("Candidate added successfully!");
-          closeModal('addMemberModal');
-          fetchAdminProfiles();
-        } else {
-          showNotice("Error: " + out.error, true);
-        }
-      } catch (err) {
-        showNotice("Network failure.", true);
-      } finally {
-        btn.innerText = "Add & Enrol Candidate";
-        btn.disabled = false;
-      }
+      positionContextualCard(document.getElementById('contextConfirmCard'), triggerEl);
     }
 
-    function openEditMemberModal(profileId) {
+    function openContextualApprove(profileId, btnEl) {
+      openContextualConfirm(
+        "Approve Candidate",
+        `Approve payment & publish candidate ${profileId} live?`,
+        "Approve & Live",
+        btnEl,
+        async () => {
+          try {
+            const res = await fetch(API_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: 'approveProfile', adminPin: adminState.pin, data: { profileId: profileId } })
+            });
+            const out = await res.json();
+            if (out.success) {
+              showNotice("Profile approved & live!");
+              fetchAdminProfiles();
+            } else {
+              showNotice("Approval error: " + out.error, true);
+            }
+          } catch (err) {
+            showNotice("Server communication error.", true);
+          }
+        }
+      );
+    }
+
+    function openContextualDelete(profileId, btnEl) {
+      openContextualConfirm(
+        "Delete Candidate",
+        `Permanently mark profile ${profileId} as Deleted?`,
+        "Confirm Delete",
+        btnEl,
+        async () => {
+          try {
+            const res = await fetch(API_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: 'deleteProfile', data: { profileId: String(profileId).trim(), isAdmin: true } })
+            });
+            const out = await res.json();
+            if (out.success) {
+              showNotice("Profile marked as Deleted.");
+              fetchAdminProfiles();
+            } else {
+              showNotice("Delete error: " + out.error, true);
+            }
+          } catch (err) {
+            showNotice("Server error.", true);
+          }
+        }
+      );
+    }
+
+    function openContextualUnpublish(profileId, btnEl) {
+      openContextualConfirm(
+        "Unpublish Candidate",
+        `Hide profile ${profileId} from the public directory?`,
+        "Unpublish Now",
+        btnEl,
+        async () => {
+          try {
+            const res = await fetch(API_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: 'updateProfileStatus', adminPin: adminState.pin, data: { profileId: profileId, status: "Unpublished" } })
+            });
+            const out = await res.json();
+            if (out.success) {
+              showNotice("Profile Unpublished.");
+              fetchAdminProfiles();
+            } else {
+              showNotice("Error: " + out.error, true);
+            }
+          } catch (err) {
+            showNotice("Failed to update status.", true);
+          }
+        }
+      );
+    }
+
+    function openContextualPublish(profileId, btnEl) {
+      openContextualConfirm(
+        "Publish Candidate",
+        `Re-publish profile ${profileId} live on directory?`,
+        "Publish Live",
+        btnEl,
+        async () => {
+          try {
+            const res = await fetch(API_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: 'updateProfileStatus', adminPin: adminState.pin, data: { profileId: profileId, status: "Active" } })
+            });
+            const out = await res.json();
+            if (out.success) {
+              showNotice("Profile is Live.");
+              fetchAdminProfiles();
+            } else {
+              showNotice("Error: " + out.error, true);
+            }
+          } catch (err) {
+            showNotice("Failed to publish.", true);
+          }
+        }
+      );
+    }
+
+    // 2. CONTEXTUAL EDIT POPUP
+    function openContextualEdit(profileId, btnEl) {
       const p = adminState.profiles.find(x => x.id === profileId);
       if (!p) return;
 
@@ -846,7 +925,7 @@
       document.getElementById('editState').value = p.state || "";
       populateCities('editState', 'editCity', 'editCityCustom', p.city);
 
-      document.getElementById('editMemberModal').classList.add('active');
+      positionContextualCard(document.getElementById('contextEditCard'), btnEl);
     }
 
     async function handleAdminEditSubmit(e) {
@@ -891,8 +970,8 @@
         });
         const out = await res.json();
         if (out.success) {
-          showNotice("Profile updated successfully!");
-          closeModal('editMemberModal');
+          showNotice("Profile details updated successfully!");
+          closeAllContextPopups();
           fetchAdminProfiles();
         } else {
           showNotice("Update error: " + out.error, true);
@@ -905,81 +984,21 @@
       }
     }
 
-    function updateStatus(profileId, newStatus) {
-      promptAction("Update Status", `Change profile ${profileId} status to "${newStatus}"?`, "Update Status", async () => {
-        try {
-          const res = await fetch(API_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: 'updateProfileStatus',
-              adminPin: adminState.pin,
-              data: { profileId: profileId, status: newStatus }
-            })
-          });
-          const out = await res.json();
-          if (out.success) {
-            showNotice(`Profile set to ${newStatus}.`);
-            fetchAdminProfiles();
-          } else {
-            showNotice("Error: " + out.error, true);
-          }
-        } catch (err) {
-          showNotice("Operation failed.", true);
-        }
-      });
+    // 3. CONTEXTUAL RECEIPT VIEW
+    function openContextualReceipt(profileId, btnEl) {
+      const p = adminState.profiles.find(x => x.id === profileId);
+      if (!p || !p.paymentReceiptUrl) {
+        showNotice("No receipt attached.", true);
+        return;
+      }
+      document.getElementById('receiptProfileId').innerText = p.id;
+      document.getElementById('receiptImage').src = p.paymentReceiptUrl;
+      document.getElementById('receiptUtrText').innerText = p.paymentUtr ? "UTR / Ref: " + p.paymentUtr : "No UTR Entered";
+      positionContextualCard(document.getElementById('contextReceiptCard'), btnEl);
     }
 
-    function approveCandidate(profileId) {
-      promptAction("Approve Candidate", `Approve and publish profile ${profileId} live?`, "Approve Profile", async () => {
-        try {
-          const res = await fetch(API_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: 'approveProfile',
-              adminPin: adminState.pin,
-              data: { profileId: profileId }
-            })
-          });
-          const out = await res.json();
-          if (out.success) {
-            showNotice("Profile published live!");
-            fetchAdminProfiles();
-          } else {
-            showNotice("Approval failed: " + out.error, true);
-          }
-        } catch (err) {
-          showNotice("Server error.", true);
-        }
-      });
-    }
-
-    function deleteCandidate(profileId) {
-      promptAction("Delete Candidate", `Mark profile ${profileId} as Deleted?`, "Delete Record", async () => {
-        try {
-          const res = await fetch(API_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({
-              action: 'deleteProfile',
-              data: { profileId: String(profileId).trim(), isAdmin: true }
-            })
-          });
-          const out = await res.json();
-          if (out.success) {
-            showNotice("Profile marked as Deleted.");
-            fetchAdminProfiles();
-          } else {
-            showNotice("Error: " + out.error, true);
-          }
-        } catch (err) {
-          showNotice("Server communication error.", true);
-        }
-      });
-    }
-
-    function openMatchmakingDesk(profileId) {
+    // 4. CONTEXTUAL MATCHMAKING VIEW
+    function openContextualMatchmaking(profileId, btnEl) {
       const client = adminState.profiles.find(p => p.id === profileId);
       if (!client) return;
 
@@ -1003,19 +1022,19 @@
         container.innerHTML = `<p style="text-align: center; color: var(--muted); padding: 2rem;">No matching ${targetGender} profiles currently active.</p>`;
       } else {
         container.innerHTML = matches.map((m, idx) => `
-          <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--bg); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);">
+          <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--bg); padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border);">
             <input type="checkbox" id="matchCheck_${idx}" value="${m.id}" checked style="width: 18px; height: 18px;">
-            <img src="${m.photoUrl || 'https://via.placeholder.com/45'}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
+            <img src="${m.photoUrl || 'https://via.placeholder.com/45'}" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;">
             <div style="flex-grow: 1;">
-              <strong style="font-size: 0.9rem;">${m.fullName}</strong> (${m.age} Yrs, ${m.height || 'N/A'})
-              <div style="font-size: 0.8rem; color: var(--muted);">${m.profession} &bull; ${m.city}, ${m.state}</div>
+              <strong style="font-size: 0.88rem;">${m.fullName}</strong> (${m.age} Yrs, ${m.height || 'N/A'})
+              <div style="font-size: 0.75rem; color: var(--muted);">${m.profession} &bull; ${m.city}, ${m.state}</div>
             </div>
-            <span style="font-size: 0.75rem; color: var(--secondary); font-weight: 700;">ID: ${m.id}</span>
+            <span style="font-size: 0.72rem; color: var(--secondary); font-weight: 700;">ID: ${m.id}</span>
           </div>
         `).join('');
       }
 
-      document.getElementById('matchingModal').classList.add('active');
+      positionContextualCard(document.getElementById('contextMatchCard'), btnEl);
     }
 
     function getSelectedMatchedCandidates() {
@@ -1106,6 +1125,72 @@
       };
 
       html2pdf().set(opt).from(surface).save();
+    }
+
+    // Centered Add Member Modal controls
+    function openAddMemberModal() {
+      adminAddPhotoBase64 = "";
+      document.getElementById('adminAddForm').reset();
+      document.getElementById('addMemberModal').classList.add('active');
+    }
+
+    async function handleAdminAddSubmit(e) {
+      e.preventDefault();
+      if (!adminAddPhotoBase64) {
+        showNotice("Please upload a candidate photograph.", true);
+        return;
+      }
+
+      const btn = document.getElementById('addSubmitBtn');
+      btn.innerText = "Adding Candidate...";
+      btn.disabled = true;
+
+      const stateVal = document.getElementById('addState').value;
+      let cityVal = document.getElementById('addCity').value;
+      if (cityVal === "Other") cityVal = document.getElementById('addCityCustom').value.trim();
+
+      const payload = {
+        fullName: document.getElementById('addName').value.trim(),
+        gender: document.getElementById('addGender').value,
+        dob: document.getElementById('addDob').value,
+        age: parseInt(document.getElementById('addAge').value),
+        height: document.getElementById('addHeight').value.trim(),
+        maritalStatus: document.getElementById('addMarital').value,
+        education: document.getElementById('addEducation').value.trim(),
+        profession: document.getElementById('addProfession').value.trim(),
+        annualIncome: document.getElementById('addIncome').value.trim(),
+        state: stateVal,
+        city: cityVal,
+        country: "India",
+        exactAddress: document.getElementById('addAddress').value.trim(),
+        email: document.getElementById('addEmail').value.trim(),
+        phone: document.getElementById('addPhone').value.trim(),
+        imageBase64: adminAddPhotoBase64,
+        familyDetails: document.getElementById('addFamily').value.trim(),
+        partnerPreferences: document.getElementById('addPreferences').value.trim(),
+        status: "Active"
+      };
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'adminAddProfile', adminPin: adminState.pin, data: payload })
+        });
+        const out = await res.json();
+        if (out.success) {
+          showNotice("Candidate added successfully!");
+          closeModal('addMemberModal');
+          fetchAdminProfiles();
+        } else {
+          showNotice("Error: " + out.error, true);
+        }
+      } catch (err) {
+        showNotice("Network failure.", true);
+      } finally {
+        btn.innerText = "Add & Enrol Candidate";
+        btn.disabled = false;
+      }
     }
 
     function closeModal(id) {
