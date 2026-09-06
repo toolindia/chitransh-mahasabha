@@ -55,13 +55,8 @@
     }
 
     .top-action-bar {
-      max-width: 1200px;
-      margin: 1rem auto 0.5rem auto;
-      padding: 0 1rem;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 0.5rem;
+      max-width: 1200px; margin: 1rem auto 0.5rem auto; padding: 0 1rem;
+      display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;
     }
 
     .loader-container {
@@ -78,27 +73,18 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Filter & Search Bar */
     .filter-wrapper { max-width: 1200px; margin: 0.5rem auto 1rem auto; padding: 0 1rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
     
-    .mobile-filter-header {
-      display: flex; gap: 0.5rem; align-items: center; justify-content: space-between;
-    }
-    
+    .mobile-filter-header { display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; }
     .filter-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 0.65rem; margin-top: 0.75rem;
     }
 
     @media (max-width: 768px) {
-      .filter-grid {
-        display: none;
-        grid-template-columns: 1fr;
-      }
-      .filter-grid.expanded {
-        display: grid;
-      }
+      .filter-grid { display: none; grid-template-columns: 1fr; }
+      .filter-grid.expanded { display: grid; }
     }
 
     .filter-control { display: flex; flex-direction: column; gap: 0.25rem; }
@@ -109,7 +95,6 @@
       font-size: 0.82rem; color: var(--dark); outline: none;
     }
 
-    /* Catalog Layout */
     .catalog-wrapper { max-width: 1200px; margin: 1rem auto 3rem auto; padding: 0 1rem; }
     .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
     .profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.15rem; }
@@ -143,7 +128,6 @@
     .profile-meta-line { font-size: 0.82rem; color: var(--muted); }
     .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--dark); width: fit-content; }
 
-    /* Modal Backdrop */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px);
@@ -151,12 +135,11 @@
     }
     .modal-overlay.active { display: block; }
 
-    /* Top-Header Overlays for Sign In, Registration, Payment */
-    #authModal.modal-overlay, #registrationModal.modal-overlay, #paymentModal.modal-overlay {
+    #authModal.modal-overlay, #registrationModal.modal-overlay, #paymentModal.modal-overlay, #freeSuccessModal.modal-overlay {
       display: none; align-items: flex-start; justify-content: center;
       padding: 1.5rem 1rem 3rem 1rem; overflow-y: auto;
     }
-    #authModal.active, #registrationModal.active, #paymentModal.active { display: flex; }
+    #authModal.active, #registrationModal.active, #paymentModal.active, #freeSuccessModal.active { display: flex; }
 
     .modal-card {
       background: var(--white); border-radius: var(--radius-md);
@@ -173,32 +156,21 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* CONTEXTUAL BIODATA POPUP (Desktop: Anchored to Clicked Card; Mobile: Bottom-Sheet Drawer) */
     .contextual-biodata-card {
-      position: absolute;
-      background: var(--white);
-      border: 2px solid var(--primary);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
-      z-index: 2100;
-      padding: 1.5rem;
-      display: none;
-      max-width: 600px;
-      width: 95%;
+      position: absolute; background: var(--white); border: 2px solid var(--primary);
+      border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+      z-index: 2100; padding: 1.5rem; display: none; max-width: 600px; width: 95%;
     }
     .contextual-biodata-card.active { display: block; }
 
     @media (max-width: 768px) {
       .contextual-biodata-card {
-        position: fixed !important;
-        bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important;
+        position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important;
         width: 100% !important; max-width: 100% !important; max-height: 85vh !important;
         border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
         border: none !important; border-top: 3px solid var(--primary) !important;
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.3) !important;
-        padding: 1.25rem 1rem 2.5rem 1rem !important;
-        overflow-y: auto !important;
-        animation: slideUpMobile 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.3) !important; padding: 1.25rem 1rem 2.5rem 1rem !important;
+        overflow-y: auto !important; animation: slideUpMobile 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
       }
       @keyframes slideUpMobile { from { transform: translateY(100%); } to { transform: translateY(0); } }
       .sheet-drag-handle { width: 40px; height: 5px; background: #D9D1CE; border-radius: 10px; margin: -0.25rem auto 1rem auto; display: block !important; }
@@ -220,6 +192,20 @@
     .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); }
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
     @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
+
+    /* Membership Tier Selector */
+    .membership-tier-container {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin: 0.5rem 0 1rem 0;
+    }
+    .tier-card {
+      border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 0.85rem;
+      cursor: pointer; text-align: center; background: var(--bg); transition: all 0.2s ease;
+    }
+    .tier-card.selected {
+      border-color: var(--primary); background: var(--surface-light);
+    }
+    .tier-card h4 { font-size: 0.85rem; color: var(--dark); }
+    .tier-card p { font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-top: 0.2rem; }
 
     .upi-box {
       border: 2px dashed var(--secondary); background: var(--surface-light);
@@ -322,10 +308,9 @@
     </div>
   </main>
 
-  <!-- Transparent Backdrop Barrier for Contextual Popups -->
   <div id="backdropBarrier" class="modal-overlay" onclick="closeAllContextPopups()"></div>
 
-  <!-- CONTEXTUAL BIODATA POPUP (Anchored near clicked card / Bottom-Sheet on mobile) -->
+  <!-- CONTEXTUAL BIODATA POPUP -->
   <div id="contextBiodataCard" class="contextual-biodata-card">
     <div class="sheet-drag-handle"></div>
     <button class="modal-close-btn" onclick="closeAllContextPopups()">&times;</button>
@@ -370,14 +355,32 @@
     </div>
   </div>
 
-  <!-- Registration Modal -->
+  <!-- Registration Modal with Dynamic Plans and Free Mode Logic -->
   <div class="modal-overlay" id="registrationModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
       <h2 style="margin-bottom: 0.25rem;">Profile Registration</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Registration Fee: ₹1999. Profiles become active after payment screenshot approval.</p>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;" id="regFormSubtitle">Choose membership plan and register candidate.</p>
 
       <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
+        
+        <!-- MEMBERSHIP TIER SELECTION (HIDDEN IF FREE MODE ACTIVE) -->
+        <div id="planSelectionWrapper">
+          <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Plan</label>
+          <div class="membership-tier-container">
+            <div class="tier-card" id="tierMonthly" onclick="selectMembershipTier('Monthly')">
+              <h4>Monthly Plan</h4>
+              <p id="labelMonthlyFee">₹499</p>
+              <span style="font-size: 0.68rem; color: var(--muted);">Standard Access</span>
+            </div>
+            <div class="tier-card selected" id="tierAnnual" onclick="selectMembershipTier('Annual')">
+              <h4>Annual Plan</h4>
+              <p id="labelAnnualFee">₹1999</p>
+              <span style="font-size: 0.68rem; color: var(--success); font-weight: 700;">Best Value</span>
+            </div>
+          </div>
+        </div>
+
         <div class="form-row-2">
           <div class="form-group">
             <label>Candidate Name *</label>
@@ -491,31 +494,31 @@
         </div>
 
         <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="regSubmitBtn">
-          Proceed to Pay ₹1999
+          Submit Profile
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Dynamic UPI Payment Modal -->
+  <!-- Dynamic UPI Payment Modal (Shown when Paid) -->
   <div class="modal-overlay" id="paymentModal">
     <div class="modal-card" style="max-width: 440px; text-align: center;">
       <button class="modal-close-btn" onclick="closeModal('paymentModal')">&times;</button>
       <h2 style="font-size: 1.3rem; color: var(--primary);">Registration Payment</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Profile Reference: <strong id="payProfileId">-</strong></p>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Profile Ref: <strong id="payProfileId">-</strong> (<span id="payPlanDisplay">Annual</span>)</p>
 
       <div class="upi-box">
         <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Payable Amount</p>
-        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.25rem 0;">₹1999</h1>
+        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.25rem 0;" id="payAmountDisplay">₹1999</h1>
         
         <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
           <img id="upiQrCodeImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
         </div>
 
-        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">UPI ID: <code>sinha361@icici</code></p>
+        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">UPI ID: <code id="payUpiIdDisplay">sinha361@icici</code></p>
         
         <a id="upiIntentBtn" href="#" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.75rem;">
-          Pay ₹1999 via UPI App
+          Pay via Any UPI App
         </a>
       </div>
 
@@ -536,10 +539,21 @@
         <button class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="submitProofBtn" onclick="submitPaymentProof()">
           Submit Screenshot for Approval
         </button>
-        <p style="font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; text-align: center;">
-          The administration will review your receipt and activate your profile.
-        </p>
       </div>
+    </div>
+  </div>
+
+  <!-- Free Registration Success Modal (Shown when Free mode ON) -->
+  <div class="modal-overlay" id="freeSuccessModal">
+    <div class="modal-card" style="max-width: 440px; text-align: center; padding: 2rem 1.5rem;">
+      <h2 style="font-size: 1.4rem; color: #1E8E3E; margin-bottom: 0.35rem;">Registration Submitted!</h2>
+      <p style="font-size: 0.85rem; color: var(--dark); font-weight: 700; margin-bottom: 0.5rem;">
+        Profile ID: <span id="freeProfileIdDisplay">-</span>
+      </p>
+      <p style="font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.5rem;">
+        Free Registration active. Aapka profile administrative desk ko review ke liye bhej diya gaya hai. Desk dwara verify hote hi yeh directory me live ho jayega.
+      </p>
+      <button class="btn btn-primary" style="width: 100%;" onclick="closeModal('freeSuccessModal')">Browse Directory</button>
     </div>
   </div>
 
@@ -649,16 +663,72 @@
       "Other": ["Other"]
     };
 
-    let state = { profiles: [], filtered: [], savedIds: new Set(), user: null, mode: 'all' };
+    let state = {
+      profiles: [],
+      filtered: [],
+      savedIds: new Set(),
+      user: null,
+      mode: 'all',
+      settings: {
+        isFreeRegistration: false,
+        monthlyFee: "499",
+        annualFee: "1999",
+        upiId: "sinha361@icici"
+      }
+    };
+
     let selectedProfileImage = "";
     let selectedScreenshotImage = "";
     let registeredProfileId = "";
+    let selectedPlan = "Annual";
 
     window.addEventListener('DOMContentLoaded', () => {
       initLocationDropdowns();
       checkUserSession();
+      fetchSystemSettings();
       fetchActiveProfiles();
     });
+
+    async function fetchSystemSettings() {
+      try {
+        const res = await fetch(`${API_ENDPOINT}?action=getSettings`);
+        const data = await res.json();
+        if (data.success) {
+          state.settings = data.settings;
+          applyPricingUI();
+        }
+      } catch (err) {
+        console.error("Failed to load settings", err);
+      }
+    }
+
+    function applyPricingUI() {
+      const isFree = state.settings.isFreeRegistration;
+      document.getElementById('labelMonthlyFee').innerText = `₹${state.settings.monthlyFee}`;
+      document.getElementById('labelAnnualFee').innerText = `₹${state.settings.annualFee}`;
+      
+      const planWrapper = document.getElementById('planSelectionWrapper');
+      const submitBtn = document.getElementById('regSubmitBtn');
+      const subtitle = document.getElementById('regFormSubtitle');
+
+      if (isFree) {
+        planWrapper.style.display = 'none';
+        subtitle.innerText = "Free Registration Mode is active. No payment required.";
+        submitBtn.innerText = "Submit for Direct Approval (Free)";
+      } else {
+        planWrapper.style.display = 'block';
+        subtitle.innerText = "Select membership plan and proceed to payment.";
+        const fee = (selectedPlan === 'Monthly') ? state.settings.monthlyFee : state.settings.annualFee;
+        submitBtn.innerText = `Proceed to Pay ₹${fee} (${selectedPlan})`;
+      }
+    }
+
+    function selectMembershipTier(plan) {
+      selectedPlan = plan;
+      document.getElementById('tierMonthly').className = plan === 'Monthly' ? 'tier-card selected' : 'tier-card';
+      document.getElementById('tierAnnual').className = plan === 'Annual' ? 'tier-card selected' : 'tier-card';
+      applyPricingUI();
+    }
 
     function toggleMobileFilters() {
       const panel = document.getElementById('mainFilterPanel');
@@ -1080,7 +1150,6 @@
       renderProfileList();
     }
 
-    // CONTEXTUAL BIODATA MODAL (Anchored on Desktop, Bottom-Sheet Drawer on Mobile)
     function openContextualBiodata(profileId, triggerBtn) {
       const p = state.profiles.find(item => item.id === profileId);
       if (!p) return;
@@ -1178,7 +1247,8 @@
         email: document.getElementById('regEmail').value.trim(),
         phone: document.getElementById('regPhone').value.trim(),
         familyDetails: document.getElementById('regFamily').value.trim(),
-        partnerPreferences: document.getElementById('regPreferences').value.trim()
+        partnerPreferences: document.getElementById('regPreferences').value.trim(),
+        membershipPlan: state.settings.isFreeRegistration ? "Free" : selectedPlan
       };
 
       try {
@@ -1195,25 +1265,35 @@
           document.getElementById('imagePreviewBox').style.display = 'none';
           selectedProfileImage = "";
 
-          openPaymentModal(out.profileId, out.paymentAmount, out.upiId);
+          if (out.isFree) {
+            // FREE MODE DIRECT UNDER-REVIEW SUCCESS SCREEN
+            document.getElementById('freeProfileIdDisplay').innerText = out.profileId;
+            document.getElementById('freeSuccessModal').classList.add('active');
+          } else {
+            // PAID MEMBERSHIP QR
+            openPaymentModal(out.profileId, out.paymentAmount, out.plan, out.upiId);
+          }
         } else {
           alert("Submission error: " + out.error);
         }
       } catch (err) {
         alert("Transmission failure. Check connection.");
       } finally {
-        btn.innerText = "Proceed to Pay ₹1999";
+        applyPricingUI();
         btn.disabled = false;
       }
     }
 
-    function openPaymentModal(profileId, amount, upiId) {
-      const finalUpiId = upiId || "sinha361@icici";
+    function openPaymentModal(profileId, amount, plan, upiId) {
+      const finalUpiId = upiId || state.settings.upiId || "sinha361@icici";
       const finalAmount = amount || "1999";
       const payeeName = "Chitransh Mahasabha";
-      const note = "Registration " + profileId;
+      const note = `Membership ${plan} ${profileId}`;
 
       document.getElementById('payProfileId').innerText = profileId;
+      document.getElementById('payPlanDisplay').innerText = `${plan} Plan`;
+      document.getElementById('payAmountDisplay').innerText = `₹${finalAmount}`;
+      document.getElementById('payUpiIdDisplay').innerText = finalUpiId;
 
       const upiIntentUri = `upi://pay?pa=${finalUpiId}&pn=${encodeURIComponent(payeeName)}&am=${finalAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
       const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiIntentUri)}&size=220`;
@@ -1267,7 +1347,10 @@
       }
     }
 
-    function openRegistrationModal() { document.getElementById('registrationModal').classList.add('active'); }
+    function openRegistrationModal() { 
+      applyPricingUI();
+      document.getElementById('registrationModal').classList.add('active'); 
+    }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
   </script>
 </body>
