@@ -146,14 +146,36 @@
 
     .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
 
+    /* Top-Docked Modal Overlay & Card */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
+      z-index: 2000; display: none; align-items: flex-start; justify-content: center;
+      padding: 1.5rem 1rem 3rem 1rem; overflow-y: auto;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+      background: var(--white); border-radius: var(--radius-md);
+      max-width: 480px; width: 100%; max-height: 88vh;
+      overflow-y: auto; position: relative;
+      border: 2px solid var(--primary);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      padding: 1.75rem; text-align: center;
+      animation: slideDownHeader 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideDownHeader {
+      from { opacity: 0; transform: translateY(-24px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     .upi-box {
-      display: none;
-      background: var(--surface-light);
       border: 2px dashed var(--secondary);
-      border-radius: var(--radius-md);
-      padding: 1.75rem;
-      text-align: center;
-      margin-top: 1.5rem;
+      background: var(--surface-light);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin: 1rem 0;
     }
 
     .preview-box {
@@ -202,12 +224,12 @@
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Date of Birth</label>
-          <input type="date" id="dob">
+          <label>Date of Birth *</label>
+          <input type="date" id="dob" required onchange="calculateAutoAge('dob', 'age')">
         </div>
         <div class="form-group">
-          <label>Age (in Years) *</label>
-          <input type="number" id="age" min="18" max="75" required placeholder="e.g. 27">
+          <label>Age (Auto-Calculated) *</label>
+          <input type="number" id="age" min="18" max="80" required placeholder="Years">
         </div>
       </div>
 
@@ -246,19 +268,25 @@
 
       <div class="section-title">3. Location & Confidential Contact</div>
 
+      <!-- DEPENDENT STATE & CITY DROPDOWNS -->
       <div class="form-row-2">
         <div class="form-group">
-          <label>City (Public) *</label>
-          <input type="text" id="city" required placeholder="City">
+          <label>State *</label>
+          <select id="state" required onchange="populateCities('state', 'city', 'cityCustom')">
+            <option value="">Select State</option>
+          </select>
         </div>
         <div class="form-group">
-          <label>State (Public) *</label>
-          <input type="text" id="state" required placeholder="State">
+          <label>City *</label>
+          <select id="city" required onchange="checkCustomCity('city', 'cityCustom')">
+            <option value="">Select City</option>
+          </select>
+          <input type="text" id="cityCustom" placeholder="Type city name" style="display: none; margin-top: 0.35rem;">
         </div>
       </div>
 
       <div class="form-group">
-        <label>Country (Public) *</label>
+        <label>Country *</label>
         <input type="text" id="country" required value="India">
       </div>
 
@@ -303,31 +331,35 @@
       </button>
 
     </form>
+  </div>
 
-    <!-- STEP 2: DYNAMIC UPI PAYMENT PANEL -->
-    <div id="paymentBox" class="upi-box">
+  <!-- STEP 2: DYNAMIC UPI PAYMENT HEADER-DOCKED MODAL -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal-card">
       <h2 style="font-size: 1.3rem; color: var(--primary); margin-bottom: 0.25rem;">Verify & Activate Profile</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Profile ID: <strong id="assignedProfileId">-</strong></p>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.75rem;">Profile ID: <strong id="assignedProfileId">-</strong></p>
 
-      <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Registration Amount</p>
-      <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;">₹1999</h1>
+      <div class="upi-box">
+        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Registration Amount</p>
+        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;">₹1999</h1>
 
-      <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-        <img id="upiQrImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
+        <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+          <img id="upiQrImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
+        </div>
+
+        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code>sinha361@icici</code></p>
+        
+        <a id="upiPayLink" href="#" class="btn btn-primary" style="margin-bottom: 0.5rem;">
+          Pay ₹1999 via Any UPI App
+        </a>
       </div>
 
-      <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code>sinha361@icici</code></p>
-      
-      <a id="upiPayLink" href="#" class="btn btn-primary" style="margin-bottom: 1.5rem;">
-        Pay ₹1999 via Any UPI App
-      </a>
-
-      <div style="text-align: left; border-top: 1px solid var(--border); padding-top: 1.25rem;">
+      <div style="text-align: left; border-top: 1px solid var(--border); padding-top: 1rem;">
         <div class="form-group">
           <label>Upload Payment Screenshot *</label>
           <input type="file" id="screenshotFile" accept="image/*" required onchange="handleScreenshotUpload(event)">
           <div id="screenshotPreviewBox" class="preview-box">
-            <img id="screenshotPreviewImg" src="" style="max-width: 120px; border-radius: 6px; border: 1px solid var(--border);">
+            <img id="screenshotPreviewImg" src="" style="max-width: 120px; border-radius: 6px; border: 1px solid var(--border); margin: 0 auto; display: block;">
           </div>
         </div>
 
@@ -341,15 +373,87 @@
         </button>
       </div>
     </div>
-
   </div>
 
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
+    const LOCATION_DATA = {
+      "Uttar Pradesh": ["Ghaziabad", "Noida", "Lucknow", "Kanpur", "Varanasi", "Prayagraj", "Agra", "Meerut", "Bareilly", "Gorakhpur", "Aligarh", "Moradabad", "Other"],
+      "Delhi NCR": ["Central Delhi", "East Delhi", "New Delhi", "North Delhi", "South Delhi", "West Delhi", "Gurugram", "Faridabad", "Other"],
+      "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga", "Bihar Sharif", "Ara", "Begusarai", "Katihar", "Other"],
+      "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Satna", "Ratlam", "Other"],
+      "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Navi Mumbai", "Solapur", "Other"],
+      "Rajasthan": ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Ajmer", "Udaipur", "Bhilwara", "Alwar", "Other"],
+      "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri", "Other"],
+      "Karnataka": ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru", "Belagavi", "Other"],
+      "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Other"],
+      "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Other"],
+      "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Deoghar", "Hazaribagh", "Other"],
+      "Uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani", "Rishikesh", "Other"],
+      "Haryana": ["Faridabad", "Gurugram", "Panipat", "Ambala", "Karnal", "Hisar", "Rohtak", "Other"],
+      "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali", "Other"],
+      "Other": ["Other"]
+    };
+
     let candidateBase64 = "";
     let screenshotBase64 = "";
     let savedProfileId = "";
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initLocationDropdown();
+    });
+
+    function initLocationDropdown() {
+      const stateSel = document.getElementById('state');
+      if (!stateSel) return;
+      stateSel.innerHTML = `<option value="">Select State</option>`;
+      Object.keys(LOCATION_DATA).forEach(st => {
+        stateSel.innerHTML += `<option value="${st}">${st}</option>`;
+      });
+    }
+
+    function populateCities(stateId, cityId, customId) {
+      const stateVal = document.getElementById(stateId).value;
+      const citySel = document.getElementById(cityId);
+      const customInput = document.getElementById(customId);
+      
+      citySel.innerHTML = `<option value="">Select City</option>`;
+      if (customInput) customInput.style.display = "none";
+
+      if (stateVal && LOCATION_DATA[stateVal]) {
+        LOCATION_DATA[stateVal].forEach(ct => {
+          citySel.innerHTML += `<option value="${ct}">${ct}</option>`;
+        });
+      }
+    }
+
+    function checkCustomCity(cityId, customId) {
+      const cityVal = document.getElementById(cityId).value;
+      const customInput = document.getElementById(customId);
+      if (cityVal === "Other") {
+        customInput.style.display = "block";
+        customInput.required = true;
+      } else {
+        customInput.style.display = "none";
+        customInput.required = false;
+      }
+    }
+
+    function calculateAutoAge(dobId, ageId) {
+      const dobVal = document.getElementById(dobId).value;
+      if (!dobVal) return;
+      const dobDate = new Date(dobVal);
+      const today = new Date();
+      let age = today.getFullYear() - dobDate.getFullYear();
+      const m = today.getMonth() - dobDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+        age--;
+      }
+      if (age >= 18 && age <= 100) {
+        document.getElementById(ageId).value = age;
+      }
+    }
 
     function handlePhotoUpload(event) {
       compressImage(event.target.files[0], 400, 0.6, (base64) => {
@@ -392,13 +496,19 @@
       e.preventDefault();
 
       if (!candidateBase64) {
-        alert("Please select and upload candidate photograph.");
+        alert("Please select and upload a candidate photograph.");
         return;
       }
 
       const btn = document.getElementById('submitBtn');
       btn.innerText = "Submitting Biodata...";
       btn.disabled = true;
+
+      const stateVal = document.getElementById('state').value;
+      let cityVal = document.getElementById('city').value;
+      if (cityVal === "Other") {
+        cityVal = document.getElementById('cityCustom').value.trim();
+      }
 
       const payload = {
         fullName: document.getElementById('fullName').value.trim(),
@@ -410,8 +520,8 @@
         education: document.getElementById('education').value.trim(),
         profession: document.getElementById('profession').value.trim(),
         annualIncome: document.getElementById('income').value.trim(),
-        city: document.getElementById('city').value.trim(),
-        state: document.getElementById('state').value.trim(),
+        city: cityVal,
+        state: stateVal,
         country: document.getElementById('country').value.trim(),
         exactAddress: document.getElementById('exactAddress').value.trim(),
         imageBase64: candidateBase64,
@@ -443,9 +553,7 @@
           document.getElementById('upiQrImg').src = qrUrl;
           document.getElementById('upiPayLink').href = upiIntentUri;
 
-          document.getElementById('biodataForm').style.display = 'none';
-          document.getElementById('paymentBox').style.display = 'block';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          document.getElementById('paymentModal').classList.add('active');
         } else {
           alert("Submission Error: " + out.error);
         }
@@ -484,15 +592,18 @@
         });
         const out = await res.json();
         if (out.success) {
-          document.getElementById('paymentBox').innerHTML = `
-            <div style="padding: 1.5rem 0;">
+          document.getElementById('paymentModal').innerHTML = `
+            <div class="modal-card" style="padding: 2.5rem 1.5rem;">
               <h2 style="color: #137333; font-size: 1.6rem; margin-bottom: 0.5rem;">Biodata Submitted!</h2>
               <p style="font-size: 0.95rem; color: var(--dark); margin-bottom: 0.5rem;">
                 Your Profile ID is: <strong>${savedProfileId}</strong>
               </p>
-              <p style="font-size: 0.85rem; color: var(--muted); line-height: 1.5;">
+              <p style="font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.5rem;">
                 Your details and payment receipt have been sent to the Chitransh Mahasabha Admin Portal for verification. Once approved, your profile will be live on the matrimonial directory.
               </p>
+              <a href="https://www.kayasthashadivivah.com/search-profiles" class="btn btn-primary">
+                Explore Verified Profiles
+              </a>
             </div>
           `;
         } else {
