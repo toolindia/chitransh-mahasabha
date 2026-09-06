@@ -33,7 +33,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 5rem; position: relative; }
 
-    /* Top Sticky Action Banner */
+    /* Top Sticky Action Bar */
     .top-action-bar {
       max-width: 1200px; margin: 1rem auto 0.5rem auto; padding: 0 1rem;
       display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;
@@ -135,7 +135,7 @@
     .profile-meta-line { font-size: 0.82rem; color: var(--muted); }
     .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--dark); width: fit-content; }
 
-    /* GOOGLE SITES IFRAME SAFE MODAL LAYER */
+    /* Modal Architecture */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -251,14 +251,15 @@
 </head>
 <body>
 
-  <div class="top-action-bar">
+  <!-- HEADER GATES (Clicking anywhere in top action bar triggers login popup) -->
+  <div class="top-action-bar" onclick="checkHeaderAuth(event)">
     <button class="btn btn-outline" onclick="guardedAction(() => openRegistrationModal())">Register Profile</button>
     <div id="authActions">
       <button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>
     </div>
   </div>
 
-  <div class="filter-wrapper">
+  <div class="filter-wrapper" onclick="checkHeaderAuth(event)">
     <div class="filter-container">
       <div class="search-action-row">
         <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onkeydown="if(event.key==='Enter') guardedAction(() => applyFilters())" onfocus="checkGuestGate()" style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
@@ -341,7 +342,7 @@
       </div>
     </div>
 
-    <!-- Scroll Detection Trigger Line -->
+    <!-- Scroll Trigger Anchor -->
     <div id="scrollTriggerAnchor" style="width: 100%; height: 2px; margin-bottom: 5px;"></div>
 
     <div class="profile-grid" id="profilesContainer">
@@ -630,7 +631,7 @@
     </div>
   </div>
 
-  <!-- SIGN IN / SIGN UP MODAL (CENTERED VIEWPORT DIALOG) -->
+  <!-- SIGN IN / SIGN UP MODAL (SAME UI DIALOG) -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-card" style="max-width: 380px;">
       <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
@@ -790,16 +791,13 @@
       setupIframeGuardGate();
     });
 
-    // 100% RELIABLE IFRAME GUEST LOCK
     function setupIframeGuardGate() {
-      // 1. Detect mouse wheel movement inside iframe
       window.addEventListener('wheel', (e) => {
         if (!state.user && e.deltaY > 10) {
           triggerGuestLock();
         }
       }, { passive: true });
 
-      // 2. Detect touch swipe on mobile screen
       let startTouchY = 0;
       window.addEventListener('touchstart', (e) => {
         startTouchY = e.touches[0].clientY;
@@ -811,7 +809,6 @@
         }
       }, { passive: true });
 
-      // 3. Fallback IntersectionObserver when anchor passes viewport
       if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
@@ -819,7 +816,7 @@
               triggerGuestLock();
             }
           });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.05 });
         
         const anchor = document.getElementById('scrollTriggerAnchor');
         if (anchor) observer.observe(anchor);
@@ -828,7 +825,6 @@
 
     function triggerGuestLock() {
       if (state.user) return;
-      // Immediately display centered login modal in viewport
       openLoginModal('login');
       const err = document.getElementById('authErrorAlert');
       if (err) {
@@ -843,6 +839,13 @@
         return false;
       }
       return true;
+    }
+
+    function checkHeaderAuth(e) {
+      if (!state.user) {
+        e.stopPropagation();
+        triggerGuestLock();
+      }
     }
 
     function guardedAction(callback) {
@@ -1324,8 +1327,6 @@
       container.innerHTML = dataset.map((p, idx) => {
         const isSaved = state.savedIds.has(p.id);
         const photoSrc = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
-        
-        // Show blurred teaser for profiles after the 2nd card if unauthenticated
         const isRestricted = (!state.user && idx >= 2);
 
         return `
