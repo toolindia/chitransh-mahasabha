@@ -33,11 +33,24 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 5rem; position: relative; }
 
-    /* Top Sticky Action Bar */
-    .top-action-bar {
-      max-width: 1200px; margin: 1rem auto 0.5rem auto; padding: 0 1rem;
-      display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;
+    /* PROFESSIONAL STICKY HEADER BAR (Ensures it stays at top inside iframe) */
+    .portal-header-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
     }
+
+    .brand-title { font-size: 1.15rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.35rem; }
+    .brand-title span { color: var(--secondary); }
+
+    .header-right-actions { display: flex; gap: 0.5rem; align-items: center; }
 
     .btn {
       min-height: 38px;
@@ -75,7 +88,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Filter & Search */
-    .filter-wrapper { max-width: 1200px; margin: 0.5rem auto 1rem auto; padding: 0 1rem; }
+    .filter-wrapper { max-width: 1200px; margin: 1rem auto 1rem auto; padding: 0 1rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
     
     .search-action-row {
@@ -251,15 +264,18 @@
 </head>
 <body>
 
-  <!-- HEADER GATES (Clicking anywhere in top action bar triggers login popup) -->
-  <div class="top-action-bar" onclick="checkHeaderAuth(event)">
-    <button class="btn btn-outline" onclick="guardedAction(() => openRegistrationModal())">Register Profile</button>
-    <div id="authActions">
-      <button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>
+  <!-- FIXED HEADER BAR AT TOP -->
+  <header class="portal-header-bar">
+    <div class="brand-title">Chitransh<span>Mahasabha</span></div>
+    <div class="header-right-actions">
+      <button class="btn btn-outline" onclick="guardedAction(() => openRegistrationModal())">Register Profile</button>
+      <div id="authActions">
+        <button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>
+      </div>
     </div>
-  </div>
+  </header>
 
-  <div class="filter-wrapper" onclick="checkHeaderAuth(event)">
+  <div class="filter-wrapper">
     <div class="filter-container">
       <div class="search-action-row">
         <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onkeydown="if(event.key==='Enter') guardedAction(() => applyFilters())" onfocus="checkGuestGate()" style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
@@ -631,7 +647,7 @@
     </div>
   </div>
 
-  <!-- SIGN IN / SIGN UP MODAL (SAME UI DIALOG) -->
+  <!-- SIGN IN / SIGN UP MODAL -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-card" style="max-width: 380px;">
       <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
@@ -839,13 +855,6 @@
         return false;
       }
       return true;
-    }
-
-    function checkHeaderAuth(e) {
-      if (!state.user) {
-        e.stopPropagation();
-        triggerGuestLock();
-      }
     }
 
     function guardedAction(callback) {
