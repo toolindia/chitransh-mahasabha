@@ -932,25 +932,25 @@
     }
 
     async function deleteCandidate(profileId) {
-      if (!confirm(`Are you sure you want to deactivate profile ${profileId}?`)) return;
+      if (!confirm(`Are you sure you want to deactivate profile ${profileId}? It will be marked as Deleted.`)) return;
       try {
         const res = await fetch(API_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             action: 'deleteProfile',
-            data: { profileId: profileId, isAdmin: true }
+            data: { profileId: String(profileId).trim(), isAdmin: true }
           })
         });
         const out = await res.json();
         if (out.success) {
-          alert("Profile removed.");
+          alert("Profile marked as Deleted successfully.");
           fetchAdminProfiles();
         } else {
           alert("Error: " + out.error);
         }
       } catch (err) {
-        alert("Server error.");
+        alert("Server communication error: " + err.toString());
       }
     }
 
