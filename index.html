@@ -83,7 +83,7 @@
     
     .filter-grid {
       display: none;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) auto;
       gap: 0.65rem;
       align-items: flex-end;
       margin-top: 0.85rem;
@@ -148,7 +148,7 @@
 
     .modal-card {
       background: var(--white); border-radius: var(--radius-md);
-      max-width: 580px; width: 100%; max-height: 88vh;
+      max-width: 620px; width: 100%; max-height: 88vh;
       overflow-y: auto; position: relative;
       border: 2px solid var(--primary);
       box-shadow: var(--shadow-lg);
@@ -198,6 +198,44 @@
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
     @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
 
+    /* Password Input Wrapper with Eye Icon */
+    .password-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-input-wrapper input {
+      width: 100%;
+      padding-right: 2.4rem;
+    }
+    .toggle-password-btn {
+      position: absolute;
+      right: 0.65rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.2rem;
+    }
+
+    /* Inline Alert Box */
+    .auth-error-box {
+      display: none;
+      background-color: #FCE8E6;
+      border: 1px solid #D93025;
+      color: #C5221F;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.55rem 0.75rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
     .membership-tier-container {
       display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin: 0.5rem 0 1rem 0;
     }
@@ -235,12 +273,12 @@
       
       <!-- SEARCH BAR WITH BUTTON AND TOGGLE -->
       <div class="search-action-row">
-        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state, profession..." onkeydown="if(event.key==='Enter') applyFilters()" style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
+        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onkeydown="if(event.key==='Enter') applyFilters()" style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
         <button class="btn btn-primary" style="min-height: 40px;" onclick="applyFilters()">Search</button>
         <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="toggleFilterDrawer()">Filters ▾</button>
       </div>
 
-      <!-- COLLAPSIBLE FILTER PANEL -->
+      <!-- COLLAPSIBLE FILTER PANEL WITH STANDARDIZED DROPDOWNS -->
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label>Gender</label>
@@ -274,12 +312,18 @@
 
         <div class="filter-control">
           <label>Education</label>
-          <input type="text" id="filterEducation" placeholder="e.g. B.Tech / MBA" onkeydown="if(event.key==='Enter') applyFilters()">
+          <select id="filterEducation" onchange="applyFilters()">
+            <option value="">All Qualifications</option>
+            <!-- Populated from EDUCATION_LIST -->
+          </select>
         </div>
 
         <div class="filter-control">
           <label>Profession</label>
-          <input type="text" id="filterProfession" placeholder="Occupation" onkeydown="if(event.key==='Enter') applyFilters()">
+          <select id="filterProfession" onchange="applyFilters()">
+            <option value="">All Occupations</option>
+            <!-- Populated from OCCUPATION_LIST -->
+          </select>
         </div>
 
         <div class="filter-control">
@@ -350,14 +394,20 @@
         <tr><td>Marital Status</td><td id="bioMarital">-</td></tr>
       </table>
 
-      <div class="biodata-title">Family Overview</div>
-      <p id="bioFamily" style="font-size: 0.82rem; line-height: 1.4;">-</p>
+      <div class="biodata-title">Parental & Family Background</div>
+      <table class="biodata-table">
+        <tr><td>Father's Name</td><td id="bioFatherName">-</td></tr>
+        <tr><td>Father's Occupation</td><td id="bioFatherOcc">-</td></tr>
+        <tr><td>Mother's Name</td><td id="bioMotherName">-</td></tr>
+        <tr><td>Mother's Occupation</td><td id="bioMotherOcc">-</td></tr>
+        <tr><td>Other Family Details</td><td id="bioFamily">-</td></tr>
+      </table>
 
       <div class="biodata-title">Partner Preferences</div>
       <p id="bioPreferences" style="font-size: 0.82rem; line-height: 1.4;">-</p>
 
       <div style="margin-top: 0.85rem; background: var(--surface-light); padding: 0.45rem; border-radius: 4px; font-size: 0.72rem; text-align: center;">
-        Contact numbers and residential addresses are held centrally. Contact Chitransh Mahasabha Desk to connect.
+        Candidate contact numbers & other confidential details are withheld for privacy. Contact Ghaziabad Chitransh Mahasabha desk quoting Profile ID.
       </div>
     </div>
 
@@ -367,7 +417,7 @@
     </div>
   </div>
 
-  <!-- Registration Modal -->
+  <!-- Registration Modal with Parent Details -->
   <div class="modal-overlay" id="registrationModal">
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
@@ -433,14 +483,15 @@
           </div>
         </div>
 
+        <!-- STANDARDIZED EDUCATION & OCCUPATION DROPDOWNS -->
         <div class="form-row-2">
           <div class="form-group">
             <label>Highest Education *</label>
-            <input type="text" id="regEducation" required placeholder="Degree / Qualification">
+            <select id="regEducation" required></select>
           </div>
           <div class="form-group">
-            <label>Profession *</label>
-            <input type="text" id="regProfession" required placeholder="Designation / Occupation">
+            <label>Profession / Occupation *</label>
+            <select id="regProfession" required></select>
           </div>
         </div>
 
@@ -475,6 +526,38 @@
           <input type="text" id="regExactAddress" required placeholder="House/Flat No, Landmark, Street, Pincode">
         </div>
 
+        <!-- STRUCTURED PARENT & FAMILY BACKGROUND SECTION -->
+        <div style="margin: 1.25rem 0 0.5rem 0; font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; border-bottom: 1px solid var(--surface-light); padding-bottom: 0.25rem;">
+          Parental & Family Background
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Father's Name *</label>
+            <input type="text" id="regFatherName" required placeholder="Father's Full Name">
+          </div>
+          <div class="form-group">
+            <label>Father's Occupation *</label>
+            <select id="regFatherOccupation" required></select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Mother's Name *</label>
+            <input type="text" id="regMotherName" required placeholder="Mother's Full Name">
+          </div>
+          <div class="form-group">
+            <label>Mother's Occupation *</label>
+            <select id="regMotherOccupation" required></select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Other Family Details</label>
+          <textarea id="regFamily" rows="2" placeholder="Siblings, native place, family status, etc."></textarea>
+        </div>
+
         <div class="form-group">
           <label>Upload Profile Photo *</label>
           <input type="file" id="regPhotoFile" accept="image/*" required onchange="handleProfilePhotoSelection(event)">
@@ -492,11 +575,6 @@
             <label>Phone / WhatsApp (Admin Confidential) *</label>
             <input type="tel" id="regPhone" required placeholder="+91 00000 00000">
           </div>
-        </div>
-
-        <div class="form-group">
-          <label>Family Details</label>
-          <textarea id="regFamily" rows="2" placeholder="Summary of family background, parents, and origins"></textarea>
         </div>
 
         <div class="form-group">
@@ -568,7 +646,7 @@
     </div>
   </div>
 
-  <!-- Sign In / Sign Up Modal -->
+  <!-- Sign In / Sign Up Modal with Show/Hide Password & Clear Error Box -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-card" style="max-width: 380px;">
       <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
@@ -578,6 +656,9 @@
         <div class="auth-tab" id="tabRegister" onclick="switchAuthView('register')">Sign Up</div>
       </div>
 
+      <!-- INLINE ERROR ALERT -->
+      <div id="authErrorAlert" class="auth-error-box"></div>
+
       <div id="viewLogin">
         <form onsubmit="handleUserLoginSubmit(event)">
           <div class="form-group">
@@ -586,7 +667,10 @@
           </div>
           <div class="form-group">
             <label>Password *</label>
-            <input type="password" id="loginPass" required placeholder="Enter password">
+            <div class="password-input-wrapper">
+              <input type="password" id="loginPass" required placeholder="Enter password">
+              <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('loginPass', this)">👁</button>
+            </div>
           </div>
           <div style="display: flex; justify-content: flex-end; margin-bottom: 0.75rem;">
             <a href="#" onclick="switchAuthView('forgot')" style="font-size: 0.75rem; color: var(--primary); text-decoration: none;">Forgot Password?</a>
@@ -609,7 +693,10 @@
           </div>
           <div class="form-group">
             <label>Create Password *</label>
-            <input type="password" id="regUserPass" required minlength="4" placeholder="Min 4 characters">
+            <div class="password-input-wrapper">
+              <input type="password" id="regUserPass" required minlength="4" placeholder="Min 4 characters">
+              <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('regUserPass', this)">👁</button>
+            </div>
           </div>
           <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="regUserSubmitBtn">
             Create Account
@@ -638,7 +725,10 @@
           </div>
           <div class="form-group">
             <label>New Password *</label>
-            <input type="password" id="resetNewPass" required minlength="4" placeholder="Enter new password">
+            <div class="password-input-wrapper">
+              <input type="password" id="resetNewPass" required minlength="4" placeholder="Enter new password">
+              <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('resetNewPass', this)">👁</button>
+            </div>
           </div>
           <button type="button" class="btn btn-primary" style="width: 100%; min-height: 44px;" id="confirmResetBtn" onclick="confirmPasswordReset()">
             Save New Password
@@ -655,6 +745,21 @@
 
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
+
+    const EDUCATION_OPTIONS = [
+      "10th", "12th", "Diploma", "ITI", "B.A.", "B.Com", "B.Sc.", "B.Tech / B.E.",
+      "BCA", "BBA", "M.A.", "M.Com", "M.Sc.", "MCA", "MBA", "M.Tech", "M.E.",
+      "MBBS", "BDS", "LLB", "LLM", "PhD", "Other"
+    ];
+
+    const OCCUPATION_OPTIONS = [
+      "Software Engineer / IT Professional", "Doctor", "Dentist", "Engineer",
+      "Teacher / Professor", "Government Employee", "Civil Services", "Chartered Accountant",
+      "Lawyer", "Architect", "Business Owner / Entrepreneur", "Banking / Finance Professional",
+      "Consultant", "Marketing / Sales Professional", "HR Professional", "Designer",
+      "Researcher / Scientist", "Defence / Armed Forces", "Police", "Freelancer",
+      "Homemaker", "Retired", "Student", "Other"
+    ];
 
     const LOCATION_DATA = {
       "Uttar Pradesh": ["Ghaziabad", "Noida", "Lucknow", "Kanpur", "Varanasi", "Prayagraj", "Agra", "Meerut", "Bareilly", "Gorakhpur", "Aligarh", "Moradabad", "Other"],
@@ -694,11 +799,54 @@
     let selectedPlan = "Annual";
 
     window.addEventListener('DOMContentLoaded', () => {
+      initDropdownOptions();
       initLocationDropdowns();
       checkUserSession();
       fetchSystemSettings();
       fetchActiveProfiles();
     });
+
+    function initDropdownOptions() {
+      populateSelect('filterEducation', EDUCATION_OPTIONS, 'All Qualifications');
+      populateSelect('filterProfession', OCCUPATION_OPTIONS, 'All Occupations');
+      populateSelect('regEducation', EDUCATION_OPTIONS, 'Select Qualification');
+      populateSelect('regProfession', OCCUPATION_OPTIONS, 'Select Occupation');
+      populateSelect('regFatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
+      populateSelect('regMotherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
+    }
+
+    function populateSelect(elemId, options, defaultPlaceholder) {
+      const el = document.getElementById(elemId);
+      if (!el) return;
+      el.innerHTML = defaultPlaceholder ? `<option value="">${defaultPlaceholder}</option>` : '';
+      options.forEach(opt => {
+        el.innerHTML += `<option value="${opt}">${opt}</option>`;
+      });
+    }
+
+    // SHOW / HIDE PASSWORD TOGGLE
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerText = '🙈';
+      } else {
+        input.type = 'password';
+        btn.innerText = '👁';
+      }
+    }
+
+    function showAuthError(msg) {
+      const box = document.getElementById('authErrorAlert');
+      box.innerText = msg;
+      box.style.display = 'block';
+    }
+
+    function clearAuthError() {
+      const box = document.getElementById('authErrorAlert');
+      box.style.display = 'none';
+      box.innerText = '';
+    }
 
     async function fetchSystemSettings() {
       try {
@@ -741,7 +889,6 @@
       applyPricingUI();
     }
 
-    // TOGGLE FILTER DRAWER (WORKS ON BOTH MOBILE & DESKTOP)
     function toggleFilterDrawer() {
       const panel = document.getElementById('mainFilterPanel');
       const btn = document.getElementById('toggleFilterBtn');
@@ -820,6 +967,7 @@
     }
 
     function switchAuthView(view) {
+      clearAuthError();
       document.getElementById('viewLogin').style.display = view === 'login' ? 'block' : 'none';
       document.getElementById('viewRegister').style.display = view === 'register' ? 'block' : 'none';
       document.getElementById('viewForgot').style.display = view === 'forgot' ? 'block' : 'none';
@@ -841,6 +989,7 @@
 
     async function handleUserLoginSubmit(e) {
       e.preventDefault();
+      clearAuthError();
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPass').value.trim();
       const btn = document.getElementById('loginSubmitBtn');
@@ -862,10 +1011,10 @@
           closeModal('authModal');
           fetchUserShortlists();
         } else {
-          alert(out.error);
+          showAuthError(out.error || "Incorrect email or password. Please try again.");
         }
       } catch (err) {
-        alert("Authentication error. Please check your connection.");
+        showAuthError("Connection error. Please try again.");
       } finally {
         btn.innerText = "Sign In & Continue";
         btn.disabled = false;
@@ -874,6 +1023,7 @@
 
     async function handleUserRegisterSubmit(e) {
       e.preventDefault();
+      clearAuthError();
       const name = document.getElementById('regUserName').value.trim();
       const email = document.getElementById('regUserEmail').value.trim();
       const password = document.getElementById('regUserPass').value.trim();
@@ -890,17 +1040,16 @@
         });
         const out = await res.json();
         if (out.success) {
-          alert("Account created successfully!");
           state.user = out.user;
           localStorage.setItem('cm_session', JSON.stringify(out.user));
           renderNavUser();
           closeModal('authModal');
           fetchUserShortlists();
         } else {
-          alert(out.error);
+          showAuthError(out.error || "Registration failed.");
         }
       } catch (err) {
-        alert("Registration failed.");
+        showAuthError("Registration failed. Please check your internet connection.");
       } finally {
         btn.innerText = "Create Account";
         btn.disabled = false;
@@ -908,9 +1057,10 @@
     }
 
     async function requestResetOtp() {
+      clearAuthError();
       const email = document.getElementById('forgotEmail').value.trim();
       if (!email) {
-        alert("Please enter your registered email.");
+        showAuthError("Please enter your registered email.");
         return;
       }
 
@@ -930,10 +1080,10 @@
           document.getElementById('forgotStep1').style.display = 'none';
           document.getElementById('forgotStep2').style.display = 'block';
         } else {
-          alert(out.error);
+          showAuthError(out.error || "Email not found.");
         }
       } catch (err) {
-        alert("Error requesting reset code.");
+        showAuthError("Error requesting reset code.");
       } finally {
         btn.innerText = "Send Reset Code";
         btn.disabled = false;
@@ -941,12 +1091,13 @@
     }
 
     async function confirmPasswordReset() {
+      clearAuthError();
       const email = document.getElementById('forgotEmail').value.trim();
       const otp = document.getElementById('resetOtpCode').value.trim();
       const newPass = document.getElementById('resetNewPass').value.trim();
 
       if (!otp || !newPass) {
-        alert("Please enter both the code and your new password.");
+        showAuthError("Please enter both the code and your new password.");
         return;
       }
 
@@ -969,10 +1120,10 @@
           document.getElementById('resetNewPass').value = '';
           switchAuthView('login');
         } else {
-          alert(out.error);
+          showAuthError(out.error || "Reset failed.");
         }
       } catch (err) {
-        alert("Reset failed.");
+        showAuthError("Reset failed.");
       } finally {
         btn.innerText = "Save New Password";
         btn.disabled = false;
@@ -1066,14 +1217,14 @@
       reader.readAsDataURL(file);
     }
 
-    // SEARCH & FILTER ENGINE
+    // PRECISE FILTER AND SEARCH LOGIC
     function applyFilters() {
       const searchTerm = document.getElementById('globalSearchInput').value.toLowerCase().trim();
       const gender = document.getElementById('filterGender').value;
       const ageBracket = document.getElementById('filterAge').value;
       const marital = document.getElementById('filterMarital').value;
-      const edu = document.getElementById('filterEducation').value.toLowerCase().trim();
-      const prof = document.getElementById('filterProfession').value.toLowerCase().trim();
+      const edu = document.getElementById('filterEducation').value;
+      const prof = document.getElementById('filterProfession').value;
       const height = document.getElementById('filterHeight').value;
 
       state.filtered = state.profiles.filter(p => {
@@ -1083,14 +1234,14 @@
           const [min, max] = ageBracket.split('-').map(Number);
           if (p.age < min || p.age > max) return false;
         }
-        if (edu && !String(p.education || '').toLowerCase().includes(edu)) return false;
-        if (prof && !String(p.profession || '').toLowerCase().includes(prof)) return false;
+        if (edu && p.education !== edu) return false;
+        if (prof && p.profession !== prof) return false;
         if (height) {
           const parsed = parseFloat(String(p.height || '').replace(/[^0-9.]/g, ''));
           if (!isNaN(parsed) && parsed < parseFloat(height)) return false;
         }
         if (searchTerm) {
-          const combined = `${p.fullName || ''} ${p.id || ''} ${p.city || ''} ${p.state || ''} ${p.country || ''} ${p.profession || ''} ${p.education || ''}`.toLowerCase();
+          const combined = `${p.fullName || ''} ${p.id || ''} ${p.city || ''} ${p.state || ''} ${p.country || ''}`.toLowerCase();
           if (!combined.includes(searchTerm)) return false;
         }
         return true;
@@ -1197,6 +1348,11 @@
       document.getElementById('bioProf').innerText = p.profession;
       document.getElementById('bioIncome').innerText = p.annualIncome || "Undisclosed";
       document.getElementById('bioMarital').innerText = p.maritalStatus;
+
+      document.getElementById('bioFatherName').innerText = p.fatherName || "On Desk Record";
+      document.getElementById('bioFatherOcc').innerText = p.fatherOccupation || "On Desk Record";
+      document.getElementById('bioMotherName').innerText = p.motherName || "On Desk Record";
+      document.getElementById('bioMotherOcc').innerText = p.motherOccupation || "On Desk Record";
       document.getElementById('bioFamily').innerText = p.familyDetails || "Available upon personal request.";
       document.getElementById('bioPreferences').innerText = p.partnerPreferences || "Open to culturally compatible matches.";
 
@@ -1271,8 +1427,8 @@
         age: parseInt(document.getElementById('regAge').value),
         height: document.getElementById('regHeight').value.trim(),
         maritalStatus: document.getElementById('regMarital').value,
-        education: document.getElementById('regEducation').value.trim(),
-        profession: document.getElementById('regProfession').value.trim(),
+        education: document.getElementById('regEducation').value,
+        profession: document.getElementById('regProfession').value,
         annualIncome: document.getElementById('regIncome').value.trim(),
         city: cityVal,
         state: stateVal,
@@ -1281,6 +1437,10 @@
         imageBase64: selectedProfileImage,
         email: document.getElementById('regEmail').value.trim(),
         phone: document.getElementById('regPhone').value.trim(),
+        fatherName: document.getElementById('regFatherName').value.trim(),
+        fatherOccupation: document.getElementById('regFatherOccupation').value,
+        motherName: document.getElementById('regMotherName').value.trim(),
+        motherOccupation: document.getElementById('regMotherOccupation').value,
         familyDetails: document.getElementById('regFamily').value.trim(),
         partnerPreferences: document.getElementById('regPreferences').value.trim(),
         membershipPlan: state.settings.isFreeRegistration ? "Free" : selectedPlan
