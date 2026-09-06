@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -129,7 +129,6 @@
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--dark); }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
-    /* Toggle Switch */
     .switch-row {
       display: flex; align-items: center; justify-content: space-between;
       background: var(--surface-light); border: 1px solid var(--border);
@@ -165,9 +164,11 @@
     }
     .tab-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
-    .mobile-filter-header { display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; }
+    .search-box-row {
+      display: flex; gap: 0.5rem; align-items: center; justify-content: space-between;
+    }
     .filter-grid {
-      display: grid; grid-template-columns: 2fr repeat(auto-fit, minmax(130px, 1fr)) auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
       gap: 0.65rem; align-items: flex-end; margin-top: 0.75rem;
     }
     @media (max-width: 768px) {
@@ -181,7 +182,6 @@
       border: 1px solid var(--border); background-color: var(--bg); font-size: 0.82rem; outline: none;
     }
 
-    /* Profile Card */
     .profile-card {
       background: var(--white); border: 1px solid var(--border);
       border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.15rem;
@@ -437,7 +437,7 @@
     </div>
   </div>
 
-  <!-- SETTINGS & PRICING MODAL (NEW) -->
+  <!-- SETTINGS MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="auth-box" style="max-width: 440px; text-align: left; position: relative;">
       <button class="close-btn" onclick="closeModal('settingsModal')">&times;</button>
@@ -477,7 +477,7 @@
     </div>
   </div>
 
-  <!-- PIN Gate -->
+  <!-- PIN Unlock Gate -->
   <div id="authOverlay" class="modal-overlay active">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;">Admin Desk</h2>
@@ -624,15 +624,17 @@
         <button class="tab-btn" onclick="filterByStatus('Deleted', this)">Deleted (<span id="countDeleted">0</span>)</button>
       </div>
 
-      <div class="mobile-filter-header">
-        <input type="text" id="adminSearchInput" oninput="applyAdminFilters()" placeholder="Search name, ID, city, phone..." style="flex: 1; height: 38px; padding: 0.45rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg);">
-        <button class="btn btn-outline" id="toggleFilterBtn" onclick="toggleMobileFilters()">Filters ▾</button>
+      <!-- SEARCH BAR WITH BUTTON AND FILTER TOGGLE -->
+      <div class="search-box-row">
+        <input type="text" id="adminSearchInput" onkeydown="if(event.key==='Enter') executeAdminSearch()" placeholder="Search name, ID, city, phone, profession..." style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
+        <button class="btn btn-primary" style="min-height: 40px;" onclick="executeAdminSearch()">Search</button>
+        <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="toggleMobileFilters()">Filters ▾</button>
       </div>
 
       <div class="filter-grid" id="adminFilterPanel">
         <div class="filter-control">
           <label>Gender</label>
-          <select id="adminFilterGender" onchange="applyAdminFilters()">
+          <select id="adminFilterGender" onchange="executeAdminSearch()">
             <option value="">All Genders</option>
             <option value="Female">Female</option>
             <option value="Male">Male</option>
@@ -641,7 +643,7 @@
 
         <div class="filter-control">
           <label>Age Bracket</label>
-          <select id="adminFilterAge" onchange="applyAdminFilters()">
+          <select id="adminFilterAge" onchange="executeAdminSearch()">
             <option value="">Any Age</option>
             <option value="21-25">21 - 25</option>
             <option value="26-30">26 - 30</option>
@@ -653,7 +655,7 @@
 
         <div class="filter-control">
           <label>Marital Status</label>
-          <select id="adminFilterMarital" onchange="applyAdminFilters()">
+          <select id="adminFilterMarital" onchange="executeAdminSearch()">
             <option value="">Any Status</option>
             <option value="Never Married">Never Married</option>
             <option value="Divorced">Divorced</option>
@@ -663,14 +665,14 @@
 
         <div class="filter-control">
           <label>State</label>
-          <select id="adminFilterState" onchange="applyAdminFilters()">
+          <select id="adminFilterState" onchange="executeAdminSearch()">
             <option value="">All States</option>
           </select>
         </div>
 
         <div class="filter-control">
           <label>City Name</label>
-          <input type="text" id="adminFilterCity" oninput="applyAdminFilters()" placeholder="Filter city...">
+          <input type="text" id="adminFilterCity" onkeydown="if(event.key==='Enter') executeAdminSearch()" placeholder="Filter city...">
         </div>
 
         <div class="filter-control">
@@ -912,7 +914,7 @@
           adminState.profiles = data.profiles;
           if (data.settings) adminState.settings = data.settings;
           updateTabCounts();
-          applyAdminFilters();
+          executeAdminSearch();
         } else {
           showNotice("Authorization failed: " + data.error, true);
           lockPortal();
@@ -935,10 +937,11 @@
       adminState.currentTab = status;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       el.classList.add('active');
-      applyAdminFilters();
+      executeAdminSearch();
     }
 
-    function applyAdminFilters() {
+    // SEARCH & MULTI-FILTER EXECUTION ENGINE
+    function executeAdminSearch() {
       const searchTerm = document.getElementById('adminSearchInput').value.toLowerCase().trim();
       const gender = document.getElementById('adminFilterGender').value;
       const ageBracket = document.getElementById('adminFilterAge').value;
@@ -969,12 +972,13 @@
       }
       if (searchTerm) {
         list = list.filter(p => 
-          (p.fullName && p.fullName.toLowerCase().includes(searchTerm)) ||
-          (p.id && p.id.toLowerCase().includes(searchTerm)) ||
-          (p.city && p.city.toLowerCase().includes(searchTerm)) ||
-          (p.state && p.state.toLowerCase().includes(searchTerm)) ||
-          (p.profession && p.profession.toLowerCase().includes(searchTerm)) ||
-          (p.phone && p.phone.toLowerCase().includes(searchTerm))
+          (p.fullName && String(p.fullName).toLowerCase().includes(searchTerm)) ||
+          (p.id && String(p.id).toLowerCase().includes(searchTerm)) ||
+          (p.city && String(p.city).toLowerCase().includes(searchTerm)) ||
+          (p.state && String(p.state).toLowerCase().includes(searchTerm)) ||
+          (p.profession && String(p.profession).toLowerCase().includes(searchTerm)) ||
+          (p.education && String(p.education).toLowerCase().includes(searchTerm)) ||
+          (p.phone && String(p.phone).toLowerCase().includes(searchTerm))
         );
       }
 
@@ -989,7 +993,7 @@
       document.getElementById('adminFilterMarital').value = '';
       document.getElementById('adminFilterState').value = '';
       document.getElementById('adminFilterCity').value = '';
-      applyAdminFilters();
+      executeAdminSearch();
       showNotice("Filters reset.");
     }
 
@@ -1075,7 +1079,6 @@
       }).join('');
     }
 
-    // SETTINGS MODAL CONTROLS
     function openSettingsModal() {
       const s = adminState.settings;
       document.getElementById('settingFreeModeToggle').checked = s.isFreeRegistration;
@@ -1123,7 +1126,6 @@
       }
     }
 
-    // EXCEL EXPORT
     function openExportModal() {
       const end = new Date();
       const start = new Date();
@@ -1543,24 +1545,27 @@
       let cleanPhone = client.phone.toString().replace(/[^0-9]/g, '');
       if (cleanPhone.length === 10) cleanPhone = "91" + cleanPhone;
 
-      let msg = `*Namaste ${client.fullName},*\n\n`;
-      msg += `Chitransh Mahasabha Matrimonial Desk dwara aapke anuroop rishto ki soochi:\n\n`;
+      let msg = `*KAYASTHA VIVAH PATRIKA*\n`;
+      msg += `*शुभ विवाह | दो परिवारों का पवित्र बंधन*\n\n`;
+      msg += `Namaste ${client.fullName},\n`;
+      msg += `Aapke anuroop chune gaye sambandhon ka vivaran:\n\n`;
 
       selected.forEach((m, idx) => {
-        msg += `*${idx + 1}. ${m.fullName}* (Ref: ${m.id})\n`;
-        msg += `• Umar / Height: ${m.age} Yrs, ${m.height || 'N/A'}\n`;
+        msg += `*${idx + 1}. ${m.fullName}* (ID: ${m.id})\n`;
+        msg += `• Age / Height: ${m.age} Yrs, ${m.height || 'N/A'}\n`;
         msg += `• Education: ${m.education}\n`;
         msg += `• Profession: ${m.profession}\n`;
         msg += `• Location: ${m.city}, ${m.state}\n\n`;
       });
 
-      msg += `_Jankari pasand aane par Reference ID desk ko batayein._\n`;
-      msg += `- *Ghaziabad Chitransh Mahasabha*`;
+      msg += `_Candidate contact numbers & residential addresses are withheld for privacy. Contact desk quoting Profile ID._\n`;
+      msg += `*TRADITION | VALUES | TOGETHERNESS*`;
 
       const waUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`;
       window.open(waUrl, '_blank') || (window.location.href = waUrl);
     }
 
+    // EXACT "KAYASTHA VIVAH PATRIKA" LUXURY TEMPLATE PDF EXPORT
     function exportSanitizedMatchPdf() {
       const client = adminState.activeMatchClient;
       const selected = getSelectedMatchedCandidates();
@@ -1570,42 +1575,121 @@
       }
 
       const surface = document.createElement('div');
-      surface.style.padding = "25px";
+      surface.style.width = "794px"; // Standard A4 print surface
+      surface.style.padding = "35px 40px";
+      surface.style.background = "#FDFBF7";
       surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
-      surface.style.background = "#fff";
+      surface.style.boxSizing = "border-box";
+      surface.style.position = "relative";
+      surface.style.border = "2px solid #E6D5B8";
 
-      surface.innerHTML = `
-        <div style="text-align: center; border-bottom: 2px solid #FF7E7E; padding-bottom: 10px; margin-bottom: 20px;">
-          <h1 style="color: #FF7E7E; font-size: 20px; margin: 0;">CHITRANSH MAHASABHA</h1>
-          <p style="font-size: 11px; color: #7A6F6D; text-transform: uppercase;">Curated Matrimonial Portfolio</p>
-          <p style="font-size: 12px; margin-top: 5px;">Prepared for: <strong>${client.fullName}</strong> (${client.id})</p>
-        </div>
-        ${selected.map((m, i) => `
-          <div style="border: 1px solid #F5DEC2; border-radius: 8px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center;">
-            <img src="${m.photoUrl || ''}" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #FF7E7E;">
-            <div style="font-size: 12px; line-height: 1.5;">
-              <strong style="font-size: 14px; color: #2B2321;">${i + 1}. ${m.fullName}</strong> (ID: ${m.id})<br>
-              <strong>Age / Height:</strong> ${m.age} Yrs, ${m.height || 'N/A'}<br>
-              <strong>Education:</strong> ${m.education}<br>
-              <strong>Profession:</strong> ${m.profession}<br>
-              <strong>Location:</strong> ${m.city}, ${m.state}, ${m.country}
+      // Lord Chitragupta Ji Icon (SVG Asset)
+      const chitraguptaEmblem = `
+        <svg width="70" height="70" viewBox="0 0 100 100" style="margin: 0 auto; display: block;">
+          <circle cx="50" cy="50" r="46" fill="#FFF8EE" stroke="#D4AF37" stroke-width="3"/>
+          <circle cx="50" cy="50" r="41" fill="none" stroke="#800020" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <path d="M50 16 C38 16 34 26 34 32 C34 40 40 46 50 46 C60 46 66 40 66 32 C66 26 62 16 50 16 Z" fill="#D4AF37"/>
+          <circle cx="50" cy="30" r="9" fill="#800020"/>
+          <path d="M30 68 L70 68 L64 48 L36 48 Z" fill="#D4AF37"/>
+          <path d="M42 54 L58 54 L55 64 L45 64 Z" fill="#800020"/>
+          <line x1="26" y1="72" x2="74" y2="72" stroke="#D4AF37" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+      `;
+
+      let cardsHtml = selected.map((m, i) => `
+        <div style="page-break-inside: avoid; border: 1.5px solid #F0DDB8; border-radius: 14px; background: #FFFFFF; padding: 22px 24px; margin-bottom: 22px; position: relative; box-shadow: 0 4px 15px rgba(212,175,55,0.08);">
+          <div style="position: absolute; top: 0; left: 0; width: 45px; height: 45px; border-top: 3px solid #800020; border-left: 3px solid #800020; border-top-left-radius: 12px;"></div>
+
+          <div style="display: flex; align-items: center; gap: 28px;">
+            <div style="position: relative; width: 140px; text-align: center; flex-shrink: 0;">
+              <div style="width: 120px; height: 120px; border-radius: 50%; padding: 4px; background: linear-gradient(135deg, #D4AF37, #FFEDB9); box-shadow: 0 4px 12px rgba(0,0,0,0.12); margin: 0 auto;">
+                <img src="${m.photoUrl || ''}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #FFF;" crossorigin="anonymous">
+              </div>
+              <div style="margin-top: -12px; background: #800020; color: #FFF; font-size: 10px; font-weight: 800; padding: 3px 12px; border-radius: 20px; width: fit-content; margin-left: auto; margin-right: auto; box-shadow: 0 2px 6px rgba(0,0,0,0.25); letter-spacing: 0.5px;">
+                &#10004; Verified
+              </div>
+            </div>
+
+            <div style="flex: 1; min-width: 0;">
+              <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px;">
+                <h3 style="font-family: 'Cinzel', serif; font-size: 20px; color: #800020; font-weight: 800; margin: 0;">${i + 1}. ${m.fullName}</h3>
+                <span style="font-size: 11px; color: #666; font-weight: 600;">(ID: ${m.id})</span>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #333;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 14px; width: 22px; text-align: center;">&#128197;</span>
+                  <span style="font-weight: 700; color: #800020; min-width: 90px;">Age / Height:</span>
+                  <span>${m.age} Yrs, ${m.height || 'N/A'}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 14px; width: 22px; text-align: center;">&#127891;</span>
+                  <span style="font-weight: 700; color: #800020; min-width: 90px;">Education:</span>
+                  <span>${m.education}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 14px; width: 22px; text-align: center;">&#128188;</span>
+                  <span style="font-weight: 700; color: #800020; min-width: 90px;">Profession:</span>
+                  <span>${m.profession}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 14px; width: 22px; text-align: center;">&#128205;</span>
+                  <span style="font-weight: 700; color: #800020; min-width: 90px;">Location:</span>
+                  <span>${m.city}, ${m.state}, ${m.country || 'India'}</span>
+                </div>
+              </div>
             </div>
           </div>
-        `).join('')}
-        <div style="text-align: center; font-size: 10px; color: #7A6F6D; margin-top: 20px; background: #FFEDB9; padding: 8px; border-radius: 4px;">
-          Candidate contact numbers and exact street addresses are withheld for privacy. Contact the administrative desk quoting Profile ID.
+        </div>
+      `).join('');
+
+      surface.innerHTML = `
+        <div style="text-align: center; margin-bottom: 25px;">
+          <div style="margin-bottom: 10px;">${chitraguptaEmblem}</div>
+          <h1 style="font-family: 'Cinzel', serif; font-size: 26px; font-weight: 900; color: #800020; letter-spacing: 2px; margin: 0;">KAYASTHA</h1>
+          <h2 style="font-family: 'Cinzel', serif; font-size: 19px; font-weight: 700; color: #800020; letter-spacing: 4px; margin: 3px 0 10px 0;">VIVAH PATRIKA</h2>
+
+          <div style="width: 260px; height: 1px; background: linear-gradient(to right, transparent, #D4AF37, transparent); margin: 0 auto 8px auto;"></div>
+
+          <div style="display: inline-block; border: 1px solid #D4AF37; border-radius: 20px; padding: 4px 22px; background: #FFF8EE; margin-bottom: 15px;">
+            <span style="font-family: 'Rozha One', 'Plus Jakarta Sans', serif; font-size: 12px; color: #800020; font-weight: 700;">&#10047; शुभ विवाह | दो परिवारों का पवित्र बंधन &#10047;</span>
+          </div>
+
+          <p style="font-size: 11px; color: #777; margin: 0;">Prepared for: <strong style="color: #333;">${client.fullName}</strong> (${client.id})</p>
+        </div>
+
+        <div>${cardsHtml}</div>
+
+        <!-- Privacy Shield Disclaimer -->
+        <div style="page-break-inside: avoid; background: #FFF2F4; border-left: 4px solid #800020; border-radius: 6px; padding: 12px 16px; margin-top: 15px; display: flex; align-items: center; gap: 14px;">
+          <div style="font-size: 20px; color: #800020; line-height: 1;">&#128737;</div>
+          <div style="font-size: 11px; color: #6B4E54; line-height: 1.45;">
+            Candidate contact numbers and exact street addresses are withheld for privacy.<br>
+            Please contact the administrative desk quoting the specific <strong>Profile ID</strong> to initiate connections.
+          </div>
+        </div>
+
+        <!-- Decorative Floral Watermark Footer -->
+        <div style="margin-top: 30px; text-align: center; border-top: 1px solid #F0DDB8; padding-top: 16px;">
+          <div style="color: #D4AF37; font-size: 14px; margin-bottom: 5px;">&#10048;</div>
+          <p style="font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; color: #800020; font-weight: 700; margin: 0;">
+            TRADITION &nbsp;|&nbsp; VALUES &nbsp;|&nbsp; TOGETHERNESS
+          </p>
         </div>
       `;
 
       const opt = {
-        margin: [10, 10, 10, 10],
-        filename: `Match_Portfolio_${client.fullName.replace(/\s+/g, '_')}.pdf`,
+        margin: [8, 8, 8, 8],
+        filename: `Kayastha_Vivah_Patrika_${client.fullName.replace(/\s+/g, '_')}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      html2pdf().set(opt).from(surface).save();
+      showNotice("Generating Royal Vivah Patrika PDF...");
+      html2pdf().set(opt).from(surface).save().then(() => {
+        showNotice("PDF Downloaded successfully!");
+      });
     }
 
     function openAddMemberModal() {
