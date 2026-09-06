@@ -51,7 +51,6 @@
 
     .container { max-width: 1300px; margin: 1.5rem auto; padding: 0 1rem; }
 
-    /* Top-Aligned Header Modals */
     #authOverlay, .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
@@ -130,7 +129,6 @@
 </head>
 <body>
 
-  <!-- Top-Header PIN Gate -->
   <div id="authOverlay">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.25rem;">Admin Desk</h2>
@@ -168,7 +166,6 @@
 
   </div>
 
-  <!-- ADMIN ADD MEMBER MODAL -->
   <div class="modal-overlay" id="addMemberModal">
     <div class="modal-card">
       <button class="close-btn" onclick="closeModal('addMemberModal')">&times;</button>
@@ -284,7 +281,6 @@
     </div>
   </div>
 
-  <!-- ADMIN EDIT DETAILS MODAL -->
   <div class="modal-overlay" id="editMemberModal">
     <div class="modal-card">
       <button class="close-btn" onclick="closeModal('editMemberModal')">&times;</button>
@@ -402,7 +398,6 @@
     </div>
   </div>
 
-  <!-- PAYMENT VERIFICATION MODAL -->
   <div class="modal-overlay" id="receiptModal">
     <div class="modal-card" style="max-width: 440px; text-align: center;">
       <button class="close-btn" onclick="closeModal('receiptModal')">&times;</button>
@@ -415,7 +410,6 @@
     </div>
   </div>
 
-  <!-- MATCHMAKING MODAL -->
   <div class="modal-overlay" id="matchingModal">
     <div class="modal-card">
       <button class="close-btn" onclick="closeModal('matchingModal')">&times;</button>
@@ -531,13 +525,13 @@
     }
 
     function handleAdminAddPhoto(e) {
-      compressImage(e.target.files[0], 400, 0.6, (base64) => {
+      compressImage(e.target.files[0], 350, 0.45, (base64) => {
         adminAddPhotoBase64 = base64;
       });
     }
 
     function handleAdminEditPhoto(e) {
-      compressImage(e.target.files[0], 400, 0.6, (base64) => {
+      compressImage(e.target.files[0], 350, 0.45, (base64) => {
         adminEditPhotoBase64 = base64;
       });
     }
@@ -682,6 +676,8 @@
           actionButtons += `<button class="btn btn-danger" onclick="deleteCandidate('${p.id}')">Delete</button>`;
         }
 
+        const hasReceipt = (p.paymentReceiptUrl && p.paymentReceiptUrl.length > 20);
+
         return `
           <div class="profile-card">
             <img src="${photo}" class="profile-photo" alt="${p.fullName}">
@@ -704,7 +700,7 @@
             <div style="font-size: 0.82rem;">
               <div><strong>Payment:</strong> ₹${p.paymentAmount || '1999'}</div>
               <div><strong>Status:</strong> ${p.paymentStatus || 'Unverified'}</div>
-              ${p.paymentReceiptUrl ? `<button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-top: 0.3rem;" onclick="viewReceipt('${p.id}', '${p.paymentReceiptUrl}', '${p.paymentUtr}')">View Receipt</button>` : '<span style="color: var(--muted); font-size: 0.75rem;">No Receipt Attached</span>'}
+              ${hasReceipt ? `<button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; margin-top: 0.3rem;" onclick="viewReceiptById('${p.id}')">View Receipt</button>` : '<span style="color: var(--muted); font-size: 0.75rem;">No Receipt Attached</span>'}
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 0.4rem; justify-content: center;">
@@ -715,7 +711,18 @@
       }).join('');
     }
 
-    // ADMIN DIRECT ADD MEMBER
+    function viewReceiptById(profileId) {
+      const p = adminState.profiles.find(x => x.id === profileId);
+      if (!p || !p.paymentReceiptUrl) {
+        alert("No receipt found for this profile.");
+        return;
+      }
+      document.getElementById('receiptProfileId').innerText = p.id;
+      document.getElementById('receiptImage').src = p.paymentReceiptUrl;
+      document.getElementById('receiptUtrText').innerText = p.paymentUtr ? "UTR / Ref: " + p.paymentUtr : "No UTR Entered";
+      document.getElementById('receiptModal').classList.add('active');
+    }
+
     function openAddMemberModal() {
       adminAddPhotoBase64 = "";
       document.getElementById('adminAddForm').reset();
@@ -785,7 +792,6 @@
       }
     }
 
-    // ADMIN EDIT MEMBER DETAILS
     function openEditMemberModal(profileId) {
       const p = adminState.profiles.find(x => x.id === profileId);
       if (!p) return;
@@ -946,13 +952,6 @@
       } catch (err) {
         alert("Server error.");
       }
-    }
-
-    function viewReceipt(id, imgData, utr) {
-      document.getElementById('receiptProfileId').innerText = id;
-      document.getElementById('receiptImage').src = imgData;
-      document.getElementById('receiptUtrText').innerText = utr ? "UTR / Ref: " + utr : "No UTR Entered";
-      document.getElementById('receiptModal').classList.add('active');
     }
 
     function openMatchmakingDesk(profileId) {
