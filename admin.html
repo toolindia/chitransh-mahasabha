@@ -72,11 +72,11 @@
     }
     .modal-overlay.active { display: block; }
 
-    #authOverlay.modal-overlay, #addMemberModal.modal-overlay, #exportModal.modal-overlay {
+    #authOverlay.modal-overlay, #addMemberModal.modal-overlay, #exportModal.modal-overlay, #settingsModal.modal-overlay {
       display: none; align-items: flex-start; justify-content: center;
       padding: 1.5rem 0.85rem; overflow-y: auto;
     }
-    #authOverlay.active, #addMemberModal.active, #exportModal.active { display: flex; }
+    #authOverlay.active, #addMemberModal.active, #exportModal.active, #settingsModal.active { display: flex; }
 
     .auth-box {
       background: var(--white); border-radius: var(--radius-md); padding: 1.5rem;
@@ -125,8 +125,28 @@
     .btn-danger { background: var(--danger); color: var(--white); }
     .btn-whatsapp { background: #25D366; color: var(--white); }
     .btn-excel { background: #1D6F42; color: var(--white); }
+    .btn-settings { background: #3B4252; color: var(--white); }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--dark); }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* Toggle Switch */
+    .switch-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface-light); border: 1px solid var(--border);
+      padding: 0.85rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;
+    }
+    .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc; transition: .3s; border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--success); }
+    input:checked + .slider:before { transform: translateX(22px); }
 
     .filter-wrapper {
       background: var(--white); border: 1px solid var(--border);
@@ -163,16 +183,10 @@
 
     /* Profile Card */
     .profile-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1.25rem;
-      margin-bottom: 1.15rem;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      transition: border-color 0.2s;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.15rem;
+      box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
+      gap: 1rem; transition: border-color 0.2s;
     }
     .profile-card:hover { border-color: var(--secondary); }
 
@@ -232,6 +246,7 @@
   <div id="toastNotice">Notification</div>
   <div id="backdropBarrier" class="modal-overlay" onclick="closeAllContextPopups()"></div>
 
+  <!-- Contextual Confirm Modal -->
   <div id="contextConfirmCard" class="contextual-card" style="width: 320px; text-align: center;">
     <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
@@ -243,6 +258,7 @@
     </div>
   </div>
 
+  <!-- Contextual Edit Modal -->
   <div id="contextEditCard" class="contextual-card" style="width: 95%; max-width: 580px;">
     <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
@@ -359,6 +375,7 @@
     </form>
   </div>
 
+  <!-- Contextual Receipt Modal -->
   <div id="contextReceiptCard" class="contextual-card" style="width: 380px; text-align: center;">
     <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
@@ -370,6 +387,7 @@
     <p id="receiptUtrText" style="font-weight: 700; margin-top: 0.75rem; font-size: 0.85rem; color: var(--dark);"></p>
   </div>
 
+  <!-- Contextual Matchmaking Modal -->
   <div id="contextMatchCard" class="contextual-card" style="width: 95%; max-width: 580px;">
     <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
@@ -385,6 +403,7 @@
     </div>
   </div>
 
+  <!-- EXCEL EXPORT MODAL -->
   <div class="modal-overlay" id="exportModal">
     <div class="auth-box" style="max-width: 440px; text-align: left; position: relative;">
       <button class="close-btn" onclick="closeModal('exportModal')">&times;</button>
@@ -418,6 +437,47 @@
     </div>
   </div>
 
+  <!-- SETTINGS & PRICING MODAL (NEW) -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative;">
+      <button class="close-btn" onclick="closeModal('settingsModal')">&times;</button>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--dark);">Membership & Pricing Settings</h3>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Control registration fee tiers & free enrolment access.</p>
+
+      <div class="switch-row">
+        <div>
+          <strong style="font-size: 0.9rem; color: var(--dark);">Free Registration Mode</strong>
+          <p style="font-size: 0.75rem; color: var(--muted);">If ON, candidates register without payment and go straight to review.</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="settingFreeModeToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>Monthly Membership Fee (₹) *</label>
+        <input type="number" id="settingMonthlyFee" required placeholder="e.g. 499">
+      </div>
+
+      <div class="form-group">
+        <label>Annual Membership Fee (₹) *</label>
+        <input type="number" id="settingAnnualFee" required placeholder="e.g. 1999">
+      </div>
+
+      <div class="form-group">
+        <label>UPI ID for Payments *</label>
+        <input type="text" id="settingUpiId" required placeholder="name@icici">
+      </div>
+
+      <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <button class="btn btn-primary" style="width: 100%; min-height: 42px;" id="saveSettingsBtn" onclick="saveSystemSettings()">Save Settings</button>
+        <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="closeModal('settingsModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIN Gate -->
   <div id="authOverlay" class="modal-overlay active">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;">Admin Desk</h2>
@@ -427,6 +487,7 @@
     </div>
   </div>
 
+  <!-- Add Member Modal -->
   <div class="modal-overlay" id="addMemberModal">
     <div class="auth-box" style="max-width: 600px; text-align: left; position: relative;">
       <button class="close-btn" onclick="closeModal('addMemberModal')">&times;</button>
@@ -545,7 +606,8 @@
   <header class="header">
     <div class="brand">Chitransh<span>Mahasabha</span></div>
     <div class="header-actions">
-      <button class="btn btn-excel" onclick="openExportModal()">Download (.xls)</button>
+      <button class="btn btn-settings" onclick="openSettingsModal()">⚙️ Settings</button>
+      <button class="btn btn-excel" onclick="openExportModal()">Export (.xls)</button>
       <button class="btn btn-primary" onclick="openAddMemberModal()">+ Add</button>
       <button id="refreshBtn" class="btn btn-outline" onclick="triggerManualRefresh()">Refresh</button>
       <button class="btn btn-danger" onclick="lockPortal()">Lock</button>
@@ -649,7 +711,13 @@
       filtered: [],
       currentTab: "all",
       activeMatchClient: null,
-      compatibleMatches: []
+      compatibleMatches: [],
+      settings: {
+        isFreeRegistration: false,
+        monthlyFee: "499",
+        annualFee: "1999",
+        upiId: "sinha361@icici"
+      }
     };
 
     let adminAddPhotoBase64 = "";
@@ -842,6 +910,7 @@
         const data = await res.json();
         if (data.success) {
           adminState.profiles = data.profiles;
+          if (data.settings) adminState.settings = data.settings;
           updateTabCounts();
           applyAdminFilters();
         } else {
@@ -966,7 +1035,7 @@
                 <div class="card-title-group">
                   <div class="card-name">${p.fullName}</div>
                   <div class="card-subtext">${p.gender} &bull; ${p.age} Yrs &bull; ${p.height || 'Height N/A'}</div>
-                  <div class="card-id-pill">ID: ${p.id}</div>
+                  <div class="card-id-pill">ID: ${p.id} &bull; Plan: ${p.membershipPlan || 'Annual'}</div>
                 </div>
               </div>
               <span class="badge badge-${p.status}">${p.status}</span>
@@ -993,7 +1062,7 @@
 
             <div class="card-footer">
               <div class="card-meta-notes">
-                <span>Fee: <strong>₹${p.paymentAmount || '1999'}</strong></span>
+                <span>Fee: <strong>₹${p.paymentAmount || '0'}</strong></span>
                 <span>Status: <strong style="color: ${p.paymentStatus === 'Verified' ? 'var(--success)' : 'var(--warning)'};">${p.paymentStatus || 'Unverified'}</strong></span>
                 ${hasReceipt ? `<button class="btn btn-outline" style="min-height: 28px; padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="openContextualReceipt('${p.id}', this)">View Receipt ↗</button>` : '<span style="color: var(--muted); font-size: 0.72rem;">No Receipt</span>'}
               </div>
@@ -1006,9 +1075,56 @@
       }).join('');
     }
 
-    // EXCEL EXPORT DIALOG AND GENERATOR
+    // SETTINGS MODAL CONTROLS
+    function openSettingsModal() {
+      const s = adminState.settings;
+      document.getElementById('settingFreeModeToggle').checked = s.isFreeRegistration;
+      document.getElementById('settingMonthlyFee').value = s.monthlyFee || "499";
+      document.getElementById('settingAnnualFee').value = s.annualFee || "1999";
+      document.getElementById('settingUpiId').value = s.upiId || "sinha361@icici";
+      document.getElementById('settingsModal').classList.add('active');
+    }
+
+    async function saveSystemSettings() {
+      const btn = document.getElementById('saveSettingsBtn');
+      btn.innerText = "Saving...";
+      btn.disabled = true;
+
+      const payload = {
+        isFreeRegistration: document.getElementById('settingFreeModeToggle').checked,
+        monthlyFee: document.getElementById('settingMonthlyFee').value.trim(),
+        annualFee: document.getElementById('settingAnnualFee').value.trim(),
+        upiId: document.getElementById('settingUpiId').value.trim()
+      };
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'updateSettings',
+            adminPin: adminState.pin,
+            data: payload
+          })
+        });
+        const out = await res.json();
+        if (out.success) {
+          adminState.settings = out.settings;
+          closeModal('settingsModal');
+          showNotice("Settings & Pricing updated successfully!");
+        } else {
+          showNotice("Error saving settings: " + out.error, true);
+        }
+      } catch (err) {
+        showNotice("Server communication failure.", true);
+      } finally {
+        btn.innerText = "Save Settings";
+        btn.disabled = false;
+      }
+    }
+
+    // EXCEL EXPORT
     function openExportModal() {
-      // Default to last 30 days
       const end = new Date();
       const start = new Date();
       start.setDate(end.getDate() - 30);
@@ -1052,10 +1168,21 @@
         return;
       }
 
-      // Generate HTML Table Format for Excel
       let tableHtml = `
         <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
         <head>
+          <!--[if gte mso 9]>
+          <xml>
+            <x:ExcelWorkbook>
+              <x:ExcelWorksheets>
+                <x:ExcelWorksheet>
+                  <x:Name>Customer Registry</x:Name>
+                  <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                </x:ExcelWorksheet>
+              </x:ExcelWorksheets>
+            </x:ExcelWorkbook>
+          </xml>
+          <![endif]-->
           <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
         </head>
         <body>
@@ -1063,6 +1190,7 @@
             <tr style="background-color: #FFA259; color: #ffffff; font-weight: bold;">
               <th>Profile ID</th>
               <th>Registration Date</th>
+              <th>Membership Plan</th>
               <th>Full Name</th>
               <th>Status</th>
               <th>Gender</th>
@@ -1093,6 +1221,7 @@
           <tr>
             <td>${p.id || ''}</td>
             <td>${regDateFormatted}</td>
+            <td>${p.membershipPlan || 'Annual'}</td>
             <td>${p.fullName || ''}</td>
             <td>${p.status || ''}</td>
             <td>${p.gender || ''}</td>
@@ -1111,7 +1240,7 @@
             <td>${p.exactAddress || ''}</td>
             <td>${p.paymentStatus || 'Unverified'}</td>
             <td>${p.paymentUtr || ''}</td>
-            <td>${p.paymentAmount || '1999'}</td>
+            <td>${p.paymentAmount || '0'}</td>
             <td>${p.familyDetails || ''}</td>
             <td>${p.partnerPreferences || ''}</td>
           </tr>
