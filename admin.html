@@ -16,27 +16,30 @@
       --primary: #FF7E7E;
       --secondary: #FFA259;
       --accent: #FFCB56;
-      --surface-light: #FFEDB9;
-      --bg: #FFFDF9;
+      --surface-light: #FFF8EE;
+      --bg: #FDFBF7;
       --dark: #2B2321;
-      --muted: #7A6F6D;
-      --border: #F5DEC2;
+      --muted: #827572;
+      --border: #F0E2D3;
       --white: #FFFFFF;
-      --success: #137333;
-      --warning: #B06000;
-      --danger: #C5221F;
+      --success: #1E8E3E;
+      --success-bg: #E6F4EA;
+      --warning: #D97706;
+      --warning-bg: #FEF3C7;
+      --danger: #D93025;
+      --danger-bg: #FCE8E6;
       --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-      --shadow-md: 0 8px 24px rgba(0,0,0,0.1);
-      --shadow-lg: 0 16px 40px rgba(0,0,0,0.25);
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --shadow-sm: 0 2px 6px rgba(43, 35, 33, 0.04);
+      --shadow-md: 0 6px 18px rgba(43, 35, 33, 0.08);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.22);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 6rem; position: relative; }
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 6rem; }
 
-    /* Sticky Mobile-Friendly Header */
+    /* Sticky Header */
     .header {
       background: var(--white);
       border-bottom: 1px solid var(--border);
@@ -47,34 +50,31 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     }
 
-    .brand { font-size: 1.15rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.35rem; }
+    .brand { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
     .brand span { color: var(--secondary); }
-    .header-actions { display: flex; gap: 0.4rem; align-items: center; }
+    .header-actions { display: flex; gap: 0.5rem; align-items: center; }
 
-    .container { max-width: 1300px; margin: 1rem auto; padding: 0 0.85rem; }
+    .container { max-width: 1200px; margin: 1rem auto; padding: 0 0.85rem; }
 
-    /* Floating Toast Notification */
+    /* Toast */
     #toastNotice {
       position: fixed; top: 16px; right: 16px; left: 16px; max-width: 360px; margin: 0 auto;
       background: #2B2321; color: #fff; text-align: center;
       padding: 0.75rem 1rem; border-radius: 30px; font-size: 0.82rem; font-weight: 700;
       box-shadow: 0 8px 24px rgba(0,0,0,0.3); z-index: 9999; display: none;
-      animation: fadeInDown 0.25s ease;
     }
-    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Backdrop Overlay */
+    /* Modal Overlay */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px);
-      z-index: 2000; display: none; -webkit-overflow-scrolling: touch;
+      z-index: 2000; display: none;
     }
     .modal-overlay.active { display: block; }
 
-    /* Auth & Add Member Top/Centered Modals */
     #authOverlay.modal-overlay, #addMemberModal.modal-overlay {
       display: none; align-items: flex-start; justify-content: center;
       padding: 1.5rem 0.85rem; overflow-y: auto;
@@ -87,7 +87,7 @@
       box-shadow: var(--shadow-lg); text-align: center;
     }
 
-    /* DESKTOP CONTEXTUAL CARD DEFAULT */
+    /* Desktop Contextual Card */
     .contextual-card {
       position: absolute;
       background: var(--white);
@@ -100,45 +100,29 @@
     }
     .contextual-card.active { display: block; }
 
-    /* MOBILE FIRST: BOTTOM-SHEET CONVERSION (Screen width <= 768px) */
+    /* Mobile Bottom-Sheet */
     @media (max-width: 768px) {
       .contextual-card {
         position: fixed !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        top: auto !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        max-height: 85vh !important;
+        bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important;
+        width: 100% !important; max-width: 100% !important; max-height: 85vh !important;
         border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
-        border: none !important;
-        border-top: 3px solid var(--primary) !important;
+        border: none !important; border-top: 3px solid var(--primary) !important;
         box-shadow: 0 -10px 40px rgba(0,0,0,0.3) !important;
-        padding: 1.5rem 1.15rem 2.5rem 1.15rem !important;
+        padding: 1.25rem 1rem 2.5rem 1rem !important;
         overflow-y: auto !important;
         animation: slideUpMobile 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
       }
-
-      @keyframes slideUpMobile {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
-      }
-
-      .sheet-drag-handle {
-        width: 40px; height: 5px; background: #D9D1CE; border-radius: 10px;
-        margin: -0.5rem auto 1rem auto; display: block !important;
-      }
+      @keyframes slideUpMobile { from { transform: translateY(100%); } to { transform: translateY(0); } }
+      .sheet-drag-handle { width: 40px; height: 5px; background: #D9D1CE; border-radius: 10px; margin: -0.25rem auto 1rem auto; display: block !important; }
     }
-
     .sheet-drag-handle { display: none; }
 
-    /* Buttons & Touch Targets */
+    /* Buttons */
     .btn {
-      min-height: 38px;
-      padding: 0.45rem 0.9rem; font-size: 0.82rem; font-weight: 700;
+      min-height: 36px; padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700;
       border-radius: var(--radius-sm); cursor: pointer; border: none;
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
       transition: all 0.2s ease; text-decoration: none; user-select: none;
     }
     .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); }
@@ -151,99 +135,183 @@
 
     /* Filter & Search Bar */
     .filter-wrapper {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1rem;
-      margin-bottom: 1.25rem;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;
       box-shadow: var(--shadow-sm);
     }
-
     .status-tab-row {
-      display: flex; gap: 0.4rem; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      display: flex; gap: 0.4rem; overflow-x: auto;
       padding-bottom: 0.65rem; margin-bottom: 0.85rem; border-bottom: 1px solid var(--border);
       scrollbar-width: none;
     }
     .status-tab-row::-webkit-scrollbar { display: none; }
-
     .tab-btn {
-      white-space: nowrap; padding: 0.4rem 0.85rem; font-size: 0.78rem; font-weight: 700;
-      border-radius: 20px; border: 1px solid var(--border); background: var(--bg); cursor: pointer;
-      flex-shrink: 0;
+      white-space: nowrap; padding: 0.35rem 0.85rem; font-size: 0.78rem; font-weight: 700;
+      border-radius: 20px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; flex-shrink: 0;
     }
     .tab-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
-    /* Mobile Collapsible Filter Toggle */
-    .mobile-filter-header {
-      display: flex; gap: 0.5rem; align-items: center; justify-content: space-between;
-    }
-
+    .mobile-filter-header { display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; }
     .filter-grid {
-      display: grid;
-      grid-template-columns: 2fr repeat(auto-fit, minmax(130px, 1fr)) auto;
-      gap: 0.65rem;
-      align-items: flex-end;
-      margin-top: 0.75rem;
+      display: grid; grid-template-columns: 2fr repeat(auto-fit, minmax(130px, 1fr)) auto;
+      gap: 0.65rem; align-items: flex-end; margin-top: 0.75rem;
     }
-
     @media (max-width: 768px) {
-      .filter-grid {
-        display: none; /* Collapsed by default on mobile */
-        grid-template-columns: 1fr;
-      }
-      .filter-grid.expanded {
-        display: grid;
-      }
+      .filter-grid { display: none; grid-template-columns: 1fr; }
+      .filter-grid.expanded { display: grid; }
     }
-
     .filter-control { display: flex; flex-direction: column; gap: 0.25rem; }
-    .filter-control label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px; }
+    .filter-control label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); }
     .filter-control input, .filter-control select {
       height: 38px; padding: 0.45rem 0.65rem; border-radius: var(--radius-sm);
       border: 1px solid var(--border); background-color: var(--bg); font-size: 0.82rem; outline: none;
     }
 
-    /* Candidate Cards: High-Density Mobile Layout */
+    /* REDESIGNED PROFILE CARD */
     .profile-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 1.15rem; margin-bottom: 1rem;
-      display: grid; grid-template-columns: 80px 1.5fr 1.2fr 1fr auto; gap: 1.15rem; align-items: center;
-      box-shadow: var(--shadow-sm); position: relative;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1.15rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: border-color 0.2s;
+    }
+    .profile-card:hover { border-color: var(--secondary); }
+
+    .card-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+    }
+    .card-user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex: 1;
+      min-width: 0;
+    }
+    .profile-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+      flex-shrink: 0;
+    }
+    .card-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      min-width: 0;
+    }
+    .card-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-subtext {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .card-id-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--secondary);
     }
 
-    @media (max-width: 900px) {
-      .profile-card {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-        padding: 1rem;
-      }
+    .badge {
+      padding: 0.3rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-Pending { background: var(--warning-bg); color: var(--warning); }
+    .badge-Active { background: var(--success-bg); color: var(--success); }
+    .badge-Unpublished { background: #F3F4F6; color: #6B7280; }
+    .badge-Deleted { background: var(--danger-bg); color: var(--danger); }
 
-      .mobile-card-top {
-        display: flex; gap: 0.85rem; align-items: center;
-      }
-
-      .mobile-meta-grid {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
-        background: var(--bg); padding: 0.75rem; border-radius: var(--radius-sm);
-        border: 1px solid var(--border); font-size: 0.78rem;
-      }
-
-      .mobile-action-bar {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;
-        margin-top: 0.25rem;
-      }
-      .mobile-action-bar .btn { width: 100%; min-height: 40px; }
+    /* Key-Value Details Grid */
+    .card-data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.65rem 1.25rem;
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+    }
+    @media (max-width: 600px) {
+      .card-data-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; padding: 0.75rem; }
+    }
+    .data-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      min-width: 0;
+    }
+    .data-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.4px;
+    }
+    .data-val {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .data-val a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
     }
 
-    .profile-photo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
-    .badge { padding: 0.2rem 0.55rem; border-radius: 12px; font-size: 0.7rem; font-weight: 800; width: fit-content; text-transform: uppercase; }
-    .badge-Pending { background: #FEF7E0; color: #B06000; }
-    .badge-Active { background: #E6F4EA; color: #137333; }
-    .badge-Unpublished { background: #F1F3F4; color: #5F6368; }
-    .badge-Deleted { background: #FCE8E6; color: #C5221F; }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--border);
+    }
+    .card-meta-notes {
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .card-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 600px) {
+      .card-actions-row { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+      .card-actions-row .btn { width: 100%; }
+    }
 
     .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; border: none; background: transparent; font-size: 1.4rem; cursor: pointer; color: var(--muted); }
-
     .form-group { margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
     .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--dark); }
     .form-group input, .form-group select, .form-group textarea {
@@ -256,11 +324,9 @@
 <body>
 
   <div id="toastNotice">Notification</div>
-
-  <!-- Transparent Backdrop Barrier to Dismiss Drawers/Cards -->
   <div id="backdropBarrier" class="modal-overlay" onclick="closeAllContextPopups()"></div>
 
-  <!-- 1. CONTEXTUAL CONFIRM ACTION POPUP (Mobile Bottom Sheet / Desktop Coords) -->
+  <!-- 1. Contextual Confirm Modal -->
   <div id="contextConfirmCard" class="contextual-card" style="width: 320px; text-align: center;">
     <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
@@ -272,12 +338,12 @@
     </div>
   </div>
 
-  <!-- 2. CONTEXTUAL EDIT POPUP (Mobile Bottom Sheet / Desktop Coords) -->
+  <!-- 2. Contextual Edit Modal -->
   <div id="contextEditCard" class="contextual-card" style="width: 95%; max-width: 580px;">
     <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
     <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Edit Candidate Details</h3>
-    <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;">Editing Record: <strong id="editProfileIdRef">-</strong></p>
+    <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;">Editing: <strong id="editProfileIdRef">-</strong></p>
 
     <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)">
       <input type="hidden" id="editProfileId">
@@ -389,7 +455,7 @@
     </form>
   </div>
 
-  <!-- 3. CONTEXTUAL RECEIPT VIEW POPUP -->
+  <!-- 3. Contextual Receipt Modal -->
   <div id="contextReceiptCard" class="contextual-card" style="width: 380px; text-align: center;">
     <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
@@ -401,7 +467,7 @@
     <p id="receiptUtrText" style="font-weight: 700; margin-top: 0.75rem; font-size: 0.85rem; color: var(--dark);"></p>
   </div>
 
-  <!-- 4. CONTEXTUAL MATCHMAKING POPUP -->
+  <!-- 4. Contextual Matchmaking Modal -->
   <div id="contextMatchCard" class="contextual-card" style="width: 95%; max-width: 580px;">
     <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
@@ -417,7 +483,7 @@
     </div>
   </div>
 
-  <!-- Top-Header PIN Gate -->
+  <!-- PIN Unlock Gate -->
   <div id="authOverlay" class="modal-overlay active">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;">Admin Desk</h2>
@@ -553,10 +619,7 @@
   </header>
 
   <div class="container">
-    
-    <!-- SEARCH & ADAPTIVE FILTER WRAPPER -->
     <div class="filter-wrapper">
-      <!-- Status Tabs (Horizontally Swipeable on Mobile) -->
       <div class="status-tab-row">
         <button class="tab-btn active" onclick="filterByStatus('all', this)">All (<span id="countAll">0</span>)</button>
         <button class="tab-btn" onclick="filterByStatus('Pending', this)">Pending (<span id="countPending">0</span>)</button>
@@ -565,13 +628,11 @@
         <button class="tab-btn" onclick="filterByStatus('Deleted', this)">Deleted (<span id="countDeleted">0</span>)</button>
       </div>
 
-      <!-- Quick Search Bar & Mobile Filter Drawer Toggle -->
       <div class="mobile-filter-header">
         <input type="text" id="adminSearchInput" oninput="applyAdminFilters()" placeholder="Search name, ID, city, phone..." style="flex: 1; height: 38px; padding: 0.45rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg);">
         <button class="btn btn-outline" id="toggleFilterBtn" onclick="toggleMobileFilters()">Filters ▾</button>
       </div>
 
-      <!-- Collapsible Advanced Filter Panel -->
       <div class="filter-grid" id="adminFilterPanel">
         <div class="filter-control">
           <label>Gender</label>
@@ -622,7 +683,7 @@
       </div>
     </div>
 
-    <!-- Candidate Records Container -->
+    <!-- Candidate List -->
     <div id="adminProfilesContainer">
       <p style="text-align: center; color: var(--muted); padding: 3rem 0;">Connecting to central records...</p>
     </div>
@@ -676,7 +737,6 @@
       btn.innerText = panel.classList.contains('expanded') ? 'Filters ▴' : 'Filters ▾';
     }
 
-    // ADAPTIVE POSITIONING (Bottom-Sheet on Mobile, Absolute Coords on Desktop)
     function positionContextualCard(cardElement, triggerButton) {
       closeAllContextPopups();
       document.getElementById('backdropBarrier').classList.add('active');
@@ -684,7 +744,6 @@
       cardElement.style.display = 'block';
       cardElement.classList.add('active');
 
-      // Desktop floating coordinates calculation
       if (window.innerWidth > 768) {
         const rect = triggerButton.getBoundingClientRect();
         const scrollY = window.pageYOffset || document.documentElement.scrollTop;
@@ -702,7 +761,6 @@
         cardElement.style.top = `${top}px`;
         cardElement.style.left = `${left}px`;
       } else {
-        // Mobile resets inline styles so CSS bottom-sheet takes precedence
         cardElement.style.top = '';
         cardElement.style.left = '';
       }
@@ -969,41 +1027,49 @@
 
         return `
           <div class="profile-card">
-            <!-- Mobile Top Row -->
-            <div class="mobile-card-top">
-              <img src="${photo}" class="profile-photo" alt="${p.fullName}">
-              <div style="flex: 1;">
-                <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.35rem; margin-bottom: 0.2rem;">
-                  <strong style="font-size: 1.05rem;">${p.fullName}</strong>
-                  <span class="badge badge-${p.status}">${p.status}</span>
+            <!-- Top Section: Avatar, Name, Age, Status Pill -->
+            <div class="card-top-row">
+              <div class="card-user-info">
+                <img src="${photo}" class="profile-avatar" alt="${p.fullName}">
+                <div class="card-title-group">
+                  <div class="card-name">${p.fullName}</div>
+                  <div class="card-subtext">${p.gender} &bull; ${p.age} Yrs &bull; ${p.height || 'Height N/A'}</div>
+                  <div class="card-id-pill">ID: ${p.id}</div>
                 </div>
-                <div style="font-size: 0.8rem; color: var(--muted); font-weight: 600;">${p.gender} &bull; ${p.age} Yrs &bull; ${p.height || 'N/A'}</div>
-                <div style="font-size: 0.75rem; color: var(--secondary); font-weight: 700;">ID: ${p.id}</div>
+              </div>
+              <span class="badge badge-${p.status}">${p.status}</span>
+            </div>
+
+            <!-- Middle Section: Clean 4-Cell Data Grid -->
+            <div class="card-data-grid">
+              <div class="data-cell">
+                <span class="data-label">Profession</span>
+                <span class="data-val">${p.profession || 'Unspecified'}</span>
+              </div>
+              <div class="data-cell">
+                <span class="data-label">Education</span>
+                <span class="data-val">${p.education || 'Unspecified'}</span>
+              </div>
+              <div class="data-cell">
+                <span class="data-label">Location</span>
+                <span class="data-val">${p.city}, ${p.state}</span>
+              </div>
+              <div class="data-cell">
+                <span class="data-label">Phone</span>
+                <span class="data-val"><a href="tel:${p.phone}">${p.phone}</a></span>
               </div>
             </div>
 
-            <!-- Demographics & Location -->
-            <div class="mobile-meta-grid">
-              <div><strong>Profession:</strong><br>${p.profession}</div>
-              <div><strong>Education:</strong><br>${p.education}</div>
-              <div><strong>Location:</strong><br>${p.city}, ${p.state}</div>
-              <div><strong>Contact:</strong><br><a href="tel:${p.phone}" style="color: var(--primary); text-decoration: none; font-weight: 700;">${p.phone}</a></div>
-            </div>
-
-            <!-- Address (Confidential) -->
-            <div style="font-size: 0.78rem; color: var(--muted); line-height: 1.35;">
-              <strong>Address:</strong> ${p.exactAddress || 'Address on record'}
-            </div>
-
-            <!-- Payment Status & Receipt Preview -->
-            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; border-top: 1px dashed var(--border); padding-top: 0.5rem;">
-              <div><strong>Fee:</strong> ₹${p.paymentAmount || '1999'} &bull; <span style="font-weight: 700; color: ${p.paymentStatus === 'Verified' ? 'var(--success)' : 'var(--warning)'};">${p.paymentStatus || 'Unverified'}</span></div>
-              ${hasReceipt ? `<button class="btn btn-outline" style="min-height: 32px; padding: 0.2rem 0.6rem; font-size: 0.75rem;" onclick="openContextualReceipt('${p.id}', this)">Receipt ↗</button>` : '<span style="color: var(--muted); font-size: 0.75rem;">No Receipt</span>'}
-            </div>
-
-            <!-- Responsive Actions Bar -->
-            <div class="mobile-action-bar">
-              ${actionButtons}
+            <!-- Footer Section: Payment & Admin Actions -->
+            <div class="card-footer">
+              <div class="card-meta-notes">
+                <span>Fee: <strong>₹${p.paymentAmount || '1999'}</strong></span>
+                <span>Status: <strong style="color: ${p.paymentStatus === 'Verified' ? 'var(--success)' : 'var(--warning)'};">${p.paymentStatus || 'Unverified'}</strong></span>
+                ${hasReceipt ? `<button class="btn btn-outline" style="min-height: 28px; padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="openContextualReceipt('${p.id}', this)">View Receipt ↗</button>` : '<span style="color: var(--muted); font-size: 0.72rem;">No Receipt</span>'}
+              </div>
+              <div class="card-actions-row">
+                ${actionButtons}
+              </div>
             </div>
           </div>
         `;
