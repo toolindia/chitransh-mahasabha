@@ -51,21 +51,24 @@
 
     .container { max-width: 1300px; margin: 1.5rem auto; padding: 0 1rem; }
 
-    /* Top-Aligned Header Auth Overlay */
-    #authOverlay {
+    /* Top-Aligned Header Modals */
+    #authOverlay, .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
-      z-index: 9999; display: flex; align-items: flex-start; justify-content: center;
-      padding-top: 1.5rem;
+      z-index: 2000; display: flex; align-items: flex-start; justify-content: center;
+      padding: 1.5rem 1rem 3rem 1rem; overflow-y: auto;
     }
+    .modal-overlay { display: none; }
+    .modal-overlay.active { display: flex; }
 
-    .auth-box {
+    .auth-box, .modal-card {
       background: var(--white); border-radius: var(--radius-md); padding: 1.75rem;
-      max-width: 380px; width: 100%; text-align: center;
-      border: 2px solid var(--primary);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      max-width: 650px; width: 100%; border: 2px solid var(--primary);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
       animation: slideDownTop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      position: relative; max-height: 88vh; overflow-y: auto;
     }
+    .auth-box { max-width: 380px; text-align: center; }
 
     @keyframes slideDownTop {
       from { opacity: 0; transform: translateY(-25px) scale(0.98); }
@@ -117,22 +120,17 @@
     .badge-Unpublished { background: #F1F3F4; color: #5F6368; }
     .badge-Deleted { background: #FCE8E6; color: #C5221F; }
 
-    .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-      z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem;
-    }
-    .modal-overlay.active { display: flex; }
-    .modal-card {
-      background: var(--white); border-radius: var(--radius-md);
-      max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 1.75rem; position: relative;
-    }
-    .close-btn { position: absolute; top: 1rem; right: 1rem; border: none; background: transparent; font-size: 1.25rem; cursor: pointer; }
+    .close-btn { position: absolute; top: 1rem; right: 1rem; border: none; background: transparent; font-size: 1.35rem; cursor: pointer; color: var(--muted); }
+
+    .form-group { margin-bottom: 0.85rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
+    .form-group label { font-size: 0.75rem; font-weight: 700; }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   </style>
 </head>
 <body>
 
-  <!-- Top-Header PIN Access Gate -->
+  <!-- Top-Header PIN Gate -->
   <div id="authOverlay">
     <div class="auth-box">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.25rem;">Admin Desk</h2>
@@ -144,7 +142,8 @@
 
   <header class="header">
     <div class="brand">Chitransh<span>Mahasabha</span> <span style="font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-left: 0.5rem;">Admin Panel</span></div>
-    <div style="display: flex; gap: 0.5rem;">
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      <button class="btn btn-primary" onclick="openAddMemberModal()">Add Member</button>
       <button id="refreshBtn" class="btn btn-outline" onclick="triggerManualRefresh()">Refresh Data</button>
       <button class="btn btn-danger" onclick="lockPortal()">Lock</button>
     </div>
@@ -169,6 +168,241 @@
 
   </div>
 
+  <!-- ADMIN ADD MEMBER MODAL -->
+  <div class="modal-overlay" id="addMemberModal">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeModal('addMemberModal')">&times;</button>
+      <h3 style="margin-bottom: 0.25rem;">Direct Candidate Enrolment</h3>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Directly add candidates with automated verified status.</p>
+
+      <form id="adminAddForm" onsubmit="handleAdminAddSubmit(event)">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="addName" required placeholder="Full Name">
+          </div>
+          <div class="form-group">
+            <label>Gender *</label>
+            <select id="addGender" required>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Date of Birth *</label>
+            <input type="date" id="addDob" required onchange="calculateAutoAge('addDob', 'addAge')">
+          </div>
+          <div class="form-group">
+            <label>Age *</label>
+            <input type="number" id="addAge" min="18" max="80" required placeholder="Years">
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Height *</label>
+            <input type="text" id="addHeight" required placeholder="5'7&quot;">
+          </div>
+          <div class="form-group">
+            <label>Marital Status *</label>
+            <select id="addMarital" required>
+              <option value="Never Married">Never Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Widowed">Widowed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Highest Education *</label>
+            <input type="text" id="addEducation" required placeholder="e.g. B.Tech / MBA">
+          </div>
+          <div class="form-group">
+            <label>Profession *</label>
+            <input type="text" id="addProfession" required placeholder="Designation">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Annual Income *</label>
+          <input type="text" id="addIncome" required placeholder="e.g. 10 Lakhs PA">
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>State *</label>
+            <select id="addState" required onchange="populateCities('addState', 'addCity', 'addCityCustom')">
+              <option value="">Select State</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>City *</label>
+            <select id="addCity" required onchange="checkCustomCity('addCity', 'addCityCustom')">
+              <option value="">Select City</option>
+            </select>
+            <input type="text" id="addCityCustom" placeholder="Type city" style="display: none; margin-top: 0.35rem;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Exact House Address *</label>
+          <input type="text" id="addAddress" required placeholder="Residential details">
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" id="addEmail" required placeholder="email@domain.com">
+          </div>
+          <div class="form-group">
+            <label>Phone / WhatsApp *</label>
+            <input type="tel" id="addPhone" required placeholder="+91 00000 00000">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Candidate Photo *</label>
+          <input type="file" id="addPhotoFile" accept="image/*" required onchange="handleAdminAddPhoto(event)">
+        </div>
+
+        <div class="form-group">
+          <label>Family Details</label>
+          <textarea id="addFamily" rows="2" placeholder="Family background"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Partner Preferences</label>
+          <textarea id="addPreferences" rows="2" placeholder="Expectations"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="addSubmitBtn">Add & Enrol Candidate</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN EDIT DETAILS MODAL -->
+  <div class="modal-overlay" id="editMemberModal">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeModal('editMemberModal')">&times;</button>
+      <h3 style="margin-bottom: 0.25rem;">Edit Candidate Details</h3>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Editing Profile: <strong id="editProfileIdRef">-</strong></p>
+
+      <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)">
+        <input type="hidden" id="editProfileId">
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="editName" required>
+          </div>
+          <div class="form-group">
+            <label>Gender *</label>
+            <select id="editGender" required>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" id="editDob" onchange="calculateAutoAge('editDob', 'editAge')">
+          </div>
+          <div class="form-group">
+            <label>Age *</label>
+            <input type="number" id="editAge" min="18" max="80" required>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Height *</label>
+            <input type="text" id="editHeight" required>
+          </div>
+          <div class="form-group">
+            <label>Marital Status *</label>
+            <select id="editMarital" required>
+              <option value="Never Married">Never Married</option>
+              <option value="Divorced">Divorced</option>
+              <option value="Widowed">Widowed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Highest Education *</label>
+            <input type="text" id="editEducation" required>
+          </div>
+          <div class="form-group">
+            <label>Profession *</label>
+            <input type="text" id="editProfession" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Annual Income *</label>
+          <input type="text" id="editIncome" required>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>State *</label>
+            <select id="editState" required onchange="populateCities('editState', 'editCity', 'editCityCustom')">
+              <option value="">Select State</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>City *</label>
+            <select id="editCity" required onchange="checkCustomCity('editCity', 'editCityCustom')">
+              <option value="">Select City</option>
+            </select>
+            <input type="text" id="editCityCustom" placeholder="Type city" style="display: none; margin-top: 0.35rem;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Residential Address *</label>
+          <input type="text" id="editAddress" required>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" id="editEmail" required>
+          </div>
+          <div class="form-group">
+            <label>Phone / WhatsApp *</label>
+            <input type="tel" id="editPhone" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Update Photo (Leave empty to keep existing)</label>
+          <input type="file" id="editPhotoFile" accept="image/*" onchange="handleAdminEditPhoto(event)">
+        </div>
+
+        <div class="form-group">
+          <label>Family Details</label>
+          <textarea id="editFamily" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Partner Preferences</label>
+          <textarea id="editPreferences" rows="2"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="editSubmitBtn">Save & Apply Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PAYMENT VERIFICATION MODAL -->
   <div class="modal-overlay" id="receiptModal">
     <div class="modal-card" style="max-width: 440px; text-align: center;">
       <button class="close-btn" onclick="closeModal('receiptModal')">&times;</button>
@@ -181,6 +415,7 @@
     </div>
   </div>
 
+  <!-- MATCHMAKING MODAL -->
   <div class="modal-overlay" id="matchingModal">
     <div class="modal-card">
       <button class="close-btn" onclick="closeModal('matchingModal')">&times;</button>
@@ -200,6 +435,24 @@
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
+    const LOCATION_DATA = {
+      "Uttar Pradesh": ["Ghaziabad", "Noida", "Lucknow", "Kanpur", "Varanasi", "Prayagraj", "Agra", "Meerut", "Bareilly", "Gorakhpur", "Aligarh", "Moradabad", "Other"],
+      "Delhi NCR": ["Central Delhi", "East Delhi", "New Delhi", "North Delhi", "South Delhi", "West Delhi", "Gurugram", "Faridabad", "Other"],
+      "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga", "Bihar Sharif", "Ara", "Begusarai", "Katihar", "Other"],
+      "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Satna", "Ratlam", "Other"],
+      "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Navi Mumbai", "Solapur", "Other"],
+      "Rajasthan": ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Ajmer", "Udaipur", "Bhilwara", "Alwar", "Other"],
+      "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri", "Other"],
+      "Karnataka": ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru", "Belagavi", "Other"],
+      "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Other"],
+      "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Other"],
+      "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Deoghar", "Hazaribagh", "Other"],
+      "Uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani", "Rishikesh", "Other"],
+      "Haryana": ["Faridabad", "Gurugram", "Panipat", "Ambala", "Karnal", "Hisar", "Rohtak", "Other"],
+      "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali", "Other"],
+      "Other": ["Other"]
+    };
+
     let adminState = {
       pin: "",
       profiles: [],
@@ -208,6 +461,107 @@
       activeMatchClient: null,
       compatibleMatches: []
     };
+
+    let adminAddPhotoBase64 = "";
+    let adminEditPhotoBase64 = "";
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initLocationDropdown('addState');
+      initLocationDropdown('editState');
+    });
+
+    function initLocationDropdown(selId) {
+      const stateSel = document.getElementById(selId);
+      if (!stateSel) return;
+      stateSel.innerHTML = `<option value="">Select State</option>`;
+      Object.keys(LOCATION_DATA).forEach(st => {
+        stateSel.innerHTML += `<option value="${st}">${st}</option>`;
+      });
+    }
+
+    function populateCities(stateId, cityId, customId, selectedCity = "") {
+      const stateVal = document.getElementById(stateId).value;
+      const citySel = document.getElementById(cityId);
+      const customInput = document.getElementById(customId);
+      
+      citySel.innerHTML = `<option value="">Select City</option>`;
+      if (customInput) customInput.style.display = "none";
+
+      if (stateVal && LOCATION_DATA[stateVal]) {
+        let matched = false;
+        LOCATION_DATA[stateVal].forEach(ct => {
+          const isSelected = ct === selectedCity;
+          if (isSelected) matched = true;
+          citySel.innerHTML += `<option value="${ct}" ${isSelected ? 'selected' : ''}>${ct}</option>`;
+        });
+
+        if (selectedCity && !matched) {
+          citySel.value = "Other";
+          if (customInput) {
+            customInput.style.display = "block";
+            customInput.value = selectedCity;
+          }
+        }
+      }
+    }
+
+    function checkCustomCity(cityId, customId) {
+      const cityVal = document.getElementById(cityId).value;
+      const customInput = document.getElementById(customId);
+      if (cityVal === "Other") {
+        customInput.style.display = "block";
+      } else {
+        customInput.style.display = "none";
+      }
+    }
+
+    function calculateAutoAge(dobId, ageId) {
+      const dobVal = document.getElementById(dobId).value;
+      if (!dobVal) return;
+      const dobDate = new Date(dobVal);
+      const today = new Date();
+      let age = today.getFullYear() - dobDate.getFullYear();
+      const m = today.getMonth() - dobDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+        age--;
+      }
+      if (age >= 18 && age <= 100) {
+        document.getElementById(ageId).value = age;
+      }
+    }
+
+    function handleAdminAddPhoto(e) {
+      compressImage(e.target.files[0], 400, 0.6, (base64) => {
+        adminAddPhotoBase64 = base64;
+      });
+    }
+
+    function handleAdminEditPhoto(e) {
+      compressImage(e.target.files[0], 400, 0.6, (base64) => {
+        adminEditPhotoBase64 = base64;
+      });
+    }
+
+    function compressImage(file, maxDim, quality, callback) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          let w = img.width, h = img.height;
+          if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
+          else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          callback(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
 
     function unlockAdminPortal() {
       const pin = document.getElementById('adminPinInput').value.trim();
@@ -305,7 +659,9 @@
       container.innerHTML = adminState.filtered.map(p => {
         const photo = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
         
-        let actionButtons = "";
+        let actionButtons = `
+          <button class="btn btn-outline" style="font-size: 0.78rem;" onclick="openEditMemberModal('${p.id}')">Edit Details</button>
+        `;
         
         if (p.status === "Pending") {
           actionButtons += `<button class="btn btn-success" onclick="approveCandidate('${p.id}')">Approve & Live</button>`;
@@ -359,6 +715,167 @@
       }).join('');
     }
 
+    // ADMIN DIRECT ADD MEMBER
+    function openAddMemberModal() {
+      adminAddPhotoBase64 = "";
+      document.getElementById('adminAddForm').reset();
+      document.getElementById('addMemberModal').classList.add('active');
+    }
+
+    async function handleAdminAddSubmit(e) {
+      e.preventDefault();
+      if (!adminAddPhotoBase64) {
+        alert("Please upload a candidate photograph.");
+        return;
+      }
+
+      const btn = document.getElementById('addSubmitBtn');
+      btn.innerText = "Adding Candidate...";
+      btn.disabled = true;
+
+      const stateVal = document.getElementById('addState').value;
+      let cityVal = document.getElementById('addCity').value;
+      if (cityVal === "Other") cityVal = document.getElementById('addCityCustom').value.trim();
+
+      const payload = {
+        fullName: document.getElementById('addName').value.trim(),
+        gender: document.getElementById('addGender').value,
+        dob: document.getElementById('addDob').value,
+        age: parseInt(document.getElementById('addAge').value),
+        height: document.getElementById('addHeight').value.trim(),
+        maritalStatus: document.getElementById('addMarital').value,
+        education: document.getElementById('addEducation').value.trim(),
+        profession: document.getElementById('addProfession').value.trim(),
+        annualIncome: document.getElementById('addIncome').value.trim(),
+        state: stateVal,
+        city: cityVal,
+        country: "India",
+        exactAddress: document.getElementById('addAddress').value.trim(),
+        email: document.getElementById('addEmail').value.trim(),
+        phone: document.getElementById('addPhone').value.trim(),
+        imageBase64: adminAddPhotoBase64,
+        familyDetails: document.getElementById('addFamily').value.trim(),
+        partnerPreferences: document.getElementById('addPreferences').value.trim(),
+        status: "Active"
+      };
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'adminAddProfile',
+            adminPin: adminState.pin,
+            data: payload
+          })
+        });
+        const out = await res.json();
+        if (out.success) {
+          alert("Candidate added and made Active successfully!");
+          closeModal('addMemberModal');
+          fetchAdminProfiles();
+        } else {
+          alert("Failed to add candidate: " + out.error);
+        }
+      } catch (err) {
+        alert("Network failure: " + err.toString());
+      } finally {
+        btn.innerText = "Add & Enrol Candidate";
+        btn.disabled = false;
+      }
+    }
+
+    // ADMIN EDIT MEMBER DETAILS
+    function openEditMemberModal(profileId) {
+      const p = adminState.profiles.find(x => x.id === profileId);
+      if (!p) return;
+
+      adminEditPhotoBase64 = "";
+      document.getElementById('editProfileId').value = p.id;
+      document.getElementById('editProfileIdRef').innerText = `${p.fullName} (${p.id})`;
+      document.getElementById('editName').value = p.fullName || "";
+      document.getElementById('editGender').value = p.gender || "Female";
+      document.getElementById('editDob').value = p.dob || "";
+      document.getElementById('editAge').value = p.age || "";
+      document.getElementById('editHeight').value = p.height || "";
+      document.getElementById('editMarital').value = p.maritalStatus || "Never Married";
+      document.getElementById('editEducation').value = p.education || "";
+      document.getElementById('editProfession').value = p.profession || "";
+      document.getElementById('editIncome').value = p.annualIncome || "";
+      document.getElementById('editAddress').value = p.exactAddress || "";
+      document.getElementById('editEmail').value = p.email || "";
+      document.getElementById('editPhone').value = p.phone || "";
+      document.getElementById('editFamily').value = p.familyDetails || "";
+      document.getElementById('editPreferences').value = p.partnerPreferences || "";
+
+      document.getElementById('editState').value = p.state || "";
+      populateCities('editState', 'editCity', 'editCityCustom', p.city);
+
+      document.getElementById('editMemberModal').classList.add('active');
+    }
+
+    async function handleAdminEditSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('editSubmitBtn');
+      btn.innerText = "Saving Changes...";
+      btn.disabled = true;
+
+      const stateVal = document.getElementById('editState').value;
+      let cityVal = document.getElementById('editCity').value;
+      if (cityVal === "Other") cityVal = document.getElementById('editCityCustom').value.trim();
+
+      const profileId = document.getElementById('editProfileId').value;
+      const payload = {
+        profileId: profileId,
+        fullName: document.getElementById('editName').value.trim(),
+        gender: document.getElementById('editGender').value,
+        dob: document.getElementById('editDob').value,
+        age: parseInt(document.getElementById('editAge').value),
+        height: document.getElementById('editHeight').value.trim(),
+        maritalStatus: document.getElementById('editMarital').value,
+        education: document.getElementById('editEducation').value.trim(),
+        profession: document.getElementById('editProfession').value.trim(),
+        annualIncome: document.getElementById('editIncome').value.trim(),
+        state: stateVal,
+        city: cityVal,
+        country: "India",
+        exactAddress: document.getElementById('editAddress').value.trim(),
+        email: document.getElementById('editEmail').value.trim(),
+        phone: document.getElementById('editPhone').value.trim(),
+        familyDetails: document.getElementById('editFamily').value.trim(),
+        partnerPreferences: document.getElementById('editPreferences').value.trim()
+      };
+
+      if (adminEditPhotoBase64) {
+        payload.imageBase64 = adminEditPhotoBase64;
+      }
+
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'adminUpdateProfile',
+            adminPin: adminState.pin,
+            data: payload
+          })
+        });
+        const out = await res.json();
+        if (out.success) {
+          alert("Profile details updated successfully!");
+          closeModal('editMemberModal');
+          fetchAdminProfiles();
+        } else {
+          alert("Update error: " + out.error);
+        }
+      } catch (err) {
+        alert("Server error: " + err.toString());
+      } finally {
+        btn.innerText = "Save & Apply Changes";
+        btn.disabled = false;
+      }
+    }
+
     async function updateStatus(profileId, newStatus) {
       if (!confirm(`Are you sure you want to set profile ${profileId} to "${newStatus}"?`)) return;
 
@@ -374,7 +891,7 @@
         });
         const out = await res.json();
         if (out.success) {
-          alert(`Profile successfully updated to ${newStatus}.`);
+          alert(`Profile successfully set to ${newStatus}.`);
           fetchAdminProfiles();
         } else {
           alert("Error: " + out.error);
