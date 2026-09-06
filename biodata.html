@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Candidate Biodata Registration - Chitransh Mahasabha</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,14 +20,17 @@
       --muted: #7A6F6D;
       --border: #F5DEC2;
       --white: #FFFFFF;
+      --success: #1E8E3E;
       --radius-sm: 8px;
       --radius-md: 14px;
+      --radius-lg: 20px;
       --shadow-sm: 0 4px 12px rgba(255, 126, 126, 0.08);
       --shadow-md: 0 10px 28px rgba(43, 35, 33, 0.1);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.25);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding: 2rem 1rem; }
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding: 1.5rem 0.85rem 4rem 0.85rem; }
 
     .form-container {
       max-width: 680px;
@@ -35,52 +38,56 @@
       background: var(--white);
       border: 2px solid var(--secondary);
       border-radius: var(--radius-md);
-      padding: 2.5rem;
+      padding: 2rem 1.5rem;
       box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 580px) {
+      .form-container { padding: 1.25rem 1rem; border-radius: var(--radius-sm); }
     }
 
     .form-header {
       text-align: center;
       border-bottom: 2px solid var(--primary);
-      padding-bottom: 1.25rem;
-      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .form-header h1 {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.85rem;
+      font-size: 1.75rem;
       color: var(--primary);
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.2rem;
     }
 
     .form-header p {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.75px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .section-title {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 800;
       text-transform: uppercase;
       color: var(--primary);
       letter-spacing: 0.5px;
-      margin: 1.75rem 0 0.75rem 0;
+      margin: 1.5rem 0 0.65rem 0;
       border-bottom: 1px solid var(--surface-light);
       padding-bottom: 0.35rem;
     }
 
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0.25rem;
     }
 
     .form-group label {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
       color: var(--dark);
     }
@@ -88,7 +95,7 @@
     .form-group input, 
     .form-group select, 
     .form-group textarea {
-      padding: 0.65rem 0.85rem;
+      padding: 0.6rem 0.75rem;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       font-size: 0.88rem;
@@ -107,24 +114,51 @@
     .form-row-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     @media (max-width: 580px) {
-      .form-row-2 { grid-template-columns: 1fr; }
-      .form-container { padding: 1.5rem; }
+      .form-row-2 { grid-template-columns: 1fr; gap: 0.5rem; }
     }
 
     .privacy-tag {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: #C5221F;
-      font-weight: 600;
-      margin-left: 0.3rem;
+      font-weight: 700;
+      margin-left: 0.25rem;
     }
 
+    /* Membership Tier Selector */
+    .membership-tier-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 0.35rem 0 1rem 0;
+    }
+
+    .tier-card {
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 0.5rem;
+      cursor: pointer;
+      text-align: center;
+      background: var(--bg);
+      transition: all 0.2s ease;
+    }
+
+    .tier-card.selected {
+      border-color: var(--primary);
+      background: var(--surface-light);
+    }
+
+    .tier-card h4 { font-size: 0.82rem; color: var(--dark); font-weight: 800; }
+    .tier-card p { font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-top: 0.2rem; }
+    .tier-card span { font-size: 0.68rem; color: var(--muted); }
+
     .btn {
-      padding: 0.85rem 1.6rem;
-      font-size: 0.95rem;
+      min-height: 44px;
+      padding: 0.65rem 1.4rem;
+      font-size: 0.9rem;
       font-weight: 700;
       border-radius: var(--radius-sm);
       cursor: pointer;
@@ -136,6 +170,7 @@
       gap: 0.5rem;
       transition: all 0.2s ease;
       width: 100%;
+      user-select: none;
     }
 
     .btn-primary {
@@ -143,13 +178,13 @@
       color: var(--white);
       box-shadow: var(--shadow-sm);
     }
+    .btn-primary:hover { opacity: 0.95; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
-
-    /* Top-Docked Modal Overlay & Card */
+    /* Modal Architecture */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
+      background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px);
       z-index: 2000; display: none; align-items: flex-start; justify-content: center;
       padding: 1.5rem 1rem 3rem 1rem; overflow-y: auto;
     }
@@ -160,14 +195,30 @@
       max-width: 480px; width: 100%; max-height: 88vh;
       overflow-y: auto; position: relative;
       border: 2px solid var(--primary);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
-      padding: 1.75rem; text-align: center;
-      animation: slideDownHeader 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      box-shadow: var(--shadow-lg);
+      padding: 1.5rem; text-align: center;
+      animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    @keyframes slideDownHeader {
-      from { opacity: 0; transform: translateY(-24px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .modal-card {
+        position: fixed !important;
+        bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important;
+        max-width: 100% !important; max-height: 85vh !important;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+        border: none !important; border-top: 3px solid var(--primary) !important;
+        padding: 1.25rem 1rem 2.5rem 1rem !important;
+        animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+      }
+      @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
     }
 
     .upi-box {
@@ -178,19 +229,8 @@
       margin: 1rem 0;
     }
 
-    .preview-box {
-      display: none;
-      margin-top: 0.5rem;
-      text-align: center;
-    }
-
-    .preview-img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--primary);
-    }
+    .preview-box { display: none; margin-top: 0.5rem; text-align: center; }
+    .preview-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
   </style>
 </head>
 <body>
@@ -199,12 +239,27 @@
     
     <div class="form-header">
       <h1>CHITRANSH MAHASABHA</h1>
-      <p>Candidate Biodata Submission Portal</p>
+      <p id="portalSubheader">Candidate Biodata Submission Portal</p>
     </div>
 
-    <!-- MAIN REGISTRATION FORM -->
     <form id="biodataForm" onsubmit="submitBiodata(event)">
       
+      <div id="planSelectionSection">
+        <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Tier</label>
+        <div class="membership-tier-container">
+          <div class="tier-card" id="tierMonthly" onclick="selectPlan('Monthly')">
+            <h4>Monthly Plan</h4>
+            <p id="labelMonthlyFee">₹499</p>
+            <span>Standard Membership</span>
+          </div>
+          <div class="tier-card selected" id="tierAnnual" onclick="selectPlan('Annual')">
+            <h4>Annual Plan</h4>
+            <p id="labelAnnualFee">₹1999</p>
+            <span style="color: var(--success); font-weight: 700;">Recommended</span>
+          </div>
+        </div>
+      </div>
+
       <div class="section-title">1. Basic Details</div>
 
       <div class="form-row-2">
@@ -268,7 +323,6 @@
 
       <div class="section-title">3. Location & Confidential Contact</div>
 
-      <!-- DEPENDENT STATE & CITY DROPDOWNS -->
       <div class="form-row-2">
         <div class="form-group">
           <label>State *</label>
@@ -327,30 +381,29 @@
       </div>
 
       <button type="submit" class="btn btn-primary" id="submitBtn" style="margin-top: 1rem;">
-        Submit Biodata & Proceed to Pay ₹1999
+        Submit Biodata & Proceed
       </button>
 
     </form>
   </div>
 
-  <!-- STEP 2: DYNAMIC UPI PAYMENT HEADER-DOCKED MODAL -->
   <div class="modal-overlay" id="paymentModal">
     <div class="modal-card">
       <h2 style="font-size: 1.3rem; color: var(--primary); margin-bottom: 0.25rem;">Verify & Activate Profile</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.75rem;">Profile ID: <strong id="assignedProfileId">-</strong></p>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.75rem;">Profile ID: <strong id="assignedProfileId">-</strong> (<span id="assignedPlanDisplay">Annual</span>)</p>
 
       <div class="upi-box">
-        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Registration Amount</p>
-        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;">₹1999</h1>
+        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Membership Amount</p>
+        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;" id="displayPayAmount">₹1999</h1>
 
         <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
           <img id="upiQrImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
         </div>
 
-        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code>sinha361@icici</code></p>
+        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code id="displayUpiId">sinha361@icici</code></p>
         
         <a id="upiPayLink" href="#" class="btn btn-primary" style="margin-bottom: 0.5rem;">
-          Pay ₹1999 via Any UPI App
+          Pay via Any UPI App
         </a>
       </div>
 
@@ -372,6 +425,19 @@
           Submit for Admin Approval
         </button>
       </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="freeSuccessModal">
+    <div class="modal-card" style="padding: 2.5rem 1.5rem;">
+      <h2 style="color: var(--success); font-size: 1.5rem; margin-bottom: 0.4rem;">Biodata Submitted!</h2>
+      <p style="font-size: 0.9rem; color: var(--dark); margin-bottom: 0.5rem;">
+        Profile ID: <strong id="freeAssignedProfileId">-</strong>
+      </p>
+      <p style="font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.5rem;">
+        Free Registration active. Aapka profile administrative desk ko review ke liye bhej diya gaya hai. Verification ke baad yeh directory mein live ho jayega.
+      </p>
+      <button class="btn btn-primary" onclick="window.location.reload()">Submit Another Profile</button>
     </div>
   </div>
 
@@ -399,10 +465,60 @@
     let candidateBase64 = "";
     let screenshotBase64 = "";
     let savedProfileId = "";
+    let selectedPlan = "Annual";
+
+    let systemSettings = {
+      isFreeRegistration: false,
+      monthlyFee: "499",
+      annualFee: "1999",
+      upiId: "sinha361@icici"
+    };
 
     window.addEventListener('DOMContentLoaded', () => {
       initLocationDropdown();
+      fetchLiveSettings();
     });
+
+    async function fetchLiveSettings() {
+      try {
+        const res = await fetch(`${API_ENDPOINT}?action=getSettings`);
+        const data = await res.json();
+        if (data.success && data.settings) {
+          systemSettings = data.settings;
+          renderPricingTiers();
+        }
+      } catch (err) {
+        console.error("Using default pricing settings", err);
+      }
+    }
+
+    function renderPricingTiers() {
+      const isFree = systemSettings.isFreeRegistration;
+      const planSection = document.getElementById('planSelectionSection');
+      const submitBtn = document.getElementById('submitBtn');
+      const subheader = document.getElementById('portalSubheader');
+
+      document.getElementById('labelMonthlyFee').innerText = `₹${systemSettings.monthlyFee}`;
+      document.getElementById('labelAnnualFee').innerText = `₹${systemSettings.annualFee}`;
+
+      if (isFree) {
+        planSection.style.display = 'none';
+        subheader.innerText = "Free Registration Mode Active (No Payment Required)";
+        submitBtn.innerText = "Submit Biodata for Direct Review (Free)";
+      } else {
+        planSection.style.display = 'block';
+        subheader.innerText = "Candidate Biodata Submission Portal";
+        const fee = (selectedPlan === 'Monthly') ? systemSettings.monthlyFee : systemSettings.annualFee;
+        submitBtn.innerText = `Proceed to Pay ₹${fee} (${selectedPlan} Plan)`;
+      }
+    }
+
+    function selectPlan(plan) {
+      selectedPlan = plan;
+      document.getElementById('tierMonthly').className = (plan === 'Monthly') ? 'tier-card selected' : 'tier-card';
+      document.getElementById('tierAnnual').className = (plan === 'Annual') ? 'tier-card selected' : 'tier-card';
+      renderPricingTiers();
+    }
 
     function initLocationDropdown() {
       const stateSel = document.getElementById('state');
@@ -456,7 +572,7 @@
     }
 
     function handlePhotoUpload(event) {
-      compressImage(event.target.files[0], 400, 0.6, (base64) => {
+      compressImage(event.target.files[0], 350, 0.45, (base64) => {
         candidateBase64 = base64;
         document.getElementById('photoPreviewImg').src = base64;
         document.getElementById('photoPreviewBox').style.display = 'block';
@@ -464,7 +580,7 @@
     }
 
     function handleScreenshotUpload(event) {
-      compressImage(event.target.files[0], 500, 0.55, (base64) => {
+      compressImage(event.target.files[0], 350, 0.40, (base64) => {
         screenshotBase64 = base64;
         document.getElementById('screenshotPreviewImg').src = base64;
         document.getElementById('screenshotPreviewBox').style.display = 'block';
@@ -528,7 +644,8 @@
         email: document.getElementById('email').value.trim(),
         phone: document.getElementById('phone').value.trim(),
         familyDetails: document.getElementById('familyDetails').value.trim(),
-        partnerPreferences: document.getElementById('partnerPreferences').value.trim()
+        partnerPreferences: document.getElementById('partnerPreferences').value.trim(),
+        membershipPlan: systemSettings.isFreeRegistration ? "Free" : selectedPlan
       };
 
       try {
@@ -540,27 +657,34 @@
         const out = await res.json();
         if (out.success) {
           savedProfileId = out.profileId;
-          document.getElementById('assignedProfileId').innerText = savedProfileId;
 
-          const finalUpiId = out.upiId || "sinha361@icici";
-          const finalAmount = out.paymentAmount || "1999";
-          const payeeName = "Chitransh Mahasabha";
-          const note = "Registration " + savedProfileId;
+          if (out.isFree) {
+            // Free Registration route
+            document.getElementById('freeAssignedProfileId').innerText = savedProfileId;
+            document.getElementById('freeSuccessModal').classList.add('active');
+          } else {
+            // Paid Membership QR route
+            document.getElementById('assignedProfileId').innerText = savedProfileId;
+            document.getElementById('assignedPlanDisplay').innerText = `${out.plan} Plan`;
+            document.getElementById('displayPayAmount').innerText = `₹${out.paymentAmount}`;
+            document.getElementById('displayUpiId').innerText = out.upiId;
 
-          const upiIntentUri = `upi://pay?pa=${finalUpiId}&pn=${encodeURIComponent(payeeName)}&am=${finalAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
-          const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiIntentUri)}&size=220`;
+            const payeeName = "Chitransh Mahasabha";
+            const note = `Membership ${out.plan} ${savedProfileId}`;
+            const upiIntentUri = `upi://pay?pa=${out.upiId}&pn=${encodeURIComponent(payeeName)}&am=${out.paymentAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+            const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiIntentUri)}&size=220`;
 
-          document.getElementById('upiQrImg').src = qrUrl;
-          document.getElementById('upiPayLink').href = upiIntentUri;
-
-          document.getElementById('paymentModal').classList.add('active');
+            document.getElementById('upiQrImg').src = qrUrl;
+            document.getElementById('upiPayLink').href = upiIntentUri;
+            document.getElementById('paymentModal').classList.add('active');
+          }
         } else {
           alert("Submission Error: " + out.error);
         }
       } catch (err) {
         alert("Failed to submit biodata. Check internet connection.");
       } finally {
-        btn.innerText = "Submit Biodata & Proceed to Pay ₹1999";
+        renderPricingTiers();
         btn.disabled = false;
       }
     }
@@ -593,17 +717,15 @@
         const out = await res.json();
         if (out.success) {
           document.getElementById('paymentModal').innerHTML = `
-            <div class="modal-card" style="padding: 2.5rem 1.5rem;">
-              <h2 style="color: #137333; font-size: 1.6rem; margin-bottom: 0.5rem;">Biodata Submitted!</h2>
-              <p style="font-size: 0.95rem; color: var(--dark); margin-bottom: 0.5rem;">
-                Your Profile ID is: <strong>${savedProfileId}</strong>
+            <div style="padding: 2rem 1rem; text-align: center;">
+              <h2 style="color: var(--success); font-size: 1.5rem; margin-bottom: 0.5rem;">Receipt Received!</h2>
+              <p style="font-size: 0.95rem; color: var(--dark); font-weight: 700; margin-bottom: 0.5rem;">
+                Profile ID: ${savedProfileId}
               </p>
-              <p style="font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.5rem;">
-                Your details and payment receipt have been sent to the Chitransh Mahasabha Admin Portal for verification. Once approved, your profile will be live on the matrimonial directory.
+              <p style="font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.5rem;">
+                Your details and payment screenshot have been submitted to the Chitransh Mahasabha Admin Portal for verification. Once approved, your profile will be published live on the directory.
               </p>
-              <a href="https://www.kayasthashadivivah.com/search-profiles" class="btn btn-primary">
-                Explore Verified Profiles
-              </a>
+              <button class="btn btn-primary" onclick="window.location.reload()">Done</button>
             </div>
           `;
         } else {
@@ -615,6 +737,10 @@
         btn.innerText = "Submit for Admin Approval";
         btn.disabled = false;
       }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
     }
   </script>
 </body>
