@@ -32,7 +32,6 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     
-    /* FORCE INSTANT TOP ALIGNMENT IN GOOGLE SITES IFRAME */
     html, body {
       background-color: var(--bg);
       color: var(--dark);
@@ -48,7 +47,6 @@
       left: 0 !important;
     }
 
-    /* INSTANT TOP STICKY HEADER BAR */
     .portal-header-bar {
       background: var(--white);
       border-bottom: 1px solid var(--border);
@@ -103,7 +101,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Filter & Search */
     .filter-wrapper { max-width: 1200px; margin: 1rem auto 1rem auto; padding: 0 1rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
     
@@ -164,7 +161,6 @@
     .profile-meta-line { font-size: 0.82rem; color: var(--muted); }
     .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--dark); width: fit-content; }
 
-    /* Modal Architecture */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -271,7 +267,7 @@
     .auth-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
 
     .guest-restricted-blur {
-      filter: blur(5px);
+      filter: blur(6px);
       pointer-events: none;
       user-select: none;
     }
@@ -279,10 +275,9 @@
 </head>
 <body>
 
-  <!-- FIXED HEADER BAR AT TOP -->
-  <header class="portal-header-bar">
+  <header class="portal-header-bar" onclick="checkHeaderAuth(event)">
     <div class="brand-title">Chitransh<span>Mahasabha</span></div>
-    <div class="header-right-actions" onclick="checkHeaderAuth(event)">
+    <div class="header-right-actions">
       <button class="btn btn-outline" onclick="guardedAction(() => openRegistrationModal())">Register Profile</button>
       <div id="authActions">
         <button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>
@@ -372,8 +367,6 @@
         <button class="btn btn-ghost" id="tabSaved" onclick="guardedAction(() => switchCatalogMode('saved'))">Saved (<span id="savedCounter">0</span>)</button>
       </div>
     </div>
-
-    <div id="scrollTriggerAnchor" style="width: 100%; height: 2px; margin-bottom: 5px;"></div>
 
     <div class="profile-grid" id="profilesContainer">
       <div class="loader-container">
@@ -818,42 +811,9 @@
       checkUserSession();
       fetchSystemSettings();
       fetchActiveProfiles();
-      setupIframeGuardGate();
     });
 
-    function setupIframeGuardGate() {
-      window.addEventListener('wheel', (e) => {
-        if (!state.user && e.deltaY > 10) {
-          triggerGuestLock();
-        }
-      }, { passive: true });
-
-      let startTouchY = 0;
-      window.addEventListener('touchstart', (e) => {
-        startTouchY = e.touches[0].clientY;
-      }, { passive: true });
-
-      window.addEventListener('touchmove', (e) => {
-        if (!state.user && (startTouchY - e.touches[0].clientY > 15)) {
-          triggerGuestLock();
-        }
-      }, { passive: true });
-
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (!entry.isIntersecting && !state.user) {
-              triggerGuestLock();
-            }
-          });
-        }, { threshold: 0.05 });
-        
-        const anchor = document.getElementById('scrollTriggerAnchor');
-        if (anchor) observer.observe(anchor);
-      }
-    }
-
-    function triggerGuestLock() {
+    function triggerInstantGuestLock() {
       if (state.user) return;
       openLoginModal('login');
       const err = document.getElementById('authErrorAlert');
@@ -865,7 +825,7 @@
 
     function checkGuestGate() {
       if (!state.user) {
-        triggerGuestLock();
+        triggerInstantGuestLock();
         return false;
       }
       return true;
@@ -874,13 +834,13 @@
     function checkHeaderAuth(e) {
       if (!state.user) {
         e.stopPropagation();
-        triggerGuestLock();
+        triggerInstantGuestLock();
       }
     }
 
     function guardedAction(callback) {
       if (!state.user) {
-        triggerGuestLock();
+        triggerInstantGuestLock();
         return;
       }
       if (callback) callback();
@@ -1042,6 +1002,11 @@
         state.user = JSON.parse(stored);
         renderNavUser();
         fetchUserShortlists();
+      } else {
+        // INSTANT POPUP TRIGGER ON LOAD FOR GUESTS
+        setTimeout(() => {
+          triggerInstantGuestLock();
+        }, 150);
       }
     }
 
@@ -1231,6 +1196,7 @@
       state.savedIds.clear();
       renderNavUser();
       renderProfileList();
+      triggerInstantGuestLock();
     }
 
     async function fetchActiveProfiles() {
@@ -1388,7 +1354,7 @@
 
     async function toggleShortlistRecord(profileId) {
       if (!state.user) {
-        triggerGuestLock();
+        triggerInstantGuestLock();
         return;
       }
 
