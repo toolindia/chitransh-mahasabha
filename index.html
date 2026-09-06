@@ -270,12 +270,12 @@
     }
   </style>
 </head>
-<body onclick="checkPageInteraction(event)">
+<body>
 
   <header class="portal-header-bar">
     <div class="brand-title">Chitransh<span>Mahasabha</span></div>
     <div class="header-right-actions">
-      <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
+      <button class="btn btn-outline" onclick="guardedAction(() => openRegistrationModal())">Register Profile</button>
       <div id="authActions">
         <button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>
       </div>
@@ -285,15 +285,15 @@
   <div class="filter-wrapper">
     <div class="filter-container">
       <div class="search-action-row">
-        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
-        <button class="btn btn-primary" style="min-height: 40px;" onclick="applyFilters()">Search</button>
-        <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="toggleFilterDrawer()">Filters ▾</button>
+        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);" onfocus="guardedAction(() => {})">
+        <button class="btn btn-primary" style="min-height: 40px;" onclick="guardedAction(() => applyFilters())">Search</button>
+        <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
       </div>
 
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label>Gender</label>
-          <select id="filterGender" onchange="applyFilters()">
+          <select id="filterGender" onchange="guardedAction(() => applyFilters())">
             <option value="">All Genders</option>
             <option value="Female">Female</option>
             <option value="Male">Male</option>
@@ -302,7 +302,7 @@
 
         <div class="filter-control">
           <label>Age Bracket</label>
-          <select id="filterAge" onchange="applyFilters()">
+          <select id="filterAge" onchange="guardedAction(() => applyFilters())">
             <option value="">Any Age</option>
             <option value="21-25">21 - 25</option>
             <option value="26-30">26 - 30</option>
@@ -313,7 +313,7 @@
 
         <div class="filter-control">
           <label>Marital Status</label>
-          <select id="filterMarital" onchange="applyFilters()">
+          <select id="filterMarital" onchange="guardedAction(() => applyFilters())">
             <option value="">Any Status</option>
             <option value="Never Married">Never Married</option>
             <option value="Divorced">Divorced</option>
@@ -323,21 +323,21 @@
 
         <div class="filter-control">
           <label>Education</label>
-          <select id="filterEducation" onchange="applyFilters()">
+          <select id="filterEducation" onchange="guardedAction(() => applyFilters())">
             <option value="">All Qualifications</option>
           </select>
         </div>
 
         <div class="filter-control">
           <label>Profession</label>
-          <select id="filterProfession" onchange="applyFilters()">
+          <select id="filterProfession" onchange="guardedAction(() => applyFilters())">
             <option value="">All Occupations</option>
           </select>
         </div>
 
         <div class="filter-control">
           <label>Min Height</label>
-          <select id="filterHeight" onchange="applyFilters()">
+          <select id="filterHeight" onchange="guardedAction(() => applyFilters())">
             <option value="">Any Height</option>
             <option value="5.0">Above 5'0"</option>
             <option value="5.4">Above 5'4"</option>
@@ -347,7 +347,7 @@
         </div>
 
         <div class="filter-control">
-          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="resetFilters()">Reset Filters</button>
+          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="guardedAction(() => resetFilters())">Reset Filters</button>
         </div>
       </div>
     </div>
@@ -360,8 +360,8 @@
         <p style="font-size: 0.78rem; color: var(--muted);" id="profileCounter">Connecting to database...</p>
       </div>
       <div style="display: flex; gap: 0.4rem;">
-        <button class="btn btn-outline" id="tabAll" onclick="switchCatalogMode('all')">All</button>
-        <button class="btn btn-ghost" id="tabSaved" onclick="switchCatalogMode('saved')">Saved (<span id="savedCounter">0</span>)</button>
+        <button class="btn btn-outline" id="tabAll" onclick="guardedAction(() => switchCatalogMode('all'))">All</button>
+        <button class="btn btn-ghost" id="tabSaved" onclick="guardedAction(() => switchCatalogMode('saved'))">Saved (<span id="savedCounter">0</span>)</button>
       </div>
     </div>
 
@@ -810,16 +810,19 @@
       fetchActiveProfiles();
     });
 
-    // INTERACTION & SCROLL LOCK GATE
+    // SCROLL OR CLICK TRIGGER FOR GUEST LOCK
+    let hasTriggeredGuestLock = false;
+
     function checkPageInteraction(e) {
-      if (!state.user) {
-        // If user clicks anywhere on the page while logged out, trigger popup
+      if (!state.user && !hasTriggeredGuestLock) {
+        hasTriggeredGuestLock = true;
         triggerInstantGuestLock();
       }
     }
 
     window.addEventListener('scroll', () => {
-      if (!state.user) {
+      if (!state.user && !hasTriggeredGuestLock) {
+        hasTriggeredGuestLock = true;
         triggerInstantGuestLock();
       }
     }, { passive: true });
@@ -832,6 +835,22 @@
         err.innerText = "Please Sign In or Register to view directory profiles.";
         err.style.display = "block";
       }
+    }
+
+    function checkGuestGate() {
+      if (!state.user) {
+        triggerInstantGuestLock();
+        return false;
+      }
+      return true;
+    }
+
+    function guardedAction(callback) {
+      if (!state.user) {
+        triggerInstantGuestLock();
+        return;
+      }
+      if (callback) callback();
     }
 
     function initDropdownOptions() {
@@ -990,10 +1009,6 @@
         state.user = JSON.parse(stored);
         renderNavUser();
         fetchUserShortlists();
-      } else {
-        setTimeout(() => {
-          triggerInstantGuestLock();
-        }, 100);
       }
     }
 
@@ -1180,10 +1195,10 @@
     function signOut() {
       localStorage.removeItem('cm_session');
       state.user = null;
+      hasTriggeredGuestLock = false;
       state.savedIds.clear();
       renderNavUser();
       renderProfileList();
-      triggerInstantGuestLock();
     }
 
     async function fetchActiveProfiles() {
