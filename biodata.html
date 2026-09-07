@@ -247,12 +247,12 @@
         <div class="membership-tier-container">
           <div class="tier-card" id="tierMonthly" onclick="selectPlan('Monthly')">
             <h4>Monthly Plan</h4>
-            <p id="labelMonthlyFee">...</p>
+            <p id="labelMonthlyFee">₹499</p>
             <span>Standard Membership</span>
           </div>
           <div class="tier-card selected" id="tierAnnual" onclick="selectPlan('Annual')">
             <h4>Annual Plan</h4>
-            <p id="labelAnnualFee">...</p>
+            <p id="labelAnnualFee">₹1999</p>
             <span style="color: var(--success); font-weight: 700;">Recommended</span>
           </div>
         </div>
@@ -416,13 +416,13 @@
 
       <div class="upi-box">
         <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Membership Amount</p>
-        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;" id="displayPayAmount">...</h1>
+        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;" id="displayPayAmount">₹1999</h1>
 
         <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
           <img id="upiQrImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
         </div>
 
-        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code id="displayUpiId">-</code></p>
+        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code id="displayUpiId">sinha361@icici</code></p>
         
         <a id="upiPayLink" href="#" class="btn btn-primary" style="margin-bottom: 0.5rem;">
           Pay via Any UPI App
@@ -504,7 +504,8 @@
     let savedProfileId = "";
     let selectedPlan = "Annual";
 
-    let systemSettings = {
+    // Load cached settings instantly to avoid any delay flicker
+    let systemSettings = JSON.parse(localStorage.getItem('cm_cached_settings')) || {
       isFreeRegistration: false,
       monthlyFee: "499",
       annualFee: "1999",
@@ -514,6 +515,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       initDropdownOptions();
       initLocationDropdown();
+      renderPricingTiers();
       fetchLiveSettings();
     });
 
@@ -539,10 +541,11 @@
         const data = await res.json();
         if (data.success && data.settings) {
           systemSettings = data.settings;
+          localStorage.setItem('cm_cached_settings', JSON.stringify(data.settings));
           renderPricingTiers();
         }
       } catch (err) {
-        console.error("Using default pricing settings", err);
+        console.error("Using cached settings", err);
       }
     }
 
