@@ -128,6 +128,11 @@
       margin-left: 0.25rem;
     }
 
+    /* DEFAULT HIDDEN TO PREVENT FLICKER ON LOAD */
+    #planSelectionSection {
+      display: none; 
+    }
+
     .membership-tier-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -242,17 +247,18 @@
 
     <form id="biodataForm" onsubmit="submitBiodata(event)">
       
+      <!-- MEMBERSHIP PLANS SECTION (Hidden by default until checked) -->
       <div id="planSelectionSection">
         <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Tier</label>
         <div class="membership-tier-container">
           <div class="tier-card" id="tierMonthly" onclick="selectPlan('Monthly')">
             <h4>Monthly Plan</h4>
-            <p id="labelMonthlyFee">₹...</p>
+            <p id="labelMonthlyFee">₹499</p>
             <span>Standard Membership</span>
           </div>
           <div class="tier-card selected" id="tierAnnual" onclick="selectPlan('Annual')">
             <h4>Annual Plan</h4>
-            <p id="labelAnnualFee">₹...</p>
+            <p id="labelAnnualFee">₹1999</p>
             <span style="color: var(--success); font-weight: 700;">Recommended</span>
           </div>
         </div>
@@ -504,7 +510,6 @@
     let savedProfileId = "";
     let selectedPlan = "Annual";
 
-    // Instant Caching to prevent delay/flicker
     let systemSettings = JSON.parse(localStorage.getItem('cm_cached_settings')) || {
       isFreeRegistration: false,
       monthlyFee: "499",
@@ -563,7 +568,7 @@
         subheader.innerText = "Free Registration Mode Active (No Payment Required)";
         submitBtn.innerText = "Submit Biodata for Direct Review (Free)";
       } else {
-        planSection.style.display = 'block';
+        planSection.style.display = 'block'; // Only shows if paid mode is active
         subheader.innerText = "Candidate Biodata Submission Portal";
         const fee = (selectedPlan === 'Monthly') ? systemSettings.monthlyFee : systemSettings.annualFee;
         submitBtn.innerText = `Proceed to Pay ₹${fee} (${selectedPlan} Plan)`;
