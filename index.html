@@ -44,7 +44,6 @@
       display: block !important;
     }
 
-    /* FULLY RESPONSIVE MOBILE-FRIENDLY HEADER */
     .portal-header-bar {
       background: var(--white);
       border-bottom: 1px solid var(--border);
@@ -109,7 +108,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* RESPONSIVE SEARCH & FILTER WRAPPER */
     .filter-wrapper { max-width: 1200px; margin: 0.85rem auto; padding: 0 0.85rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; box-shadow: var(--shadow-sm); }
     
@@ -296,7 +294,6 @@
 </head>
 <body>
 
-  <!-- RESPONSIVE HEADER BAR WITH LANGUAGE TRANSLATOR -->
   <header class="portal-header-bar">
     <div class="brand-title">Chitransh<span>Mahasabha</span></div>
     <div class="header-right-actions">
@@ -316,6 +313,7 @@
         <button class="btn btn-outline" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
       </div>
 
+      <!-- MAIN FILTER GRID WITH GENDER DROPDOWN -->
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label id="lblGender">Gender</label>
@@ -341,7 +339,7 @@
           <label id="lblMarital">Marital Status</label>
           <select id="filterMarital" onchange="guardedAction(() => applyFilters())">
             <option value="" id="optAnyStatus">Any Status</option>
-            <option value="Unmarried" id="Unmarried">Unmarried</option>
+            <option value="Never Married" id="optNeverMarried">Never Married</option>
             <option value="Divorced" id="optDivorced">Divorced</option>
             <option value="Widowed" id="optWidowed">Widowed</option>
           </select>
