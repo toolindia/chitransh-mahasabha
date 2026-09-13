@@ -66,11 +66,10 @@
 
     .header-right-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
 
-    @media (max-width: 480px) {
+    @media (max-width: 520px) {
       .portal-header-bar { padding: 0.6rem 0.75rem; flex-direction: column; align-items: stretch; text-align: center; }
       .brand-title { justify-content: center; margin-bottom: 0.2rem; }
       .header-right-actions { justify-content: center; }
-      .header-right-actions .btn { flex: 1; }
     }
 
     .btn {
@@ -88,6 +87,7 @@
     .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
     .btn-outline:hover { background: var(--surface-light); }
     .btn-ghost { background: transparent; color: var(--dark); }
+    .btn-lang { background: var(--surface-light); color: var(--dark); border: 1px solid var(--border); font-size: 0.75rem; padding: 0.3rem 0.6rem; }
 
     .user-pill {
       display: flex; align-items: center; gap: 0.5rem;
@@ -296,13 +296,14 @@
 </head>
 <body>
 
-  <!-- RESPONSIVE HEADER BAR -->
+  <!-- RESPONSIVE HEADER BAR WITH LANGUAGE TRANSLATOR -->
   <header class="portal-header-bar">
     <div class="brand-title">Chitransh<span>Mahasabha</span></div>
     <div class="header-right-actions">
-      <button class="btn btn-outline" onclick="openRegistrationModal()">Register Profile</button>
+      <button class="btn btn-lang" id="langSwitchBtn" onclick="toggleLanguage()">🇮🇳 हिंदी</button>
+      <button class="btn btn-outline" id="txtRegisterBtn" onclick="openRegistrationModal()">Register Profile</button>
       <div id="authActions">
-        <button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>
+        <button class="btn btn-primary" id="txtSignInBtn" onclick="openLoginModal('login')">Sign In</button>
       </div>
     </div>
   </header>
@@ -311,24 +312,24 @@
     <div class="filter-container">
       <div class="search-action-row">
         <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onfocus="checkGuestGate()">
-        <button class="btn btn-primary" onclick="guardedAction(() => applyFilters())">Search</button>
+        <button class="btn btn-primary" id="txtSearchBtn" onclick="guardedAction(() => applyFilters())">Search</button>
         <button class="btn btn-outline" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
       </div>
 
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
-          <label>Gender</label>
+          <label id="lblGender">Gender</label>
           <select id="filterGender" onchange="guardedAction(() => applyFilters())">
-            <option value="">All Genders</option>
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
+            <option value="" id="optAllGenders">All Genders</option>
+            <option value="Female" id="optFemale">Female</option>
+            <option value="Male" id="optMale">Male</option>
           </select>
         </div>
 
         <div class="filter-control">
-          <label>Age Bracket</label>
+          <label id="lblAge">Age Bracket</label>
           <select id="filterAge" onchange="guardedAction(() => applyFilters())">
-            <option value="">Any Age</option>
+            <option value="" id="optAnyAge">Any Age</option>
             <option value="21-25">21 - 25</option>
             <option value="26-30">26 - 30</option>
             <option value="31-35">31 - 35</option>
@@ -337,33 +338,33 @@
         </div>
 
         <div class="filter-control">
-          <label>Marital Status</label>
+          <label id="lblMarital">Marital Status</label>
           <select id="filterMarital" onchange="guardedAction(() => applyFilters())">
-            <option value="">Any Status</option>
-            <option value="Never Married">Never Married</option>
-            <option value="Divorced">Divorced</option>
-            <option value="Widowed">Widowed</option>
+            <option value="" id="optAnyStatus">Any Status</option>
+            <option value="Never Married" id="optNeverMarried">Never Married</option>
+            <option value="Divorced" id="optDivorced">Divorced</option>
+            <option value="Widowed" id="optWidowed">Widowed</option>
           </select>
         </div>
 
         <div class="filter-control">
-          <label>Education</label>
+          <label id="lblEdu">Education</label>
           <select id="filterEducation" onchange="guardedAction(() => applyFilters())">
-            <option value="">All Qualifications</option>
+            <option value="" id="optAllQual">All Qualifications</option>
           </select>
         </div>
 
         <div class="filter-control">
-          <label>Profession</label>
+          <label id="lblProf">Profession</label>
           <select id="filterProfession" onchange="guardedAction(() => applyFilters())">
-            <option value="">All Occupations</option>
+            <option value="" id="optAllOcc">All Occupations</option>
           </select>
         </div>
 
         <div class="filter-control">
-          <label>Min Height</label>
+          <label id="lblHeight">Min Height</label>
           <select id="filterHeight" onchange="guardedAction(() => applyFilters())">
-            <option value="">Any Height</option>
+            <option value="" id="optAnyHeight">Any Height</option>
             <option value="5.0">Above 5'0"</option>
             <option value="5.4">Above 5'4"</option>
             <option value="5.8">Above 5'8"</option>
@@ -372,7 +373,7 @@
         </div>
 
         <div class="filter-control">
-          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="guardedAction(() => resetFilters())">Reset Filters</button>
+          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" id="txtResetFilters" onclick="guardedAction(() => resetFilters())">Reset Filters</button>
         </div>
       </div>
     </div>
@@ -381,7 +382,7 @@
   <main class="catalog-wrapper">
     <div class="catalog-header">
       <div>
-        <h2 style="font-size: 1.15rem;">Candidate Registry</h2>
+        <h2 style="font-size: 1.15rem;" id="txtRegistryTitle">Candidate Registry</h2>
         <p style="font-size: 0.75rem; color: var(--muted);" id="profileCounter">Connecting to database...</p>
       </div>
       <div style="display: flex; gap: 0.35rem;">
@@ -393,7 +394,7 @@
     <div class="profile-grid" id="profilesContainer">
       <div class="loader-container">
         <div class="spinner"></div>
-        <p>Loading candidate records from database...</p>
+        <p id="txtLoading">Loading candidate records from database...</p>
       </div>
     </div>
   </main>
@@ -808,6 +809,109 @@
       "Other": ["Other"]
     };
 
+    // LANGUAGE TRANSLATION DICTIONARY
+    let currentLang = 'en';
+    const TRANSLATIONS = {
+      en: {
+        register: "Register Profile",
+        signIn: "Sign In",
+        signOut: "Sign Out",
+        searchPlaceholder: "Search by name, ID, city, state...",
+        searchBtn: "Search",
+        filtersBtn: "Filters ▾",
+        gender: "Gender",
+        allGenders: "All Genders",
+        female: "Female",
+        male: "Male",
+        ageBracket: "Age Bracket",
+        anyAge: "Any Age",
+        maritalStatus: "Marital Status",
+        anyStatus: "Any Status",
+        neverMarried: "Never Married",
+        divorced: "Divorced",
+        widowed: "Widowed",
+        education: "Education",
+        allQual: "All Qualifications",
+        profession: "Profession",
+        allOcc: "All Occupations",
+        minHeight: "Min Height",
+        anyHeight: "Any Height",
+        resetFilters: "Reset Filters",
+        registryTitle: "Candidate Registry",
+        loading: "Loading candidate records from database...",
+        all: "All",
+        saved: "Saved"
+      },
+      hi: {
+        register: "प्रोफाइल रजिस्टर करें",
+        signIn: "साइन इन",
+        signOut: "साइन आउट",
+        searchPlaceholder: "नाम, आईडी, शहर, राज्य द्वारा खोजें...",
+        searchBtn: "खोजें",
+        filtersBtn: "फ़िल्टर ▾",
+        gender: "लिंग",
+        allGenders: "सभी लिंग",
+        female: "महिला",
+        male: "पुरुष",
+        ageBracket: "आयु वर्ग",
+        anyAge: "कोई भी आयु",
+        maritalStatus: "वैवाहिक स्थिति",
+        anyStatus: "कोई भी स्थिति",
+        neverMarried: "अविवाहित",
+        divorced: "तलाकशुदा",
+        widowed: "विधवा/विधुर",
+        education: "शिक्षा",
+        allQual: "सभी योग्यताएं",
+        profession: "व्यवसाय",
+        allOcc: "सभी व्यवसाय",
+        minHeight: "न्यूनतम लंबाई",
+        anyHeight: "कोई भी लंबाई",
+        resetFilters: "फ़िल्टर रीसेट करें",
+        registryTitle: "उम्मीदवार सूची",
+        loading: "डेटाबेस से रिकॉर्ड लोड हो रहे हैं...",
+        all: "सभी",
+        saved: "सुरक्षित"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'hi' : 'en';
+      document.getElementById('langSwitchBtn').innerText = currentLang === 'en' ? '🇮🇳 हिंदी' : '🇬🇧 English';
+      applyTranslations();
+    }
+
+    function applyTranslations() {
+      const t = TRANSLATIONS[currentLang];
+      document.getElementById('txtRegisterBtn').innerText = t.register;
+      document.getElementById('txtSearchBtn').innerText = t.searchBtn;
+      document.getElementById('toggleFilterBtn').innerText = t.filtersBtn;
+      document.getElementById('globalSearchInput').placeholder = t.searchPlaceholder;
+      document.getElementById('lblGender').innerText = t.gender;
+      document.getElementById('optAllGenders').innerText = t.allGenders;
+      document.getElementById('optFemale').innerText = t.female;
+      document.getElementById('optMale').innerText = t.male;
+      document.getElementById('lblAge').innerText = t.ageBracket;
+      document.getElementById('optAnyAge').innerText = t.anyAge;
+      document.getElementById('lblMarital').innerText = t.maritalStatus;
+      document.getElementById('optAnyStatus').innerText = t.anyStatus;
+      document.getElementById('optNeverMarried').innerText = t.neverMarried;
+      document.getElementById('optDivorced').innerText = t.divorced;
+      document.getElementById('optWidowed').innerText = t.widowed;
+      document.getElementById('lblEdu').innerText = t.education;
+      document.getElementById('optAllQual').innerText = t.allQual;
+      document.getElementById('lblProf').innerText = t.profession;
+      document.getElementById('optAllOcc').innerText = t.allOcc;
+      document.getElementById('lblHeight').innerText = t.minHeight;
+      document.getElementById('optAnyHeight').innerText = t.anyHeight;
+      document.getElementById('txtResetFilters').innerText = t.resetFilters;
+      document.getElementById('txtRegistryTitle').innerText = t.registryTitle;
+      document.getElementById('txtLoading').innerText = t.loading;
+      document.getElementById('tabAll').innerText = t.all;
+      
+      const signBtn = document.getElementById('txtSignInBtn');
+      if (signBtn) signBtn.innerText = t.signIn;
+    }
+
     let state = {
       profiles: [],
       filtered: [],
@@ -835,7 +939,6 @@
       fetchActiveProfiles();
     });
 
-    // SCROLL OR CLICK TRIGGER FOR GUEST LOCK
     let hasTriggeredGuestLock = false;
 
     window.addEventListener('scroll', () => {
@@ -1197,15 +1300,16 @@
 
     function renderNavUser() {
       const container = document.getElementById('authActions');
+      const t = TRANSLATIONS[currentLang];
       if (state.user) {
         container.innerHTML = `
           <div class="user-pill">
             <span style="font-size: 0.8rem; font-weight: 600; padding: 0 0.5rem;">${state.user.fullName.split(' ')[0]}</span>
           </div>
-          <button class="btn btn-ghost" onclick="signOut()">Sign Out</button>
+          <button class="btn btn-ghost" onclick="signOut()">${t.signOut}</button>
         `;
       } else {
-        container.innerHTML = `<button class="btn btn-primary" onclick="openLoginModal('login')">Sign In</button>`;
+        container.innerHTML = `<button class="btn btn-primary" onclick="openLoginModal('login')">${t.signIn}</button>`;
       }
     }
 
