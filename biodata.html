@@ -30,7 +30,28 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding: 1.5rem 0.85rem 4rem 0.85rem; }
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding: 1.5rem 0.85rem 4rem 0.85rem; position: relative; }
+
+    /* Language Switcher Floating/Header Mini Button */
+    .lang-bar {
+      max-width: 680px;
+      margin: 0 auto 0.75rem auto;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-lang {
+      background: var(--surface-light);
+      color: var(--dark);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
 
     .form-container {
       max-width: 680px;
@@ -237,6 +258,10 @@
 </head>
 <body>
 
+  <div class="lang-bar">
+    <button class="btn-lang" id="langSwitchBtn" onclick="toggleLanguage()">🇮🇳 हिंदी</button>
+  </div>
+
   <div class="form-container">
     
     <div class="form-header">
@@ -247,154 +272,154 @@
     <form id="biodataForm" onsubmit="submitBiodata(event)">
       
       <div id="planSelectionSection">
-        <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Tier</label>
+        <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);" id="lblSelectTier">Select Membership Tier</label>
         <div class="membership-tier-container">
           <div class="tier-card" id="tierMonthly" onclick="selectPlan('Monthly')">
-            <h4>Monthly Plan</h4>
+            <h4 id="lblMonthlyPlan">Monthly Plan</h4>
             <p id="labelMonthlyFee">...</p>
-            <span>Standard Membership</span>
+            <span id="lblStandardMem">Standard Membership</span>
           </div>
           <div class="tier-card selected" id="tierAnnual" onclick="selectPlan('Annual')">
-            <h4>Annual Plan</h4>
+            <h4 id="lblAnnualPlan">Annual Plan</h4>
             <p id="labelAnnualFee">...</p>
-            <span style="color: var(--success); font-weight: 700;">Recommended</span>
+            <span style="color: var(--success); font-weight: 700;" id="lblRecommended">Recommended</span>
           </div>
         </div>
       </div>
 
-      <div class="section-title">1. Basic Details</div>
+      <div class="section-title" id="secTitle1">1. Basic Details</div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Candidate Full Name *</label>
+          <label id="lblFullName">Candidate Full Name *</label>
           <input type="text" id="fullName" required placeholder="Full Name">
         </div>
         <div class="form-group">
-          <label>Gender *</label>
+          <label id="lblGender">Gender *</label>
           <select id="gender" required>
-            <option value="">Select Gender</option>
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
+            <option value="" id="optSelectGender">Select Gender</option>
+            <option value="Female" id="optFemale">Female</option>
+            <option value="Male" id="optMale">Male</option>
           </select>
         </div>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Date of Birth *</label>
+          <label id="lblDob">Date of Birth *</label>
           <input type="date" id="dob" required onchange="calculateAutoAge('dob', 'age')">
         </div>
         <div class="form-group">
-          <label>Age (Auto-Calculated) *</label>
+          <label id="lblAge">Age (Auto-Calculated) *</label>
           <input type="number" id="age" min="18" max="80" required placeholder="Years">
         </div>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Height *</label>
+          <label id="lblHeight">Height *</label>
           <input type="text" id="height" required placeholder="e.g. 5'6&quot;">
         </div>
         <div class="form-group">
-          <label>Marital Status *</label>
+          <label id="lblMarital">Marital Status *</label>
           <select id="maritalStatus" required>
-            <option value="Never Married">Never Married</option>
-            <option value="Divorced">Divorced</option>
-            <option value="Widowed">Widowed</option>
+            <option value="Never Married" id="optNeverMarried">Never Married</option>
+            <option value="Divorced" id="optDivorced">Divorced</option>
+            <option value="Widowed" id="optWidowed">Widowed</option>
           </select>
         </div>
       </div>
 
-      <div class="section-title">2. Education & Profession</div>
+      <div class="section-title" id="secTitle2">2. Education & Profession</div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Highest Qualification *</label>
+          <label id="lblEdu">Highest Qualification *</label>
           <select id="education" required></select>
         </div>
         <div class="form-group">
-          <label>Occupation / Profession *</label>
+          <label id="lblProf">Occupation / Profession *</label>
           <select id="profession" required></select>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Annual Income *</label>
+        <label id="lblIncome">Annual Income *</label>
         <input type="text" id="income" required placeholder="e.g. 12 LPA / ₹10 Lakhs PA">
       </div>
 
-      <div class="section-title">3. Parental & Family Background</div>
+      <div class="section-title" id="secTitle3">3. Parental & Family Background</div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Father's Name *</label>
+          <label id="lblFatherName">Father's Name *</label>
           <input type="text" id="fatherName" required placeholder="Father's Full Name">
         </div>
         <div class="form-group">
-          <label>Father's Occupation *</label>
+          <label id="lblFatherOcc">Father's Occupation *</label>
           <select id="fatherOccupation" required></select>
         </div>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Mother's Name *</label>
+          <label id="lblMotherName">Mother's Name *</label>
           <input type="text" id="motherName" required placeholder="Mother's Full Name">
         </div>
         <div class="form-group">
-          <label>Mother's Occupation *</label>
+          <label id="lblMotherOcc">Mother's Occupation *</label>
           <select id="motherOccupation" required></select>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Other Family Details</label>
+        <label id="lblFamilyDetails">Other Family Details</label>
         <textarea id="familyDetails" rows="2" placeholder="Siblings, native place, family status, etc."></textarea>
       </div>
 
-      <div class="section-title">4. Location & Confidential Contact</div>
+      <div class="section-title" id="secTitle4">4. Location & Confidential Contact</div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>State *</label>
+          <label id="lblState">State *</label>
           <select id="state" required onchange="populateCities('state', 'city', 'cityCustom')">
-            <option value="">Select State</option>
+            <option value="" id="optSelectState">Select State</option>
           </select>
         </div>
         <div class="form-group">
-          <label>City *</label>
+          <label id="lblCity">City *</label>
           <select id="city" required onchange="checkCustomCity('city', 'cityCustom')">
-            <option value="">Select City</option>
+            <option value="" id="optSelectCity">Select City</option>
           </select>
           <input type="text" id="cityCustom" placeholder="Type city name" style="display: none; margin-top: 0.35rem;">
         </div>
       </div>
 
       <div class="form-group">
-        <label>Country *</label>
+        <label id="lblCountry">Country *</label>
         <input type="text" id="country" required value="India">
       </div>
 
       <div class="form-group">
-        <label>Complete House Address <span class="privacy-tag">[Admin Confidential]</span> *</label>
+        <label id="lblAddress">Complete House Address <span class="privacy-tag">[Admin Confidential]</span> *</label>
         <input type="text" id="exactAddress" required placeholder="House/Flat No, Landmark, Sector/Area, Pincode">
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Email Address <span class="privacy-tag">[Admin Confidential]</span> *</label>
+          <label id="lblEmail">Email Address <span class="privacy-tag">[Admin Confidential]</span> *</label>
           <input type="email" id="email" required placeholder="name@domain.com">
         </div>
         <div class="form-group">
-          <label>Phone / WhatsApp <span class="privacy-tag">[Admin Confidential]</span> *</label>
+          <label id="lblPhone">Phone / WhatsApp <span class="privacy-tag">[Admin Confidential]</span> *</label>
           <input type="tel" id="phone" required placeholder="+91 00000 00000">
         </div>
       </div>
 
-      <div class="section-title">5. Preferences & Photograph</div>
+      <div class="section-title" id="secTitle5">5. Preferences & Photograph</div>
 
       <div class="form-group">
-        <label>Upload Candidate Photograph *</label>
+        <label id="lblPhoto">Upload Candidate Photograph *</label>
         <input type="file" id="photoFile" accept="image/*" required onchange="handlePhotoUpload(event)">
         <div id="photoPreviewBox" class="preview-box">
           <img id="photoPreviewImg" class="preview-img" src="" alt="Preview">
@@ -402,7 +427,7 @@
       </div>
 
       <div class="form-group">
-        <label>Partner Preferences</label>
+        <label id="lblPreferences">Partner Preferences</label>
         <textarea id="partnerPreferences" rows="2" placeholder="Education, profession, outlook expectations"></textarea>
       </div>
 
@@ -420,13 +445,13 @@
 
       <div class="upi-box">
         <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Membership Amount</p>
-        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;" id="displayPayAmount">...</h1>
+        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;" id="displayPayAmount">₹1999</h1>
 
         <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
           <img id="upiQrImg" alt="UPI QR" style="width: 100%; height: 100%;">
         </div>
 
-        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code id="displayUpiId">-</code></p>
+        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code id="displayUpiId">sinha361@icici</code></p>
         
         <a id="upiPayLink" href="#" class="btn btn-primary" style="margin-bottom: 0.5rem;">
           Pay via Any UPI App
@@ -503,12 +528,156 @@
       "Other": ["Other"]
     };
 
+    // LANGUAGE DICTIONARY FOR BIODATA FORM
+    let currentLang = 'en';
+    const TRANSLATIONS = {
+      en: {
+        portalSubheader: "Candidate Biodata Submission Portal",
+        selectTier: "Select Membership Tier",
+        monthlyPlan: "Monthly Plan",
+        standardMem: "Standard Membership",
+        annualPlan: "Annual Plan",
+        recommended: "Recommended",
+        sec1: "1. Basic Details",
+        fullName: "Candidate Full Name *",
+        gender: "Gender *",
+        selectGender: "Select Gender",
+        female: "Female",
+        male: "Male",
+        dob: "Date of Birth *",
+        age: "Age (Auto-Calculated) *",
+        height: "Height *",
+        marital: "Marital Status *",
+        neverMarried: "Never Married",
+        divorced: "Divorced",
+        widowed: "Widowed",
+        sec2: "2. Education & Profession",
+        edu: "Highest Qualification *",
+        prof: "Occupation / Profession *",
+        income: "Annual Income *",
+        sec3: "3. Parental & Family Background",
+        fatherName: "Father's Name *",
+        fatherOcc: "Father's Occupation *",
+        motherName: "Mother's Name *",
+        motherOcc: "Mother's Occupation *",
+        familyDetails: "Other Family Details",
+        sec4: "4. Location & Confidential Contact",
+        state: "State *",
+        selectState: "Select State",
+        city: "City *",
+        selectCity: "Select City",
+        country: "Country *",
+        address: "Complete House Address [Admin Confidential] *",
+        email: "Email Address [Admin Confidential] *",
+        phone: "Phone / WhatsApp [Admin Confidential] *",
+        sec5: "5. Preferences & Photograph",
+        photo: "Upload Candidate Photograph *",
+        preferences: "Partner Preferences",
+        submit: "Submit Biodata & Proceed"
+      },
+      hi: {
+        portalSubheader: "उम्मीदवार बायोडाटा सबमिशन पोर्टल",
+        selectTier: "सदस्यता श्रेणी चुनें",
+        monthlyPlan: "मासिक योजना",
+        standardMem: "मानक सदस्यता",
+        annualPlan: "वार्षिक योजना",
+        recommended: "अनुशंसित",
+        sec1: "1. बुनियादी विवरण",
+        fullName: "उम्मीदवार का पूरा नाम *",
+        gender: "लिंग *",
+        selectGender: "लिंग चुनें",
+        female: "महिला",
+        male: "पुरुष",
+        dob: "जन्म तिथि *",
+        age: "आयु (स्वचालित गणना) *",
+        height: "लंबाई *",
+        marital: "वैवाहिक स्थिति *",
+        neverMarried: "अविवाहित",
+        divorced: "तलाकशुदा",
+        widowed: "विधवा/विधुर",
+        sec2: "2. शिक्षा और पेशा",
+        edu: "उच्चतम योग्यता *",
+        prof: "व्यवसाय / पेशा *",
+        income: "वार्षिक आय *",
+        sec3: "3. माता-पिता और पारिवारिक पृष्ठभूमि",
+        fatherName: "पिता का नाम *",
+        fatherOcc: "पिता का व्यवसाय *",
+        motherName: "माता का नाम *",
+        motherOcc: "माता का व्यवसाय *",
+        familyDetails: "अन्य पारिवारिक विवरण",
+        sec4: "4. स्थान और गोपनीय संपर्क",
+        state: "राज्य *",
+        selectState: "राज्य चुनें",
+        city: "शहर *",
+        selectCity: "शहर चुनें",
+        country: "देश *",
+        address: "पूर्ण मकान का पता [एडमिन गोपनीय] *",
+        email: "ईमेल पता [एडमिन गोपनीय] *",
+        phone: "फ़ोन / व्हाट्सएप [एडमिन गोपनीय] *",
+        sec5: "5. प्राथमिकताएं और फोटोग्राफ",
+        photo: "उम्मीदवार की फोटो अपलोड करें *",
+        preferences: "जीवनसाथी की प्राथमिकताएं",
+        submit: "बायोडाटा जमा करें और आगे बढ़ें"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'hi' : 'en';
+      document.getElementById('langSwitchBtn').innerText = currentLang === 'en' ? '🇮🇳 हिंदी' : '🇬🇧 English';
+      applyTranslations();
+    }
+
+    function applyTranslations() {
+      const t = TRANSLATIONS[currentLang];
+      document.getElementById('portalSubheader').innerText = t.portalSubheader;
+      document.getElementById('lblSelectTier').innerText = t.selectTier;
+      document.getElementById('lblMonthlyPlan').innerText = t.monthlyPlan;
+      document.getElementById('lblStandardMem').innerText = t.standardMem;
+      document.getElementById('lblAnnualPlan').innerText = t.annualPlan;
+      document.getElementById('lblRecommended').innerText = t.recommended;
+      document.getElementById('secTitle1').innerText = t.sec1;
+      document.getElementById('lblFullName').innerText = t.fullName;
+      document.getElementById('lblGender').innerText = t.gender;
+      document.getElementById('optSelectGender').innerText = t.selectGender;
+      document.getElementById('optFemale').innerText = t.female;
+      document.getElementById('optMale').innerText = t.male;
+      document.getElementById('lblDob').innerText = t.dob;
+      document.getElementById('lblAge').innerText = t.age;
+      document.getElementById('lblHeight').innerText = t.height;
+      document.getElementById('lblMarital').innerText = t.marital;
+      document.getElementById('optNeverMarried').innerText = t.neverMarried;
+      document.getElementById('optDivorced').innerText = t.divorced;
+      document.getElementById('optWidowed').innerText = t.widowed;
+      document.getElementById('secTitle2').innerText = t.sec2;
+      document.getElementById('lblEdu').innerText = t.edu;
+      document.getElementById('lblProf').innerText = t.prof;
+      document.getElementById('lblIncome').innerText = t.income;
+      document.getElementById('secTitle3').innerText = t.sec3;
+      document.getElementById('lblFatherName').innerText = t.fatherName;
+      document.getElementById('lblFatherOcc').innerText = t.fatherOcc;
+      document.getElementById('lblMotherName').innerText = t.motherName;
+      document.getElementById('lblMotherOcc').innerText = t.motherOcc;
+      document.getElementById('lblFamilyDetails').innerText = t.familyDetails;
+      document.getElementById('secTitle4').innerText = t.sec4;
+      document.getElementById('lblState').innerText = t.state;
+      document.getElementById('optSelectState').innerText = t.selectState;
+      document.getElementById('lblCity').innerText = t.city;
+      document.getElementById('optSelectCity').innerText = t.selectCity;
+      document.getElementById('lblCountry').innerText = t.country;
+      document.getElementById('lblAddress').innerHTML = t.address;
+      document.getElementById('lblEmail').innerHTML = t.email;
+      document.getElementById('lblPhone').innerHTML = t.phone;
+      document.getElementById('secTitle5').innerText = t.sec5;
+      document.getElementById('lblPhoto').innerText = t.photo;
+      document.getElementById('lblPreferences').innerText = t.preferences;
+      document.getElementById('submitBtn').innerText = t.submit;
+    }
+
     let candidateBase64 = "";
     let screenshotBase64 = "";
     let savedProfileId = "";
     let selectedPlan = "Annual";
 
-    // Initialize with empty/loading values instead of hardcoded 499/1999
     let systemSettings = JSON.parse(localStorage.getItem('cm_cached_settings')) || {
       isFreeRegistration: false,
       monthlyFee: "...",
@@ -565,12 +734,12 @@
       if (isFree) {
         planSection.style.display = 'none';
         subheader.innerText = "Free Registration Mode Active (No Payment Required)";
-        submitBtn.innerText = "Submit Biodata for Direct Review (Free)";
+        submitBtn.innerText = currentLang === 'hi' ? "समीक्षा के लिए बायोडाटा जमा करें (निःशुल्क)" : "Submit Biodata for Direct Review (Free)";
       } else {
         planSection.style.display = 'block';
-        subheader.innerText = "Candidate Biodata Submission Portal";
+        subheader.innerText = currentLang === 'hi' ? "उम्मीदवार बायोडाटा सबमिशन पोर्टल" : "Candidate Biodata Submission Portal";
         const fee = (selectedPlan === 'Monthly') ? systemSettings.monthlyFee : systemSettings.annualFee;
-        submitBtn.innerText = `Proceed to Pay ₹${fee} (${selectedPlan} Plan)`;
+        submitBtn.innerText = currentLang === 'hi' ? `₹${fee} भुगतान के लिए आगे बढ़ें (${selectedPlan} योजना)` : `Proceed to Pay ₹${fee} (${selectedPlan} Plan)`;
       }
     }
 
@@ -584,7 +753,7 @@
     function initLocationDropdown() {
       const stateSel = document.getElementById('state');
       if (!stateSel) return;
-      stateSel.innerHTML = `<option value="">Select State</option>`;
+      stateSel.innerHTML = `<option value="" id="optSelectState">Select State</option>`;
       Object.keys(LOCATION_DATA).forEach(st => {
         stateSel.innerHTML += `<option value="${st}">${st}</option>`;
       });
@@ -595,7 +764,7 @@
       const citySel = document.getElementById(cityId);
       const customInput = document.getElementById(customId);
       
-      citySel.innerHTML = `<option value="">Select City</option>`;
+      citySel.innerHTML = `<option value="" id="optSelectCity">Select City</option>`;
       if (customInput) customInput.style.display = "none";
 
       if (stateVal && LOCATION_DATA[stateVal]) {
