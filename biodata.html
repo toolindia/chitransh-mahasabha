@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Chitransh Mahasabha - Matrimonial Network</title>
+  <title>Candidate Biodata Registration - Chitransh Mahasabha</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -22,752 +20,446 @@
       --muted: #7A6F6D;
       --border: #F5DEC2;
       --white: #FFFFFF;
+      --success: #1E8E3E;
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
-      --shadow-sm: 0 2px 8px rgba(255, 126, 126, 0.08);
-      --shadow-md: 0 8px 24px rgba(255, 126, 126, 0.12);
+      --shadow-sm: 0 4px 12px rgba(255, 126, 126, 0.08);
+      --shadow-md: 0 10px 28px rgba(43, 35, 33, 0.1);
       --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.25);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    
-    html, body {
-      background-color: var(--bg);
-      color: var(--dark);
-      line-height: 1.5;
-      margin: 0 !important;
-      padding: 0 !important;
-      padding-bottom: 5rem;
-      width: 100% !important;
-      min-height: 100% !important;
-      display: block !important;
-    }
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding: 1.5rem 0.85rem 4rem 0.85rem; }
 
-    .portal-header-bar {
+    .form-container {
+      max-width: 680px;
+      margin: 0 auto;
       background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 0.75rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-      width: 100%;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .brand-title { font-size: 1.05rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.35rem; }
-    .brand-title span { color: var(--secondary); }
-
-    .header-right-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
-
-    @media (max-width: 520px) {
-      .portal-header-bar { padding: 0.6rem 0.75rem; flex-direction: column; align-items: stretch; text-align: center; }
-      .brand-title { justify-content: center; margin-bottom: 0.2rem; }
-      .header-right-actions { justify-content: center; }
-    }
-
-    .btn {
-      min-height: 38px;
-      padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700;
-      border-radius: var(--radius-sm); cursor: pointer; border: none;
-      transition: all 0.2s ease; text-decoration: none;
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
-      user-select: none;
-      white-space: nowrap;
-    }
-
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); box-shadow: var(--shadow-sm); }
-    .btn-primary:hover { opacity: 0.95; }
-    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
-    .btn-outline:hover { background: var(--surface-light); }
-    .btn-ghost { background: transparent; color: var(--dark); }
-    .btn-lang { background: var(--surface-light); color: var(--dark); border: 1px solid var(--border); font-size: 0.75rem; padding: 0.3rem 0.6rem; }
-
-    .user-pill {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--surface-light); padding: 0.2rem 0.6rem 0.2rem 0.2rem;
-      border-radius: 20px;
-    }
-
-    .loader-container {
-      grid-column: 1 / -1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 4rem 1rem; gap: 1rem; color: var(--muted);
-    }
-    .spinner {
-      width: 42px; height: 42px;
-      border: 4px solid var(--surface-light);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .filter-wrapper { max-width: 1200px; margin: 0.85rem auto; padding: 0 0.85rem; }
-    .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; box-shadow: var(--shadow-sm); }
-    
-    .search-action-row {
-      display: flex; gap: 0.4rem; align-items: center; justify-content: space-between; flex-wrap: wrap;
-    }
-    
-    .search-action-row input {
-      flex: 1; min-width: 180px; height: 40px; padding: 0.45rem 0.75rem; 
-      border: 1.5px solid var(--border); border-radius: var(--radius-sm); 
-      font-size: 0.85rem; outline: none; background: var(--bg); color: var(--dark);
-    }
-
-    @media (max-width: 480px) {
-      .search-action-row { flex-direction: column; align-items: stretch; gap: 0.5rem; }
-      .search-action-row input { width: 100%; }
-      .search-action-row .btn { width: 100%; }
-    }
-    
-    .filter-grid {
-      display: none;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
-      gap: 0.65rem;
-      align-items: flex-end;
-      margin-top: 0.75rem;
-    }
-    .filter-grid.expanded {
-      display: grid !important;
-    }
-
-    .filter-control { display: flex; flex-direction: column; gap: 0.2rem; }
-    .filter-control label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--muted); }
-    .filter-control select, .filter-control input {
-      height: 38px; padding: 0.4rem 0.6rem; border-radius: var(--radius-sm);
-      border: 1px solid var(--border); background-color: var(--bg);
-      font-size: 0.8rem; color: var(--dark); outline: none;
-    }
-
-    .catalog-wrapper { max-width: 1200px; margin: 1rem auto 3rem auto; padding: 0 0.85rem; }
-    .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
-    .profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.15rem; }
-
-    @media (max-width: 600px) {
-      .profile-grid { grid-template-columns: 1fr; }
-    }
-
-    .profile-card {
-      background: var(--white); border-radius: var(--radius-md);
-      border: 1px solid var(--border); overflow: hidden;
-      box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
-      position: relative; transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: pointer;
-    }
-    .profile-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-    .profile-img-container { position: relative; width: 100%; height: 260px; background-color: var(--surface-light); }
-    .profile-img { width: 100%; height: 100%; object-fit: cover; }
-
-    .shortlist-tag-btn {
-      position: absolute; top: 10px; right: 10px;
-      background: rgba(255, 255, 255, 0.95); border: 1px solid var(--border);
-      border-radius: 20px; padding: 0.3rem 0.65rem; font-size: 0.72rem;
-      font-weight: 800; cursor: pointer; color: var(--dark);
-    }
-    .shortlist-tag-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
-
-    .profile-body { padding: 1rem; display: flex; flex-direction: column; flex-grow: 1; gap: 0.35rem; }
-    .profile-name-row { display: flex; justify-content: space-between; align-items: baseline; }
-    .profile-name { font-size: 1.1rem; font-weight: 800; color: var(--dark); }
-    .profile-age { font-size: 0.85rem; color: var(--secondary); font-weight: 700; }
-    .profile-meta-line { font-size: 0.82rem; color: var(--muted); }
-    .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--dark); width: fit-content; }
-
-    .modal-overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.75);
-      backdrop-filter: blur(4px);
-      z-index: 99999;
-      display: none;
-      align-items: flex-start;
-      justify-content: center;
-      padding-top: 1.5rem;
-    }
-    .modal-overlay.active { display: flex !important; }
-
-    .modal-card {
-      background: var(--white);
+      border: 2px solid var(--secondary);
       border-radius: var(--radius-md);
-      max-width: 620px; width: 95%;
-      max-height: 85vh;
-      overflow-y: auto;
-      position: relative;
-      border: 2px solid var(--primary);
-      box-shadow: var(--shadow-lg);
-      padding: 1.5rem;
-      animation: modalSlideDown 0.22s ease forwards;
+      padding: 2rem 1.5rem;
+      box-shadow: var(--shadow-md);
     }
 
-    @keyframes modalSlideDown {
-      from { opacity: 0; transform: translateY(-15px); }
-      to { opacity: 1; transform: translateY(0); }
+    @media (max-width: 580px) {
+      .form-container { padding: 1.25rem 1rem; border-radius: var(--radius-sm); }
     }
 
-    .modal-close-btn { position: absolute; top: 0.75rem; right: 0.75rem; background: transparent; border: none; font-size: 1.4rem; font-weight: 700; cursor: pointer; color: var(--muted); }
-
-    .biodata-sheet { border: 1.5px solid var(--secondary); border-radius: var(--radius-md); padding: 1.25rem; background: #FFF; margin-bottom: 1rem; }
-    .biodata-header { display: flex; align-items: center; gap: 1rem; border-bottom: 1.5px solid var(--surface-light); padding-bottom: 0.85rem; margin-bottom: 0.85rem; }
-    .biodata-photo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
-    .biodata-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; color: var(--primary); margin: 0.75rem 0 0.25rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
-    .biodata-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-    .biodata-table td { padding: 0.3rem 0; }
-    .biodata-table td:first-child { color: var(--muted); width: 40%; font-weight: 600; }
-
-    .form-group { margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
-    .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--dark); }
-    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); }
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
-    @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
-
-    .password-input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    .password-input-wrapper input {
-      width: 100%;
-      padding-right: 2.4rem;
-    }
-    .toggle-password-btn {
-      position: absolute;
-      right: 0.65rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1.1rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.2rem;
-    }
-
-    .auth-error-box {
-      display: none;
-      background-color: #FCE8E6;
-      border: 1px solid #D93025;
-      color: #C5221F;
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 0.55rem 0.75rem;
-      border-radius: var(--radius-sm);
-      margin-bottom: 0.75rem;
+    .form-header {
       text-align: center;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-header h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.75rem;
+      color: var(--primary);
+      margin-bottom: 0.2rem;
+    }
+
+    .form-header p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      font-weight: 700;
+    }
+
+    .section-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+      margin: 1.5rem 0 0.65rem 0;
+      border-bottom: 1px solid var(--surface-light);
+      padding-bottom: 0.35rem;
+    }
+
+    .form-group {
+      margin-bottom: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+      padding: 0.6rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      outline: none;
+      background: var(--bg);
+      color: var(--dark);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      background: var(--white);
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    @media (max-width: 580px) {
+      .form-row-2 { grid-template-columns: 1fr; gap: 0.5rem; }
+    }
+
+    .privacy-tag {
+      font-size: 0.68rem;
+      color: #C5221F;
+      font-weight: 700;
+      margin-left: 0.25rem;
     }
 
     .membership-tier-container {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin: 0.5rem 0 1rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 0.35rem 0 1rem 0;
     }
+
     .tier-card {
-      border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 0.85rem;
-      cursor: pointer; text-align: center; background: var(--bg); transition: all 0.2s ease;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 0.5rem;
+      cursor: pointer;
+      text-align: center;
+      background: var(--bg);
+      transition: all 0.2s ease;
     }
+
     .tier-card.selected {
-      border-color: var(--primary); background: var(--surface-light);
+      border-color: var(--primary);
+      background: var(--surface-light);
     }
-    .tier-card h4 { font-size: 0.85rem; color: var(--dark); }
+
+    .tier-card h4 { font-size: 0.82rem; color: var(--dark); font-weight: 800; }
     .tier-card p { font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-top: 0.2rem; }
+    .tier-card span { font-size: 0.68rem; color: var(--muted); }
 
-    .upi-box {
-      border: 2px dashed var(--secondary); background: var(--surface-light);
-      border-radius: var(--radius-md); padding: 1.25rem; text-align: center; margin: 1rem 0;
-    }
-
-    .auth-tab-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    .auth-tab { padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 700; border-bottom: 2px solid transparent; color: var(--muted); }
-    .auth-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
-
-    .guest-restricted-blur {
-      filter: blur(6px);
-      pointer-events: none;
+    .btn {
+      min-height: 44px;
+      padding: 0.65rem 1.4rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      width: 100%;
       user-select: none;
     }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-primary:hover { opacity: 0.95; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px);
+      z-index: 2000; display: none; align-items: flex-start; justify-content: center;
+      padding: 1.5rem 1rem 3rem 1rem; overflow-y: auto;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+      background: var(--white); border-radius: var(--radius-md);
+      max-width: 480px; width: 100%; max-height: 88vh;
+      overflow-y: auto; position: relative;
+      border: 2px solid var(--primary);
+      box-shadow: var(--shadow-lg);
+      padding: 1.5rem; text-align: center;
+      animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .modal-card {
+        position: fixed !important;
+        bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important;
+        max-width: 100% !important; max-height: 85vh !important;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+        border: none !important; border-top: 3px solid var(--primary) !important;
+        padding: 1.25rem 1rem 2.5rem 1rem !important;
+        animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+      }
+      @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
+    }
+
+    .upi-box {
+      border: 2px dashed var(--secondary);
+      background: var(--surface-light);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin: 1rem 0;
+    }
+
+    .preview-box { display: none; margin-top: 0.5rem; text-align: center; }
+    .preview-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
   </style>
 </head>
 <body>
 
-  <!-- RESPONSIVE HEADER WITH LANGUAGE TRANSLATOR BUTTON -->
-  <header class="portal-header-bar">
-    <div class="brand-title">Chitransh<span>Mahasabha</span></div>
-    <div class="header-right-actions">
-      <button class="btn btn-lang" id="langSwitchBtn" onclick="toggleLanguage()">🇮🇳 हिंदी</button>
-      <button class="btn btn-outline" id="txtRegisterBtn" onclick="openRegistrationModal()">Register Profile</button>
-      <div id="authActions">
-        <button class="btn btn-primary" id="txtSignInBtn" onclick="openLoginModal('login')">Sign In</button>
-      </div>
-    </div>
-  </header>
-
-  <div class="filter-wrapper">
-    <div class="filter-container">
-      <div class="search-action-row">
-        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state...">
-        <button class="btn btn-primary" id="txtSearchBtn" onclick="guardedAction(() => applyFilters())">Search</button>
-        <button class="btn btn-outline" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
-      </div>
-
-      <div class="filter-grid" id="mainFilterPanel">
-        <div class="filter-control">
-          <label id="lblGender">Gender</label>
-          <select id="filterGender" onchange="guardedAction(() => applyFilters())">
-            <option value="" id="optAllGenders">All Genders</option>
-            <option value="Female" id="optFemale">Female</option>
-            <option value="Male" id="optMale">Male</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblAge">Age Bracket</label>
-          <select id="filterAge" onchange="guardedAction(() => applyFilters())">
-            <option value="" id="optAnyAge">Any Age</option>
-            <option value="21-25">21 - 25</option>
-            <option value="26-30">26 - 30</option>
-            <option value="31-35">31 - 35</option>
-            <option value="36-45">36 - 45</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblMarital">Marital Status</label>
-          <select id="filterMarital" onchange="guardedAction(() => applyFilters())">
-            <option value="" id="optAnyStatus">Any Status</option>
-            <option value="Never Married" id="optNeverMarried">Never Married</option>
-            <option value="Divorced" id="optDivorced">Divorced</option>
-            <option value="Widowed" id="optWidowed">Widowed</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblEdu">Education</label>
-          <select id="filterEducation" onchange="guardedAction(() => applyFilters())">
-            <option value="" id="optAllQual">All Qualifications</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblProf">Profession</label>
-          <select id="filterProfession" onchange="guardedAction(() => applyFilters())">
-            <option value="" id="optAllOcc">All Occupations</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblHeight">Min Height</label>
-          <select id="filterHeight" onchange="guardedAction(() => applyFilters())">
-            <option value="" id="optAnyHeight">Any Height</option>
-            <option value="5.0">Above 5'0"</option>
-            <option value="5.4">Above 5'4"</option>
-            <option value="5.8">Above 5'8"</option>
-            <option value="6.0">Above 6'0"</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" id="txtResetFilters" onclick="guardedAction(() => resetFilters())">Reset Filters</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <main class="catalog-wrapper">
-    <div class="catalog-header">
-      <div>
-        <h2 style="font-size: 1.15rem;" id="txtRegistryTitle">Candidate Registry</h2>
-        <p style="font-size: 0.75rem; color: var(--muted);" id="profileCounter">Connecting to database...</p>
-      </div>
-      <div style="display: flex; gap: 0.35rem;">
-        <button class="btn btn-outline" id="tabAll" onclick="guardedAction(() => switchCatalogMode('all'))">All</button>
-        <button class="btn btn-ghost" id="tabSaved" onclick="guardedAction(() => switchCatalogMode('saved'))">Saved (<span id="savedCounter">0</span>)</button>
-      </div>
+  <div class="form-container">
+    
+    <div class="form-header">
+      <h1>CHITRANSH MAHASABHA</h1>
+      <p id="portalSubheader">Candidate Biodata Submission Portal</p>
     </div>
 
-    <div class="profile-grid" id="profilesContainer">
-      <div class="loader-container">
-        <div class="spinner"></div>
-        <p id="txtLoading">Loading candidate records from database...</p>
-      </div>
-    </div>
-  </main>
-
-  <!-- BIODATA VIEW MODAL -->
-  <div class="modal-overlay" id="biodataModal">
-    <div class="modal-card">
-      <button class="modal-close-btn" onclick="closeModal('biodataModal')">&times;</button>
+    <form id="biodataForm" onsubmit="submitBiodata(event)">
       
-      <div id="biodataPrintSurface" class="biodata-sheet">
-        <div style="text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 0.4rem; margin-bottom: 0.85rem;">
-          <h1 style="font-size: 1.25rem; color: var(--primary); font-weight: 800;">CHITRANSH MAHASABHA</h1>
-          <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Official Matrimonial Biodata</p>
-        </div>
-
-        <div class="biodata-header">
-          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate">
-          <div>
-            <h2 id="bioName" style="font-size: 1.15rem; font-weight: 800;">Candidate Name</h2>
-            <p id="bioBasic" style="font-size: 0.82rem; color: var(--secondary); font-weight: 700;">Age - Height</p>
-            <p id="bioLocation" style="font-size: 0.78rem; color: var(--muted);">City, State, Country</p>
+      <div id="planSelectionSection">
+        <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Tier</label>
+        <div class="membership-tier-container">
+          <div class="tier-card" id="tierMonthly" onclick="selectPlan('Monthly')">
+            <h4>Monthly Plan</h4>
+            <p id="labelMonthlyFee">₹...</p>
+            <span>Standard Membership</span>
           </div>
-        </div>
-
-        <div class="biodata-title">Professional & Educational Record</div>
-        <table class="biodata-table">
-          <tr><td>Education</td><td id="bioEdu">-</td></tr>
-          <tr><td>Profession</td><td id="bioProf">-</td></tr>
-          <tr><td>Annual Income</td><td id="bioIncome">-</td></tr>
-          <tr><td>Marital Status</td><td id="bioMarital">-</td></tr>
-        </table>
-
-        <div class="biodata-title">Parental & Family Background</div>
-        <table class="biodata-table">
-          <tr><td>Father's Name</td><td id="bioFatherName">-</td></tr>
-          <tr><td>Father's Occupation</td><td id="bioFatherOcc">-</td></tr>
-          <tr><td>Mother's Name</td><td id="bioMotherName">-</td></tr>
-          <tr><td>Mother's Occupation</td><td id="bioMotherOcc">-</td></tr>
-          <tr><td>Other Family Details</td><td id="bioFamily">-</td></tr>
-        </table>
-
-        <div class="biodata-title">Partner Preferences</div>
-        <p id="bioPreferences" style="font-size: 0.82rem; line-height: 1.4;">-</p>
-
-        <div style="margin-top: 0.85rem; background: var(--surface-light); padding: 0.45rem; border-radius: 4px; font-size: 0.72rem; text-align: center;">
-          Candidate contact numbers & other confidential details are withheld for privacy. Contact Ghaziabad Chitransh Mahasabha desk quoting Profile ID.
+          <div class="tier-card selected" id="tierAnnual" onclick="selectPlan('Annual')">
+            <h4>Annual Plan</h4>
+            <p id="labelAnnualFee">₹...</p>
+            <span style="color: var(--success); font-weight: 700;">Recommended</span>
+          </div>
         </div>
       </div>
 
-      <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
-        <button class="btn btn-outline" style="flex: 1;" onclick="closeModal('biodataModal')">Close</button>
-        <button class="btn btn-primary" style="flex: 1;" onclick="exportBiodataPdf()">Download (PDF)</button>
+      <div class="section-title">1. Basic Details</div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Candidate Full Name *</label>
+          <input type="text" id="fullName" required placeholder="Full Name">
+        </div>
+        <div class="form-group">
+          <label>Gender *</label>
+          <select id="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+          </select>
+        </div>
       </div>
-    </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Date of Birth *</label>
+          <input type="date" id="dob" required onchange="calculateAutoAge('dob', 'age')">
+        </div>
+        <div class="form-group">
+          <label>Age (Auto-Calculated) *</label>
+          <input type="number" id="age" min="18" max="80" required placeholder="Years">
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Height *</label>
+          <input type="text" id="height" required placeholder="e.g. 5'6&quot;">
+        </div>
+        <div class="form-group">
+          <label>Marital Status *</label>
+          <select id="maritalStatus" required>
+            <option value="Never Married">Never Married</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Widowed">Widowed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-title">2. Education & Profession</div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Highest Qualification *</label>
+          <select id="education" required></select>
+        </div>
+        <div class="form-group">
+          <label>Occupation / Profession *</label>
+          <select id="profession" required></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Annual Income *</label>
+        <input type="text" id="income" required placeholder="e.g. 12 LPA / ₹10 Lakhs PA">
+      </div>
+
+      <div class="section-title">3. Parental & Family Background</div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Father's Name *</label>
+          <input type="text" id="fatherName" required placeholder="Father's Full Name">
+        </div>
+        <div class="form-group">
+          <label>Father's Occupation *</label>
+          <select id="fatherOccupation" required></select>
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Mother's Name *</label>
+          <input type="text" id="motherName" required placeholder="Mother's Full Name">
+        </div>
+        <div class="form-group">
+          <label>Mother's Occupation *</label>
+          <select id="motherOccupation" required></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Other Family Details</label>
+        <textarea id="familyDetails" rows="2" placeholder="Siblings, native place, family status, etc."></textarea>
+      </div>
+
+      <div class="section-title">4. Location & Confidential Contact</div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>State *</label>
+          <select id="state" required onchange="populateCities('state', 'city', 'cityCustom')">
+            <option value="">Select State</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>City *</label>
+          <select id="city" required onchange="checkCustomCity('city', 'cityCustom')">
+            <option value="">Select City</option>
+          </select>
+          <input type="text" id="cityCustom" placeholder="Type city name" style="display: none; margin-top: 0.35rem;">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Country *</label>
+        <input type="text" id="country" required value="India">
+      </div>
+
+      <div class="form-group">
+        <label>Complete House Address <span class="privacy-tag">[Admin Confidential]</span> *</label>
+        <input type="text" id="exactAddress" required placeholder="House/Flat No, Landmark, Sector/Area, Pincode">
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Email Address <span class="privacy-tag">[Admin Confidential]</span> *</label>
+          <input type="email" id="email" required placeholder="name@domain.com">
+        </div>
+        <div class="form-group">
+          <label>Phone / WhatsApp <span class="privacy-tag">[Admin Confidential]</span> *</label>
+          <input type="tel" id="phone" required placeholder="+91 00000 00000">
+        </div>
+      </div>
+
+      <div class="section-title">5. Preferences & Photograph</div>
+
+      <div class="form-group">
+        <label>Upload Candidate Photograph *</label>
+        <input type="file" id="photoFile" accept="image/*" required onchange="handlePhotoUpload(event)">
+        <div id="photoPreviewBox" class="preview-box">
+          <img id="photoPreviewImg" class="preview-img" src="" alt="Preview">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Partner Preferences</label>
+        <textarea id="partnerPreferences" rows="2" placeholder="Education, profession, outlook expectations"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="submitBtn" style="margin-top: 1rem;">
+        Submit Biodata & Proceed
+      </button>
+
+    </form>
   </div>
 
-  <!-- REGISTRATION MODAL -->
-  <div class="modal-overlay" id="registrationModal">
-    <div class="modal-card">
-      <button class="modal-close-btn" onclick="closeModal('registrationModal')">&times;</button>
-      <h2 style="margin-bottom: 0.25rem;">Profile Registration</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;" id="regFormSubtitle">Choose membership plan and register candidate.</p>
-
-      <form id="regForm" onsubmit="handleRegistrationSubmit(event)">
-        <div id="planSelectionWrapper">
-          <label style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);">Select Membership Plan</label>
-          <div class="membership-tier-container">
-            <div class="tier-card" id="tierMonthly" onclick="selectMembershipTier('Monthly')">
-              <h4>Monthly Plan</h4>
-              <p id="labelMonthlyFee">₹499</p>
-              <span style="font-size: 0.68rem; color: var(--muted);">Standard Access</span>
-            </div>
-            <div class="tier-card selected" id="tierAnnual" onclick="selectMembershipTier('Annual')">
-              <h4>Annual Plan</h4>
-              <p id="labelAnnualFee">₹1999</p>
-              <span style="font-size: 0.68rem; color: #1E8E3E; font-weight: 700;">Best Value</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Candidate Name *</label>
-            <input type="text" id="regFullName" required placeholder="Full Name">
-          </div>
-          <div class="form-group">
-            <label>Gender *</label>
-            <select id="regGender" required>
-              <option value="">Select</option>
-              <option value="Female">Female</option>
-              <option value="Male">Male</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Date of Birth *</label>
-            <input type="date" id="regDob" required onchange="calculateAutoAge('regDob', 'regAge')">
-          </div>
-          <div class="form-group">
-            <label>Age (Auto-Calculated) *</label>
-            <input type="number" id="regAge" min="18" max="80" required placeholder="Years">
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Height (e.g. 5'7") *</label>
-            <input type="text" id="regHeight" required placeholder="5'7&quot;">
-          </div>
-          <div class="form-group">
-            <label>Marital Status *</label>
-            <select id="regMarital" required>
-              <option value="Never Married">Never Married</option>
-              <option value="Divorced">Divorced</option>
-              <option value="Widowed">Widowed</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Highest Education *</label>
-            <select id="regEducation" required></select>
-          </div>
-          <div class="form-group">
-            <label>Profession / Occupation *</label>
-            <select id="regProfession" required></select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Annual Income *</label>
-          <input type="text" id="regIncome" required placeholder="e.g. 8 Lakhs PA">
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>State *</label>
-            <select id="regState" required onchange="populateCities('regState', 'regCity', 'regCityCustom')">
-              <option value="">Select State</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>City *</label>
-            <select id="regCity" required onchange="checkCustomCity('regCity', 'regCityCustom')">
-              <option value="">Select City</option>
-            </select>
-            <input type="text" id="regCityCustom" placeholder="Type city name" style="display: none; margin-top: 0.35rem;">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Country *</label>
-          <input type="text" id="regCountry" required value="India">
-        </div>
-
-        <div class="form-group">
-          <label>Exact Residential Address (Admin Confidential) *</label>
-          <input type="text" id="regExactAddress" required placeholder="House/Flat No, Landmark, Street, Pincode">
-        </div>
-
-        <div style="margin: 1.25rem 0 0.5rem 0; font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; border-bottom: 1px solid var(--surface-light); padding-bottom: 0.25rem;">
-          Parental & Family Background
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Father's Name *</label>
-            <input type="text" id="regFatherName" required placeholder="Father's Full Name">
-          </div>
-          <div class="form-group">
-            <label>Father's Occupation *</label>
-            <select id="regFatherOccupation" required></select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Mother's Name *</label>
-            <input type="text" id="regMotherName" required placeholder="Mother's Full Name">
-          </div>
-          <div class="form-group">
-            <label>Mother's Occupation *</label>
-            <select id="regMotherOccupation" required></select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Other Family Details</label>
-          <textarea id="regFamily" rows="2" placeholder="Siblings, native place, family status, etc."></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Upload Profile Photo *</label>
-          <input type="file" id="regPhotoFile" accept="image/*" required onchange="handleProfilePhotoSelection(event)">
-          <div id="imagePreviewBox" style="display: none; margin-top: 0.5rem; text-align: center;">
-            <img id="imagePreviewElement" src="" alt="Preview" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label>Email Address (Admin Confidential) *</label>
-            <input type="email" id="regEmail" required placeholder="name@domain.com">
-          </div>
-          <div class="form-group">
-            <label>Phone / WhatsApp (Admin Confidential) *</label>
-            <input type="tel" id="regPhone" required placeholder="+91 00000 00000">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Partner Preferences</label>
-          <textarea id="regPreferences" rows="2" placeholder="Expectations regarding education, profession, location, and outlook"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="regSubmitBtn">
-          Submit Profile
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- PAYMENT MODAL -->
   <div class="modal-overlay" id="paymentModal">
-    <div class="modal-card" style="max-width: 440px; text-align: center;">
-      <button class="modal-close-btn" onclick="closeModal('paymentModal')">&times;</button>
-      <h2 style="font-size: 1.3rem; color: var(--primary);">Registration Payment</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Profile Ref: <strong id="payProfileId">-</strong> (<span id="payPlanDisplay">Annual</span>)</p>
+    <div class="modal-card">
+      <h2 style="font-size: 1.3rem; color: var(--primary); margin-bottom: 0.25rem;">Verify & Activate Profile</h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.75rem;">Profile ID: <strong id="assignedProfileId">-</strong> (<span id="assignedPlanDisplay">Annual</span>)</p>
 
       <div class="upi-box">
-        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Payable Amount</p>
-        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.25rem 0;" id="payAmountDisplay">₹1999</h1>
-        
+        <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Membership Amount</p>
+        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;" id="displayPayAmount">₹1999</h1>
+
         <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-          <img id="upiQrCodeImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
+          <img id="upiQrImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
         </div>
 
-        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">UPI ID: <code id="payUpiIdDisplay">sinha361@icici</code></p>
+        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code id="displayUpiId">sinha361@icici</code></p>
         
-        <a id="upiIntentBtn" href="#" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.75rem;">
+        <a id="upiPayLink" href="#" class="btn btn-primary" style="margin-bottom: 0.5rem;">
           Pay via Any UPI App
         </a>
       </div>
 
-      <div style="text-align: left; margin-top: 1rem;">
+      <div style="text-align: left; border-top: 1px solid var(--border); padding-top: 1rem;">
         <div class="form-group">
-          <label style="font-size: 0.8rem; font-weight: 700; color: var(--dark);">Upload Payment Screenshot *</label>
-          <input type="file" id="payScreenshotFile" accept="image/*" required onchange="handleScreenshotSelection(event)">
-          <div id="screenshotPreviewBox" style="display: none; margin-top: 0.5rem; text-align: center;">
-            <img id="screenshotPreviewElement" src="" alt="Receipt Preview" style="max-width: 120px; border-radius: 6px; border: 1px solid var(--border);">
+          <label>Upload Payment Screenshot *</label>
+          <input type="file" id="screenshotFile" accept="image/*" required onchange="handleScreenshotUpload(event)">
+          <div id="screenshotPreviewBox" class="preview-box">
+            <img id="screenshotPreviewImg" src="" style="max-width: 120px; border-radius: 6px; border: 1px solid var(--border); margin: 0 auto; display: block;">
           </div>
         </div>
 
-        <div class="form-group" style="margin-top: 0.75rem;">
-          <label style="font-size: 0.8rem; font-weight: 700; color: var(--dark);">UPI Transaction ID / UTR (Optional)</label>
-          <input type="text" id="payUtrNumber" placeholder="12-digit UPI Ref / UTR No" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+        <div class="form-group">
+          <label>UPI Transaction / UTR No. (Optional)</label>
+          <input type="text" id="utrNo" placeholder="12-digit UPI reference number">
         </div>
 
-        <button class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="submitProofBtn" onclick="submitPaymentProof()">
-          Submit Screenshot for Approval
+        <button type="button" class="btn btn-primary" id="proofBtn" onclick="submitProof()">
+          Submit for Admin Approval
         </button>
       </div>
     </div>
   </div>
 
-  <!-- FREE REGISTRATION SUCCESS MODAL -->
   <div class="modal-overlay" id="freeSuccessModal">
-    <div class="modal-card" style="max-width: 440px; text-align: center; padding: 2rem 1.5rem;">
-      <h2 style="font-size: 1.4rem; color: #1E8E3E; margin-bottom: 0.35rem;">Registration Submitted!</h2>
-      <p style="font-size: 0.85rem; color: var(--dark); font-weight: 700; margin-bottom: 0.5rem;">
-        Profile ID: <span id="freeProfileIdDisplay">-</span>
+    <div class="modal-card" style="padding: 2.5rem 1.5rem;">
+      <h2 style="color: var(--success); font-size: 1.5rem; margin-bottom: 0.4rem;">Biodata Submitted!</h2>
+      <p style="font-size: 0.9rem; color: var(--dark); margin-bottom: 0.5rem;">
+        Profile ID: <strong id="freeAssignedProfileId">-</strong>
       </p>
       <p style="font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.5rem;">
-        Free Registration active. Aapka profile administrative desk ko review ke liye bhej diya gaya hai. Desk dwara verify hote hi yeh directory me live ho jayega.
+        Free Registration active. Aapka profile administrative desk ko review ke liye bhej diya gaya hai. Verification ke baad yeh directory mein live ho jayega.
       </p>
-      <button class="btn btn-primary" style="width: 100%;" onclick="closeModal('freeSuccessModal')">Browse Directory</button>
-    </div>
-  </div>
-
-  <!-- SIGN IN / SIGN UP MODAL -->
-  <div class="modal-overlay" id="authModal">
-    <div class="modal-card" style="max-width: 380px;">
-      <button class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
-
-      <div class="auth-tab-row" id="authTabsHeader">
-        <div class="auth-tab active" id="tabLogin" onclick="switchAuthView('login')">Sign In</div>
-        <div class="auth-tab" id="tabRegister" onclick="switchAuthView('register')">Sign Up</div>
-      </div>
-
-      <div id="authErrorAlert" class="auth-error-box"></div>
-
-      <div id="viewLogin">
-        <form onsubmit="handleUserLoginSubmit(event)">
-          <div class="form-group">
-            <label>Email Address *</label>
-            <input type="email" id="loginEmail" required placeholder="name@domain.com">
-          </div>
-          <div class="form-group">
-            <label>Password *</label>
-            <div class="password-input-wrapper">
-              <input type="password" id="loginPass" required placeholder="Enter password">
-              <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('loginPass', this)">👁</button>
-            </div>
-          </div>
-          <div style="display: flex; justify-content: flex-end; margin-bottom: 0.75rem;">
-            <a href="#" onclick="switchAuthView('forgot')" style="font-size: 0.75rem; color: var(--primary); text-decoration: none;">Forgot Password?</a>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px;" id="loginSubmitBtn">
-            Sign In & Unlock
-          </button>
-        </form>
-      </div>
-
-      <div id="viewRegister" style="display: none;">
-        <form onsubmit="handleUserRegisterSubmit(event)">
-          <div class="form-group">
-            <label>Full Name *</label>
-            <input type="text" id="regUserName" required placeholder="Your full name">
-          </div>
-          <div class="form-group">
-            <label>Email Address *</label>
-            <input type="email" id="regUserEmail" required placeholder="name@domain.com">
-          </div>
-          <div class="form-group">
-            <label>Create Password *</label>
-            <div class="password-input-wrapper">
-              <input type="password" id="regUserPass" required minlength="4" placeholder="Min 4 characters">
-              <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('regUserPass', this)">👁</button>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="regUserSubmitBtn">
-            Create Account
-          </button>
-        </form>
-      </div>
-
-      <div id="viewForgot" style="display: none;">
-        <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">Reset Password</h3>
-        <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Enter your email to receive a 4-digit code.</p>
-
-        <div id="forgotStep1">
-          <div class="form-group">
-            <label>Registered Email *</label>
-            <input type="email" id="forgotEmail" required placeholder="name@domain.com">
-          </div>
-          <button type="button" class="btn btn-primary" style="width: 100%; min-height: 44px;" id="sendOtpBtn" onclick="requestResetOtp()">
-            Send Reset Code
-          </button>
-        </div>
-
-        <div id="forgotStep2" style="display: none; margin-top: 1rem;">
-          <div class="form-group">
-            <label>4-Digit Email Code *</label>
-            <input type="text" id="resetOtpCode" required placeholder="e.g. 5839" maxlength="4">
-          </div>
-          <div class="form-group">
-            <label>New Password *</label>
-            <div class="password-input-wrapper">
-              <input type="password" id="resetNewPass" required minlength="4" placeholder="Enter new password">
-              <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('resetNewPass', this)">👁</button>
-            </div>
-          </div>
-          <button type="button" class="btn btn-primary" style="width: 100%; min-height: 44px;" id="confirmResetBtn" onclick="confirmPasswordReset()">
-            Save New Password
-          </button>
-        </div>
-
-        <div style="text-align: center; margin-top: 1rem;">
-          <a href="#" onclick="switchAuthView('login')" style="font-size: 0.8rem; color: var(--muted); text-decoration: none;">&larr; Back to Login</a>
-        </div>
-      </div>
-
+      <button class="btn btn-primary" onclick="window.location.reload()">Submit Another Profile</button>
     </div>
   </div>
 
@@ -807,177 +499,31 @@
       "Other": ["Other"]
     };
 
-    // LANGUAGE DICTIONARY FOR TRANSLATION
-    let currentLang = 'en';
-    const TRANSLATIONS = {
-      en: {
-        register: "Register Profile",
-        signIn: "Sign In",
-        signOut: "Sign Out",
-        searchPlaceholder: "Search by name, ID, city, state...",
-        searchBtn: "Search",
-        filtersBtn: "Filters ▾",
-        gender: "Gender",
-        allGenders: "All Genders",
-        female: "Female",
-        male: "Male",
-        ageBracket: "Age Bracket",
-        anyAge: "Any Age",
-        maritalStatus: "Marital Status",
-        anyStatus: "Any Status",
-        neverMarried: "Never Married",
-        divorced: "Divorced",
-        widowed: "Widowed",
-        education: "Education",
-        allQual: "All Qualifications",
-        profession: "Profession",
-        allOcc: "All Occupations",
-        minHeight: "Min Height",
-        anyHeight: "Any Height",
-        resetFilters: "Reset Filters",
-        registryTitle: "Candidate Registry",
-        loading: "Loading candidate records from database...",
-        all: "All",
-        saved: "Saved"
-      },
-      hi: {
-        register: "प्रोफाइल रजिस्टर करें",
-        signIn: "साइन इन",
-        signOut: "साइन आउट",
-        searchPlaceholder: "नाम, आईडी, शहर, राज्य द्वारा खोजें...",
-        searchBtn: "खोजें",
-        filtersBtn: "फ़िल्टर ▾",
-        gender: "लिंग",
-        allGenders: "सभी लिंग",
-        female: "महिला",
-        male: "पुरुष",
-        ageBracket: "आयु वर्ग",
-        anyAge: "कोई भी आयु",
-        maritalStatus: "वैवाहिक स्थिति",
-        anyStatus: "कोई भी स्थिति",
-        neverMarried: "अविवाहित",
-        divorced: "तलाकशुदा",
-        widowed: "विधवा/विधुर",
-        education: "शिक्षा",
-        allQual: "सभी योग्यताएं",
-        profession: "व्यवसाय",
-        allOcc: "सभी व्यवसाय",
-        minHeight: "न्यूनतम लंबाई",
-        anyHeight: "कोई भी लंबाई",
-        resetFilters: "फ़िल्टर रीसेट करें",
-        registryTitle: "उम्मीदवार सूची",
-        loading: "डेटाबेस से रिकॉर्ड लोड हो रहे हैं...",
-        all: "सभी",
-        saved: "सुरक्षित"
-      }
-    };
-
-    function toggleLanguage() {
-      currentLang = currentLang === 'en' ? 'hi' : 'en';
-      document.getElementById('langSwitchBtn').innerText = currentLang === 'en' ? '🇮🇳 हिंदी' : '🇬🇧 English';
-      applyTranslations();
-    }
-
-    function applyTranslations() {
-      const t = TRANSLATIONS[currentLang];
-      document.getElementById('txtRegisterBtn').innerText = t.register;
-      document.getElementById('txtSearchBtn').innerText = t.searchBtn;
-      document.getElementById('toggleFilterBtn').innerText = t.filtersBtn;
-      document.getElementById('globalSearchInput').placeholder = t.searchPlaceholder;
-      document.getElementById('lblGender').innerText = t.gender;
-      document.getElementById('optAllGenders').innerText = t.allGenders;
-      document.getElementById('optFemale').innerText = t.female;
-      document.getElementById('optMale').innerText = t.male;
-      document.getElementById('lblAge').innerText = t.ageBracket;
-      document.getElementById('optAnyAge').innerText = t.anyAge;
-      document.getElementById('lblMarital').innerText = t.maritalStatus;
-      document.getElementById('optAnyStatus').innerText = t.anyStatus;
-      document.getElementById('optNeverMarried').innerText = t.neverMarried;
-      document.getElementById('optDivorced').innerText = t.divorced;
-      document.getElementById('optWidowed').innerText = t.widowed;
-      document.getElementById('lblEdu').innerText = t.education;
-      document.getElementById('optAllQual').innerText = t.allQual;
-      document.getElementById('lblProf').innerText = t.profession;
-      document.getElementById('optAllOcc').innerText = t.allOcc;
-      document.getElementById('lblHeight').innerText = t.minHeight;
-      document.getElementById('optAnyHeight').innerText = t.anyHeight;
-      document.getElementById('txtResetFilters').innerText = t.resetFilters;
-      document.getElementById('txtRegistryTitle').innerText = t.registryTitle;
-      document.getElementById('txtLoading').innerText = t.loading;
-      document.getElementById('tabAll').innerText = t.all;
-      
-      const signBtn = document.getElementById('txtSignInBtn');
-      if (signBtn) signBtn.innerText = t.signIn;
-    }
-
-    let state = {
-      profiles: [],
-      filtered: [],
-      savedIds: new Set(),
-      user: null,
-      mode: 'all',
-      settings: {
-        isFreeRegistration: false,
-        monthlyFee: "499",
-        annualFee: "1999",
-        upiId: "sinha361@icici"
-      }
-    };
-
-    let selectedProfileImage = "";
-    let selectedScreenshotImage = "";
-    let registeredProfileId = "";
+    let candidateBase64 = "";
+    let screenshotBase64 = "";
+    let savedProfileId = "";
     let selectedPlan = "Annual";
+
+    // Instant Caching to prevent delay/flicker
+    let systemSettings = JSON.parse(localStorage.getItem('cm_cached_settings')) || {
+      isFreeRegistration: false,
+      monthlyFee: "499",
+      annualFee: "1999",
+      upiId: "sinha361@icici"
+    };
 
     window.addEventListener('DOMContentLoaded', () => {
       initDropdownOptions();
-      initLocationDropdowns();
-      checkUserSession();
-      fetchSystemSettings();
-      fetchActiveProfiles();
+      initLocationDropdown();
+      renderPricingTiers();
+      fetchLiveSettings();
     });
 
-    let hasTriggeredGuestLock = false;
-
-    window.addEventListener('scroll', () => {
-      if (!state.user && !hasTriggeredGuestLock) {
-        hasTriggeredGuestLock = true;
-        triggerInstantGuestLock();
-      }
-    }, { passive: true });
-
-    window.addEventListener('click', () => {
-      if (!state.user && !hasTriggeredGuestLock) {
-        hasTriggeredGuestLock = true;
-        triggerInstantGuestLock();
-      }
-    }, { passive: true });
-
-    function triggerInstantGuestLock() {
-      if (state.user) return;
-      openLoginModal('login');
-      const err = document.getElementById('authErrorAlert');
-      if (err) {
-        err.innerText = "Please Sign In or Register to view directory profiles.";
-        err.style.display = "block";
-      }
-    }
-
-    function guardedAction(callback) {
-      if (!state.user) {
-        triggerInstantGuestLock();
-        return;
-      }
-      if (callback) callback();
-    }
-
     function initDropdownOptions() {
-      populateSelect('filterEducation', EDUCATION_OPTIONS, 'All Qualifications');
-      populateSelect('filterProfession', OCCUPATION_OPTIONS, 'All Occupations');
-      populateSelect('regEducation', EDUCATION_OPTIONS, 'Select Qualification');
-      populateSelect('regProfession', OCCUPATION_OPTIONS, 'Select Occupation');
-      populateSelect('regFatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
-      populateSelect('regMotherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
+      populateSelect('education', EDUCATION_OPTIONS, 'Select Qualification');
+      populateSelect('profession', OCCUPATION_OPTIONS, 'Select Occupation');
+      populateSelect('fatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
+      populateSelect('motherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
     }
 
     function populateSelect(elemId, options, defaultPlaceholder) {
@@ -989,89 +535,50 @@
       });
     }
 
-    function togglePasswordVisibility(inputId, btn) {
-      const input = document.getElementById(inputId);
-      if (input.type === 'password') {
-        input.type = 'text';
-        btn.innerText = '🙈';
-      } else {
-        input.type = 'password';
-        btn.innerText = '👁';
-      }
-    }
-
-    function showAuthError(msg) {
-      const box = document.getElementById('authErrorAlert');
-      box.innerText = msg;
-      box.style.display = 'block';
-    }
-
-    function clearAuthError() {
-      const box = document.getElementById('authErrorAlert');
-      box.style.display = 'none';
-      box.innerText = '';
-    }
-
-    async function fetchSystemSettings() {
+    async function fetchLiveSettings() {
       try {
         const res = await fetch(`${API_ENDPOINT}?action=getSettings`);
         const data = await res.json();
-        if (data.success) {
-          state.settings = data.settings;
-          applyPricingUI();
+        if (data.success && data.settings) {
+          systemSettings = data.settings;
+          localStorage.setItem('cm_cached_settings', JSON.stringify(data.settings));
+          renderPricingTiers();
         }
       } catch (err) {
-        console.error("Failed to load settings", err);
+        console.error("Using cached settings", err);
       }
     }
 
-    function applyPricingUI() {
-      const isFree = state.settings.isFreeRegistration;
-      document.getElementById('labelMonthlyFee').innerText = `₹${state.settings.monthlyFee}`;
-      document.getElementById('labelAnnualFee').innerText = `₹${state.settings.annualFee}`;
-      
-      const planWrapper = document.getElementById('planSelectionWrapper');
-      const submitBtn = document.getElementById('regSubmitBtn');
-      const subtitle = document.getElementById('regFormSubtitle');
+    function renderPricingTiers() {
+      const isFree = systemSettings.isFreeRegistration;
+      const planSection = document.getElementById('planSelectionSection');
+      const submitBtn = document.getElementById('submitBtn');
+      const subheader = document.getElementById('portalSubheader');
+
+      document.getElementById('labelMonthlyFee').innerText = `₹${systemSettings.monthlyFee}`;
+      document.getElementById('labelAnnualFee').innerText = `₹${systemSettings.annualFee}`;
 
       if (isFree) {
-        planWrapper.style.display = 'none';
-        subtitle.innerText = "Free Registration Mode is active. No payment required.";
-        submitBtn.innerText = "Submit for Direct Approval (Free)";
+        planSection.style.display = 'none';
+        subheader.innerText = "Free Registration Mode Active (No Payment Required)";
+        submitBtn.innerText = "Submit Biodata for Direct Review (Free)";
       } else {
-        planWrapper.style.display = 'block';
-        subtitle.innerText = "Select membership plan and proceed to payment.";
-        const fee = (selectedPlan === 'Monthly') ? state.settings.monthlyFee : state.settings.annualFee;
-        submitBtn.innerText = `Proceed to Pay ₹${fee} (${selectedPlan})`;
+        planSection.style.display = 'block';
+        subheader.innerText = "Candidate Biodata Submission Portal";
+        const fee = (selectedPlan === 'Monthly') ? systemSettings.monthlyFee : systemSettings.annualFee;
+        submitBtn.innerText = `Proceed to Pay ₹${fee} (${selectedPlan} Plan)`;
       }
     }
 
-    function selectMembershipTier(plan) {
+    function selectPlan(plan) {
       selectedPlan = plan;
-      document.getElementById('tierMonthly').className = plan === 'Monthly' ? 'tier-card selected' : 'tier-card';
-      document.getElementById('tierAnnual').className = plan === 'Annual' ? 'tier-card selected' : 'tier-card';
-      applyPricingUI();
+      document.getElementById('tierMonthly').className = (plan === 'Monthly') ? 'tier-card selected' : 'tier-card';
+      document.getElementById('tierAnnual').className = (plan === 'Annual') ? 'tier-card selected' : 'tier-card';
+      renderPricingTiers();
     }
 
-    function toggleFilterDrawer() {
-      const panel = document.getElementById('mainFilterPanel');
-      const btn = document.getElementById('toggleFilterBtn');
-      if (!panel || !btn) return;
-
-      const isHidden = window.getComputedStyle(panel).display === 'none';
-      if (isHidden) {
-        panel.classList.add('expanded');
-        panel.style.display = 'grid';
-        btn.innerText = 'Filters ▴';
-      } else {
-        panel.classList.remove('expanded');
-        panel.style.display = 'none';
-        btn.innerText = 'Filters ▾';
-      }
-    }
-
-    function initLocationDropdowns() {
-      const stateSel = document.getElementById('regState');
+    function initLocationDropdown() {
+      const stateSel = document.getElementById('state');
       if (!stateSel) return;
       stateSel.innerHTML = `<option value="">Select State</option>`;
       Object.keys(LOCATION_DATA).forEach(st => {
@@ -1106,8 +613,8 @@
       }
     }
 
-    function calculateAutoAge(dobInputId, ageInputId) {
-      const dobVal = document.getElementById(dobInputId).value;
+    function calculateAutoAge(dobId, ageId) {
+      const dobVal = document.getElementById(dobId).value;
       if (!dobVal) return;
       const dobDate = new Date(dobVal);
       const today = new Date();
@@ -1117,249 +624,22 @@
         age--;
       }
       if (age >= 18 && age <= 100) {
-        document.getElementById(ageInputId).value = age;
+        document.getElementById(ageId).value = age;
       }
     }
 
-    function checkUserSession() {
-      const stored = localStorage.getItem('cm_session');
-      if (stored) {
-        state.user = JSON.parse(stored);
-        renderNavUser();
-        fetchUserShortlists();
-      }
-    }
-
-    function switchAuthView(view) {
-      clearAuthError();
-      document.getElementById('viewLogin').style.display = view === 'login' ? 'block' : 'none';
-      document.getElementById('viewRegister').style.display = view === 'register' ? 'block' : 'none';
-      document.getElementById('viewForgot').style.display = view === 'forgot' ? 'block' : 'none';
-      document.getElementById('authTabsHeader').style.display = view === 'forgot' ? 'none' : 'flex';
-
-      if (view === 'login') {
-        document.getElementById('tabLogin').classList.add('active');
-        document.getElementById('tabRegister').classList.remove('active');
-      } else if (view === 'register') {
-        document.getElementById('tabRegister').classList.add('active');
-        document.getElementById('tabLogin').classList.remove('active');
-      }
-    }
-
-    function openLoginModal(view = 'login') {
-      switchAuthView(view);
-      document.getElementById('authModal').classList.add('active');
-    }
-
-    async function handleUserLoginSubmit(e) {
-      e.preventDefault();
-      clearAuthError();
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPass').value.trim();
-      const btn = document.getElementById('loginSubmitBtn');
-
-      btn.innerText = "Signing in...";
-      btn.disabled = true;
-
-      try {
-        const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'userLogin', data: { email: email, password: password } })
-        });
-        const out = await res.json();
-        if (out.success) {
-          state.user = out.user;
-          localStorage.setItem('cm_session', JSON.stringify(out.user));
-          renderNavUser();
-          closeModal('authModal');
-          fetchUserShortlists();
-          renderProfileList();
-        } else {
-          showAuthError(out.error || "Incorrect email or password. Please try again.");
-        }
-      } catch (err) {
-        showAuthError("Connection error. Please try again.");
-      } finally {
-        btn.innerText = "Sign In & Unlock";
-        btn.disabled = false;
-      }
-    }
-
-    async function handleUserRegisterSubmit(e) {
-      e.preventDefault();
-      clearAuthError();
-      const name = document.getElementById('regUserName').value.trim();
-      const email = document.getElementById('regUserEmail').value.trim();
-      const password = document.getElementById('regUserPass').value.trim();
-      const btn = document.getElementById('regUserSubmitBtn');
-
-      btn.innerText = "Creating Account...";
-      btn.disabled = true;
-
-      try {
-        const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'userRegister', data: { fullName: name, email: email, password: password } })
-        });
-        const out = await res.json();
-        if (out.success) {
-          state.user = out.user;
-          localStorage.setItem('cm_session', JSON.stringify(out.user));
-          renderNavUser();
-          closeModal('authModal');
-          fetchUserShortlists();
-          renderProfileList();
-        } else {
-          showAuthError(out.error || "Registration failed.");
-        }
-      } catch (err) {
-        showAuthError("Registration failed. Please check connection.");
-      } finally {
-        btn.innerText = "Create Account";
-        btn.disabled = false;
-      }
-    }
-
-    async function requestResetOtp() {
-      clearAuthError();
-      const email = document.getElementById('forgotEmail').value.trim();
-      if (!email) {
-        showAuthError("Please enter your registered email.");
-        return;
-      }
-
-      const btn = document.getElementById('sendOtpBtn');
-      btn.innerText = "Sending Code...";
-      btn.disabled = true;
-
-      try {
-        const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'forgotPasswordRequest', data: { email: email } })
-        });
-        const out = await res.json();
-        if (out.success) {
-          alert("A 4-digit reset code has been sent to your email.");
-          document.getElementById('forgotStep1').style.display = 'none';
-          document.getElementById('forgotStep2').style.display = 'block';
-        } else {
-          showAuthError(out.error || "Email not found.");
-        }
-      } catch (err) {
-        showAuthError("Error requesting reset code.");
-      } finally {
-        btn.innerText = "Send Reset Code";
-        btn.disabled = false;
-      }
-    }
-
-    async function confirmPasswordReset() {
-      clearAuthError();
-      const email = document.getElementById('forgotEmail').value.trim();
-      const otp = document.getElementById('resetOtpCode').value.trim();
-      const newPass = document.getElementById('resetNewPass').value.trim();
-
-      if (!otp || !newPass) {
-        showAuthError("Please enter both the code and your new password.");
-        return;
-      }
-
-      const btn = document.getElementById('confirmResetBtn');
-      btn.innerText = "Updating...";
-      btn.disabled = true;
-
-      try {
-        const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'resetPassword', data: { email: email, otp: otp, newPassword: newPass } })
-        });
-        const out = await res.json();
-        if (out.success) {
-          alert(out.message);
-          document.getElementById('forgotStep1').style.display = 'block';
-          document.getElementById('forgotStep2').style.display = 'none';
-          document.getElementById('resetOtpCode').value = '';
-          document.getElementById('resetNewPass').value = '';
-          switchAuthView('login');
-        } else {
-          showAuthError(out.error || "Reset failed.");
-        }
-      } catch (err) {
-        showAuthError("Reset failed.");
-      } finally {
-        btn.innerText = "Save New Password";
-        btn.disabled = false;
-      }
-    }
-
-    function renderNavUser() {
-      const container = document.getElementById('authActions');
-      const t = TRANSLATIONS[currentLang];
-      if (state.user) {
-        container.innerHTML = `
-          <div class="user-pill">
-            <span style="font-size: 0.8rem; font-weight: 600; padding: 0 0.5rem;">${state.user.fullName.split(' ')[0]}</span>
-          </div>
-          <button class="btn btn-ghost" onclick="signOut()">${t.signOut}</button>
-        `;
-      } else {
-        container.innerHTML = `<button class="btn btn-primary" onclick="openLoginModal('login')">${t.signIn}</button>`;
-      }
-    }
-
-    function signOut() {
-      localStorage.removeItem('cm_session');
-      state.user = null;
-      hasTriggeredGuestLock = false;
-      state.savedIds.clear();
-      renderNavUser();
-      renderProfileList();
-    }
-
-    async function fetchActiveProfiles() {
-      try {
-        const res = await fetch(`${API_ENDPOINT}?action=getProfiles`);
-        const data = await res.json();
-        if (data.success) {
-          state.profiles = data.profiles;
-          applyFilters();
-        }
-      } catch (err) {
-        document.getElementById('profilesContainer').innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--primary);">Database connection error.</div>`;
-      }
-    }
-
-    async function fetchUserShortlists() {
-      if (!state.user) return;
-      try {
-        const res = await fetch(`${API_ENDPOINT}?action=getShortlists&email=${encodeURIComponent(state.user.email)}`);
-        const data = await res.json();
-        if (data.success) {
-          state.savedIds = new Set(data.profileIds);
-          document.getElementById('savedCounter').innerText = state.savedIds.size;
-          renderProfileList();
-        }
-      } catch (err) {
-        console.error("Shortlist error", err);
-      }
-    }
-
-    function handleProfilePhotoSelection(event) {
+    function handlePhotoUpload(event) {
       compressImage(event.target.files[0], 350, 0.45, (base64) => {
-        selectedProfileImage = base64;
-        document.getElementById('imagePreviewElement').src = base64;
-        document.getElementById('imagePreviewBox').style.display = 'block';
+        candidateBase64 = base64;
+        document.getElementById('photoPreviewImg').src = base64;
+        document.getElementById('photoPreviewBox').style.display = 'block';
       });
     }
 
-    function handleScreenshotSelection(event) {
+    function handleScreenshotUpload(event) {
       compressImage(event.target.files[0], 350, 0.40, (base64) => {
-        selectedScreenshotImage = base64;
-        document.getElementById('screenshotPreviewElement').src = base64;
+        screenshotBase64 = base64;
+        document.getElementById('screenshotPreviewImg').src = base64;
         document.getElementById('screenshotPreviewBox').style.display = 'block';
       });
     }
@@ -1385,265 +665,100 @@
       reader.readAsDataURL(file);
     }
 
-    function applyFilters() {
-      const searchTerm = document.getElementById('globalSearchInput').value.toLowerCase().trim();
-      const gender = document.getElementById('filterGender').value;
-      const ageBracket = document.getElementById('filterAge').value;
-      const marital = document.getElementById('filterMarital').value;
-      const edu = document.getElementById('filterEducation').value;
-      const prof = document.getElementById('filterProfession').value;
-      const height = document.getElementById('filterHeight').value;
-
-      state.filtered = state.profiles.filter(p => {
-        if (gender && p.gender !== gender) return false;
-        if (marital && p.maritalStatus !== marital) return false;
-        if (ageBracket) {
-          const [min, max] = ageBracket.split('-').map(Number);
-          if (p.age < min || p.age > max) return false;
-        }
-        if (edu && p.education !== edu) return false;
-        if (prof && p.profession !== prof) return false;
-        if (height) {
-          const parsed = parseFloat(String(p.height || '').replace(/[^0-9.]/g, ''));
-          if (!isNaN(parsed) && parsed < parseFloat(height)) return false;
-        }
-        if (searchTerm) {
-          const combined = `${p.fullName || ''} ${p.id || ''} ${p.city || ''} ${p.state || ''} ${p.country || ''}`.toLowerCase();
-          if (!combined.includes(searchTerm)) return false;
-        }
-        return true;
-      });
-
-      renderProfileList();
-    }
-
-    function resetFilters() {
-      document.getElementById('globalSearchInput').value = '';
-      document.getElementById('filterGender').value = '';
-      document.getElementById('filterAge').value = '';
-      document.getElementById('filterMarital').value = '';
-      document.getElementById('filterEducation').value = '';
-      document.getElementById('filterProfession').value = '';
-      document.getElementById('filterHeight').value = '';
-      applyFilters();
-    }
-
-    function renderProfileList() {
-      const container = document.getElementById('profilesContainer');
-      let dataset = state.filtered;
-      if (state.mode === 'saved') dataset = dataset.filter(p => state.savedIds.has(p.id));
-
-      document.getElementById('profileCounter').innerText = `Displaying ${dataset.length} active candidate profiles`;
-      document.getElementById('savedCounter').innerText = state.savedIds.size;
-
-      if (dataset.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--muted);"><h3>No candidate profiles found</h3><p style="font-size: 0.85rem;">Adjust search filters to view more profiles.</p></div>`;
-        return;
-      }
-
-      container.innerHTML = dataset.map((p, idx) => {
-        const isSaved = state.savedIds.has(p.id);
-        const photoSrc = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
-        const isRestricted = (!state.user && idx >= 2);
-
-        return `
-          <div class="profile-card ${isRestricted ? 'guest-restricted-blur' : ''}">
-            <div class="profile-img-container">
-              <img class="profile-img" src="${photoSrc}" alt="${p.fullName}">
-              <button class="shortlist-tag-btn ${isSaved ? 'active' : ''}" onclick="event.stopPropagation(); toggleShortlistRecord('${p.id}')">
-                ${isSaved ? 'SAVED' : 'SAVE'}
-              </button>
-            </div>
-            <div class="profile-body">
-              <div class="profile-name-row">
-                <h3 class="profile-name">${p.fullName}</h3>
-                <span class="profile-age">${p.age} Yrs</span>
-              </div>
-              <div class="profile-meta-line">${p.height || 'Height N/A'} &bull; ${p.maritalStatus}</div>
-              <div class="profile-meta-line" style="font-weight: 600; color: var(--dark);">${p.profession}</div>
-              <div class="profile-meta-line">${p.education}</div>
-              <span class="profile-badge">${p.city}, ${p.state}</span>
-              
-              <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
-                <button class="btn btn-outline" style="flex: 1;" onclick="openContextualBiodata('${p.id}')">View Biodata</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    async function toggleShortlistRecord(profileId) {
-      if (!state.user) {
-        triggerInstantGuestLock();
-        return;
-      }
-
-      if (state.savedIds.has(profileId)) {
-        state.savedIds.delete(profileId);
-      } else {
-        state.savedIds.add(profileId);
-      }
-      renderProfileList();
-
-      try {
-        await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'toggleShortlist', data: { userEmail: state.user.email, profileId: profileId } })
-        });
-      } catch (err) {
-        console.error("Shortlist update failed", err);
-      }
-    }
-
-    function switchCatalogMode(mode) {
-      state.mode = mode;
-      document.getElementById('tabAll').className = mode === 'all' ? 'btn btn-outline' : 'btn btn-ghost';
-      document.getElementById('tabSaved').className = mode === 'saved' ? 'btn btn-outline' : 'btn btn-ghost';
-      renderProfileList();
-    }
-
-    function openContextualBiodata(profileId) {
-      const p = state.profiles.find(item => item.id === profileId);
-      if (!p) return;
-
-      document.getElementById('bioName').innerText = p.fullName;
-      document.getElementById('bioBasic').innerText = `${p.age} Years • ${p.height || 'Height Unspecified'}`;
-      document.getElementById('bioLocation').innerText = `${p.city}, ${p.state}, ${p.country}`;
-      document.getElementById('bioPhoto').src = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
-      document.getElementById('bioEdu').innerText = p.education;
-      document.getElementById('bioProf').innerText = p.profession;
-      document.getElementById('bioIncome').innerText = p.annualIncome || "Undisclosed";
-      document.getElementById('bioMarital').innerText = p.maritalStatus;
-
-      document.getElementById('bioFatherName').innerText = p.fatherName || "On Desk Record";
-      document.getElementById('bioFatherOcc').innerText = p.fatherOccupation || "On Desk Record";
-      document.getElementById('bioMotherName').innerText = p.motherName || "On Desk Record";
-      document.getElementById('bioMotherOcc').innerText = p.motherOccupation || "On Desk Record";
-      document.getElementById('bioFamily').innerText = p.familyDetails || "Available upon personal request.";
-      document.getElementById('bioPreferences').innerText = p.partnerPreferences || "Open to culturally compatible matches.";
-
-      document.getElementById('biodataModal').classList.add('active');
-    }
-
-    function exportBiodataPdf() {
-      const element = document.getElementById('biodataPrintSurface');
-      const candidateName = document.getElementById('bioName').innerText.replace(/\s+/g, '_');
-      const opt = {
-        margin: [10, 10, 10, 10],
-        filename: `Biodata_${candidateName}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-      html2pdf().set(opt).from(element).save();
-    }
-
-    async function handleRegistrationSubmit(e) {
+    async function submitBiodata(e) {
       e.preventDefault();
-      if (!selectedProfileImage) {
-        alert("Please upload a profile photograph.");
+
+      if (!candidateBase64) {
+        alert("Please select and upload a candidate photograph.");
         return;
       }
 
-      const btn = document.getElementById('regSubmitBtn');
-      btn.innerText = "Submitting Details...";
+      const btn = document.getElementById('submitBtn');
+      btn.innerText = "Submitting Biodata...";
       btn.disabled = true;
 
-      const stateVal = document.getElementById('regState').value;
-      let cityVal = document.getElementById('regCity').value;
+      const stateVal = document.getElementById('state').value;
+      let cityVal = document.getElementById('city').value;
       if (cityVal === "Other") {
-        cityVal = document.getElementById('regCityCustom').value.trim();
+        cityVal = document.getElementById('cityCustom').value.trim();
       }
 
-      const profilePayload = {
-        fullName: document.getElementById('regFullName').value.trim(),
-        gender: document.getElementById('regGender').value,
-        dob: document.getElementById('regDob').value,
-        age: parseInt(document.getElementById('regAge').value),
-        height: document.getElementById('regHeight').value.trim(),
-        maritalStatus: document.getElementById('regMarital').value,
-        education: document.getElementById('regEducation').value,
-        profession: document.getElementById('regProfession').value,
-        annualIncome: document.getElementById('regIncome').value.trim(),
+      const payload = {
+        fullName: document.getElementById('fullName').value.trim(),
+        gender: document.getElementById('gender').value,
+        dob: document.getElementById('dob').value,
+        age: parseInt(document.getElementById('age').value),
+        height: document.getElementById('height').value.trim(),
+        maritalStatus: document.getElementById('maritalStatus').value,
+        education: document.getElementById('education').value,
+        profession: document.getElementById('profession').value,
+        annualIncome: document.getElementById('income').value.trim(),
         city: cityVal,
         state: stateVal,
-        country: document.getElementById('regCountry').value.trim(),
-        exactAddress: document.getElementById('regExactAddress').value.trim(),
-        imageBase64: selectedProfileImage,
-        email: document.getElementById('regEmail').value.trim(),
-        phone: document.getElementById('regPhone').value.trim(),
-        fatherName: document.getElementById('regFatherName').value.trim(),
-        fatherOccupation: document.getElementById('regFatherOccupation').value,
-        motherName: document.getElementById('regMotherName').value.trim(),
-        motherOccupation: document.getElementById('regMotherOccupation').value,
-        familyDetails: document.getElementById('regFamily').value.trim(),
-        partnerPreferences: document.getElementById('regPreferences').value.trim(),
-        membershipPlan: state.settings.isFreeRegistration ? "Free" : selectedPlan
+        country: document.getElementById('country').value.trim(),
+        exactAddress: document.getElementById('exactAddress').value.trim(),
+        imageBase64: candidateBase64,
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        fatherName: document.getElementById('fatherName').value.trim(),
+        fatherOccupation: document.getElementById('fatherOccupation').value,
+        motherName: document.getElementById('motherName').value.trim(),
+        motherOccupation: document.getElementById('motherOccupation').value,
+        familyDetails: document.getElementById('familyDetails').value.trim(),
+        partnerPreferences: document.getElementById('partnerPreferences').value.trim(),
+        membershipPlan: systemSettings.isFreeRegistration ? "Free" : selectedPlan
       };
 
       try {
         const res = await fetch(API_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'registerProfile', data: profilePayload })
+          body: JSON.stringify({ action: 'registerProfile', data: payload })
         });
         const out = await res.json();
         if (out.success) {
-          registeredProfileId = out.profileId;
-          closeModal('registrationModal');
-          document.getElementById('regForm').reset();
-          document.getElementById('imagePreviewBox').style.display = 'none';
-          selectedProfileImage = "";
+          savedProfileId = out.profileId;
 
           if (out.isFree) {
-            document.getElementById('freeProfileIdDisplay').innerText = out.profileId;
+            document.getElementById('freeAssignedProfileId').innerText = savedProfileId;
             document.getElementById('freeSuccessModal').classList.add('active');
           } else {
-            openPaymentModal(out.profileId, out.paymentAmount, out.plan, out.upiId);
+            document.getElementById('assignedProfileId').innerText = savedProfileId;
+            document.getElementById('assignedPlanDisplay').innerText = `${out.plan} Plan`;
+            document.getElementById('displayPayAmount').innerText = `₹${out.paymentAmount}`;
+            document.getElementById('displayUpiId').innerText = out.upiId;
+
+            const payeeName = "Chitransh Mahasabha";
+            const note = `Membership ${out.plan} ${savedProfileId}`;
+            const upiIntentUri = `upi://pay?pa=${out.upiId}&pn=${encodeURIComponent(payeeName)}&am=${out.paymentAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+            const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiIntentUri)}&size=220`;
+
+            document.getElementById('upiQrImg').src = qrUrl;
+            document.getElementById('upiPayLink').href = upiIntentUri;
+            document.getElementById('paymentModal').classList.add('active');
           }
         } else {
-          alert("Submission error: " + out.error);
+          alert("Submission Error: " + out.error);
         }
       } catch (err) {
-        alert("Transmission failure. Check connection.");
+        alert("Failed to submit biodata. Check internet connection.");
       } finally {
-        applyPricingUI();
+        renderPricingTiers();
         btn.disabled = false;
       }
     }
 
-    function openPaymentModal(profileId, amount, plan, upiId) {
-      const finalUpiId = upiId || state.settings.upiId || "sinha361@icici";
-      const finalAmount = amount || "1999";
-      const payeeName = "Chitransh Mahasabha";
-      const note = `Membership ${plan} ${profileId}`;
-
-      document.getElementById('payProfileId').innerText = profileId;
-      document.getElementById('payPlanDisplay').innerText = `${plan} Plan`;
-      document.getElementById('payAmountDisplay').innerText = `₹${finalAmount}`;
-      document.getElementById('payUpiIdDisplay').innerText = finalUpiId;
-
-      const upiIntentUri = `upi://pay?pa=${finalUpiId}&pn=${encodeURIComponent(payeeName)}&am=${finalAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
-      const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiIntentUri)}&size=220`;
-
-      document.getElementById('upiQrCodeImg').src = qrUrl;
-      document.getElementById('upiIntentBtn').href = upsIntentUri;
-      document.getElementById('paymentModal').classList.add('active');
-    }
-
-    async function submitPaymentProof() {
-      if (!selectedScreenshotImage) {
+    async function submitProof() {
+      if (!screenshotBase64) {
         alert("Please upload your payment confirmation screenshot.");
         return;
       }
 
-      const btn = document.getElementById('submitProofBtn');
-      btn.innerText = "Uploading Receipt...";
+      const btn = document.getElementById('proofBtn');
+      btn.innerText = "Submitting Proof...";
       btn.disabled = true;
 
-      const utr = document.getElementById('payUtrNumber').value.trim();
+      const utr = document.getElementById('utrNo').value.trim();
 
       try {
         const res = await fetch(API_ENDPOINT, {
@@ -1652,38 +767,39 @@
           body: JSON.stringify({
             action: 'submitPaymentProof',
             data: {
-              profileId: registeredProfileId,
-              screenshotBase64: selectedScreenshotImage,
+              profileId: savedProfileId,
+              screenshotBase64: screenshotBase64,
               utr: utr
             }
           })
         });
         const out = await res.json();
         if (out.success) {
-          alert("Payment screenshot uploaded successfully! The administration will verify your receipt and publish your profile live.");
-          closeModal('paymentModal');
-          document.getElementById('payUtrNumber').value = "";
-          document.getElementById('payScreenshotFile').value = "";
-          document.getElementById('screenshotPreviewBox').style.display = 'none';
-          selectedScreenshotImage = "";
+          document.getElementById('paymentModal').innerHTML = `
+            <div style="padding: 2rem 1rem; text-align: center;">
+              <h2 style="color: var(--success); font-size: 1.5rem; margin-bottom: 0.5rem;">Receipt Received!</h2>
+              <p style="font-size: 0.95rem; color: var(--dark); font-weight: 700; margin-bottom: 0.5rem;">
+                Profile ID: ${savedProfileId}
+              </p>
+              <p style="font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-bottom: 1.5rem;">
+                Your details and payment screenshot have been submitted to the Chitransh Mahasabha Admin Portal for verification. Once approved, your profile will be published live on the directory.
+              </p>
+              <button class="btn btn-primary" onclick="window.location.reload()">Done</button>
+            </div>
+          `;
         } else {
           alert("Error: " + out.error);
         }
       } catch (err) {
         alert("Network communication error.");
       } finally {
-        btn.innerText = "Submit Screenshot for Approval";
+        btn.innerText = "Submit for Admin Approval";
         btn.disabled = false;
       }
     }
 
-    function openRegistrationModal() { 
-      applyPricingUI();
-      document.getElementById('registrationModal').classList.add('active'); 
-    }
-
-    function closeModal(id) { 
-      document.getElementById(id).classList.remove('active'); 
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
     }
   </script>
 </body>
