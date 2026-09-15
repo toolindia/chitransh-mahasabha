@@ -32,7 +32,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg); color: var(--dark); line-height: 1.6; padding: 1.5rem 0.85rem 4rem 0.85rem; position: relative; }
 
-    /* Language Switcher Floating/Header Mini Button */
     .lang-bar {
       max-width: 680px;
       margin: 0 auto 0.75rem auto;
@@ -323,7 +322,7 @@
         <div class="form-group">
           <label id="lblMarital">Marital Status *</label>
           <select id="maritalStatus" required>
-            <option value="unmarried" id="optunmarried">unmarried</option>
+            <option value="Never Married" id="optNeverMarried">Never Married</option>
             <option value="Divorced" id="optDivorced">Divorced</option>
             <option value="Widowed" id="optWidowed">Widowed</option>
           </select>
@@ -343,9 +342,15 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label id="lblIncome">Annual Income *</label>
-        <input type="text" id="income" required placeholder="e.g. 12 LPA / ₹10 Lakhs PA">
+      <div class="form-row-2">
+        <div class="form-group">
+          <label id="lblSubCaste">Kayastha Sub-Caste *</label>
+          <select id="subCaste" required></select>
+        </div>
+        <div class="form-group">
+          <label id="lblIncome">Annual Income *</label>
+          <input type="text" id="income" required placeholder="e.g. 12 LPA / ₹10 Lakhs PA">
+        </div>
       </div>
 
       <div class="section-title" id="secTitle3">3. Parental & Family Background</div>
@@ -445,13 +450,13 @@
 
       <div class="upi-box">
         <p style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--muted);">Membership Amount</p>
-        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;" id="displayPayAmount">₹1999</h1>
+        <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.2rem 0;" id="displayPayAmount">...</h1>
 
         <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
           <img id="upiQrImg" alt="UPI QR" style="width: 100%; height: 100%;">
         </div>
 
-        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code id="displayUpiId">sinha361@icici</code></p>
+        <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">UPI ID: <code id="displayUpiId">-</code></p>
         
         <a id="upiPayLink" href="#" class="btn btn-primary" style="margin-bottom: 0.5rem;">
           Pay via Any UPI App
@@ -495,6 +500,12 @@
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
+    const SUBCASTE_LIST = [
+      "Ambashtha", "Asthana", "Bhatnagar", "Bose", "Das", "Dey", "Dutta", "Gaur", "Ghosh", "Guha",
+      "Karan", "Kulshreshtha", "Mathur", "Mitra", "Mohanty", "Nigam", "Palit", "Pramanik", "Sarkar",
+      "Saxena", "Sen", "Sinha", "Srivastava", "Surajdhwaj", "Others"
+    ]; //[cite: 1]
+
     const EDUCATION_OPTIONS = [
       "10th", "12th", "Diploma", "ITI", "B.A.", "B.Com", "B.Sc.", "B.Tech / B.E.",
       "BCA", "BBA", "M.A.", "M.Com", "M.Sc.", "MCA", "MBA", "M.Tech", "M.E.",
@@ -528,7 +539,6 @@
       "Other": ["Other"]
     };
 
-    // LANGUAGE DICTIONARY FOR BIODATA FORM
     let currentLang = 'en';
     const TRANSLATIONS = {
       en: {
@@ -551,6 +561,8 @@
         neverMarried: "Never Married",
         divorced: "Divorced",
         widowed: "Widowed",
+        subCaste: "Kayastha Sub-Caste *",
+        selectSubCaste: "Select Sub-Caste",
         sec2: "2. Education & Profession",
         edu: "Highest Qualification *",
         prof: "Occupation / Profession *",
@@ -595,6 +607,8 @@
         neverMarried: "अविवाहित",
         divorced: "तलाकशुदा",
         widowed: "विधवा/विधुर",
+        subCaste: "कायस्थ उप-जाति *",
+        selectSubCaste: "उप-जाति चुनें",
         sec2: "2. शिक्षा और पेशा",
         edu: "उच्चतम योग्यता *",
         prof: "व्यवसाय / पेशा *",
@@ -648,6 +662,7 @@
       document.getElementById('optNeverMarried').innerText = t.neverMarried;
       document.getElementById('optDivorced').innerText = t.divorced;
       document.getElementById('optWidowed').innerText = t.widowed;
+      document.getElementById('lblSubCaste').innerText = t.subCaste;
       document.getElementById('secTitle2').innerText = t.sec2;
       document.getElementById('lblEdu').innerText = t.edu;
       document.getElementById('lblProf').innerText = t.prof;
@@ -695,6 +710,7 @@
     function initDropdownOptions() {
       populateSelect('education', EDUCATION_OPTIONS, 'Select Qualification');
       populateSelect('profession', OCCUPATION_OPTIONS, 'Select Occupation');
+      populateSelect('subCaste', SUBCASTE_LIST, 'Select Sub-Caste');
       populateSelect('fatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
       populateSelect('motherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
     }
@@ -753,7 +769,7 @@
     function initLocationDropdown() {
       const stateSel = document.getElementById('state');
       if (!stateSel) return;
-      stateSel.innerHTML = `<option value="" id="optSelectState">Select State</option>`;
+      stateSel.innerHTML = `<option value="">Select State</option>`;
       Object.keys(LOCATION_DATA).forEach(st => {
         stateSel.innerHTML += `<option value="${st}">${st}</option>`;
       });
@@ -764,7 +780,7 @@
       const citySel = document.getElementById(cityId);
       const customInput = document.getElementById(customId);
       
-      citySel.innerHTML = `<option value="" id="optSelectCity">Select City</option>`;
+      citySel.innerHTML = `<option value="">Select City</option>`;
       if (customInput) customInput.style.display = "none";
 
       if (stateVal && LOCATION_DATA[stateVal]) {
@@ -865,6 +881,7 @@
         maritalStatus: document.getElementById('maritalStatus').value,
         education: document.getElementById('education').value,
         profession: document.getElementById('profession').value,
+        subCaste: document.getElementById('subCaste').value,
         annualIncome: document.getElementById('income').value.trim(),
         city: cityVal,
         state: stateVal,
