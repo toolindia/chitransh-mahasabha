@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -40,16 +40,8 @@
     body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 6rem; }
 
     .header {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 0.85rem 1.25rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      background: var(--white); border-bottom: 1px solid var(--border); padding: 0.85rem 1.25rem;
+      display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     }
 
     .brand { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
@@ -60,52 +52,37 @@
 
     #toastNotice {
       position: fixed; top: 16px; right: 16px; left: 16px; max-width: 360px; margin: 0 auto;
-      background: #2B2321; color: #fff; text-align: center;
-      padding: 0.75rem 1rem; border-radius: 30px; font-size: 0.82rem; font-weight: 700;
+      background: #2B2321; color: #fff; text-align: center; padding: 0.75rem 1rem; border-radius: 30px; font-size: 0.82rem; font-weight: 700;
       box-shadow: 0 8px 24px rgba(0,0,0,0.3); z-index: 9999; display: none;
     }
 
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px);
-      z-index: 2000; display: none;
+      background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px); z-index: 2000; display: none;
     }
     .modal-overlay.active { display: block; }
 
     #authOverlay.modal-overlay, #addMemberModal.modal-overlay, #exportModal.modal-overlay, #settingsModal.modal-overlay {
-      display: none; align-items: flex-start; justify-content: center;
-      padding: 1.5rem 0.85rem; overflow-y: auto;
+      display: none; align-items: flex-start; justify-content: center; padding: 1.5rem 0.85rem; overflow-y: auto;
     }
     #authOverlay.active, #addMemberModal.active, #exportModal.active, #settingsModal.active { display: flex; }
 
     .auth-box {
       background: var(--white); border-radius: var(--radius-md); padding: 1.5rem;
-      max-width: 380px; width: 100%; border: 2px solid var(--primary);
-      box-shadow: var(--shadow-lg); text-align: center;
+      max-width: 380px; width: 100%; border: 2px solid var(--primary); box-shadow: var(--shadow-lg); text-align: center;
     }
 
-    /* CLICK-POSITIONED ADMIN CONTEXT CARDS */
     .contextual-card {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--white);
-      border: 2px solid var(--primary);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
-      z-index: 2100;
-      padding: 1.5rem;
-      display: none;
-      max-width: 95%;
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: var(--white); border: 2px solid var(--primary); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg); z-index: 2100; padding: 1.5rem; display: none; max-width: 95%;
     }
     .contextual-card.active { display: block; }
 
     .btn {
       min-height: 36px; padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700;
-      border-radius: var(--radius-sm); cursor: pointer; border: none;
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
-      transition: all 0.2s ease; text-decoration: none; user-select: none;
+      border-radius: var(--radius-sm); cursor: pointer; border: none; display: inline-flex;
+      align-items: center; justify-content: center; gap: 0.35rem; transition: all 0.2s ease; text-decoration: none; user-select: none;
     }
     .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); }
     .btn-success { background: var(--success); color: var(--white); }
@@ -115,127 +92,44 @@
     .btn-excel { background: #1D6F42; color: var(--white); }
     .btn-settings { background: #3B4252; color: var(--white); }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--dark); }
+    .btn-lang { background: var(--surface-light); color: var(--dark); border: 1px solid var(--border); font-size: 0.75rem; padding: 0.3rem 0.6rem; }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
     .switch-row {
-      display: flex; align-items: center; justify-content: space-between;
-      background: var(--surface-light); border: 1px solid var(--border);
-      padding: 0.85rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;
+      display: flex; align-items: center; justify-content: space-between; background: var(--surface-light);
+      border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;
     }
     .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
     .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc; transition: .3s; border-radius: 34px;
-    }
-    .slider:before {
-      position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
-      background-color: white; transition: .3s; border-radius: 50%;
-    }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .3s; border-radius: 50%; }
     input:checked + .slider { background-color: var(--success); }
     input:checked + .slider:before { transform: translateX(22px); }
 
-    .filter-wrapper {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;
-      box-shadow: var(--shadow-sm);
-    }
-    .status-tab-row {
-      display: flex; gap: 0.4rem; overflow-x: auto;
-      padding-bottom: 0.65rem; margin-bottom: 0.85rem; border-bottom: 1px solid var(--border);
-      scrollbar-width: none;
-    }
+    .filter-wrapper { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm); }
+    .status-tab-row { display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.65rem; margin-bottom: 0.85rem; border-bottom: 1px solid var(--border); scrollbar-width: none; }
     .status-tab-row::-webkit-scrollbar { display: none; }
-    .tab-btn {
-      white-space: nowrap; padding: 0.35rem 0.85rem; font-size: 0.78rem; font-weight: 700;
-      border-radius: 20px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; flex-shrink: 0;
-    }
+    .tab-btn { white-space: nowrap; padding: 0.35rem 0.85rem; font-size: 0.78rem; font-weight: 700; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; flex-shrink: 0; }
     .tab-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
-    .search-box-row {
-      display: flex; gap: 0.5rem; align-items: center; justify-content: space-between;
-    }
-
-    .filter-grid {
-      display: none;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
-      gap: 0.65rem;
-      align-items: flex-end;
-      margin-top: 0.75rem;
-    }
-    .filter-grid.expanded {
-      display: grid !important;
-    }
+    .search-box-row { display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; }
+    .filter-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto; gap: 0.65rem; align-items: flex-end; margin-top: 0.75rem; }
+    .filter-grid.expanded { display: grid !important; }
 
     .filter-control { display: flex; flex-direction: column; gap: 0.25rem; }
     .filter-control label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); }
-    .filter-control input, .filter-control select {
-      height: 38px; padding: 0.45rem 0.65rem; border-radius: var(--radius-sm);
-      border: 1px solid var(--border); background-color: var(--bg); font-size: 0.82rem; outline: none;
-    }
+    .filter-control input, .filter-control select { height: 38px; padding: 0.45rem 0.65rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background-color: var(--bg); font-size: 0.82rem; outline: none; }
 
-    .password-input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.85rem;
-    }
-    .password-input-wrapper input {
-      width: 100%;
-      height: 42px;
-      padding: 0.6rem 2.4rem 0.6rem 0.6rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      text-align: center;
-      font-size: 1rem;
-      outline: none;
-    }
-    .toggle-password-btn {
-      position: absolute;
-      right: 0.65rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 1.1rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-    }
+    .password-input-wrapper { position: relative; display: flex; align-items: center; margin-bottom: 0.85rem; }
+    .password-input-wrapper input { width: 100%; height: 42px; padding: 0.6rem 2.4rem 0.6rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); text-align: center; font-size: 1rem; outline: none; }
+    .toggle-password-btn { position: absolute; right: 0.65rem; background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--muted); display: flex; align-items: center; }
 
-    .auth-error-box {
-      display: none;
-      background-color: #FCE8E6;
-      border: 1px solid #D93025;
-      color: #C5221F;
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 0.5rem 0.75rem;
-      border-radius: var(--radius-sm);
-      margin-bottom: 0.85rem;
-      text-align: center;
-    }
+    .auth-error-box { display: none; background-color: #FCE8E6; border: 1px solid #D93025; color: #C5221F; font-size: 0.8rem; font-weight: 700; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); margin-bottom: 0.85rem; text-align: center; }
 
-    /* ADMIN SKELETON LOADER */
-    .skeleton-admin-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      height: 140px;
-      margin-bottom: 1rem;
-      animation: pulse 1.2s infinite ease-in-out;
-    }
-    @keyframes pulse {
-      0% { opacity: 0.6; }
-      50% { opacity: 1; }
-      100% { opacity: 0.6; }
-    }
+    .skeleton-admin-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); height: 140px; margin-bottom: 1rem; animation: pulse 1.2s infinite ease-in-out; }
+    @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
-    .profile-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.15rem;
-      box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
-      gap: 1rem; transition: border-color 0.2s;
-    }
+    .profile-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.15rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.2s; }
     .profile-card:hover { border-color: var(--secondary); }
 
     .card-top-row { display: flex; align-items: center; justify-content: space-between; gap: 0.85rem; }
@@ -246,45 +140,28 @@
     .card-subtext { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
     .card-id-pill { font-size: 0.72rem; font-weight: 700; color: var(--secondary); }
 
-    .badge {
-      padding: 0.3rem 0.65rem; border-radius: 20px; font-size: 0.7rem; font-weight: 800;
-      letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; flex-shrink: 0;
-    }
+    .badge { padding: 0.3rem 0.65rem; border-radius: 20px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
     .badge-Pending { background: var(--warning-bg); color: var(--warning); }
     .badge-Active { background: var(--success-bg); color: var(--success); }
     .badge-Unpublished { background: #F3F4F6; color: #6B7280; }
     .badge-Deleted { background: var(--danger-bg); color: var(--danger); }
 
-    .card-data-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 0.65rem 1.25rem; background: var(--surface-light);
-      border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.85rem 1rem;
-    }
-    @media (max-width: 600px) {
-      .card-data-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; padding: 0.75rem; }
-    }
+    .card-data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.65rem 1.25rem; background: var(--surface-light); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.85rem 1rem; }
+    @media (max-width: 600px) { .card-data-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; padding: 0.75rem; } }
     .data-cell { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
     .data-label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.4px; }
     .data-val { font-size: 0.84rem; font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .data-val a { color: var(--primary); text-decoration: none; font-weight: 700; }
 
-    .card-footer {
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
-      gap: 0.65rem; padding-top: 0.75rem; border-top: 1px dashed var(--border);
-    }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.65rem; padding-top: 0.75rem; border-top: 1px dashed var(--border); }
     .card-meta-notes { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
     .card-actions-row { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
-    @media (max-width: 600px) {
-      .card-actions-row { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
-      .card-actions-row .btn { width: 100%; }
-    }
+    @media (max-width: 600px) { .card-actions-row { width: 100%; display: grid; grid-template-columns: 1fr 1fr; } .card-actions-row .btn { width: 100%; } }
 
     .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; border: none; background: transparent; font-size: 1.4rem; cursor: pointer; color: var(--muted); }
     .form-group { margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
     .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--dark); }
-    .form-group input, .form-group select, .form-group textarea {
-      padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg);
-    }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); }
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
     @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
   </style>
@@ -308,83 +185,83 @@
   <!-- Contextual Edit Modal -->
   <div id="contextEditCard" class="contextual-card" style="width: 95%; max-width: 620px;">
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
-    <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Edit Candidate Details</h3>
-    <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;">Editing: <strong id="editProfileIdRef">-</strong></p>
+    <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtEditTitle">Edit Candidate Details</h3>
+    <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;"><span id="txtEditing">Editing</span>: <strong id="editProfileIdRef">-</strong></p>
 
     <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)">
       <input type="hidden" id="editProfileId">
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Full Name *</label>
+          <label id="lblEditName">Full Name *</label>
           <input type="text" id="editName" required>
         </div>
         <div class="form-group">
-          <label>Gender *</label>
+          <label id="lblEditGender">Gender *</label>
           <select id="editGender" required>
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
+            <option value="Female" id="optEditFemale">Female</option>
+            <option value="Male" id="optEditMale">Male</option>
           </select>
         </div>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Date of Birth</label>
+          <label id="lblEditDob">Date of Birth</label>
           <input type="date" id="editDob" onchange="calculateAutoAge('editDob', 'editAge')">
         </div>
         <div class="form-group">
-          <label>Age *</label>
+          <label id="lblEditAge">Age *</label>
           <input type="number" id="editAge" min="18" max="80" required>
         </div>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Height *</label>
+          <label id="lblEditHeight">Height *</label>
           <input type="text" id="editHeight" required>
         </div>
         <div class="form-group">
-          <label>Marital Status *</label>
+          <label id="lblEditMarital">Marital Status *</label>
           <select id="editMarital" required>
-            <option value="Never Married">Never Married</option>
-            <option value="Divorced">Divorced</option>
-            <option value="Widowed">Widowed</option>
+            <option value="Never Married" id="optEditNeverMarried">Never Married</option>
+            <option value="Divorced" id="optEditDivorced">Divorced</option>
+            <option value="Widowed" id="optEditWidowed">Widowed</option>
           </select>
         </div>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Highest Education *</label>
+          <label id="lblEditEdu">Highest Education *</label>
           <select id="editEducation" required></select>
         </div>
         <div class="form-group">
-          <label>Profession / Occupation *</label>
+          <label id="lblEditProf">Profession / Occupation *</label>
           <select id="editProfession" required></select>
         </div>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Kayastha Sub-Caste *</label>
+          <label id="lblEditSubCaste">Kayastha Sub-Caste *</label>
           <select id="editSubCaste" required></select>
         </div>
         <div class="form-group">
-          <label>Annual Income *</label>
+          <label id="lblEditIncome">Annual Income *</label>
           <input type="text" id="editIncome" required>
         </div>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>State *</label>
+          <label id="lblEditState">State *</label>
           <select id="editState" required onchange="populateCities('editState', 'editCity', 'editCityCustom')">
             <option value="">Select State</option>
           </select>
         </div>
         <div class="form-group">
-          <label>City *</label>
+          <label id="lblEditCity">City *</label>
           <select id="editCity" required onchange="checkCustomCity('editCity', 'editCityCustom')">
             <option value="">Select City</option>
           </select>
@@ -393,59 +270,59 @@
       </div>
 
       <div class="form-group">
-        <label>Residential Address *</label>
+        <label id="lblEditAddress">Residential Address *</label>
         <input type="text" id="editAddress" required>
       </div>
 
-      <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">
+      <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;" id="lblEditFamilySec">
         Parental & Family Background
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Father's Name</label>
+          <label id="lblEditFather">Father's Name</label>
           <input type="text" id="editFatherName">
         </div>
         <div class="form-group">
-          <label>Father's Occupation</label>
+          <label id="lblEditFatherOcc">Father's Occupation</label>
           <select id="editFatherOccupation"></select>
         </div>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Mother's Name</label>
+          <label id="lblEditMother">Mother's Name</label>
           <input type="text" id="editMotherName">
         </div>
         <div class="form-group">
-          <label>Mother's Occupation</label>
+          <label id="lblEditMotherOcc">Mother's Occupation</label>
           <select id="editMotherOccupation"></select>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Other Family Details</label>
+        <label id="lblEditFamilyDetails">Other Family Details</label>
         <textarea id="editFamily" rows="2"></textarea>
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
-          <label>Email Address *</label>
+          <label id="lblEditEmail">Email Address *</label>
           <input type="email" id="editEmail" required>
         </div>
         <div class="form-group">
-          <label>Phone / WhatsApp *</label>
+          <label id="lblEditPhone">Phone / WhatsApp *</label>
           <input type="tel" id="editPhone" required>
         </div>
       </div>
 
       <div class="form-group">
-        <label>Update Photo (Leave blank to keep current)</label>
+        <label id="lblEditPhoto">Update Photo (Leave blank to keep current)</label>
         <input type="file" id="editPhotoFile" accept="image/*" onchange="handleAdminEditPhoto(event)">
       </div>
 
       <div class="form-group">
-        <label>Partner Preferences</label>
+        <label id="lblEditPreferences">Partner Preferences</label>
         <textarea id="editPreferences" rows="2"></textarea>
       </div>
 
@@ -467,15 +344,15 @@
   <!-- Contextual Matchmaking Modal -->
   <div id="contextMatchCard" class="contextual-card" style="width: 95%; max-width: 580px;">
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
-    <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Candidate Matching Desk</h3>
-    <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.85rem;">Matches for: <strong id="matchCandidateName">-</strong></p>
+    <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtMatchTitle">Candidate Matching Desk</h3>
+    <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.85rem;"><span id="txtMatchesFor">Matches for</span>: <strong id="matchCandidateName">-</strong></p>
 
     <div id="matchingResultsList" style="display: flex; flex-direction: column; gap: 0.65rem; max-height: 340px; overflow-y: auto; margin-bottom: 1.2rem; padding-right: 0.25rem;"></div>
 
     <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
-      <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()">Close</button>
-      <button class="btn btn-primary" style="flex: 1;" onclick="exportSanitizedMatchPdf()">Download Clean PDF</button>
-      <button class="btn btn-whatsapp" style="flex: 2; min-width: 180px;" onclick="sendSelectedMatchesViaWhatsApp()">Send via WhatsApp</button>
+      <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()" id="txtCloseMatch">Close</button>
+      <button class="btn btn-primary" style="flex: 1;" onclick="exportSanitizedMatchPdf()" id="txtPdfMatch">Download Clean PDF</button>
+      <button class="btn btn-whatsapp" style="flex: 2; min-width: 180px;" onclick="sendSelectedMatchesViaWhatsApp()" id="txtWaMatch">Send via WhatsApp</button>
     </div>
   </div>
 
@@ -483,32 +360,32 @@
   <div class="modal-overlay" id="exportModal">
     <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: 2rem auto;">
       <button class="close-btn" onclick="closeModal('exportModal')">&times;</button>
-      <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: #1D6F42;">Export to Excel (.xls)</h3>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Filter customer biodata records by registration date range.</p>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: #1D6F42;" id="txtExportTitle">Export to Excel (.xls)</h3>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;" id="txtExportDesc">Filter customer biodata records by registration date range.</p>
 
       <div class="form-group">
-        <label>Start Date (From)</label>
+        <label id="lblStartDate">Start Date (From)</label>
         <input type="date" id="exportStartDate">
       </div>
 
       <div class="form-group">
-        <label>End Date (To)</label>
+        <label id="lblEndDate">End Date (To)</label>
         <input type="date" id="exportEndDate">
       </div>
 
       <div class="form-group">
-        <label>Status Inclusion</label>
+        <label id="lblStatusInclusion">Status Inclusion</label>
         <select id="exportStatusSelect">
-          <option value="all">All Records (Active, Pending, Unpublished)</option>
-          <option value="Active">Active Only</option>
-          <option value="Pending">Pending Approval Only</option>
-          <option value="Unpublished">Unpublished Only</option>
+          <option value="all" id="optExpAll">All Records (Active, Pending, Unpublished)</option>
+          <option value="Active" id="optExpActive">Active Only</option>
+          <option value="Pending" id="optExpPending">Pending Approval Only</option>
+          <option value="Unpublished" id="optExpUnpublished">Unpublished Only</option>
         </select>
       </div>
 
       <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
-        <button class="btn btn-excel" style="width: 100%; min-height: 42px;" onclick="executeExcelExport()">Download Excel Sheet (.xls)</button>
-        <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="closeModal('exportModal')">Cancel</button>
+        <button class="btn btn-excel" style="width: 100%; min-height: 42px;" onclick="executeExcelExport()" id="btnExecExport">Download Excel Sheet (.xls)</button>
+        <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="closeModal('exportModal')" id="btnCancelExport">Cancel</button>
       </div>
     </div>
   </div>
@@ -517,13 +394,13 @@
   <div class="modal-overlay" id="settingsModal">
     <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: 2rem auto;">
       <button class="close-btn" onclick="closeModal('settingsModal')">&times;</button>
-      <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--dark);">Membership & Pricing Settings</h3>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Control registration fee tiers & free enrolment access.</p>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--dark);" id="txtSettingsTitle">Membership & Pricing Settings</h3>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;" id="txtSettingsDesc">Control registration fee tiers & free enrolment access.</p>
 
       <div class="switch-row">
         <div>
-          <strong style="font-size: 0.9rem; color: var(--dark);">Free Registration Mode</strong>
-          <p style="font-size: 0.75rem; color: var(--muted);">If ON, candidates register without payment and go straight to review.</p>
+          <strong style="font-size: 0.9rem; color: var(--dark);" id="lblFreeMode">Free Registration Mode</strong>
+          <p style="font-size: 0.75rem; color: var(--muted);" id="lblFreeModeDesc">If ON, candidates register without payment and go straight to review.</p>
         </div>
         <label class="switch">
           <input type="checkbox" id="settingFreeModeToggle">
@@ -532,23 +409,23 @@
       </div>
 
       <div class="form-group">
-        <label>Monthly Membership Fee (₹) *</label>
+        <label id="lblMonthlyFeeSet">Monthly Membership Fee (₹) *</label>
         <input type="number" id="settingMonthlyFee" required placeholder="e.g. 499">
       </div>
 
       <div class="form-group">
-        <label>Annual Membership Fee (₹) *</label>
+        <label id="lblAnnualFeeSet">Annual Membership Fee (₹) *</label>
         <input type="number" id="settingAnnualFee" required placeholder="e.g. 1999">
       </div>
 
       <div class="form-group">
-        <label>UPI ID for Payments *</label>
+        <label id="lblUpiSet">UPI ID for Payments *</label>
         <input type="text" id="settingUpiId" required placeholder="name@icici">
       </div>
 
       <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
         <button class="btn btn-primary" style="width: 100%; min-height: 42px;" id="saveSettingsBtn" onclick="saveSystemSettings()">Save Settings</button>
-        <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="closeModal('settingsModal')">Cancel</button>
+        <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="closeModal('settingsModal')" id="btnCancelSettings">Cancel</button>
       </div>
     </div>
   </div>
@@ -556,8 +433,8 @@
   <!-- PIN UNLOCK GATE (ADMIN PIN: 1108) -->
   <div id="authOverlay" class="modal-overlay active">
     <div class="auth-box" style="margin: 4rem auto;">
-      <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;">Admin Desk</h2>
-      <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.2rem;">Enter administrator PIN to unlock controls.</p>
+      <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;" id="txtAdminDesk">Admin Desk</h2>
+      <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.2rem;" id="txtEnterPin">Enter administrator PIN to unlock controls.</p>
 
       <div id="adminPinErrorAlert" class="auth-error-box"></div>
 
@@ -574,81 +451,81 @@
   <div class="modal-overlay" id="addMemberModal">
     <div class="auth-box" style="max-width: 620px; text-align: left; position: relative; margin: 1.5rem auto;">
       <button class="close-btn" onclick="closeModal('addMemberModal')">&times;</button>
-      <h3 style="margin-bottom: 0.25rem;">Direct Candidate Enrolment</h3>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Directly add candidates with automated verified status.</p>
+      <h3 style="margin-bottom: 0.25rem;" id="txtAddCandidateTitle">Direct Candidate Enrolment</h3>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;" id="txtAddCandidateDesc">Directly add candidates with automated verified status.</p>
 
       <form id="adminAddForm" onsubmit="handleAdminAddSubmit(event)">
         <div class="form-row-2">
           <div class="form-group">
-            <label>Full Name *</label>
+            <label id="lblAddName">Full Name *</label>
             <input type="text" id="addName" required placeholder="Full Name">
           </div>
           <div class="form-group">
-            <label>Gender *</label>
+            <label id="lblAddGender">Gender *</label>
             <select id="addGender" required>
-              <option value="Female">Female</option>
-              <option value="Male">Male</option>
+              <option value="Female" id="optAddFemale">Female</option>
+              <option value="Male" id="optAddMale">Male</option>
             </select>
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Date of Birth *</label>
+            <label id="lblAddDob">Date of Birth *</label>
             <input type="date" id="addDob" required onchange="calculateAutoAge('addDob', 'addAge')">
           </div>
           <div class="form-group">
-            <label>Age *</label>
+            <label id="lblAddAge">Age *</label>
             <input type="number" id="addAge" min="18" max="80" required placeholder="Years">
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Height *</label>
+            <label id="lblAddHeight">Height *</label>
             <input type="text" id="addHeight" required placeholder="5'7&quot;">
           </div>
           <div class="form-group">
-            <label>Marital Status *</label>
+            <label id="lblAddMarital">Marital Status *</label>
             <select id="addMarital" required>
-              <option value="Never Married">Never Married</option>
-              <option value="Divorced">Divorced</option>
-              <option value="Widowed">Widowed</option>
+              <option value="Never Married" id="optAddNeverMarried">Never Married</option>
+              <option value="Divorced" id="optAddDivorced">Divorced</option>
+              <option value="Widowed" id="optAddWidowed">Widowed</option>
             </select>
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Highest Education *</label>
+            <label id="lblAddEdu">Highest Education *</label>
             <select id="addEducation" required></select>
           </div>
           <div class="form-group">
-            <label>Profession / Occupation *</label>
+            <label id="lblAddProf">Profession / Occupation *</label>
             <select id="addProfession" required></select>
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Kayastha Sub-Caste *</label>
+            <label id="lblAddSubCaste">Kayastha Sub-Caste *</label>
             <select id="addSubCaste" required></select>
           </div>
           <div class="form-group">
-            <label>Annual Income *</label>
+            <label id="lblAddIncome">Annual Income *</label>
             <input type="text" id="addIncome" required placeholder="e.g. 10 Lakhs PA">
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>State *</label>
+            <label id="lblAddState">State *</label>
             <select id="addState" required onchange="populateCities('addState', 'addCity', 'addCityCustom')">
               <option value="">Select State</option>
             </select>
           </div>
           <div class="form-group">
-            <label>City *</label>
+            <label id="lblAddCity">City *</label>
             <select id="addCity" required onchange="checkCustomCity('addCity', 'addCityCustom')">
               <option value="">Select City</option>
             </select>
@@ -657,59 +534,59 @@
         </div>
 
         <div class="form-group">
-          <label>Exact House Address *</label>
+          <label id="lblAddAddress">Exact House Address *</label>
           <input type="text" id="addAddress" required placeholder="Residential details">
         </div>
 
-        <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">
+        <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;" id="lblAddFamilySec">
           Parental & Family Background
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Father's Name *</label>
+            <label id="lblAddFather">Father's Name *</label>
             <input type="text" id="addFatherName" required placeholder="Father's Full Name">
           </div>
           <div class="form-group">
-            <label>Father's Occupation *</label>
+            <label id="lblAddFatherOcc">Father's Occupation *</label>
             <select id="addFatherOccupation" required></select>
           </div>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Mother's Name *</label>
+            <label id="lblAddMother">Mother's Name *</label>
             <input type="text" id="addMotherName" required placeholder="Mother's Full Name">
           </div>
           <div class="form-group">
-            <label>Mother's Occupation *</label>
+            <label id="lblAddMotherOcc">Mother's Occupation *</label>
             <select id="addMotherOccupation" required></select>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Other Family Details</label>
+          <label id="lblAddFamilyDetails">Other Family Details</label>
           <textarea id="addFamily" rows="2" placeholder="Siblings, native place, background, etc."></textarea>
         </div>
 
         <div class="form-row-2">
           <div class="form-group">
-            <label>Email Address *</label>
+            <label id="lblAddEmail">Email Address *</label>
             <input type="email" id="addEmail" required placeholder="email@domain.com">
           </div>
           <div class="form-group">
-            <label>Phone / WhatsApp *</label>
+            <label id="lblAddPhone">Phone / WhatsApp *</label>
             <input type="tel" id="addPhone" required placeholder="+91 00000 00000">
           </div>
         </div>
 
         <div class="form-group">
-          <label>Candidate Photo *</label>
+          <label id="lblAddPhoto">Candidate Photo *</label>
           <input type="file" id="addPhotoFile" accept="image/*" required onchange="handleAdminAddPhoto(event)">
         </div>
 
         <div class="form-group">
-          <label>Partner Preferences</label>
+          <label id="lblAddPreferences">Partner Preferences</label>
           <textarea id="addPreferences" rows="2" placeholder="Expectations"></textarea>
         </div>
 
@@ -721,44 +598,45 @@
   <header class="header">
     <div class="brand">Chitransh<span>Mahasabha</span></div>
     <div class="header-actions">
-      <button class="btn btn-settings" onclick="openSettingsModal()">⚙️ Settings</button>
-      <button class="btn btn-excel" onclick="openExportModal()">Export (.xls)</button>
-      <button class="btn btn-primary" onclick="openAddMemberModal()">+ Add</button>
+      <button class="btn btn-lang" id="langSwitchBtn" onclick="toggleLanguage()">🇮🇳 हिंदी</button>
+      <button class="btn btn-settings" id="btnSettings" onclick="openSettingsModal()">⚙️ Settings</button>
+      <button class="btn btn-excel" id="btnExport" onclick="openExportModal()">Export (.xls)</button>
+      <button class="btn btn-primary" id="btnAdd" onclick="openAddMemberModal()">+ Add</button>
       <button id="refreshBtn" class="btn btn-outline" onclick="triggerManualRefresh()">Refresh</button>
-      <button class="btn btn-danger" onclick="lockPortal()">Lock</button>
+      <button class="btn btn-danger" id="btnLock" onclick="lockPortal()">Lock</button>
     </div>
   </header>
 
   <div class="container">
     <div class="filter-wrapper">
       <div class="status-tab-row">
-        <button class="tab-btn active" onclick="filterByStatus('all', this)">All (<span id="countAll">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Pending', this)">Pending (<span id="countPending">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Active', this)">Active (<span id="countActive">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Unpublished', this)">Unpublished (<span id="countUnpublished">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Deleted', this)">Deleted (<span id="countDeleted">0</span>)</button>
+        <button class="tab-btn active" onclick="filterByStatus('all', this)" id="tabAll">All (<span id="countAll">0</span>)</button>
+        <button class="tab-btn" onclick="filterByStatus('Pending', this)" id="tabPending">Pending (<span id="countPending">0</span>)</button>
+        <button class="tab-btn" onclick="filterByStatus('Active', this)" id="tabActive">Active (<span id="countActive">0</span>)</button>
+        <button class="tab-btn" onclick="filterByStatus('Unpublished', this)" id="tabUnpublished">Unpublished (<span id="countUnpublished">0</span>)</button>
+        <button class="tab-btn" onclick="filterByStatus('Deleted', this)" id="tabDeleted">Deleted (<span id="countDeleted">0</span>)</button>
       </div>
 
       <div class="search-box-row">
         <input type="text" id="adminSearchInput" onkeydown="if(event.key==='Enter') executeAdminSearch()" placeholder="Search name, ID, city, phone, profession..." style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
-        <button class="btn btn-primary" style="min-height: 40px;" onclick="executeAdminSearch()">Search</button>
+        <button class="btn btn-primary" style="min-height: 40px;" id="txtAdminSearchBtn" onclick="executeAdminSearch()">Search</button>
         <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="toggleMobileFilters()">Filters ▾</button>
       </div>
 
       <div class="filter-grid" id="adminFilterPanel">
         <div class="filter-control">
-          <label>Gender</label>
+          <label id="lblAdminGender">Gender</label>
           <select id="adminFilterGender" onchange="executeAdminSearch()">
-            <option value="">All Genders</option>
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
+            <option value="" id="optAdminAllGenders">All Genders</option>
+            <option value="Female" id="optAdminFemale">Female</option>
+            <option value="Male" id="optAdminMale">Male</option>
           </select>
         </div>
 
         <div class="filter-control">
-          <label>Age Bracket</label>
+          <label id="lblAdminAge">Age Bracket</label>
           <select id="adminFilterAge" onchange="executeAdminSearch()">
-            <option value="">Any Age</option>
+            <option value="" id="optAdminAnyAge">Any Age</option>
             <option value="21-25">21 - 25</option>
             <option value="26-30">26 - 30</option>
             <option value="31-35">31 - 35</option>
@@ -768,36 +646,36 @@
         </div>
 
         <div class="filter-control">
-          <label>Marital Status</label>
+          <label id="lblAdminMarital">Marital Status</label>
           <select id="adminFilterMarital" onchange="executeAdminSearch()">
-            <option value="">Any Status</option>
-            <option value="Never Married">Never Married</option>
-            <option value="Divorced">Divorced</option>
-            <option value="Widowed">Widowed</option>
+            <option value="" id="optAdminAnyStatus">Any Status</option>
+            <option value="Never Married" id="optAdminNeverMarried">Never Married</option>
+            <option value="Divorced" id="optAdminDivorced">Divorced</option>
+            <option value="Widowed" id="optAdminWidowed">Widowed</option>
           </select>
         </div>
 
         <div class="filter-control">
-          <label>Sub-Caste</label>
+          <label id="lblAdminSubCaste">Sub-Caste</label>
           <select id="adminFilterSubCaste" onchange="executeAdminSearch()">
-            <option value="">All Sub-Castes</option>
+            <option value="" id="optAdminAllSubCastes">All Sub-Castes</option>
           </select>
         </div>
 
         <div class="filter-control">
-          <label>State</label>
+          <label id="lblAdminState">State</label>
           <select id="adminFilterState" onchange="executeAdminSearch()">
-            <option value="">All States</option>
+            <option value="" id="optAdminAllStates">All States</option>
           </select>
         </div>
 
         <div class="filter-control">
-          <label>City Name</label>
+          <label id="lblAdminCity">City Name</label>
           <input type="text" id="adminFilterCity" onkeydown="if(event.key==='Enter') executeAdminSearch()" placeholder="Filter city...">
         </div>
 
         <div class="filter-control">
-          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="resetAdminFilters()">Reset Filters</button>
+          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" id="txtAdminReset" onclick="resetAdminFilters()">Reset Filters</button>
         </div>
       </div>
     </div>
@@ -851,6 +729,112 @@
       "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali", "Other"],
       "Other": ["Other"]
     };
+
+    // LANGUAGE DICTIONARY FOR ADMIN PORTAL
+    let currentLang = 'en';
+    const ADMIN_TRANSLATIONS = {
+      en: {
+        settings: "⚙️ Settings",
+        export: "Export (.xls)",
+        add: "+ Add",
+        refresh: "Refresh",
+        lock: "Lock",
+        searchPlaceholder: "Search name, ID, city, phone, profession...",
+        searchBtn: "Search",
+        filtersBtn: "Filters ▾",
+        gender: "Gender",
+        allGenders: "All Genders",
+        female: "Female",
+        male: "Male",
+        ageBracket: "Age Bracket",
+        anyAge: "Any Age",
+        maritalStatus: "Marital Status",
+        anyStatus: "Any Status",
+        neverMarried: "Never Married",
+        divorced: "Divorced",
+        widowed: "Widowed",
+        subCaste: "Sub-Caste",
+        allSubCastes: "All Sub-Castes",
+        state: "State",
+        allStates: "All States",
+        cityName: "City Name",
+        cityPlaceholder: "Filter city...",
+        resetFilters: "Reset Filters",
+        adminDesk: "Admin Desk",
+        enterPin: "Enter administrator PIN to unlock controls.",
+        unlock: "Unlock Dashboard"
+      },
+      hi: {
+        settings: "⚙️ सेटिंग्स",
+        export: "एक्सपोर्ट (.xls)",
+        add: "+ जोड़ें",
+        refresh: "रिफ्रेश",
+        lock: "लॉक",
+        searchPlaceholder: "नाम, आईडी, शहर, फोन, पेशा खोजें...",
+        searchBtn: "खोजें",
+        filtersBtn: "फ़िल्टर ▾",
+        gender: "लिंग",
+        allGenders: "सभी लिंग",
+        female: "महिला",
+        male: "पुरुष",
+        ageBracket: "आयु वर्ग",
+        anyAge: "कोई भी आयु",
+        maritalStatus: "वैवाहिक स्थिति",
+        anyStatus: "कोई भी स्थिति",
+        neverMarried: "अविवाहित",
+        divorced: "तलाकशुदा",
+        widowed: "विधवा/विधुर",
+        subCaste: "उप-जाति",
+        allSubCastes: "सभी उप-जातियां",
+        state: "राज्य",
+        allStates: "सभी राज्य",
+        cityName: "शहर का नाम",
+        cityPlaceholder: "शहर फ़िल्टर करें...",
+        resetFilters: "फ़िल्टर रीसेट करें",
+        adminDesk: "एडमिन डेस्क",
+        enterPin: "नियंत्रण अनलॉक करने के लिए एडमिन पिन दर्ज करें।",
+        unlock: "डैशबोर्ड अनलॉक करें"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'hi' : 'en';
+      document.getElementById('langSwitchBtn').innerText = currentLang === 'en' ? '🇮🇳 हिंदी' : '🇬🇧 English';
+      applyAdminTranslations();
+    }
+
+    function applyAdminTranslations() {
+      const t = ADMIN_TRANSLATIONS[currentLang];
+      document.getElementById('btnSettings').innerText = t.settings;
+      document.getElementById('btnExport').innerText = t.export;
+      document.getElementById('btnAdd').innerText = t.add;
+      document.getElementById('refreshBtn').innerText = t.refresh;
+      document.getElementById('btnLock').innerText = t.lock;
+      document.getElementById('adminSearchInput').placeholder = t.searchPlaceholder;
+      document.getElementById('txtAdminSearchBtn').innerText = t.searchBtn;
+      document.getElementById('toggleFilterBtn').innerText = t.filtersBtn;
+      document.getElementById('lblAdminGender').innerText = t.gender;
+      document.getElementById('optAdminAllGenders').innerText = t.allGenders;
+      document.getElementById('optAdminFemale').innerText = t.female;
+      document.getElementById('optAdminMale').innerText = t.male;
+      document.getElementById('lblAdminAge').innerText = t.ageBracket;
+      document.getElementById('optAdminAnyAge').innerText = t.anyAge;
+      document.getElementById('lblAdminMarital').innerText = t.maritalStatus;
+      document.getElementById('optAdminAnyStatus').innerText = t.anyStatus;
+      document.getElementById('optAdminNeverMarried').innerText = t.neverMarried;
+      document.getElementById('optAdminDivorced').innerText = t.divorced;
+      document.getElementById('optAdminWidowed').innerText = t.widowed;
+      document.getElementById('lblAdminSubCaste').innerText = t.subCaste;
+      document.getElementById('optAdminAllSubCastes').innerText = t.allSubCastes;
+      document.getElementById('lblAdminState').innerText = t.state;
+      document.getElementById('optAdminAllStates').innerText = t.allStates;
+      document.getElementById('lblAdminCity').innerText = t.cityName;
+      document.getElementById('adminFilterCity').placeholder = t.cityPlaceholder;
+      document.getElementById('txtAdminReset').innerText = t.resetFilters;
+      document.getElementById('txtAdminDesk').innerText = t.adminDesk;
+      document.getElementById('txtEnterPin').innerText = t.enterPin;
+      document.getElementById('unlockBtn').innerText = t.unlock;
+    }
 
     let adminState = {
       pin: "",
@@ -920,7 +904,6 @@
       initLocationDropdown('editState');
       initAdminFilterStates();
       
-      // Auto-unlock if cached PIN 1108 is available
       const cachedPin = localStorage.getItem('cm_admin_pin');
       if (cachedPin === "1108") {
         document.getElementById('adminPinInput').value = "1108";
@@ -1136,15 +1119,6 @@
       executeAdminSearch();
     }
 
-    function parseHeightToInches(heightStr) {
-      if (!heightStr) return 0;
-      const clean = String(heightStr).trim().replace(/"/g, '').replace(/'/g, '.');
-      const parts = clean.split('.');
-      const feet = parseFloat(parts[0]) || 0;
-      const inches = parseFloat(parts[1]) || 0;
-      return (feet * 12) + inches;
-    }
-
     function executeAdminSearch() {
       const searchTerm = document.getElementById('adminSearchInput').value.toLowerCase().trim();
       const gender = document.getElementById('adminFilterGender').value;
@@ -1322,11 +1296,7 @@
         const res = await fetch(API_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'updateSettings',
-            adminPin: adminState.pin,
-            data: payload
-          })
+          body: JSON.stringify({ action: 'updateSettings', adminPin: adminState.pin, data: payload })
         });
         const out = await res.json();
         if (out.success) {
@@ -1360,71 +1330,32 @@
       const statusFilter = document.getElementById('exportStatusSelect').value;
 
       let records = adminState.profiles;
-
-      if (statusFilter !== 'all') {
-        records = records.filter(p => p.status === statusFilter);
-      }
+      if (statusFilter !== 'all') records = records.filter(p => p.status === statusFilter);
 
       if (startVal) {
         const start = new Date(startVal);
         start.setHours(0, 0, 0, 0);
-        records = records.filter(p => {
-          if (!p.createdDate) return true;
-          return new Date(p.createdDate) >= start;
-        });
+        records = records.filter(p => !p.createdDate || new Date(p.createdDate) >= start);
       }
 
       if (endVal) {
         const end = new Date(endVal);
         end.setHours(23, 59, 59, 999);
-        records = records.filter(p => {
-          if (!p.createdDate) return true;
-          return new Date(p.createdDate) <= end;
-        });
+        records = records.filter(p => !p.createdDate || new Date(p.createdDate) <= end);
       }
 
       if (records.length === 0) {
-        showNotice("No matching records found for the selected date range.", true);
+        showNotice("No matching records found for selected date range.", true);
         return;
       }
 
       let tableHtml = `
         <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-        <head>
-          <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
-        </head>
+        <head><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head>
         <body>
           <table border="1">
             <tr style="background-color: #FFA259; color: #ffffff; font-weight: bold;">
-              <th>Profile ID</th>
-              <th>Registration Date</th>
-              <th>Membership Plan</th>
-              <th>Full Name</th>
-              <th>Status</th>
-              <th>Gender</th>
-              <th>DOB</th>
-              <th>Age</th>
-              <th>Height</th>
-              <th>Marital Status</th>
-              <th>Sub-Caste</th>
-              <th>Education</th>
-              <th>Profession</th>
-              <th>Annual Income</th>
-              <th>Father Name</th>
-              <th>Father Occupation</th>
-              <th>Mother Name</th>
-              <th>Mother Occupation</th>
-              <th>Phone</th>
-              <th>Email</th>
-              <th>City</th>
-              <th>State</th>
-              <th>Country</th>
-              <th>Full Residential Address</th>
-              <th>Payment Status</th>
-              <th>Payment UTR</th>
-              <th>Fee Amount</th>
-              <th>Other Family Details</th>
-              <th>Partner Preferences</th>
+              <th>Profile ID</th><th>Registration Date</th><th>Membership Plan</th><th>Full Name</th><th>Status</th><th>Gender</th><th>DOB</th><th>Age</th><th>Height</th><th>Marital Status</th><th>Sub-Caste</th><th>Education</th><th>Profession</th><th>Annual Income</th><th>Father Name</th><th>Father Occupation</th><th>Mother Name</th><th>Mother Occupation</th><th>Phone</th><th>Email</th><th>City</th><th>State</th><th>Country</th><th>Address</th><th>Payment Status</th><th>UTR</th><th>Fee</th><th>Family</th><th>Preferences</th>
             </tr>
       `;
 
@@ -1432,51 +1363,21 @@
         const regDateFormatted = p.createdDate ? new Date(p.createdDate).toLocaleDateString('en-IN') : 'N/A';
         tableHtml += `
           <tr>
-            <td>${p.id || ''}</td>
-            <td>${regDateFormatted}</td>
-            <td>${p.membershipPlan || 'Annual'}</td>
-            <td>${p.fullName || ''}</td>
-            <td>${p.status || ''}</td>
-            <td>${p.gender || ''}</td>
-            <td>${p.dob || ''}</td>
-            <td>${p.age || ''}</td>
-            <td>${p.height || ''}</td>
-            <td>${p.maritalStatus || ''}</td>
-            <td>${p.subCaste || ''}</td>
-            <td>${p.education || ''}</td>
-            <td>${p.profession || ''}</td>
-            <td>${p.annualIncome || ''}</td>
-            <td>${p.fatherName || ''}</td>
-            <td>${p.fatherOccupation || ''}</td>
-            <td>${p.motherName || ''}</td>
-            <td>${p.motherOccupation || ''}</td>
-            <td>${p.phone || ''}</td>
-            <td>${p.email || ''}</td>
-            <td>${p.city || ''}</td>
-            <td>${p.state || ''}</td>
-            <td>${p.country || 'India'}</td>
-            <td>${p.exactAddress || ''}</td>
-            <td>${p.paymentStatus || 'Unverified'}</td>
-            <td>${p.paymentUtr || ''}</td>
-            <td>${p.paymentAmount || '0'}</td>
-            <td>${p.familyDetails || ''}</td>
-            <td>${p.partnerPreferences || ''}</td>
+            <td>${p.id || ''}</td><td>${regDateFormatted}</td><td>${p.membershipPlan || 'Annual'}</td><td>${p.fullName || ''}</td><td>${p.status || ''}</td><td>${p.gender || ''}</td><td>${p.dob || ''}</td><td>${p.age || ''}</td><td>${p.height || ''}</td><td>${p.maritalStatus || ''}</td><td>${p.subCaste || ''}</td><td>${p.education || ''}</td><td>${p.profession || ''}</td><td>${p.annualIncome || ''}</td><td>${p.fatherName || ''}</td><td>${p.fatherOccupation || ''}</td><td>${p.motherName || ''}</td><td>${p.motherOccupation || ''}</td><td>${p.phone || ''}</td><td>${p.email || ''}</td><td>${p.city || ''}</td><td>${p.state || ''}</td><td>${p.country || 'India'}</td><td>${p.exactAddress || ''}</td><td>${p.paymentStatus || 'Unverified'}</td><td>${p.paymentUtr || ''}</td><td>${p.paymentAmount || '0'}</td><td>${p.familyDetails || ''}</td><td>${p.partnerPreferences || ''}</td>
           </tr>
         `;
       });
-
       tableHtml += `</table></body></html>`;
 
       const blob = new Blob([tableHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `Chitransh_Customer_Data_${startVal || 'all'}_to_${endVal || 'all'}.xls`;
+      a.download = `Chitransh_Customer_Data.xls`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-
       closeModal('exportModal');
       showNotice(`Exported ${records.length} records to Excel.`);
     }
@@ -1496,111 +1397,59 @@
     }
 
     function openContextualApprove(profileId, btnEl) {
-      openContextualConfirm(
-        "Approve Candidate",
-        `Approve payment & publish candidate ${profileId} live?`,
-        "Approve & Live",
-        btnEl,
-        async () => {
-          try {
-            const res = await fetch(API_ENDPOINT, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ action: 'approveProfile', adminPin: adminState.pin, data: { profileId: profileId } })
-            });
-            const out = await res.json();
-            if (out.success) {
-              showNotice("Profile approved & live!");
-              fetchAdminProfiles();
-            } else {
-              showNotice("Approval error: " + out.error, true);
-            }
-          } catch (err) {
-            showNotice("Server communication error.", true);
-          }
-        }
-      );
+      openContextualConfirm("Approve Candidate", `Approve payment & publish candidate ${profileId} live?`, "Approve & Live", btnEl, async () => {
+        try {
+          const res = await fetch(API_ENDPOINT, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'approveProfile', adminPin: adminState.pin, data: { profileId: profileId } })
+          });
+          const out = await res.json();
+          if (out.success) { showNotice("Profile approved & live!"); fetchAdminProfiles(); }
+          else { showNotice("Approval error: " + out.error, true); }
+        } catch (err) { showNotice("Server error.", true); }
+      });
     }
 
     function openContextualDelete(profileId, btnEl) {
-      openContextualConfirm(
-        "Delete Candidate",
-        `Permanently mark profile ${profileId} as Deleted?`,
-        "Confirm Delete",
-        btnEl,
-        async () => {
-          try {
-            const res = await fetch(API_ENDPOINT, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ action: 'deleteProfile', data: { profileId: String(profileId).trim(), isAdmin: true } })
-            });
-            const out = await res.json();
-            if (out.success) {
-              showNotice("Profile marked as Deleted.");
-              fetchAdminProfiles();
-            } else {
-              showNotice("Delete error: " + out.error, true);
-            }
-          } catch (err) {
-            showNotice("Server error.", true);
-          }
-        }
-      );
+      openContextualConfirm("Delete Candidate", `Permanently mark profile ${profileId} as Deleted?`, "Confirm Delete", btnEl, async () => {
+        try {
+          const res = await fetch(API_ENDPOINT, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'deleteProfile', data: { profileId: String(profileId).trim(), isAdmin: true } })
+          });
+          const out = await res.json();
+          if (out.success) { showNotice("Profile marked as Deleted."); fetchAdminProfiles(); }
+          else { showNotice("Delete error: " + out.error, true); }
+        } catch (err) { showNotice("Server error.", true); }
+      });
     }
 
     function openContextualUnpublish(profileId, btnEl) {
-      openContextualConfirm(
-        "Unpublish Candidate",
-        `Hide profile ${profileId} from the public directory?`,
-        "Unpublish Now",
-        btnEl,
-        async () => {
-          try {
-            const res = await fetch(API_ENDPOINT, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ action: 'updateProfileStatus', adminPin: adminState.pin, data: { profileId: profileId, status: "Unpublished" } })
-            });
-            const out = await res.json();
-            if (out.success) {
-              showNotice("Profile Unpublished.");
-              fetchAdminProfiles();
-            } else {
-              showNotice("Error: " + out.error, true);
-            }
-          } catch (err) {
-            showNotice("Failed to update status.", true);
-          }
-        }
-      );
+      openContextualConfirm("Unpublish Candidate", `Hide profile ${profileId} from public directory?`, "Unpublish Now", btnEl, async () => {
+        try {
+          const res = await fetch(API_ENDPOINT, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'updateProfileStatus', adminPin: adminState.pin, data: { profileId: profileId, status: "Unpublished" } })
+          });
+          const out = await res.json();
+          if (out.success) { showNotice("Profile Unpublished."); fetchAdminProfiles(); }
+          else { showNotice("Error: " + out.error, true); }
+        } catch (err) { showNotice("Failed to update status.", true); }
+      });
     }
 
     function openContextualPublish(profileId, btnEl) {
-      openContextualConfirm(
-        "Publish Candidate",
-        `Re-publish profile ${profileId} live on directory?`,
-        "Publish Live",
-        btnEl,
-        async () => {
-          try {
-            const res = await fetch(API_ENDPOINT, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ action: 'updateProfileStatus', adminPin: adminState.pin, data: { profileId: profileId, status: "Active" } })
-            });
-            const out = await res.json();
-            if (out.success) {
-              showNotice("Profile is Live.");
-              fetchAdminProfiles();
-            } else {
-              showNotice("Error: " + out.error, true);
-            }
-          } catch (err) {
-            showNotice("Failed to publish.", true);
-          }
-        }
-      );
+      openContextualConfirm("Publish Candidate", `Re-publish profile ${profileId} live on directory?`, "Publish Live", btnEl, async () => {
+        try {
+          const res = await fetch(API_ENDPOINT, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'updateProfileStatus', adminPin: adminState.pin, data: { profileId: profileId, status: "Active" } })
+          });
+          const out = await res.json();
+          if (out.success) { showNotice("Profile is Live."); fetchAdminProfiles(); }
+          else { showNotice("Error: " + out.error, true); }
+        } catch (err) { showNotice("Failed to publish.", true); }
+      });
     }
 
     function openContextualEdit(profileId, btnEl) {
@@ -1680,32 +1529,19 @@
 
       try {
         const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'adminUpdateProfile', adminPin: adminState.pin, data: payload })
         });
         const out = await res.json();
-        if (out.success) {
-          showNotice("Profile details updated successfully!");
-          closeAllContextPopups();
-          fetchAdminProfiles();
-        } else {
-          showNotice("Update error: " + out.error, true);
-        }
-      } catch (err) {
-        showNotice("Server error.", true);
-      } finally {
-        btn.innerText = "Save & Apply Changes";
-        btn.disabled = false;
-      }
+        if (out.success) { showNotice("Profile details updated!"); closeAllContextPopups(); fetchAdminProfiles(); }
+        else { showNotice("Update error: " + out.error, true); }
+      } catch (err) { showNotice("Server error.", true); }
+      finally { btn.innerText = "Save & Apply Changes"; btn.disabled = false; }
     }
 
     function openContextualReceipt(profileId, btnEl) {
       const p = adminState.profiles.find(x => x.id === profileId);
-      if (!p || !p.paymentReceiptUrl) {
-        showNotice("No receipt attached.", true);
-        return;
-      }
+      if (!p || !p.paymentReceiptUrl) { showNotice("No receipt attached.", true); return; }
       document.getElementById('receiptProfileId').innerText = p.id;
       document.getElementById('receiptImage').src = p.paymentReceiptUrl;
       document.getElementById('receiptUtrText').innerText = p.paymentUtr ? "UTR / Ref: " + p.paymentUtr : "No UTR Entered";
@@ -1726,15 +1562,11 @@
       const targetGender = client.gender === "Male" ? "Female" : "Male";
       const matches = adminState.profiles.filter(p => {
         if (p.status !== "Active" || p.gender !== targetGender) return false;
-        if (client.gender === "Male") {
-          return p.age <= client.age + 2 && p.age >= client.age - 8;
-        } else {
-          return p.age >= client.age - 2 && p.age <= client.age + 8;
-        }
+        if (client.gender === "Male") return p.age <= client.age + 2 && p.age >= client.age - 8;
+        else return p.age >= client.age - 2 && p.age <= client.age + 8;
       });
 
       adminState.compatibleMatches = matches;
-
       const container = document.getElementById('matchingResultsList');
       if (matches.length === 0) {
         container.innerHTML = `<p style="text-align: center; color: var(--muted); padding: 2rem;">No matching ${targetGender} profiles currently active.</p>`;
@@ -1769,33 +1601,18 @@
 
     function sendSelectedMatchesViaWhatsApp() {
       const client = adminState.activeMatchClient;
-      if (!client || !client.phone) {
-        showNotice("Phone number missing.", true);
-        return;
-      }
-
+      if (!client || !client.phone) { showNotice("Phone number missing.", true); return; }
       const selected = getSelectedMatchedCandidates();
-      if (selected.length === 0) {
-        showNotice("Select at least one match.", true);
-        return;
-      }
+      if (selected.length === 0) { showNotice("Select at least one match.", true); return; }
 
       let cleanPhone = client.phone.toString().replace(/[^0-9]/g, '');
       if (cleanPhone.length === 10) cleanPhone = "91" + cleanPhone;
 
-      let msg = `*KAYASTHA VIVAH PATRIKA*\n\n`;
-      msg += `Namaste ${client.fullName},\n`;
-      msg += `Aapke anuroop chune gaye sambandhon ka vivaran:\n\n`;
-
+      let msg = `*KAYASTHA VIVAH PATRIKA*\n\nNamaste ${client.fullName},\nAapke anuroop chune gaye sambandhon ka vivaran:\n\n`;
       selected.forEach((m, idx) => {
-        msg += `*${idx + 1}. ${m.fullName}* (ID: ${m.id})\n`;
-        msg += `* Age / Height: ${m.age} Yrs, ${m.height || 'N/A'}\n`;
-        msg += `* Education: ${m.education} (${m.subCaste || 'Kayastha'})\n`;
-        msg += `* Profession: ${m.profession}\n`;
-        msg += `* Location: ${m.city}, ${m.state}\n\n`;
+        msg += `*${idx + 1}. ${m.fullName}* (ID: ${m.id})\n* Age / Height: ${m.age} Yrs, ${m.height || 'N/A'}\n* Education: ${m.education} (${m.subCaste || 'Kayastha'})\n* Profession: ${m.profession}\n* Location: ${m.city}, ${m.state}\n\n`;
       });
-
-      msg += `_Candidate contact numbers & other confidential details are withheld for privacy. Contact Ghaziabad Chitransh Mahasabha desk quoting Profile ID._`;
+      msg += `_Contact Ghaziabad Chitransh Mahasabha desk quoting Profile ID._`;
 
       const waUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`;
       window.open(waUrl, '_blank') || (window.location.href = waUrl);
@@ -1804,146 +1621,35 @@
     function exportSanitizedMatchPdf() {
       const client = adminState.activeMatchClient;
       const selected = getSelectedMatchedCandidates();
-      if (!client || selected.length === 0) {
-        showNotice("No matches selected.", true);
-        return;
-      }
+      if (!client || selected.length === 0) { showNotice("No matches selected.", true); return; }
 
       const mount = document.createElement('div');
-      mount.id = "pdfMountContainer";
-      mount.style.position = "fixed";
-      mount.style.top = "-10000px";
-      mount.style.left = "-10000px";
-      mount.style.width = "794px";
-      mount.style.zIndex = "-1";
+      mount.style.position = "fixed"; mount.style.top = "-10000px"; mount.style.left = "-10000px"; mount.style.width = "794px";
       document.body.appendChild(mount);
 
       const surface = document.createElement('div');
-      surface.style.width = "794px";
-      surface.style.backgroundColor = "#FDFBF7";
-      surface.style.boxSizing = "border-box";
-      surface.style.padding = "28px 24px";
-      surface.style.position = "relative";
-      surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
-
-      const chitraguptaEmblem = `
-        <svg width="65" height="65" viewBox="0 0 100 100" style="margin: 0 auto; display: block;">
-          <circle cx="50" cy="50" r="47" fill="#FFF9EF" stroke="#D4AF37" stroke-width="2.5"/>
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#800020" stroke-width="1.5" stroke-dasharray="3,3"/>
-          <path d="M50 16 C38 16 34 26 34 32 C34 40 40 46 50 46 C60 46 66 40 66 32 C66 26 62 16 50 16 Z" fill="#D4AF37"/>
-          <circle cx="50" cy="30" r="9" fill="#800020"/>
-          <path d="M30 68 L70 68 L64 48 L36 48 Z" fill="#D4AF37"/>
-          <path d="M42 54 L58 54 L55 64 L45 64 Z" fill="#800020"/>
-          <line x1="26" y1="72" x2="74" y2="72" stroke="#D4AF37" stroke-width="4" stroke-linecap="round"/>
-        </svg>
-      `;
+      surface.style.width = "794px"; surface.style.backgroundColor = "#FDFBF7"; surface.style.padding = "28px 24px"; surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
 
       let cardsHtml = selected.map((m, i) => `
-        <div style="page-break-inside: avoid; border: 1.5px solid #EEDBBE; border-radius: 12px; background: #FFFFFF; padding: 18px 20px; margin-bottom: 20px; position: relative; box-shadow: 0 4px 12px rgba(212,175,55,0.06);">
-          <div style="position: absolute; top: 0; left: 0; width: 35px; height: 35px; border-top: 3px solid #800020; border-left: 3px solid #800020; border-top-left-radius: 10px;"></div>
-
-          <div style="display: flex; align-items: center; gap: 20px; border-bottom: 1px dashed #F0DDB8; padding-bottom: 14px; margin-bottom: 12px;">
-            <div style="position: relative; width: 110px; text-align: center; flex-shrink: 0;">
-              <div style="width: 95px; height: 95px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #D4AF37, #FFE8B2); box-shadow: 0 3px 10px rgba(0,0,0,0.1); margin: 0 auto;">
-                <img src="${m.photoUrl || ''}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #FFF;" crossorigin="anonymous">
-              </div>
-              <div style="margin-top: -10px; background: #800020; color: #FFF; font-size: 9px; font-weight: 800; padding: 2px 10px; border-radius: 16px; width: fit-content; margin-left: auto; margin-right: auto;">
-                &#10004; Verified
-              </div>
-            </div>
-
-            <div style="flex: 1; min-width: 0;">
-              <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px;">
-                <h3 style="font-family: 'Cinzel', serif; font-size: 19px; color: #800020; font-weight: 800; margin: 0;">${i + 1}. ${m.fullName}</h3>
-                <span style="font-size: 11px; color: #777; font-weight: 600;">(ID: ${m.id})</span>
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 12px; color: #2B2321;">
-                <div><strong style="color: #800020;">Age / Height:</strong> ${m.age} Yrs &bull; ${m.height || 'N/A'}</div>
-                <div><strong style="color: #800020;">Sub-Caste:</strong> ${m.subCaste || 'Kayastha'}</div>
-                <div><strong style="color: #800020;">Marital Status:</strong> ${m.maritalStatus || 'Never Married'}</div>
-                <div><strong style="color: #800020;">Annual Income:</strong> ${m.annualIncome || 'Confidential'}</div>
-                <div><strong style="color: #800020;">Education:</strong> ${m.education || 'Unspecified'}</div>
-                <div><strong style="color: #800020;">Profession:</strong> ${m.profession || 'Unspecified'}</div>
-              </div>
-            </div>
-          </div>
-
-          <div style="font-size: 12px; color: #2B2321; margin-bottom: 8px;">
-            <strong style="color: #800020;">&#128205; Location:</strong> ${m.city}, ${m.state}, ${m.country || 'India'}
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11.5px; color: #2B2321; background: #FFF8EE; padding: 8px 12px; border-radius: 6px; margin-bottom: 8px;">
-            <div><strong style="color: #800020;">Father:</strong> ${m.fatherName ? m.fatherName + ' (' + (m.fatherOccupation || 'N/A') + ')' : 'On Record'}</div>
-            <div><strong style="color: #800020;">Mother:</strong> ${m.motherName ? m.motherName + ' (' + (m.motherOccupation || 'N/A') + ')' : 'On Record'}</div>
-          </div>
-
-          <div style="background: #FFFDF9; border: 1px solid #F5DEC2; border-radius: 8px; padding: 10px 14px; font-size: 11.5px; color: #333; line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
-            <div>
-              <strong style="color: #800020;">Family Background:</strong> 
-              ${m.familyDetails ? m.familyDetails : 'Family information verified on desk records.'}
-            </div>
-            <div style="border-top: 1px dashed #F0DDB8; padding-top: 5px;">
-              <strong style="color: #800020;">Partner Preferences:</strong> 
-              ${m.partnerPreferences ? m.partnerPreferences : 'Looking for a culturally compatible and educated match.'}
-            </div>
-          </div>
+        <div style="page-break-inside: avoid; border: 1.5px solid #EEDBBE; border-radius: 12px; background: #FFFFFF; padding: 18px 20px; margin-bottom: 20px;">
+          <h3 style="font-family: 'Cinzel', serif; font-size: 19px; color: #800020; margin: 0 0 10px 0;">${i + 1}. ${m.fullName} (ID: ${m.id})</h3>
+          <p style="font-size: 12px; margin: 4px 0;">Age: ${m.age} Yrs | Height: ${m.height || 'N/A'} | Sub-Caste: ${m.subCaste || 'Kayastha'}</p>
+          <p style="font-size: 12px; margin: 4px 0;">Education: ${m.education} | Profession: ${m.profession}</p>
+          <p style="font-size: 12px; margin: 4px 0;">Location: ${m.city}, ${m.state}</p>
         </div>
       `).join('');
 
       surface.innerHTML = `
-        <div style="position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1.5px solid #D4AF37; pointer-events: none; border-radius: 4px;"></div>
-        <div style="position: absolute; top: 14px; left: 14px; right: 14px; bottom: 14px; border: 0.5px solid #800020; pointer-events: none;"></div>
-
-        <div style="position: absolute; top: 18px; left: 18px; font-size: 16px; color: #D4AF37;">&#10048;</div>
-        <div style="position: absolute; top: 18px; right: 18px; font-size: 16px; color: #D4AF37;">&#10048;</div>
-        <div style="position: absolute; bottom: 18px; left: 18px; font-size: 16px; color: #D4AF37;">&#10048;</div>
-        <div style="position: absolute; bottom: 18px; right: 18px; font-size: 16px; color: #D4AF37;">&#10048;</div>
-
-        <div style="text-align: center; padding-top: 12px; margin-bottom: 18px;">
-          <div style="margin-bottom: 6px;">${chitraguptaEmblem}</div>
-          <h1 style="font-family: 'Cinzel', serif; font-size: 26px; font-weight: 900; color: #800020; letter-spacing: 3px; margin: 0;">KAYASTHA</h1>
-          <h2 style="font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: #800020; letter-spacing: 5px; margin: 3px 0 8px 0;">VIVAH PATRIKA</h2>
-
-          <div style="width: 260px; height: 1.5px; background: linear-gradient(to right, transparent, #D4AF37, transparent); margin: 0 auto 8px auto;"></div>
-
-          <p style="font-size: 11.5px; color: #666; margin: 0;">Prepared for: <strong style="color: #2B2321;">${client.fullName}</strong> (${client.id})</p>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0;">KAYASTHA VIVAH PATRIKA</h1>
+          <p style="font-size: 12px; color: #666;">Prepared for: ${client.fullName} (${client.id})</p>
         </div>
-
-        <div style="padding: 0 10px;">
-          ${cardsHtml}
-
-          <div style="page-break-inside: avoid; background: #FFF2F4; border-left: 4px solid #800020; border-radius: 6px; padding: 12px 16px; margin-top: 10px; display: flex; align-items: center; gap: 14px;">
-            <div style="font-size: 20px; color: #800020; line-height: 1;">&#128737;</div>
-            <div style="font-size: 11px; color: #6B4E54; line-height: 1.45;">
-              Candidate contact numbers & other confidential details are withheld for privacy.<br>
-              Please contact Ghaziabad Chitransh Mahasabha desk quoting the specific <strong>Profile ID</strong>.
-            </div>
-          </div>
-        </div>
-
-        <div style="page-break-inside: avoid; text-align: center; padding-top: 20px; padding-bottom: 10px;">
-          <div style="color: #D4AF37; font-size: 13px; margin-bottom: 4px;">&#10048;</div>
-        </div>
+        ${cardsHtml}
       `;
 
       mount.appendChild(surface);
-
-      const opt = {
-        margin: [10, 0, 10, 0],
-        filename: `Kayastha_Vivah_Patrika_${client.fullName.replace(/\s+/g, '_')}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0, width: 794 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      showNotice("Generating Complete Vivah Patrika...");
-      html2pdf().set(opt).from(surface).save().then(() => {
-        showNotice("PDF Downloaded successfully!");
-        if (mount && mount.parentNode) mount.parentNode.removeChild(mount);
-      }).catch(err => {
-        showNotice("PDF generation failed: " + err.toString(), true);
-        if (mount && mount.parentNode) mount.parentNode.removeChild(mount);
+      html2pdf().set({ margin: 10, filename: `Vivah_Patrika.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 } }).from(surface).save().then(() => {
+        document.body.removeChild(mount);
       });
     }
 
@@ -1955,14 +1661,10 @@
 
     async function handleAdminAddSubmit(e) {
       e.preventDefault();
-      if (!adminAddPhotoBase64) {
-        showNotice("Please upload a candidate photograph.", true);
-        return;
-      }
+      if (!adminAddPhotoBase64) { showNotice("Please upload candidate photo.", true); return; }
 
       const btn = document.getElementById('addSubmitBtn');
-      btn.innerText = "Adding Candidate...";
-      btn.disabled = true;
+      btn.innerText = "Adding Candidate..."; btn.disabled = true;
 
       const stateVal = document.getElementById('addState').value;
       let cityVal = document.getElementById('addCity').value;
@@ -1979,9 +1681,7 @@
         profession: document.getElementById('addProfession').value,
         subCaste: document.getElementById('addSubCaste').value,
         annualIncome: document.getElementById('addIncome').value.trim(),
-        state: stateVal,
-        city: cityVal,
-        country: "India",
+        state: stateVal, city: cityVal, country: "India",
         exactAddress: document.getElementById('addAddress').value.trim(),
         email: document.getElementById('addEmail').value.trim(),
         phone: document.getElementById('addPhone').value.trim(),
@@ -1991,34 +1691,22 @@
         motherOccupation: document.getElementById('addMotherOccupation').value,
         familyDetails: document.getElementById('addFamily').value.trim(),
         partnerPreferences: document.getElementById('addPreferences').value.trim(),
-        status: "Active"
+        status: "Active", imageBase64: adminAddPhotoBase64
       };
 
       try {
         const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'adminAddProfile', adminPin: adminState.pin, data: payload })
         });
         const out = await res.json();
-        if (out.success) {
-          showNotice("Candidate added successfully!");
-          closeModal('addMemberModal');
-          fetchAdminProfiles();
-        } else {
-          showNotice("Error: " + out.error, true);
-        }
-      } catch (err) {
-        showNotice("Network failure.", true);
-      } finally {
-        btn.innerText = "Add & Enrol Candidate";
-        btn.disabled = false;
-      }
+        if (out.success) { showNotice("Candidate added successfully!"); closeModal('addMemberModal'); fetchAdminProfiles(); }
+        else { showNotice("Error: " + out.error, true); }
+      } catch (err) { showNotice("Network failure.", true); }
+      finally { btn.innerText = "Add & Enrol Candidate"; btn.disabled = false; }
     }
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-    }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
   </script>
 </body>
 </html>
