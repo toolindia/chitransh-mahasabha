@@ -88,31 +88,66 @@
     .btn-ghost { background: transparent; color: var(--dark); }
     .btn-lang { background: var(--surface-light); color: var(--dark); border: 1px solid var(--border); font-size: 0.75rem; padding: 0.3rem 0.6rem; }
 
+    .gender-toggle-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      background: var(--surface-light);
+      padding: 0.35rem;
+      border-radius: var(--radius-sm);
+    }
+    .gender-pill {
+      flex: 1;
+      padding: 0.4rem;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--dark);
+      border: none;
+      transition: all 0.2s;
+    }
+    .gender-pill.active {
+      background: var(--primary);
+      color: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
     .user-pill {
       display: flex; align-items: center; gap: 0.5rem;
       background: var(--surface-light); padding: 0.2rem 0.6rem 0.2rem 0.2rem;
       border-radius: 20px;
     }
 
-    .loader-container {
-      grid-column: 1 / -1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 4rem 1rem; gap: 1rem; color: var(--muted);
+    /* SKELETON LOADER UI */
+    .skeleton-card {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      height: 380px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: pulse 1.2s infinite ease-in-out;
     }
-    .spinner {
-      width: 42px; height: 42px;
-      border: 4px solid var(--surface-light);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+    .skeleton-img { width: 100%; height: 220px; background: #E5D5C5; }
+    .skeleton-line { height: 16px; background: #E5D5C5; border-radius: 4px; margin: 10px 15px; }
+    .skeleton-line.short { width: 60%; }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
     .filter-wrapper { max-width: 1200px; margin: 0.85rem auto; padding: 0 0.85rem; }
     .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; box-shadow: var(--shadow-sm); }
     
     .search-action-row {
       display: flex; gap: 0.4rem; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      margin-bottom: 0.65rem;
     }
     
     .search-action-row input {
@@ -180,16 +215,17 @@
     .profile-meta-line { font-size: 0.82rem; color: var(--muted); }
     .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--dark); width: fit-content; }
 
+    /* CLICK-POSITIONED MODAL OVERLAY */
     .modal-overlay {
-      position: absolute;
+      position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(43, 35, 33, 0.75);
       backdrop-filter: blur(4px);
       z-index: 99999;
       display: none;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
-      padding-top: 1.5rem;
+      padding: 1rem;
     }
     .modal-overlay.active { display: flex !important; }
 
@@ -203,12 +239,12 @@
       border: 2px solid var(--primary);
       box-shadow: var(--shadow-lg);
       padding: 1.5rem;
-      animation: modalSlideDown 0.22s ease forwards;
+      animation: modalScaleIn 0.22s ease forwards;
     }
 
-    @keyframes modalSlideDown {
-      from { opacity: 0; transform: translateY(-15px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes modalScaleIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .modal-close-btn { position: absolute; top: 0.75rem; right: 0.75rem; background: transparent; border: none; font-size: 1.4rem; font-weight: 700; cursor: pointer; color: var(--muted); }
@@ -307,13 +343,19 @@
 
   <div class="filter-wrapper">
     <div class="filter-container">
+      
+      <div class="gender-toggle-row">
+        <button class="gender-pill active" id="btnGenderAll" onclick="setQuickGender('')">All Profiles</button>
+        <button class="gender-pill" id="btnGenderFemale" onclick="setQuickGender('Female')">Female Profiles</button>
+        <button class="gender-pill" id="btnGenderMale" onclick="setQuickGender('Male')">Male Profiles</button>
+      </div>
+
       <div class="search-action-row">
         <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onfocus="checkGuestGate()">
         <button class="btn btn-primary" id="txtSearchBtn" onclick="guardedAction(() => applyFilters())">Search</button>
         <button class="btn btn-outline" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
       </div>
 
-      <!-- MAIN FILTER GRID WITH GENDER DROPDOWN -->
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label id="lblGender">Gender</label>
@@ -342,6 +384,13 @@
             <option value="Never Married" id="optNeverMarried">Never Married</option>
             <option value="Divorced" id="optDivorced">Divorced</option>
             <option value="Widowed" id="optWidowed">Widowed</option>
+          </select>
+        </div>
+
+        <div class="filter-control">
+          <label id="lblSubCaste">Sub-Caste</label>
+          <select id="filterSubCaste" onchange="guardedAction(() => applyFilters())">
+            <option value="" id="optAllSubCastes">All Sub-Castes</option>
           </select>
         </div>
 
@@ -389,11 +438,12 @@
       </div>
     </div>
 
+    <!-- SKELETON LOADER CONTAINER -->
     <div class="profile-grid" id="profilesContainer">
-      <div class="loader-container">
-        <div class="spinner"></div>
-        <p id="txtLoading">Loading candidate records from database...</p>
-      </div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
     </div>
   </main>
 
@@ -423,6 +473,7 @@
           <tr><td>Profession</td><td id="bioProf">-</td></tr>
           <tr><td>Annual Income</td><td id="bioIncome">-</td></tr>
           <tr><td>Marital Status</td><td id="bioMarital">-</td></tr>
+          <tr><td>Sub-Caste</td><td id="bioSubCaste">-</td></tr>
         </table>
 
         <div class="biodata-title">Parental & Family Background</div>
@@ -525,9 +576,15 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label>Annual Income *</label>
-          <input type="text" id="regIncome" required placeholder="e.g. 8 Lakhs PA">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Kayastha Sub-Caste *</label>
+            <select id="regSubCaste" required></select>
+          </div>
+          <div class="form-group">
+            <label>Annual Income *</label>
+            <input type="text" id="regIncome" required placeholder="e.g. 8 Lakhs PA">
+          </div>
         </div>
 
         <div class="form-row-2">
@@ -774,6 +831,12 @@
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
+    const SUBCASTE_LIST = [
+      "Ambashtha", "Asthana", "Bhatnagar", "Bose", "Das", "Dey", "Dutta", "Gaur", "Ghosh", "Guha",
+      "Karan", "Kulshreshtha", "Mathur", "Mitra", "Mohanty", "Nigam", "Palit", "Pramanik", "Sarkar",
+      "Saxena", "Sen", "Sinha", "Srivastava", "Surajdhwaj", "Others"
+    ]; //
+
     const EDUCATION_OPTIONS = [
       "10th", "12th", "Diploma", "ITI", "B.A.", "B.Com", "B.Sc.", "B.Tech / B.E.",
       "BCA", "BBA", "M.A.", "M.Com", "M.Sc.", "MCA", "MBA", "M.Tech", "M.E.",
@@ -807,7 +870,6 @@
       "Other": ["Other"]
     };
 
-    // LANGUAGE TRANSLATION DICTIONARY
     let currentLang = 'en';
     const TRANSLATIONS = {
       en: {
@@ -828,6 +890,8 @@
         neverMarried: "Never Married",
         divorced: "Divorced",
         widowed: "Widowed",
+        subCaste: "Sub-Caste",
+        allSubCastes: "All Sub-Castes",
         education: "Education",
         allQual: "All Qualifications",
         profession: "Profession",
@@ -836,9 +900,12 @@
         anyHeight: "Any Height",
         resetFilters: "Reset Filters",
         registryTitle: "Candidate Registry",
-        loading: "Loading candidate records from database...",
+        loading: "Loading candidate records...",
         all: "All",
-        saved: "Saved"
+        saved: "Saved",
+        allProfiles: "All Profiles",
+        femaleProfiles: "Female Profiles",
+        maleProfiles: "Male Profiles"
       },
       hi: {
         register: "प्रोफाइल रजिस्टर करें",
@@ -858,6 +925,8 @@
         neverMarried: "अविवाहित",
         divorced: "तलाकशुदा",
         widowed: "विधवा/विधुर",
+        subCaste: "उप-जाति",
+        allSubCastes: "सभी उप-जातियां",
         education: "शिक्षा",
         allQual: "सभी योग्यताएं",
         profession: "व्यवसाय",
@@ -868,7 +937,10 @@
         registryTitle: "उम्मीदवार सूची",
         loading: "डेटाबेस से रिकॉर्ड लोड हो रहे हैं...",
         all: "सभी",
-        saved: "सुरक्षित"
+        saved: "सुरक्षित",
+        allProfiles: "सभी प्रोफाइल",
+        femaleProfiles: "महिला प्रोफाइल",
+        maleProfiles: "पुरुष प्रोफाइल"
       }
     };
 
@@ -895,6 +967,8 @@
       document.getElementById('optNeverMarried').innerText = t.neverMarried;
       document.getElementById('optDivorced').innerText = t.divorced;
       document.getElementById('optWidowed').innerText = t.widowed;
+      document.getElementById('lblSubCaste').innerText = t.subCaste;
+      document.getElementById('optAllSubCastes').innerText = t.allSubCastes;
       document.getElementById('lblEdu').innerText = t.education;
       document.getElementById('optAllQual').innerText = t.allQual;
       document.getElementById('lblProf').innerText = t.profession;
@@ -903,8 +977,10 @@
       document.getElementById('optAnyHeight').innerText = t.anyHeight;
       document.getElementById('txtResetFilters').innerText = t.resetFilters;
       document.getElementById('txtRegistryTitle').innerText = t.registryTitle;
-      document.getElementById('txtLoading').innerText = t.loading;
       document.getElementById('tabAll').innerText = t.all;
+      document.getElementById('btnGenderAll').innerText = t.allProfiles;
+      document.getElementById('btnGenderFemale').innerText = t.femaleProfiles;
+      document.getElementById('btnGenderMale').innerText = t.maleProfiles;
       
       const signBtn = document.getElementById('txtSignInBtn');
       if (signBtn) signBtn.innerText = t.signIn;
@@ -932,7 +1008,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       initDropdownOptions();
       initLocationDropdowns();
-      checkUserSession();
+      checkCachedSessionAndProfiles();
       fetchSystemSettings();
       fetchActiveProfiles();
     });
@@ -971,11 +1047,27 @@
       if (callback) callback();
     }
 
+    function setQuickGender(genderVal) {
+      if (!state.user) {
+        triggerInstantGuestLock();
+        return;
+      }
+      document.getElementById('filterGender').value = genderVal;
+      
+      document.getElementById('btnGenderAll').className = genderVal === '' ? 'gender-pill active' : 'gender-pill';
+      document.getElementById('btnGenderFemale').className = genderVal === 'Female' ? 'gender-pill active' : 'gender-pill';
+      document.getElementById('btnGenderMale').className = genderVal === 'Male' ? 'gender-pill active' : 'gender-pill';
+
+      applyFilters();
+    }
+
     function initDropdownOptions() {
       populateSelect('filterEducation', EDUCATION_OPTIONS, 'All Qualifications');
       populateSelect('filterProfession', OCCUPATION_OPTIONS, 'All Occupations');
+      populateSelect('filterSubCaste', SUBCASTE_LIST, 'All Sub-Castes');
       populateSelect('regEducation', EDUCATION_OPTIONS, 'Select Qualification');
       populateSelect('regProfession', OCCUPATION_OPTIONS, 'Select Occupation');
+      populateSelect('regSubCaste', SUBCASTE_LIST, 'Select Sub-Caste');
       populateSelect('regFatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
       populateSelect('regMotherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
     }
@@ -1010,6 +1102,23 @@
       const box = document.getElementById('authErrorAlert');
       box.style.display = 'none';
       box.innerText = '';
+    }
+
+    // CACHED SESSION & PROFILES FOR 1-2 SEC PERFORMANCE
+    function checkCachedSessionAndProfiles() {
+      const storedSession = localStorage.getItem('cm_session');
+      if (storedSession) {
+        state.user = JSON.parse(storedSession);
+        renderNavUser();
+      }
+
+      const cachedProfiles = localStorage.getItem('cm_cached_profiles');
+      if (cachedProfiles) {
+        try {
+          state.profiles = JSON.parse(cachedProfiles);
+          applyFilters();
+        } catch(e) {}
+      }
     }
 
     async function fetchSystemSettings() {
@@ -1326,6 +1435,7 @@
         const data = await res.json();
         if (data.success) {
           state.profiles = data.profiles;
+          localStorage.setItem('cm_cached_profiles', JSON.stringify(data.profiles));
           applyFilters();
         }
       } catch (err) {
@@ -1385,30 +1495,55 @@
       reader.readAsDataURL(file);
     }
 
+    // PRECISE HEIGHT PARSING AND FILTERING LOGIC
+    function parseHeightToInches(heightStr) {
+      if (!heightStr) return 0;
+      const clean = String(heightStr).trim().replace(/"/g, '').replace(/'/g, '.');
+      const parts = clean.split('.');
+      const feet = parseFloat(parts[0]) || 0;
+      const inches = parseFloat(parts[1]) || 0;
+      return (feet * 12) + inches;
+    }
+
     function applyFilters() {
       const searchTerm = document.getElementById('globalSearchInput').value.toLowerCase().trim();
       const gender = document.getElementById('filterGender').value;
       const ageBracket = document.getElementById('filterAge').value;
       const marital = document.getElementById('filterMarital').value;
+      const subCaste = document.getElementById('filterSubCaste').value;
       const edu = document.getElementById('filterEducation').value;
       const prof = document.getElementById('filterProfession').value;
-      const height = document.getElementById('filterHeight').value;
+      const minHeight = document.getElementById('filterHeight').value;
 
       state.filtered = state.profiles.filter(p => {
         if (gender && p.gender !== gender) return false;
-        if (marital && p.maritalStatus !== marital) return false;
+        
+        // Strict Marital Status Check
+        if (marital) {
+          if (!p.maritalStatus || p.maritalStatus.toLowerCase().trim() !== marital.toLowerCase().trim()) {
+            return false;
+          }
+        }
+
+        if (subCaste && p.subCaste !== subCaste) return false;
+
         if (ageBracket) {
           const [min, max] = ageBracket.split('-').map(Number);
           if (p.age < min || p.age > max) return false;
         }
+
         if (edu && p.education !== edu) return false;
         if (prof && p.profession !== prof) return false;
-        if (height) {
-          const parsed = parseFloat(String(p.height || '').replace(/[^0-9.]/g, ''));
-          if (!isNaN(parsed) && parsed < parseFloat(height)) return false;
+
+        // Accurate Height Filtering
+        if (minHeight) {
+          const targetInches = parseHeightToInches(minHeight);
+          const candidateInches = parseHeightToInches(p.height);
+          if (candidateInches < targetInches) return false;
         }
+
         if (searchTerm) {
-          const combined = `${p.fullName || ''} ${p.id || ''} ${p.city || ''} ${p.state || ''} ${p.country || ''}`.toLowerCase();
+          const combined = `${p.fullName || ''} ${p.id || ''} ${p.city || ''} ${p.state || ''} ${p.country || ''} ${p.subCaste || ''}`.toLowerCase();
           if (!combined.includes(searchTerm)) return false;
         }
         return true;
@@ -1422,9 +1557,15 @@
       document.getElementById('filterGender').value = '';
       document.getElementById('filterAge').value = '';
       document.getElementById('filterMarital').value = '';
+      document.getElementById('filterSubCaste').value = '';
       document.getElementById('filterEducation').value = '';
       document.getElementById('filterProfession').value = '';
       document.getElementById('filterHeight').value = '';
+      
+      document.getElementById('btnGenderAll').className = 'gender-pill active';
+      document.getElementById('btnGenderFemale').className = 'gender-pill';
+      document.getElementById('btnGenderMale').className = 'gender-pill';
+
       applyFilters();
     }
 
@@ -1461,7 +1602,7 @@
               </div>
               <div class="profile-meta-line">${p.height || 'Height N/A'} &bull; ${p.maritalStatus}</div>
               <div class="profile-meta-line" style="font-weight: 600; color: var(--dark);">${p.profession}</div>
-              <div class="profile-meta-line">${p.education}</div>
+              <div class="profile-meta-line">${p.education} (${p.subCaste || 'Kayastha'})</div>
               <span class="profile-badge">${p.city}, ${p.state}</span>
               
               <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
@@ -1516,6 +1657,7 @@
       document.getElementById('bioProf').innerText = p.profession;
       document.getElementById('bioIncome').innerText = p.annualIncome || "Undisclosed";
       document.getElementById('bioMarital').innerText = p.maritalStatus;
+      document.getElementById('bioSubCaste').innerText = p.subCaste || "Kayastha";
 
       document.getElementById('bioFatherName').innerText = p.fatherName || "On Desk Record";
       document.getElementById('bioFatherOcc').innerText = p.fatherOccupation || "On Desk Record";
@@ -1566,6 +1708,7 @@
         maritalStatus: document.getElementById('regMarital').value,
         education: document.getElementById('regEducation').value,
         profession: document.getElementById('regProfession').value,
+        subCaste: document.getElementById('regSubCaste').value,
         annualIncome: document.getElementById('regIncome').value.trim(),
         city: cityVal,
         state: stateVal,
