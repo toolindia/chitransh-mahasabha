@@ -84,8 +84,12 @@
       box-shadow: var(--shadow-lg); text-align: center;
     }
 
+    /* CLICK-POSITIONED ADMIN CONTEXT CARDS */
     .contextual-card {
-      position: absolute;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background: var(--white);
       border: 2px solid var(--primary);
       border-radius: var(--radius-md);
@@ -93,25 +97,9 @@
       z-index: 2100;
       padding: 1.5rem;
       display: none;
+      max-width: 95%;
     }
     .contextual-card.active { display: block; }
-
-    @media (max-width: 768px) {
-      .contextual-card {
-        position: fixed !important;
-        bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important;
-        width: 100% !important; max-width: 100% !important; max-height: 85vh !important;
-        border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
-        border: none !important; border-top: 3px solid var(--primary) !important;
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.3) !important;
-        padding: 1.25rem 1rem 2.5rem 1rem !important;
-        overflow-y: auto !important;
-        animation: slideUpMobile 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-      }
-      @keyframes slideUpMobile { from { transform: translateY(100%); } to { transform: translateY(0); } }
-      .sheet-drag-handle { width: 40px; height: 5px; background: #D9D1CE; border-radius: 10px; margin: -0.25rem auto 1rem auto; display: block !important; }
-    }
-    .sheet-drag-handle { display: none; }
 
     .btn {
       min-height: 36px; padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700;
@@ -186,7 +174,6 @@
       border: 1px solid var(--border); background-color: var(--bg); font-size: 0.82rem; outline: none;
     }
 
-    /* Password Input with Eye */
     .password-input-wrapper {
       position: relative;
       display: flex;
@@ -226,6 +213,21 @@
       border-radius: var(--radius-sm);
       margin-bottom: 0.85rem;
       text-align: center;
+    }
+
+    /* ADMIN SKELETON LOADER */
+    .skeleton-admin-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      height: 140px;
+      margin-bottom: 1rem;
+      animation: pulse 1.2s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
     }
 
     .profile-card {
@@ -294,7 +296,6 @@
 
   <!-- Contextual Confirm Modal -->
   <div id="contextConfirmCard" class="contextual-card" style="width: 320px; text-align: center;">
-    <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
     <h3 style="font-size: 1.15rem; margin-bottom: 0.35rem; color: var(--primary);" id="contextConfirmTitle">Confirm</h3>
     <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.4rem;" id="contextConfirmText">Proceed with this update?</p>
@@ -304,9 +305,8 @@
     </div>
   </div>
 
-  <!-- Contextual Edit Modal with Parent Background Details -->
+  <!-- Contextual Edit Modal -->
   <div id="contextEditCard" class="contextual-card" style="width: 95%; max-width: 620px;">
-    <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
     <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Edit Candidate Details</h3>
     <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;">Editing: <strong id="editProfileIdRef">-</strong></p>
@@ -365,9 +365,15 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label>Annual Income *</label>
-        <input type="text" id="editIncome" required>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label>Kayastha Sub-Caste *</label>
+          <select id="editSubCaste" required></select>
+        </div>
+        <div class="form-group">
+          <label>Annual Income *</label>
+          <input type="text" id="editIncome" required>
+        </div>
       </div>
 
       <div class="form-row-2">
@@ -391,7 +397,6 @@
         <input type="text" id="editAddress" required>
       </div>
 
-      <!-- PARENT BACKGROUND SECTION -->
       <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">
         Parental & Family Background
       </div>
@@ -450,7 +455,6 @@
 
   <!-- Contextual Receipt Modal -->
   <div id="contextReceiptCard" class="contextual-card" style="width: 380px; text-align: center;">
-    <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
     <h3 style="font-size: 1.15rem; margin-bottom: 0.25rem;">Payment Verification</h3>
     <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 0.75rem;">Profile Ref: <strong id="receiptProfileId">-</strong></p>
@@ -462,7 +466,6 @@
 
   <!-- Contextual Matchmaking Modal -->
   <div id="contextMatchCard" class="contextual-card" style="width: 95%; max-width: 580px;">
-    <div class="sheet-drag-handle"></div>
     <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
     <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;">Candidate Matching Desk</h3>
     <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.85rem;">Matches for: <strong id="matchCandidateName">-</strong></p>
@@ -478,7 +481,7 @@
 
   <!-- EXCEL EXPORT MODAL -->
   <div class="modal-overlay" id="exportModal">
-    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative;">
+    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: 2rem auto;">
       <button class="close-btn" onclick="closeModal('exportModal')">&times;</button>
       <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: #1D6F42;">Export to Excel (.xls)</h3>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Filter customer biodata records by registration date range.</p>
@@ -512,7 +515,7 @@
 
   <!-- SETTINGS MODAL -->
   <div class="modal-overlay" id="settingsModal">
-    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative;">
+    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: 2rem auto;">
       <button class="close-btn" onclick="closeModal('settingsModal')">&times;</button>
       <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--dark);">Membership & Pricing Settings</h3>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;">Control registration fee tiers & free enrolment access.</p>
@@ -550,9 +553,9 @@
     </div>
   </div>
 
-  <!-- PIN Unlock Gate with Show/Hide Eye and Explicit Error -->
+  <!-- PIN UNLOCK GATE (ADMIN PIN: 1108) -->
   <div id="authOverlay" class="modal-overlay active">
-    <div class="auth-box">
+    <div class="auth-box" style="margin: 4rem auto;">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;">Admin Desk</h2>
       <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.2rem;">Enter administrator PIN to unlock controls.</p>
 
@@ -563,13 +566,13 @@
         <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('adminPinInput', this)">👁</button>
       </div>
 
-      <button class="btn btn-primary" style="width: 100%; min-height: 44px;" onclick="unlockAdminPortal()">Unlock Dashboard</button>
+      <button class="btn btn-primary" style="width: 100%; min-height: 44px;" id="unlockBtn" onclick="unlockAdminPortal()">Unlock Dashboard</button>
     </div>
   </div>
 
   <!-- Direct Candidate Enrolment Modal -->
   <div class="modal-overlay" id="addMemberModal">
-    <div class="auth-box" style="max-width: 620px; text-align: left; position: relative;">
+    <div class="auth-box" style="max-width: 620px; text-align: left; position: relative; margin: 1.5rem auto;">
       <button class="close-btn" onclick="closeModal('addMemberModal')">&times;</button>
       <h3 style="margin-bottom: 0.25rem;">Direct Candidate Enrolment</h3>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;">Directly add candidates with automated verified status.</p>
@@ -626,9 +629,15 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label>Annual Income *</label>
-          <input type="text" id="addIncome" required placeholder="e.g. 10 Lakhs PA">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Kayastha Sub-Caste *</label>
+            <select id="addSubCaste" required></select>
+          </div>
+          <div class="form-group">
+            <label>Annual Income *</label>
+            <input type="text" id="addIncome" required placeholder="e.g. 10 Lakhs PA">
+          </div>
         </div>
 
         <div class="form-row-2">
@@ -652,7 +661,6 @@
           <input type="text" id="addAddress" required placeholder="Residential details">
         </div>
 
-        <!-- PARENT & FAMILY BACKGROUND SECTION -->
         <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;">
           Parental & Family Background
         </div>
@@ -731,7 +739,6 @@
         <button class="tab-btn" onclick="filterByStatus('Deleted', this)">Deleted (<span id="countDeleted">0</span>)</button>
       </div>
 
-      <!-- SEARCH BAR -->
       <div class="search-box-row">
         <input type="text" id="adminSearchInput" onkeydown="if(event.key==='Enter') executeAdminSearch()" placeholder="Search name, ID, city, phone, profession..." style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
         <button class="btn btn-primary" style="min-height: 40px;" onclick="executeAdminSearch()">Search</button>
@@ -771,6 +778,13 @@
         </div>
 
         <div class="filter-control">
+          <label>Sub-Caste</label>
+          <select id="adminFilterSubCaste" onchange="executeAdminSearch()">
+            <option value="">All Sub-Castes</option>
+          </select>
+        </div>
+
+        <div class="filter-control">
           <label>State</label>
           <select id="adminFilterState" onchange="executeAdminSearch()">
             <option value="">All States</option>
@@ -788,13 +802,22 @@
       </div>
     </div>
 
+    <!-- ADMIN SKELETON LOADERS -->
     <div id="adminProfilesContainer">
-      <p style="text-align: center; color: var(--muted); padding: 3rem 0;">Connecting to central records...</p>
+      <div class="skeleton-admin-card"></div>
+      <div class="skeleton-admin-card"></div>
+      <div class="skeleton-admin-card"></div>
     </div>
   </div>
 
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
+
+    const SUBCASTE_LIST = [
+      "Ambashtha", "Asthana", "Bhatnagar", "Bose", "Das", "Dey", "Dutta", "Gaur", "Ghosh", "Guha",
+      "Karan", "Kulshreshtha", "Mathur", "Mitra", "Mohanty", "Nigam", "Palit", "Pramanik", "Sarkar",
+      "Saxena", "Sen", "Sinha", "Srivastava", "Surajdhwaj", "Others"
+    ]; //[cite: 1]
 
     const EDUCATION_OPTIONS = [
       "10th", "12th", "Diploma", "ITI", "B.A.", "B.Com", "B.Sc.", "B.Tech / B.E.",
@@ -872,7 +895,6 @@
       if (!panel || !btn) return;
 
       const isHidden = window.getComputedStyle(panel).display === 'none';
-      
       if (isHidden) {
         panel.classList.add('expanded');
         panel.style.display = 'grid';
@@ -881,35 +903,6 @@
         panel.classList.remove('expanded');
         panel.style.display = 'none';
         btn.innerText = 'Filters ▾';
-      }
-    }
-
-    function positionContextualCard(cardElement, triggerButton) {
-      closeAllContextPopups();
-      document.getElementById('backdropBarrier').classList.add('active');
-
-      cardElement.style.display = 'block';
-      cardElement.classList.add('active');
-
-      if (window.innerWidth > 768) {
-        const rect = triggerButton.getBoundingClientRect();
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
-
-        let top = rect.bottom + scrollY + 8;
-        let left = rect.left + scrollX - 220;
-
-        const cardWidth = cardElement.offsetWidth || 340;
-        if (left + cardWidth > window.innerWidth - 20) {
-          left = window.innerWidth - cardWidth - 25;
-        }
-        if (left < 15) left = 15;
-
-        cardElement.style.top = `${top}px`;
-        cardElement.style.left = `${left}px`;
-      } else {
-        cardElement.style.top = '';
-        cardElement.style.left = '';
       }
     }
 
@@ -926,17 +919,27 @@
       initLocationDropdown('addState');
       initLocationDropdown('editState');
       initAdminFilterStates();
+      
+      // Auto-unlock if cached PIN 1108 is available
+      const cachedPin = localStorage.getItem('cm_admin_pin');
+      if (cachedPin === "1108") {
+        document.getElementById('adminPinInput').value = "1108";
+        unlockAdminPortal();
+      }
     });
 
     function initDropdownOptions() {
       populateSelect('addEducation', EDUCATION_OPTIONS, 'Select Qualification');
       populateSelect('addProfession', OCCUPATION_OPTIONS, 'Select Occupation');
+      populateSelect('addSubCaste', SUBCASTE_LIST, 'Select Sub-Caste');
       populateSelect('addFatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
       populateSelect('addMotherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
       populateSelect('editEducation', EDUCATION_OPTIONS, 'Select Qualification');
       populateSelect('editProfession', OCCUPATION_OPTIONS, 'Select Occupation');
+      populateSelect('editSubCaste', SUBCASTE_LIST, 'Select Sub-Caste');
       populateSelect('editFatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
       populateSelect('editMotherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
+      populateSelect('adminFilterSubCaste', SUBCASTE_LIST, 'All Sub-Castes');
     }
 
     function populateSelect(elemId, options, defaultPlaceholder) {
@@ -1054,13 +1057,17 @@
         return;
       }
 
+      const unlockBtn = document.getElementById('unlockBtn');
+      if(unlockBtn) unlockBtn.innerText = "Unlocking...";
+
       try {
-        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(pin)}&_nocache=${new Date().getTime()}`);
+        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(pin)}`);
         const data = await res.json();
         if (data.success) {
           adminState.pin = pin;
           adminState.profiles = data.profiles;
           if (data.settings) adminState.settings = data.settings;
+          localStorage.setItem('cm_admin_pin', pin);
           document.getElementById('authOverlay').classList.remove('active');
           updateTabCounts();
           executeAdminSearch();
@@ -1071,11 +1078,14 @@
       } catch (err) {
         errorBox.innerText = "Connection error. Please try again.";
         errorBox.style.display = 'block';
+      } finally {
+        if(unlockBtn) unlockBtn.innerText = "Unlock Dashboard";
       }
     }
 
     function lockPortal() {
       adminState.pin = "";
+      localStorage.removeItem('cm_admin_pin');
       document.getElementById('authOverlay').classList.add('active');
       document.getElementById('adminPinInput').value = "";
       document.getElementById('adminPinErrorAlert').style.display = 'none';
@@ -1094,8 +1104,7 @@
     async function fetchAdminProfiles() {
       if (!adminState.pin) return;
       try {
-        const timestamp = new Date().getTime();
-        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(adminState.pin)}&_nocache=${timestamp}`);
+        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(adminState.pin)}`);
         const data = await res.json();
         if (data.success) {
           adminState.profiles = data.profiles;
@@ -1127,11 +1136,21 @@
       executeAdminSearch();
     }
 
+    function parseHeightToInches(heightStr) {
+      if (!heightStr) return 0;
+      const clean = String(heightStr).trim().replace(/"/g, '').replace(/'/g, '.');
+      const parts = clean.split('.');
+      const feet = parseFloat(parts[0]) || 0;
+      const inches = parseFloat(parts[1]) || 0;
+      return (feet * 12) + inches;
+    }
+
     function executeAdminSearch() {
       const searchTerm = document.getElementById('adminSearchInput').value.toLowerCase().trim();
       const gender = document.getElementById('adminFilterGender').value;
       const ageBracket = document.getElementById('adminFilterAge').value;
       const marital = document.getElementById('adminFilterMarital').value;
+      const subCaste = document.getElementById('adminFilterSubCaste').value;
       const state = document.getElementById('adminFilterState').value;
       const city = document.getElementById('adminFilterCity').value.toLowerCase().trim();
 
@@ -1143,12 +1162,15 @@
       if (gender) {
         list = list.filter(p => p.gender === gender);
       }
+      if (marital) {
+        list = list.filter(p => p.maritalStatus && p.maritalStatus.toLowerCase().trim() === marital.toLowerCase().trim());
+      }
+      if (subCaste) {
+        list = list.filter(p => p.subCaste === subCaste);
+      }
       if (ageBracket) {
         const [min, max] = ageBracket.split('-').map(Number);
         list = list.filter(p => p.age >= min && p.age <= max);
-      }
-      if (marital) {
-        list = list.filter(p => p.maritalStatus === marital);
       }
       if (state) {
         list = list.filter(p => p.state === state);
@@ -1164,7 +1186,8 @@
           (p.state && String(p.state).toLowerCase().includes(searchTerm)) ||
           (p.profession && String(p.profession).toLowerCase().includes(searchTerm)) ||
           (p.education && String(p.education).toLowerCase().includes(searchTerm)) ||
-          (p.phone && String(p.phone).toLowerCase().includes(searchTerm))
+          (p.phone && String(p.phone).toLowerCase().includes(searchTerm)) ||
+          (p.subCaste && String(p.subCaste).toLowerCase().includes(searchTerm))
         );
       }
 
@@ -1177,6 +1200,7 @@
       document.getElementById('adminFilterGender').value = '';
       document.getElementById('adminFilterAge').value = '';
       document.getElementById('adminFilterMarital').value = '';
+      document.getElementById('adminFilterSubCaste').value = '';
       document.getElementById('adminFilterState').value = '';
       document.getElementById('adminFilterCity').value = '';
       executeAdminSearch();
@@ -1225,7 +1249,7 @@
                 <div class="card-title-group">
                   <div class="card-name">${p.fullName}</div>
                   <div class="card-subtext">${p.gender} &bull; ${p.age} Yrs &bull; ${p.height || 'Height N/A'}</div>
-                  <div class="card-id-pill">ID: ${p.id} &bull; Plan: ${p.membershipPlan || 'Annual'}</div>
+                  <div class="card-id-pill">ID: ${p.id} &bull; Sub-Caste: ${p.subCaste || 'Kayastha'}</div>
                 </div>
               </div>
               <span class="badge badge-${p.status}">${p.status}</span>
@@ -1367,18 +1391,6 @@
       let tableHtml = `
         <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
         <head>
-          <!--[if gte mso 9]>
-          <xml>
-            <x:ExcelWorkbook>
-              <x:ExcelWorksheets>
-                <x:ExcelWorksheet>
-                  <x:Name>Customer Registry</x:Name>
-                  <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
-                </x:ExcelWorksheet>
-              </x:ExcelWorksheets>
-            </x:ExcelWorkbook>
-          </xml>
-          <![endif]-->
           <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
         </head>
         <body>
@@ -1394,6 +1406,7 @@
               <th>Age</th>
               <th>Height</th>
               <th>Marital Status</th>
+              <th>Sub-Caste</th>
               <th>Education</th>
               <th>Profession</th>
               <th>Annual Income</th>
@@ -1429,6 +1442,7 @@
             <td>${p.age || ''}</td>
             <td>${p.height || ''}</td>
             <td>${p.maritalStatus || ''}</td>
+            <td>${p.subCaste || ''}</td>
             <td>${p.education || ''}</td>
             <td>${p.profession || ''}</td>
             <td>${p.annualIncome || ''}</td>
@@ -1476,7 +1490,9 @@
         closeAllContextPopups();
         await callback();
       };
-      positionContextualCard(document.getElementById('contextConfirmCard'), triggerEl);
+      document.getElementById('backdropBarrier').classList.add('active');
+      document.getElementById('contextConfirmCard').style.display = 'block';
+      document.getElementById('contextConfirmCard').classList.add('active');
     }
 
     function openContextualApprove(profileId, btnEl) {
@@ -1602,6 +1618,7 @@
       document.getElementById('editMarital').value = p.maritalStatus || "Never Married";
       document.getElementById('editEducation').value = p.education || "";
       document.getElementById('editProfession').value = p.profession || "";
+      document.getElementById('editSubCaste').value = p.subCaste || "";
       document.getElementById('editIncome').value = p.annualIncome || "";
       document.getElementById('editAddress').value = p.exactAddress || "";
       document.getElementById('editEmail').value = p.email || "";
@@ -1616,7 +1633,10 @@
       document.getElementById('editState').value = p.state || "";
       populateCities('editState', 'editCity', 'editCityCustom', p.city);
 
-      positionContextualCard(document.getElementById('contextEditCard'), btnEl);
+      document.getElementById('backdropBarrier').classList.add('active');
+      const card = document.getElementById('contextEditCard');
+      card.style.display = 'block';
+      card.classList.add('active');
     }
 
     async function handleAdminEditSubmit(e) {
@@ -1640,6 +1660,7 @@
         maritalStatus: document.getElementById('editMarital').value,
         education: document.getElementById('editEducation').value,
         profession: document.getElementById('editProfession').value,
+        subCaste: document.getElementById('editSubCaste').value,
         annualIncome: document.getElementById('editIncome').value.trim(),
         state: stateVal,
         city: cityVal,
@@ -1688,7 +1709,11 @@
       document.getElementById('receiptProfileId').innerText = p.id;
       document.getElementById('receiptImage').src = p.paymentReceiptUrl;
       document.getElementById('receiptUtrText').innerText = p.paymentUtr ? "UTR / Ref: " + p.paymentUtr : "No UTR Entered";
-      positionContextualCard(document.getElementById('contextReceiptCard'), btnEl);
+      
+      document.getElementById('backdropBarrier').classList.add('active');
+      const card = document.getElementById('contextReceiptCard');
+      card.style.display = 'block';
+      card.classList.add('active');
     }
 
     function openContextualMatchmaking(profileId, btnEl) {
@@ -1727,7 +1752,10 @@
         `).join('');
       }
 
-      positionContextualCard(document.getElementById('contextMatchCard'), btnEl);
+      document.getElementById('backdropBarrier').classList.add('active');
+      const card = document.getElementById('contextMatchCard');
+      card.style.display = 'block';
+      card.classList.add('active');
     }
 
     function getSelectedMatchedCandidates() {
@@ -1739,7 +1767,6 @@
       return selected;
     }
 
-    // UPDATED WHATSAPP MESSAGE FORMAT
     function sendSelectedMatchesViaWhatsApp() {
       const client = adminState.activeMatchClient;
       if (!client || !client.phone) {
@@ -1763,7 +1790,7 @@
       selected.forEach((m, idx) => {
         msg += `*${idx + 1}. ${m.fullName}* (ID: ${m.id})\n`;
         msg += `* Age / Height: ${m.age} Yrs, ${m.height || 'N/A'}\n`;
-        msg += `* Education: ${m.education}\n`;
+        msg += `* Education: ${m.education} (${m.subCaste || 'Kayastha'})\n`;
         msg += `* Profession: ${m.profession}\n`;
         msg += `* Location: ${m.city}, ${m.state}\n\n`;
       });
@@ -1833,7 +1860,7 @@
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 12px; color: #2B2321;">
                 <div><strong style="color: #800020;">Age / Height:</strong> ${m.age} Yrs &bull; ${m.height || 'N/A'}</div>
-                <div><strong style="color: #800020;">DOB:</strong> ${m.dob ? new Date(m.dob).toLocaleDateString('en-IN') : 'N/A'}</div>
+                <div><strong style="color: #800020;">Sub-Caste:</strong> ${m.subCaste || 'Kayastha'}</div>
                 <div><strong style="color: #800020;">Marital Status:</strong> ${m.maritalStatus || 'Never Married'}</div>
                 <div><strong style="color: #800020;">Annual Income:</strong> ${m.annualIncome || 'Confidential'}</div>
                 <div><strong style="color: #800020;">Education:</strong> ${m.education || 'Unspecified'}</div>
@@ -1906,13 +1933,7 @@
         margin: [10, 0, 10, 0],
         filename: `Kayastha_Vivah_Patrika_${client.fullName.replace(/\s+/g, '_')}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          scrollX: 0,
-          scrollY: 0,
-          width: 794
-        },
+        html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0, width: 794 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
@@ -1956,6 +1977,7 @@
         maritalStatus: document.getElementById('addMarital').value,
         education: document.getElementById('addEducation').value,
         profession: document.getElementById('addProfession').value,
+        subCaste: document.getElementById('addSubCaste').value,
         annualIncome: document.getElementById('addIncome').value.trim(),
         state: stateVal,
         city: cityVal,
