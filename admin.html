@@ -9,8 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
   <style>
     :root {
       --primary: #FF7E7E;
@@ -170,9 +168,20 @@
     .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); }
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
     @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
+
+    /* NATIVE PRINT STYLES FOR BLANK-FREE PDF EXPORT */
+    @media print {
+      body * { visibility: hidden; }
+      #adminPrintSurface, #adminPrintSurface * { visibility: visible; }
+      #adminPrintSurface { position: absolute; left: 0; top: 0; width: 100%; background: white !important; padding: 20px; }
+      .header, .filter-wrapper, .card-actions-row, .modal-overlay, #toastNotice, .zoom-lightbox { display: none !important; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- HIDDEN PRINT CONTAINER FOR NATIVE PDF EXPORT -->
+  <div id="adminPrintSurface" style="display: none;"></div>
 
   <div class="zoom-lightbox" id="zoomLightbox" onclick="closeZoomLightbox()">
     <img id="zoomLightboxImg" class="zoom-content" src="" alt="Zoomed Candidate">
@@ -711,7 +720,7 @@
       "Ambashtha", "Asthana", "Bhatnagar", "Bose", "Das", "Dey", "Dutta", "Gaur", "Ghosh", "Guha",
       "Karan", "Kulshreshtha", "Mathur", "Mitra", "Mohanty", "Nigam", "Palit", "Pramanik", "Sarkar",
       "Saxena", "Sen", "Sinha", "Srivastava", "Surajdhwaj", "Others"
-    ]; //[cite: 1]
+    ];
 
     const EDUCATION_OPTIONS = [
       "10th", "12th", "Diploma", "ITI", "B.A.", "B.Com", "B.Sc.", "B.Tech / B.E.",
@@ -758,7 +767,7 @@
         resetFilters: "Reset Filters", adminDesk: "Admin Desk", enterPin: "Enter administrator PIN to unlock controls.", unlock: "Unlock Dashboard"
       },
       hi: {
-        settings: "⚙️ सेटिंग्स", export: "एक्सपोर्ट (.xls)", add: "+ जोड़ें", refresh: "रिफ्रेश", lock: "लॉक",
+        settings: "⚙️ सेटिंग्स", export: "एक्सपोर्ट (.xls)", add: "+ जोड़ें", refresh: "रिफ्रेश", lock: "लॉक",
         searchPlaceholder: "नाम, आईडी, शहर, फोन, पेशा खोजें...", searchBtn: "खोजें", filtersBtn: "फ़िल्टर ▾",
         gender: "लिंग", allGenders: "सभी लिंग", female: "महिला", male: "पुरुष",
         ageBracket: "आयु वर्ग", anyAge: "कोई भी आयु", maritalStatus: "वैवाहिक स्थिति", anyStatus: "कोई भी स्थिति",
@@ -1168,29 +1177,22 @@
       document.getElementById('zoomLightbox').classList.remove('active');
     }
 
+    // BULLETPROOF NATIVE PRINT-TO-PDF EXPORT FUNCTION FOR ADMIN
     function adminDownloadPdf(profileId) {
       const p = adminState.profiles.find(x => x.id === profileId);
       if (!p) return;
 
-      const container = document.createElement('div');
-      container.style.position = "fixed";
-      container.style.top = "0";
-      container.style.left = "0";
-      container.style.width = "794px";
-      container.style.background = "#FDFBF7";
-      container.style.padding = "40px";
-      container.style.zIndex = "999999";
-      container.style.boxSizing = "border-box";
-
-      container.innerHTML = `
-        <div style="border: 2px solid #800020; padding: 30px; border-radius: 12px; background: #FFF; box-sizing: border-box; width: 100%;">
+      const surface = document.getElementById('adminPrintSurface');
+      surface.style.display = "block";
+      surface.innerHTML = `
+        <div style="border: 2px solid #800020; padding: 30px; border-radius: 12px; background: #FFF; width: 100%;">
           <div style="text-align: center; border-bottom: 2px solid #FF7E7E; padding-bottom: 12px; margin-bottom: 15px;">
             <h1 style="font-size: 24px; color: #800020; font-weight: 900; margin: 0;">CHITRANSH MAHASABHA</h1>
             <p style="font-size: 11px; color: #7A6F6D; text-transform: uppercase; margin-top: 4px;">Official Matrimonial Biodata (Admin Export)</p>
           </div>
 
           <div style="display: flex; align-items: center; gap: 20px; border-bottom: 1px solid #F5DEC2; padding-bottom: 15px; margin-bottom: 15px;">
-            <img src="${p.photoUrl || ''}" style="width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid #FF7E7E;" crossorigin="anonymous">
+            <img src="${p.photoUrl || ''}" style="width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid #FF7E7E;">
             <div>
               <h2 style="font-size: 20px; font-weight: 800; color: #2B2321; margin: 0;">${p.fullName}</h2>
               <p style="font-size: 13px; color: #FFA259; font-weight: 700; margin: 3px 0;">ID: ${p.id} &bull; ${p.age} Years &bull; ${p.height || 'Height N/A'}</p>
@@ -1219,37 +1221,11 @@
         </div>
       `;
 
-      document.body.appendChild(container);
-      showNotice("Generating PDF...");
-
-      const imgElem = container.querySelector('img');
-      const proceedWithPdf = () => {
-        setTimeout(() => {
-          const opt = {
-            margin:       0,
-            filename:     `Biodata_${p.fullName.replace(/\s+/g, '_')}_${p.id}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, logging: false, windowWidth: 794 },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-          };
-
-          html2pdf().set(opt).from(container).save().then(() => {
-            showNotice("PDF downloaded successfully!");
-            document.body.removeChild(container);
-          }).catch(err => {
-            showNotice("PDF error.", true);
-            document.body.removeChild(container);
-          });
-        }, 400);
-      };
-
-      if (imgElem && p.photoUrl) {
-        imgElem.onload = proceedWithPdf;
-        imgElem.onerror = proceedWithPdf;
-        setTimeout(proceedWithPdf, 1500);
-      } else {
-        proceedWithPdf();
-      }
+      window.print();
+      setTimeout(() => {
+        surface.style.display = "none";
+        surface.innerHTML = "";
+      }, 1000);
     }
 
     function openSettingsModal() {
@@ -1542,12 +1518,8 @@
       const selected = getSelectedMatchedCandidates();
       if (!client || selected.length === 0) { showNotice("No matches selected.", true); return; }
 
-      const mount = document.createElement('div');
-      mount.style.position = "fixed"; mount.style.top = "-10000px"; mount.style.left = "-10000px"; mount.style.width = "794px";
-      document.body.appendChild(mount);
-
-      const surface = document.createElement('div');
-      surface.style.width = "794px"; surface.style.backgroundColor = "#FDFBF7"; surface.style.padding = "28px 24px"; surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
+      const surface = document.getElementById('adminPrintSurface');
+      surface.style.display = "block";
 
       let cardsHtml = selected.map((m, i) => `
         <div style="page-break-inside: avoid; border: 1.5px solid #EEDBBE; border-radius: 12px; background: #FFFFFF; padding: 18px 20px; margin-bottom: 20px;">
@@ -1558,10 +1530,21 @@
         </div>
       `).join('');
 
-      surface.innerHTML = `<div style="text-align: center; margin-bottom: 20px;"><h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0;">KAYASTHA VIVAH PATRIKA</h1><p style="font-size: 12px; color: #666;">Prepared for: ${client.fullName} (${client.id})</p></div>${cardsHtml}`;
+      surface.innerHTML = `
+        <div style="padding: 20px; background: #FDFBF7; font-family: 'Plus Jakarta Sans', sans-serif;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0;">KAYASTHA VIVAH PATRIKA</h1>
+            <p style="font-size: 12px; color: #666;">Prepared for: ${client.fullName} (${client.id})</p>
+          </div>
+          ${cardsHtml}
+        </div>
+      `;
 
-      mount.appendChild(surface);
-      html2pdf().set({ margin: 10, filename: `Vivah_Patrika.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 } }).from(surface).save().then(() => { document.body.removeChild(mount); });
+      window.print();
+      setTimeout(() => {
+        surface.style.display = "none";
+        surface.innerHTML = "";
+      }, 1000);
     }
 
     function openAddMemberModal() {
