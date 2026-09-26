@@ -399,7 +399,7 @@
 
         <div style="display: flex; gap: 24px; align-items: flex-start; margin-bottom: 25px; background: #FFFFFF; border: 1.5px solid #F0E2D3; border-radius: 12px; padding: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
           <div style="position: relative; flex-shrink: 0;">
-            <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate" style="width: 120px; height: 150px; border-radius: 8px; object-fit: cover; border: 2px solid #FF7E7E; display: block; cursor: pointer;" onclick="zoomPhoto(this.src)">
+            <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate" style="width: 120px; height: 150px; border-radius: 8px; object-fit: cover; border: 2px solid #FF7E7E; display: block; cursor: pointer;" onclick="zoomPhoto(this.src)" crossorigin="anonymous">
             <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); background: #1E8E3E; color: #fff; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; white-space: nowrap;">
               ✓ Verified
             </div>
@@ -423,7 +423,6 @@
         </div>
 
         <div style="display: none;">
-          <!-- Hidden data points for reference preservation -->
           <span id="bioMarital"></span><span id="bioFatherName"></span><span id="bioFatherOcc"></span><span id="bioMotherName"></span><span id="bioMotherOcc"></span><span id="bioFamily"></span><span id="bioPreferences"></span>
         </div>
 
@@ -1648,10 +1647,10 @@
       const element = document.getElementById('biodataPrintSurface');
       const candidateName = document.getElementById('bioName').innerText.replace(/\s+/g, '_');
       const opt = {
-        margin: [10, 10, 10, 10],
+        margin: 0,
         filename: `Vivah_Patrika_${candidateName}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
       html2pdf().set(opt).from(element).save();
