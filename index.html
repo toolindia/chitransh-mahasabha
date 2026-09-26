@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
     :root {
@@ -23,45 +25,30 @@
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
-      --shadow-sm: 0 2px 8px rgba(255, 126, 126, 0.08);
-      --shadow-md: 0 8px 24px rgba(255, 126, 126, 0.12);
-      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.25);
+      --shadow-sm: 0 4px 12px rgba(255, 126, 126, 0.08);
+      --shadow-md: 0 10px 28px rgba(255, 126, 126, 0.15);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.25);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     
     html, body {
-      background-color: var(--bg);
-      color: var(--dark);
-      line-height: 1.5;
-      margin: 0 !important;
-      padding: 0 !important;
-      padding-bottom: 5rem;
-      width: 100% !important;
-      min-height: 100% !important;
-      display: block !important;
+      background-color: var(--bg); color: var(--dark); line-height: 1.5;
+      margin: 0 !important; padding: 0 !important; padding-bottom: 5rem;
+      width: 100% !important; min-height: 100% !important; display: block !important;
+      overflow-y: auto !important;
     }
 
     .portal-header-bar {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 0.75rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-      width: 100%;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      background: var(--white); border-bottom: 1px solid var(--border); padding: 0.75rem 1.25rem;
+      display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0;
+      z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.04); width: 100%; flex-wrap: wrap; gap: 0.5rem;
     }
 
-    .brand-title { font-size: 1.05rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.35rem; }
+    .brand-title { font-size: 1.15rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.35rem; }
     .brand-title span { color: var(--secondary); }
 
-    .header-right-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+    .header-right-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
 
     @media (max-width: 520px) {
       .portal-header-bar { padding: 0.6rem 0.75rem; flex-direction: column; align-items: stretch; text-align: center; }
@@ -70,66 +57,54 @@
     }
 
     .btn {
-      min-height: 38px;
-      padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700;
-      border-radius: var(--radius-sm); cursor: pointer; border: none;
-      transition: all 0.2s ease; text-decoration: none;
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
-      user-select: none;
-      white-space: nowrap;
+      min-height: 40px; padding: 0.45rem 1rem; font-size: 0.82rem; font-weight: 700;
+      border-radius: var(--radius-sm); cursor: pointer; border: none; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; user-select: none; white-space: nowrap;
     }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+    .btn:active { transform: translateY(1px); }
 
     .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); box-shadow: var(--shadow-sm); }
-    .btn-primary:hover { opacity: 0.95; }
     .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
     .btn-outline:hover { background: var(--surface-light); }
     .btn-ghost { background: transparent; color: var(--dark); }
-    .btn-lang { background: var(--surface-light); color: var(--dark); border: 1px solid var(--border); font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+    .btn-lang { background: var(--surface-light); color: var(--dark); border: 1px solid var(--border); font-size: 0.78rem; padding: 0.35rem 0.75rem; }
 
     .gender-toggle-row {
-      display: flex; gap: 0.5rem; margin-bottom: 0.75rem;
-      background: var(--surface-light); padding: 0.35rem; border-radius: var(--radius-sm);
+      display: flex; gap: 0.5rem; margin-bottom: 0.85rem; background: var(--surface-light); padding: 0.4rem; border-radius: var(--radius-sm);
     }
     .gender-pill {
-      flex: 1; padding: 0.4rem; text-align: center; font-size: 0.8rem; font-weight: 700;
-      border-radius: 6px; cursor: pointer; background: transparent; color: var(--dark);
-      border: none; transition: all 0.2s;
+      flex: 1; padding: 0.45rem; text-align: center; font-size: 0.82rem; font-weight: 700;
+      border-radius: 6px; cursor: pointer; background: transparent; color: var(--dark); border: none; transition: all 0.2s;
     }
     .gender-pill.active { background: var(--primary); color: var(--white); box-shadow: var(--shadow-sm); }
 
     .user-pill {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--surface-light); padding: 0.2rem 0.6rem 0.2rem 0.2rem;
-      border-radius: 20px;
+      display: flex; align-items: center; gap: 0.5rem; background: var(--surface-light); padding: 0.25rem 0.75rem 0.25rem 0.25rem; border-radius: 20px;
     }
 
     .skeleton-card {
       background: var(--white); border-radius: var(--radius-md); border: 1px solid var(--border);
-      height: 380px; display: flex; flex-direction: column; overflow: hidden;
-      animation: pulse 1.2s infinite ease-in-out;
+      height: 380px; display: flex; flex-direction: column; overflow: hidden; animation: pulse 1.2s infinite ease-in-out;
     }
     .skeleton-img { width: 100%; height: 220px; background: #E5D5C5; }
     .skeleton-line { height: 16px; background: #E5D5C5; border-radius: 4px; margin: 10px 15px; }
     .skeleton-line.short { width: 60%; }
 
-    @keyframes pulse {
-      0% { opacity: 0.6; }
-      50% { opacity: 1; }
-      100% { opacity: 0.6; }
-    }
+    @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
-    .filter-wrapper { max-width: 1200px; margin: 0.85rem auto; padding: 0 0.85rem; }
-    .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.85rem; box-shadow: var(--shadow-sm); }
+    .filter-wrapper { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
+    .filter-container { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
     
     .search-action-row {
-      display: flex; gap: 0.4rem; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 0.65rem;
+      display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 0.75rem;
     }
-    
     .search-action-row input {
-      flex: 1; min-width: 180px; height: 40px; padding: 0.45rem 0.75rem; 
-      border: 1.5px solid var(--border); border-radius: var(--radius-sm); 
-      font-size: 0.85rem; outline: none; background: var(--bg); color: var(--dark);
+      flex: 1; min-width: 200px; height: 42px; padding: 0.5rem 0.85rem; 
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); color: var(--dark);
+      transition: border-color 0.2s;
     }
+    .search-action-row input:focus { border-color: var(--primary); background: var(--white); }
 
     @media (max-width: 480px) {
       .search-action-row { flex-direction: column; align-items: stretch; gap: 0.5rem; }
@@ -138,187 +113,132 @@
     }
     
     .filter-grid {
-      display: none;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
-      gap: 0.65rem; align-items: flex-end; margin-top: 0.75rem;
+      display: none; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) auto; gap: 0.75rem; align-items: flex-end; margin-top: 0.85rem;
     }
     .filter-grid.expanded { display: grid !important; }
 
-    .filter-control { display: flex; flex-direction: column; gap: 0.2rem; }
-    .filter-control label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--muted); }
+    .filter-control { display: flex; flex-direction: column; gap: 0.25rem; }
+    .filter-control label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); }
     .filter-control select, .filter-control input {
-      height: 38px; padding: 0.4rem 0.6rem; border-radius: var(--radius-sm);
-      border: 1px solid var(--border); background-color: var(--bg); font-size: 0.8rem; color: var(--dark); outline: none;
+      height: 40px; padding: 0.45rem 0.65rem; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background-color: var(--bg); font-size: 0.82rem; color: var(--dark); outline: none;
     }
 
-    .catalog-wrapper { max-width: 1200px; margin: 1rem auto 3rem auto; padding: 0 0.85rem; }
-    .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
-    .profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.15rem; }
+    .catalog-wrapper { max-width: 1200px; margin: 1.25rem auto 3rem auto; padding: 0 1rem; }
+    .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
+    .profile-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; }
 
-    @media (max-width: 600px) {
-      .profile-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 600px) { .profile-grid { grid-template-columns: 1fr; } }
 
     .profile-card {
       background: var(--white); border-radius: var(--radius-md); border: 1px solid var(--border); overflow: hidden;
-      box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;
+      box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .profile-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-    .profile-img-container { position: relative; width: 100%; height: 260px; background-color: var(--surface-light); }
-    .profile-img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--secondary); }
+    
+    .profile-img-container { position: relative; width: 100%; height: 260px; background-color: var(--surface-light); overflow: hidden; cursor: zoom-in; }
+    .profile-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .profile-card:hover .profile-img { transform: scale(1.04); }
 
     .shortlist-tag-btn {
-      position: absolute; top: 10px; right: 10px; z-index: 2;
-      background: rgba(255, 255, 255, 0.95); border: 1px solid var(--border);
-      border-radius: 20px; padding: 0.3rem 0.65rem; font-size: 0.72rem; font-weight: 800; cursor: pointer; color: var(--dark);
+      position: absolute; top: 12px; right: 12px; background: rgba(255, 255, 255, 0.95); border: 1px solid var(--border);
+      border-radius: 20px; padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: 800; cursor: pointer; color: var(--dark); z-index: 2;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: all 0.2s;
     }
+    .shortlist-tag-btn:hover { transform: scale(1.05); }
     .shortlist-tag-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
-    .profile-body { padding: 1rem; display: flex; flex-direction: column; flex-grow: 1; gap: 0.35rem; }
+    .profile-body { padding: 1.15rem; display: flex; flex-direction: column; flex-grow: 1; gap: 0.4rem; }
     .profile-name-row { display: flex; justify-content: space-between; align-items: baseline; }
-    .profile-name { font-size: 1.1rem; font-weight: 800; color: var(--dark); }
-    .profile-age { font-size: 0.85rem; color: var(--secondary); font-weight: 700; }
-    .profile-meta-line { font-size: 0.82rem; color: var(--muted); }
-    .profile-badge { background: var(--surface-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 700; color: var(--dark); width: fit-content; }
+    .profile-name { font-size: 1.12rem; font-weight: 800; color: var(--dark); }
+    .profile-age { font-size: 0.88rem; color: var(--secondary); font-weight: 700; }
+    .profile-meta-line { font-size: 0.84rem; color: var(--muted); }
+    .profile-badge { background: var(--surface-light); padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; color: var(--dark); width: fit-content; }
 
-    /* PAGINATION BAR STYLES */
     .pagination-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1.5rem;
-      padding: 0.85rem 1rem;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.35rem; margin-top: 2.5rem; flex-wrap: wrap;
     }
-    .pagination-numbers {
-      display: flex;
-      gap: 0.35rem;
-      align-items: center;
-      flex-wrap: wrap;
+    .page-btn {
+      min-width: 38px; height: 38px; padding: 0.4rem 0.75rem; font-size: 0.85rem; font-weight: 700;
+      border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--white); color: var(--dark);
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s;
     }
-    .page-num-btn {
-      min-width: 34px;
-      height: 34px;
-      padding: 0.2rem 0.5rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--dark);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
+    .page-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--surface-light); }
+    .page-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); box-shadow: var(--shadow-sm); }
+    .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .zoom-lightbox {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(43, 35, 33, 0.9); backdrop-filter: blur(8px);
+      z-index: 100000; display: none; align-items: center; justify-content: center; padding: 1.5rem;
+      animation: fadeInZoom 0.25s ease forwards;
     }
-    .page-num-btn:hover { background: var(--surface-light); border-color: var(--primary); }
-    .page-num-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); box-shadow: var(--shadow-sm); }
+    .zoom-lightbox.active { display: flex !important; }
+    @keyframes fadeInZoom { from { opacity: 0; } to { opacity: 1; } }
+    .zoom-content { max-width: 90%; max-height: 85vh; border-radius: var(--radius-md); border: 3px solid var(--accent); box-shadow: var(--shadow-lg); object-fit: contain; }
 
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
-      z-index: 99999; display: none; align-items: center; justify-content: center; padding: 1rem;
+      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(6px);
+      z-index: 99999; display: none; align-items: center; justify-content: center; padding: 1rem; overflow-y: auto;
     }
     .modal-overlay.active { display: flex !important; }
 
     .modal-card {
-      background: var(--white); border-radius: var(--radius-md); max-width: 620px; width: 95%;
-      max-height: 85vh; overflow-y: auto; position: relative; border: 2px solid var(--primary);
-      box-shadow: var(--shadow-lg); padding: 1.5rem; animation: modalScaleIn 0.22s ease forwards;
+      background: var(--white); border-radius: var(--radius-lg); max-width: 640px; width: 95%;
+      max-height: 88vh; overflow-y: auto; position: relative; border: 2px solid var(--primary);
+      box-shadow: var(--shadow-lg); padding: 1.75rem; animation: modalScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; margin: auto;
     }
+    @keyframes modalScaleIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
 
-    @keyframes modalScaleIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
+    .modal-close-btn { position: absolute; top: 1rem; right: 1rem; background: var(--surface-light); border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 1.3rem; font-weight: 800; cursor: pointer; color: var(--dark); display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .modal-close-btn:hover { background: var(--primary); color: var(--white); }
 
-    .modal-close-btn { position: absolute; top: 0.75rem; right: 0.75rem; background: transparent; border: none; font-size: 1.4rem; font-weight: 700; cursor: pointer; color: var(--muted); z-index: 10; }
-
-    /* IMAGE ZOOM MODAL */
-    .image-zoom-card {
-      background: rgba(0, 0, 0, 0.9);
-      border: none;
-      max-width: 480px;
-      padding: 1.5rem;
-      border-radius: var(--radius-lg);
-      text-align: center;
-      box-shadow: var(--shadow-lg);
-    }
-    .image-zoom-card .modal-close-btn {
-      color: var(--white);
-      background: rgba(255,255,255,0.2);
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      top: 1rem;
-      right: 1rem;
-    }
-    .zoomed-preview-image {
-      width: 100%;
-      max-height: 70vh;
-      object-fit: contain;
-      border-radius: var(--radius-md);
-    }
-
-    /* BIODATA STYLES */
-    .biodata-sheet { border: 1.5px solid var(--secondary); border-radius: var(--radius-md); padding: 1.25rem; background: #FFF; margin-bottom: 1rem; }
-    .biodata-header { display: flex; align-items: center; gap: 1rem; border-bottom: 1.5px solid var(--surface-light); padding-bottom: 0.85rem; margin-bottom: 0.85rem; }
-    .biodata-photo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; cursor: pointer; }
-    .biodata-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; color: var(--primary); margin: 0.75rem 0 0.25rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
-    .biodata-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-    .biodata-table td { padding: 0.3rem 0; }
+    .biodata-sheet { border: 1.5px solid var(--secondary); border-radius: var(--radius-md); padding: 1.35rem; background: #FFF; margin-bottom: 1.25rem; }
+    .biodata-header { display: flex; align-items: center; gap: 1.2rem; border-bottom: 1.5px solid var(--surface-light); padding-bottom: 1rem; margin-bottom: 1rem; }
+    .biodata-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2.5px solid var(--primary); flex-shrink: 0; cursor: zoom-in; }
+    .biodata-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; color: var(--primary); margin: 0.85rem 0 0.3rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
+    .biodata-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .biodata-table td { padding: 0.35rem 0; }
     .biodata-table td:first-child { color: var(--muted); width: 40%; font-weight: 600; }
 
-    .form-group { margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
-    .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--dark); }
-    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); }
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+    .form-group { margin-bottom: 0.85rem; display: flex; flex-direction: column; gap: 0.3rem; text-align: left; }
+    .form-group label { font-size: 0.78rem; font-weight: 700; color: var(--dark); }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg); transition: border-color 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: var(--white); }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
     @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
 
     .password-input-wrapper { position: relative; display: flex; align-items: center; }
-    .password-input-wrapper input { width: 100%; padding-right: 2.4rem; }
-    .toggle-password-btn { position: absolute; right: 0.65rem; background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0.2rem; }
+    .password-input-wrapper input { width: 100%; padding-right: 2.5rem; }
+    .toggle-password-btn { position: absolute; right: 0.75rem; background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--muted); display: flex; align-items: center; justify-content: center; padding: 0.2rem; }
 
     .auth-error-box {
       display: none; background-color: #FCE8E6; border: 1px solid #D93025; color: #C5221F;
-      font-size: 0.8rem; font-weight: 700; padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); margin-bottom: 0.75rem; text-align: center;
+      font-size: 0.82rem; font-weight: 700; padding: 0.6rem 0.85rem; border-radius: var(--radius-sm); margin-bottom: 0.85rem; text-align: center;
     }
 
-    .membership-tier-container { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin: 0.5rem 0 1rem 0; }
-    .tier-card { border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 0.85rem; cursor: pointer; text-align: center; background: var(--bg); transition: all 0.2s ease; }
+    .membership-tier-container { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 0.5rem 0 1.15rem 0; }
+    .tier-card { border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 0.9rem 0.5rem; cursor: pointer; text-align: center; background: var(--bg); transition: all 0.2s ease; }
     .tier-card.selected { border-color: var(--primary); background: var(--surface-light); }
-    .tier-card h4 { font-size: 0.85rem; color: var(--dark); }
-    .tier-card p { font-size: 1.15rem; font-weight: 800; color: var(--primary); margin-top: 0.2rem; }
+    .tier-card h4 { font-size: 0.88rem; color: var(--dark); }
+    .tier-card p { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin-top: 0.2rem; }
 
-    .upi-box { border: 2px dashed var(--secondary); background: var(--surface-light); border-radius: var(--radius-md); padding: 1.25rem; text-align: center; margin: 1rem 0; }
+    .upi-box { border: 2px dashed var(--secondary); background: var(--surface-light); border-radius: var(--radius-md); padding: 1.35rem; text-align: center; margin: 1.15rem 0; }
 
-    .auth-tab-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    .auth-tab { padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem; font-weight: 700; border-bottom: 2px solid transparent; color: var(--muted); }
+    .auth-tab-row { display: flex; gap: 0.5rem; margin-bottom: 1.15rem; border-bottom: 1px solid var(--border); }
+    .auth-tab { padding: 0.5rem 1rem; cursor: pointer; font-size: 0.88rem; font-weight: 700; border-bottom: 2px solid transparent; color: var(--muted); }
     .auth-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
 
     .guest-restricted-blur { filter: blur(6px); pointer-events: none; user-select: none; }
-
-    /* NATIVE PRINT STYLES FOR BLANK-FREE PDF EXPORT */
-    @media print {
-      body * { visibility: hidden; }
-      #biodataModal { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: white !important; backdrop-filter: none !important; display: flex !important; align-items: flex-start; justify-content: center; padding: 0; }
-      #biodataModal .modal-card { border: none !important; box-shadow: none !important; width: 100% !important; max-width: 100% !important; max-height: none !important; padding: 0 !important; }
-      #biodataPrintSurface, #biodataPrintSurface * { visibility: visible; }
-      #biodataPrintSurface { position: absolute; left: 0; top: 0; width: 100%; border: none !important; margin: 0; padding: 20px; }
-      .portal-header-bar, .filter-wrapper, .catalog-header, .pagination-bar, .modal-close-btn, .btn { display: none !important; }
-    }
   </style>
 </head>
 <body>
+
+  <div class="zoom-lightbox" id="zoomLightbox" onclick="closeZoomLightbox()">
+    <img id="zoomLightboxImg" class="zoom-content" src="" alt="Zoomed Candidate">
+  </div>
 
   <header class="portal-header-bar">
     <div class="brand-title">Chitransh<span>Mahasabha</span></div>
@@ -410,7 +330,7 @@
         </div>
 
         <div class="filter-control">
-          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" id="txtResetFilters" onclick="guardedAction(() => resetFilters())">Reset Filters</button>
+          <button class="btn btn-outline" style="width: 100%; min-height: 40px;" id="txtResetFilters" onclick="guardedAction(() => resetFilters())">Reset Filters</button>
         </div>
       </div>
     </div>
@@ -435,23 +355,8 @@
       <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
     </div>
 
-    <!-- PAGINATION BAR ADDON -->
-    <div class="pagination-bar" id="paginationBarContainer" style="display: none;">
-      <button class="btn btn-outline" id="prevPageBtn" onclick="changePage(-1)">← Previous</button>
-      <div class="pagination-numbers" id="paginationNumbersList"></div>
-      <button class="btn btn-outline" id="nextPageBtn" onclick="changePage(1)">Next →</button>
-    </div>
+    <div class="pagination-bar" id="paginationContainer"></div>
   </main>
-
-  <!-- IMAGE ZOOM MODAL ADDON -->
-  <div class="modal-overlay" id="imageZoomModal">
-    <div class="image-zoom-card modal-card">
-      <button class="modal-close-btn" onclick="closeModal('imageZoomModal')">&times;</button>
-      <div style="margin-top: 0.5rem;">
-        <img id="zoomedImageElement" class="zoomed-preview-image" src="" alt="Zoomed Photo">
-      </div>
-    </div>
-  </div>
 
   <!-- BIODATA VIEW MODAL -->
   <div class="modal-overlay" id="biodataModal">
@@ -465,7 +370,7 @@
         </div>
 
         <div class="biodata-header">
-          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate" onclick="openZoomModal(this.src)">
+          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate" onclick="openZoomLightbox(this.src)" style="cursor: zoom-in;" title="Click to Zoom">
           <div>
             <h2 id="bioName" style="font-size: 1.15rem; font-weight: 800;">Candidate Name</h2>
             <p id="bioBasic" style="font-size: 0.82rem; color: var(--secondary); font-weight: 700;">Age - Height</p>
@@ -654,7 +559,7 @@
           <label>Upload Profile Photo *</label>
           <input type="file" id="regPhotoFile" accept="image/*" required onchange="handleProfilePhotoSelection(event)">
           <div id="imagePreviewBox" style="display: none; margin-top: 0.5rem; text-align: center;">
-            <img id="imagePreviewElement" src="" alt="Preview" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); cursor: pointer;" onclick="openZoomModal(this.src)">
+            <img id="imagePreviewElement" src="" alt="Preview" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); cursor: zoom-in;" onclick="openZoomLightbox(this.src)">
           </div>
         </div>
 
@@ -693,7 +598,7 @@
         <h1 style="font-size: 2.2rem; color: var(--dark); margin: 0.25rem 0;" id="payAmountDisplay">₹1999</h1>
         
         <div style="margin: 0.75rem auto; width: 170px; height: 170px; background: #FFF; padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
-          <img id="upiQrCodeImg" src="" alt="UPI QR" style="width: 100%; height: 100%; cursor: pointer;" onclick="openZoomModal(this.src)">
+          <img id="upiQrCodeImg" src="" alt="UPI QR" style="width: 100%; height: 100%;">
         </div>
 
         <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">UPI ID: <code id="payUpiIdDisplay">sinha361@icici</code></p>
@@ -708,7 +613,7 @@
           <label style="font-size: 0.8rem; font-weight: 700; color: var(--dark);">Upload Payment Screenshot *</label>
           <input type="file" id="payScreenshotFile" accept="image/*" required onchange="handleScreenshotSelection(event)">
           <div id="screenshotPreviewBox" style="display: none; margin-top: 0.5rem; text-align: center;">
-            <img id="screenshotPreviewElement" src="" alt="Receipt Preview" style="max-width: 120px; border-radius: 6px; border: 1px solid var(--border); cursor: pointer;" onclick="openZoomModal(this.src)">
+            <img id="screenshotPreviewElement" src="" alt="Receipt Preview" style="max-width: 120px; border-radius: 6px; border: 1px solid var(--border); cursor: zoom-in;" onclick="openZoomLightbox(this.src)">
           </div>
         </div>
 
@@ -879,74 +784,24 @@
     let currentLang = 'en';
     const TRANSLATIONS = {
       en: {
-        register: "Register Profile",
-        signIn: "Sign In",
-        signOut: "Sign Out",
-        searchPlaceholder: "Search by name, ID, city, state...",
-        searchBtn: "Search",
-        filtersBtn: "Filters ▾",
-        gender: "Gender",
-        allGenders: "All Genders",
-        female: "Female",
-        male: "Male",
-        ageBracket: "Age Bracket",
-        anyAge: "Any Age",
-        maritalStatus: "Marital Status",
-        anyStatus: "Any Status",
-        neverMarried: "Never Married",
-        divorced: "Divorced",
-        widowed: "Widowed",
-        subCaste: "Sub-Caste",
-        allSubCastes: "All Sub-Castes",
-        education: "Education",
-        allQual: "All Qualifications",
-        profession: "Profession",
-        allOcc: "All Occupations",
-        minHeight: "Min Height",
-        anyHeight: "Any Height",
-        resetFilters: "Reset Filters",
-        registryTitle: "Candidate Registry",
-        loading: "Loading candidate records...",
-        all: "All",
-        saved: "Saved",
-        allProfiles: "All Profiles",
-        femaleProfiles: "Female Profiles",
-        maleProfiles: "Male Profiles"
+        register: "Register Profile", signIn: "Sign In", signOut: "Sign Out",
+        searchPlaceholder: "Search by name, ID, city, state...", searchBtn: "Search", filtersBtn: "Filters ▾",
+        gender: "Gender", allGenders: "All Genders", female: "Female", male: "Male",
+        ageBracket: "Age Bracket", anyAge: "Any Age", maritalStatus: "Marital Status", anyStatus: "Any Status",
+        neverMarried: "Never Married", divorced: "Divorced", widowed: "Widowed", subCaste: "Sub-Caste", allSubCastes: "All Sub-Castes",
+        education: "Education", allQual: "All Qualifications", profession: "Profession", allOcc: "All Occupations",
+        minHeight: "Min Height", anyHeight: "Any Height", resetFilters: "Reset Filters", registryTitle: "Candidate Registry",
+        loading: "Loading candidate records...", all: "All", saved: "Saved", allProfiles: "All Profiles", femaleProfiles: "Female Profiles", maleProfiles: "Male Profiles"
       },
       hi: {
-        register: "प्रोफाइल रजिस्टर करें",
-        signIn: "साइन इन",
-        signOut: "साइन आउट",
-        searchPlaceholder: "नाम, आईडी, शहर, राज्य द्वारा खोजें...",
-        searchBtn: "खोजें",
-        filtersBtn: "फ़िल्टर ▾",
-        gender: "लिंग",
-        allGenders: "सभी लिंग",
-        female: "महिला",
-        male: "पुरुष",
-        ageBracket: "आयु वर्ग",
-        anyAge: "कोई भी आयु",
-        maritalStatus: "वैवाहिक स्थिति",
-        anyStatus: "कोई भी स्थिति",
-        neverMarried: "अविवाहित",
-        divorced: "तलाकशुदा",
-        widowed: "विधवा/विधुर",
-        subCaste: "उप-जाति",
-        allSubCastes: "सभी उप-जातियां",
-        education: "शिक्षा",
-        allQual: "सभी योग्यताएं",
-        profession: "व्यवसाय",
-        allOcc: "सभी व्यवसाय",
-        minHeight: "न्यूनतम लंबाई",
-        anyHeight: "कोई भी लंबाई",
-        resetFilters: "फ़िल्टर रीसेट करें",
-        registryTitle: "उम्मीदवार सूची",
-        loading: "डेटाबेस से रिकॉर्ड लोड हो रहे हैं...",
-        all: "सभी",
-        saved: "सुरक्षित",
-        allProfiles: "सभी प्रोफाइल",
-        femaleProfiles: "महिला प्रोफाइल",
-        maleProfiles: "पुरुष प्रोफाइल"
+        register: "प्रोफाइल रजिस्टर करें", signIn: "साइन इन", signOut: "साइन आउट",
+        searchPlaceholder: "नाम, आईडी, शहर, राज्य द्वारा खोजें...", searchBtn: "खोजें", filtersBtn: "फ़िल्टर ▾",
+        gender: "लिंग", allGenders: "सभी लिंग", female: "महिला", male: "पुरुष",
+        ageBracket: "आयु वर्ग", anyAge: "कोई भी आयु", maritalStatus: "वैवाहिक स्थिति", anyStatus: "कोई भी स्थिति",
+        neverMarried: "अविवाहित", divorced: "तलाकशुदा", widowed: "विधवा/विधुर", subCaste: "उप-जाति", allSubCastes: "सभी उप-जातियां",
+        education: "शिक्षा", allQual: "सभी योग्यताएं", profession: "व्यवसाय", allOcc: "सभी व्यवसाय",
+        minHeight: "न्यूनतम लंबाई", anyHeight: "कोई भी लंबाई", resetFilters: "फ़िल्टर रीसेट करें", registryTitle: "उम्मीदवार सूची",
+        loading: "डेटाबेस से रिकॉर्ड लोड हो रहे हैं...", all: "सभी", saved: "सुरक्षित", allProfiles: "सभी प्रोफाइल", femaleProfiles: "महिला प्रोफाइल", maleProfiles: "पुरुष प्रोफाइल"
       }
     };
 
@@ -998,6 +853,8 @@
       savedIds: new Set(),
       user: null,
       mode: 'all',
+      currentPage: 1,
+      pageSize: 12,
       settings: {
         isFreeRegistration: false,
         monthlyFee: "499",
@@ -1005,9 +862,6 @@
         upiId: "sinha361@icici"
       }
     };
-
-    let currentPage = 1;
-    const profilesPerPage = 12;
 
     let selectedProfileImage = "";
     let selectedScreenshotImage = "";
@@ -1018,7 +872,6 @@
       initDropdownOptions();
       initLocationDropdowns();
       checkCachedSessionAndProfiles();
-      checkUserSession();
       fetchSystemSettings();
       fetchActiveProfiles();
     });
@@ -1063,12 +916,10 @@
         return;
       }
       document.getElementById('filterGender').value = genderVal;
-      
       document.getElementById('btnGenderAll').className = genderVal === '' ? 'gender-pill active' : 'gender-pill';
       document.getElementById('btnGenderFemale').className = genderVal === 'Female' ? 'gender-pill active' : 'gender-pill';
       document.getElementById('btnGenderMale').className = genderVal === 'Male' ? 'gender-pill active' : 'gender-pill';
-
-      currentPage = 1;
+      state.currentPage = 1;
       applyFilters();
     }
 
@@ -1087,47 +938,31 @@
       const el = document.getElementById(elemId);
       if (!el) return;
       el.innerHTML = defaultPlaceholder ? `<option value="">${defaultPlaceholder}</option>` : '';
-      options.forEach(opt => {
-        el.innerHTML += `<option value="${opt}">${opt}</option>`;
-      });
+      options.forEach(opt => { el.innerHTML += `<option value="${opt}">${opt}</option>`; });
     }
 
     function togglePasswordVisibility(inputId, btn) {
       const input = document.getElementById(inputId);
-      if (input.type === 'password') {
-        input.type = 'text';
-        btn.innerText = '🙈';
-      } else {
-        input.type = 'password';
-        btn.innerText = '👁';
-      }
+      if (input.type === 'password') { input.type = 'text'; btn.innerText = '🙈'; }
+      else { input.type = 'password'; btn.innerText = '👁'; }
     }
 
     function showAuthError(msg) {
       const box = document.getElementById('authErrorAlert');
-      box.innerText = msg;
-      box.style.display = 'block';
+      box.innerText = msg; box.style.display = 'block';
     }
 
     function clearAuthError() {
       const box = document.getElementById('authErrorAlert');
-      box.style.display = 'none';
-      box.innerText = '';
+      box.style.display = 'none'; box.innerText = '';
     }
 
     function checkCachedSessionAndProfiles() {
       const storedSession = localStorage.getItem('cm_session');
-      if (storedSession) {
-        state.user = JSON.parse(storedSession);
-        renderNavUser();
-      }
-
+      if (storedSession) { state.user = JSON.parse(storedSession); renderNavUser(); }
       const cachedProfiles = localStorage.getItem('cm_cached_profiles');
       if (cachedProfiles) {
-        try {
-          state.profiles = JSON.parse(cachedProfiles);
-          applyFilters();
-        } catch(e) {}
+        try { state.profiles = JSON.parse(cachedProfiles); applyFilters(); } catch(e) {}
       }
     }
 
@@ -1135,13 +970,8 @@
       try {
         const res = await fetch(`${API_ENDPOINT}?action=getSettings`);
         const data = await res.json();
-        if (data.success) {
-          state.settings = data.settings;
-          applyPricingUI();
-        }
-      } catch (err) {
-        console.error("Failed to load settings", err);
-      }
+        if (data.success) { state.settings = data.settings; applyPricingUI(); }
+      } catch (err) { console.error("Failed to load settings", err); }
     }
 
     function applyPricingUI() {
@@ -1176,53 +1006,34 @@
       const panel = document.getElementById('mainFilterPanel');
       const btn = document.getElementById('toggleFilterBtn');
       if (!panel || !btn) return;
-
       const isHidden = window.getComputedStyle(panel).display === 'none';
-      if (isHidden) {
-        panel.classList.add('expanded');
-        panel.style.display = 'grid';
-        btn.innerText = 'Filters ▴';
-      } else {
-        panel.classList.remove('expanded');
-        panel.style.display = 'none';
-        btn.innerText = 'Filters ▾';
-      }
+      if (isHidden) { panel.classList.add('expanded'); panel.style.display = 'grid'; btn.innerText = 'Filters ▴'; }
+      else { panel.classList.remove('expanded'); panel.style.display = 'none'; btn.innerText = 'Filters ▾'; }
     }
 
     function initLocationDropdowns() {
       const stateSel = document.getElementById('regState');
       if (!stateSel) return;
       stateSel.innerHTML = `<option value="">Select State</option>`;
-      Object.keys(LOCATION_DATA).forEach(st => {
-        stateSel.innerHTML += `<option value="${st}">${st}</option>`;
-      });
+      Object.keys(LOCATION_DATA).forEach(st => { stateSel.innerHTML += `<option value="${st}">${st}</option>`; });
     }
 
     function populateCities(stateId, cityId, customId) {
       const stateVal = document.getElementById(stateId).value;
       const citySel = document.getElementById(cityId);
       const customInput = document.getElementById(customId);
-      
       citySel.innerHTML = `<option value="">Select City</option>`;
       if (customInput) customInput.style.display = "none";
-
       if (stateVal && LOCATION_DATA[stateVal]) {
-        LOCATION_DATA[stateVal].forEach(ct => {
-          citySel.innerHTML += `<option value="${ct}">${ct}</option>`;
-        });
+        LOCATION_DATA[stateVal].forEach(ct => { citySel.innerHTML += `<option value="${ct}">${ct}</option>`; });
       }
     }
 
     function checkCustomCity(cityId, customId) {
       const cityVal = document.getElementById(cityId).value;
       const customInput = document.getElementById(customId);
-      if (cityVal === "Other") {
-        customInput.style.display = "block";
-        customInput.required = true;
-      } else {
-        customInput.style.display = "none";
-        customInput.required = false;
-      }
+      if (cityVal === "Other") { customInput.style.display = "block"; customInput.required = true; }
+      else { customInput.style.display = "none"; customInput.required = false; }
     }
 
     function calculateAutoAge(dobInputId, ageInputId) {
@@ -1232,21 +1043,13 @@
       const today = new Date();
       let age = today.getFullYear() - dobDate.getFullYear();
       const m = today.getMonth() - dobDate.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
-        age--;
-      }
-      if (age >= 18 && age <= 100) {
-        document.getElementById(ageInputId).value = age;
-      }
+      if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) age--;
+      if (age >= 18 && age <= 100) document.getElementById(ageInputId).value = age;
     }
 
     function checkUserSession() {
       const stored = localStorage.getItem('cm_session');
-      if (stored) {
-        state.user = JSON.parse(stored);
-        renderNavUser();
-        fetchUserShortlists();
-      }
+      if (stored) { state.user = JSON.parse(stored); renderNavUser(); fetchUserShortlists(); }
     }
 
     function switchAuthView(view) {
@@ -1255,108 +1058,65 @@
       document.getElementById('viewRegister').style.display = view === 'register' ? 'block' : 'none';
       document.getElementById('viewForgot').style.display = view === 'forgot' ? 'block' : 'none';
       document.getElementById('authTabsHeader').style.display = view === 'forgot' ? 'none' : 'flex';
-
-      if (view === 'login') {
-        document.getElementById('tabLogin').classList.add('active');
-        document.getElementById('tabRegister').classList.remove('active');
-      } else if (view === 'register') {
-        document.getElementById('tabRegister').classList.add('active');
-        document.getElementById('tabLogin').classList.remove('active');
-      }
+      if (view === 'login') { document.getElementById('tabLogin').classList.add('active'); document.getElementById('tabRegister').classList.remove('active'); }
+      else if (view === 'register') { document.getElementById('tabRegister').classList.add('active'); document.getElementById('tabLogin').classList.remove('active'); }
     }
 
-    function openLoginModal(view = 'login') {
-      switchAuthView(view);
-      document.getElementById('authModal').classList.add('active');
-    }
+    function openLoginModal(view = 'login') { switchAuthView(view); document.getElementById('authModal').classList.add('active'); }
 
     async function handleUserLoginSubmit(e) {
-      e.preventDefault();
-      clearAuthError();
+      e.preventDefault(); clearAuthError();
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPass').value.trim();
       const btn = document.getElementById('loginSubmitBtn');
-
-      btn.innerText = "Signing in...";
-      btn.disabled = true;
+      btn.innerText = "Signing in..."; btn.disabled = true;
 
       try {
         const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'userLogin', data: { email: email, password: password } })
         });
         const out = await res.json();
         if (out.success) {
-          state.user = out.user;
-          localStorage.setItem('cm_session', JSON.stringify(out.user));
-          renderNavUser();
-          closeModal('authModal');
-          fetchUserShortlists();
-          renderProfileList();
-        } else {
-          showAuthError(out.error || "Incorrect email or password. Please try again.");
-        }
-      } catch (err) {
-        showAuthError("Connection error. Please try again.");
-      } finally {
-        btn.innerText = "Sign In & Unlock";
-        btn.disabled = false;
-      }
+          state.user = out.user; localStorage.setItem('cm_session', JSON.stringify(out.user));
+          renderNavUser(); closeModal('authModal'); fetchUserShortlists(); renderProfileList();
+        } else { showAuthError(out.error || "Incorrect email or password."); }
+      } catch (err) { showAuthError("Connection error."); }
+      finally { btn.innerText = "Sign In & Unlock"; btn.disabled = false; }
     }
 
     async function handleUserRegisterSubmit(e) {
-      e.preventDefault();
-      clearAuthError();
+      e.preventDefault(); clearAuthError();
       const name = document.getElementById('regUserName').value.trim();
       const email = document.getElementById('regUserEmail').value.trim();
       const password = document.getElementById('regUserPass').value.trim();
       const btn = document.getElementById('regUserSubmitBtn');
-
-      btn.innerText = "Creating Account...";
-      btn.disabled = true;
+      btn.innerText = "Creating Account..."; btn.disabled = true;
 
       try {
         const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'userRegister', data: { fullName: name, email: email, password: password } })
         });
         const out = await res.json();
         if (out.success) {
-          state.user = out.user;
-          localStorage.setItem('cm_session', JSON.stringify(out.user));
-          renderNavUser();
-          closeModal('authModal');
-          fetchUserShortlists();
-          renderProfileList();
-        } else {
-          showAuthError(out.error || "Registration failed.");
-        }
-      } catch (err) {
-        showAuthError("Registration failed. Please check connection.");
-      } finally {
-        btn.innerText = "Create Account";
-        btn.disabled = false;
-      }
+          state.user = out.user; localStorage.setItem('cm_session', JSON.stringify(out.user));
+          renderNavUser(); closeModal('authModal'); fetchUserShortlists(); renderProfileList();
+        } else { showAuthError(out.error || "Registration failed."); }
+      } catch (err) { showAuthError("Registration failed."); }
+      finally { btn.innerText = "Create Account"; btn.disabled = false; }
     }
 
     async function requestResetOtp() {
       clearAuthError();
       const email = document.getElementById('forgotEmail').value.trim();
-      if (!email) {
-        showAuthError("Please enter your registered email.");
-        return;
-      }
-
+      if (!email) { showAuthError("Please enter email."); return; }
       const btn = document.getElementById('sendOtpBtn');
-      btn.innerText = "Sending Code...";
-      btn.disabled = true;
+      btn.innerText = "Sending Code..."; btn.disabled = true;
 
       try {
         const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'forgotPasswordRequest', data: { email: email } })
         });
         const out = await res.json();
@@ -1364,15 +1124,9 @@
           alert("A 4-digit reset code has been sent to your email.");
           document.getElementById('forgotStep1').style.display = 'none';
           document.getElementById('forgotStep2').style.display = 'block';
-        } else {
-          showAuthError(out.error || "Email not found.");
-        }
-      } catch (err) {
-        showAuthError("Error requesting reset code.");
-      } finally {
-        btn.innerText = "Send Reset Code";
-        btn.disabled = false;
-      }
+        } else { showAuthError(out.error || "Email not found."); }
+      } catch (err) { showAuthError("Error requesting reset code."); }
+      finally { btn.innerText = "Send Reset Code"; btn.disabled = false; }
     }
 
     async function confirmPasswordReset() {
@@ -1380,20 +1134,13 @@
       const email = document.getElementById('forgotEmail').value.trim();
       const otp = document.getElementById('resetOtpCode').value.trim();
       const newPass = document.getElementById('resetNewPass').value.trim();
-
-      if (!otp || !newPass) {
-        showAuthError("Please enter both the code and your new password.");
-        return;
-      }
-
+      if (!otp || !newPass) { showAuthError("Enter code and new password."); return; }
       const btn = document.getElementById('confirmResetBtn');
-      btn.innerText = "Updating...";
-      btn.disabled = true;
+      btn.innerText = "Updating..."; btn.disabled = true;
 
       try {
         const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'resetPassword', data: { email: email, otp: otp, newPassword: newPass } })
         });
         const out = await res.json();
@@ -1401,18 +1148,10 @@
           alert(out.message);
           document.getElementById('forgotStep1').style.display = 'block';
           document.getElementById('forgotStep2').style.display = 'none';
-          document.getElementById('resetOtpCode').value = '';
-          document.getElementById('resetNewPass').value = '';
           switchAuthView('login');
-        } else {
-          showAuthError(out.error || "Reset failed.");
-        }
-      } catch (err) {
-        showAuthError("Reset failed.");
-      } finally {
-        btn.innerText = "Save New Password";
-        btn.disabled = false;
-      }
+        } else { showAuthError(out.error || "Reset failed."); }
+      } catch (err) { showAuthError("Reset failed."); }
+      finally { btn.innerText = "Save New Password"; btn.disabled = false; }
     }
 
     function renderNavUser() {
@@ -1432,11 +1171,8 @@
 
     function signOut() {
       localStorage.removeItem('cm_session');
-      state.user = null;
-      hasTriggeredGuestLock = false;
-      state.savedIds.clear();
-      renderNavUser();
-      renderProfileList();
+      state.user = null; hasTriggeredGuestLock = false; state.savedIds.clear();
+      renderNavUser(); renderProfileList();
     }
 
     async function fetchActiveProfiles() {
@@ -1463,9 +1199,7 @@
           document.getElementById('savedCounter').innerText = state.savedIds.size;
           renderProfileList();
         }
-      } catch (err) {
-        console.error("Shortlist error", err);
-      }
+      } catch (err) { console.error("Shortlist error", err); }
     }
 
     function handleProfilePhotoSelection(event) {
@@ -1493,7 +1227,6 @@
           let w = img.width, h = img.height;
           if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
           else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
-
           const canvas = document.createElement('canvas');
           canvas.width = w; canvas.height = h;
           const ctx = canvas.getContext('2d');
@@ -1526,29 +1259,21 @@
 
       state.filtered = state.profiles.filter(p => {
         if (gender && p.gender !== gender) return false;
-        
         if (marital) {
-          if (!p.maritalStatus || p.maritalStatus.toLowerCase().trim() !== marital.toLowerCase().trim()) {
-            return false;
-          }
+          if (!p.maritalStatus || p.maritalStatus.toLowerCase().trim() !== marital.toLowerCase().trim()) return false;
         }
-
         if (subCaste && p.subCaste !== subCaste) return false;
-
         if (ageBracket) {
           const [min, max] = ageBracket.split('-').map(Number);
           if (p.age < min || p.age > max) return false;
         }
-
         if (edu && p.education !== edu) return false;
         if (prof && p.profession !== prof) return false;
-
         if (minHeight) {
           const targetInches = parseHeightToInches(minHeight);
           const candidateInches = parseHeightToInches(p.height);
           if (candidateInches < targetInches) return false;
         }
-
         if (searchTerm) {
           const combined = `${p.fullName || ''} ${p.id || ''} ${p.city || ''} ${p.state || ''} ${p.country || ''} ${p.subCaste || ''}`.toLowerCase();
           if (!combined.includes(searchTerm)) return false;
@@ -1556,7 +1281,7 @@
         return true;
       });
 
-      currentPage = 1;
+      state.currentPage = 1;
       renderProfileList();
     }
 
@@ -1577,76 +1302,45 @@
       applyFilters();
     }
 
-    function changePage(direction) {
-      let dataset = state.filtered;
-      if (state.mode === 'saved') dataset = dataset.filter(p => state.savedIds.has(p.id));
-      const totalPages = Math.ceil(dataset.length / profilesPerPage) || 1;
-
-      currentPage += direction;
-      if (currentPage < 1) currentPage = 1;
-      if (currentPage > totalPages) currentPage = totalPages;
-
-      renderProfileList();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    function openZoomLightbox(imgSrc) {
+      if (!imgSrc) return;
+      document.getElementById('zoomLightboxImg').src = imgSrc;
+      document.getElementById('zoomLightbox').classList.add('active');
     }
 
-    function goToPage(page) {
-      currentPage = page;
-      renderProfileList();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    function closeZoomLightbox() {
+      document.getElementById('zoomLightbox').classList.remove('active');
     }
 
     function renderProfileList() {
       const container = document.getElementById('profilesContainer');
+      const paginationContainer = document.getElementById('paginationContainer');
       let dataset = state.filtered;
       if (state.mode === 'saved') dataset = dataset.filter(p => state.savedIds.has(p.id));
 
-      const totalPages = Math.ceil(dataset.length / profilesPerPage) || 1;
-      if (currentPage > totalPages) currentPage = totalPages;
-      if (currentPage < 1) currentPage = 1;
-
-      const startIndex = (currentPage - 1) * profilesPerPage;
-      const paginatedDataset = dataset.slice(startIndex, startIndex + profilesPerPage);
-
-      document.getElementById('profileCounter').innerText = `Displaying ${dataset.length} active candidate profiles (Page ${currentPage} of ${totalPages})`;
+      document.getElementById('profileCounter').innerText = `Displaying ${dataset.length} active candidate profiles`;
       document.getElementById('savedCounter').innerText = state.savedIds.size;
-
-      const paginationBar = document.getElementById('paginationBarContainer');
-      const paginationList = document.getElementById('paginationNumbersList');
-      if (dataset.length > profilesPerPage) {
-        paginationBar.style.display = 'flex';
-        document.getElementById('prevPageBtn').disabled = (currentPage === 1);
-        document.getElementById('prevPageBtn').style.opacity = (currentPage === 1) ? '0.5' : '1';
-        document.getElementById('nextPageBtn').disabled = (currentPage === totalPages);
-        document.getElementById('nextPageBtn').style.opacity = (currentPage === totalPages) ? '0.5' : '1';
-
-        let pagesHtml = '';
-        for (let i = 1; i <= totalPages; i++) {
-          if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-            pagesHtml += `<button class="page-num-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-          } else if (i === currentPage - 2 || i === currentPage + 2) {
-            pagesHtml += `<span style="padding: 0 0.2rem; color: var(--muted);">...</span>`;
-          }
-        }
-        paginationList.innerHTML = pagesHtml;
-      } else {
-        paginationBar.style.display = 'none';
-      }
 
       if (dataset.length === 0) {
         container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--muted);"><h3>No candidate profiles found</h3><p style="font-size: 0.85rem;">Adjust search filters to view more profiles.</p></div>`;
+        paginationContainer.innerHTML = '';
         return;
       }
 
-      container.innerHTML = paginatedDataset.map((p, idx) => {
+      const totalPages = Math.ceil(dataset.length / state.pageSize);
+      if (state.currentPage > totalPages) state.currentPage = totalPages;
+      const startIndex = (state.currentPage - 1) * state.pageSize;
+      const currentSlice = dataset.slice(startIndex, startIndex + state.pageSize);
+
+      container.innerHTML = currentSlice.map((p, idx) => {
         const isSaved = state.savedIds.has(p.id);
         const photoSrc = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
         const isRestricted = (!state.user && (startIndex + idx) >= 2);
 
         return `
           <div class="profile-card ${isRestricted ? 'guest-restricted-blur' : ''}">
-            <div class="profile-img-container">
-              <img class="profile-img" src="${photoSrc}" alt="${p.fullName}" onclick="event.stopPropagation(); openZoomModal('${photoSrc}')" title="Click to Zoom Photo">
+            <div class="profile-img-container" onclick="openZoomLightbox('${photoSrc}')" title="Click to Zoom Photo">
+              <img class="profile-img" src="${photoSrc}" alt="${p.fullName}">
               <button class="shortlist-tag-btn ${isSaved ? 'active' : ''}" onclick="event.stopPropagation(); toggleShortlistRecord('${p.id}')">
                 ${isSaved ? 'SAVED' : 'SAVE'}
               </button>
@@ -1668,40 +1362,41 @@
           </div>
         `;
       }).join('');
+
+      if (totalPages > 1) {
+        let pagHtml = `<button class="page-btn" ${state.currentPage === 1 ? 'disabled' : ''} onclick="changePage(${state.currentPage - 1})">&larr; Prev</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+          pagHtml += `<button class="page-btn ${i === state.currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+        }
+        pagHtml += `<button class="page-btn" ${state.currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${state.currentPage + 1})">Next &rarr;</button>`;
+        paginationContainer.innerHTML = pagHtml;
+      } else {
+        paginationContainer.innerHTML = '';
+      }
     }
 
-    function openZoomModal(imgSrc) {
-      document.getElementById('zoomedImageElement').src = imgSrc;
-      document.getElementById('imageZoomModal').classList.add('active');
+    function changePage(pageNum) {
+      state.currentPage = pageNum;
+      renderProfileList();
+      window.scrollTo({ top: 400, behavior: 'smooth' });
     }
 
     async function toggleShortlistRecord(profileId) {
-      if (!state.user) {
-        triggerInstantGuestLock();
-        return;
-      }
-
-      if (state.savedIds.has(profileId)) {
-        state.savedIds.delete(profileId);
-      } else {
-        state.savedIds.add(profileId);
-      }
+      if (!state.user) { triggerInstantGuestLock(); return; }
+      if (state.savedIds.has(profileId)) state.savedIds.delete(profileId);
+      else state.savedIds.add(profileId);
       renderProfileList();
 
       try {
         await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'toggleShortlist', data: { userEmail: state.user.email, profileId: profileId } })
         });
-      } catch (err) {
-        console.error("Shortlist update failed", err);
-      }
+      } catch (err) { console.error("Shortlist update failed", err); }
     }
 
     function switchCatalogMode(mode) {
-      state.mode = mode;
-      currentPage = 1;
+      state.mode = mode; state.currentPage = 1;
       document.getElementById('tabAll').className = mode === 'all' ? 'btn btn-outline' : 'btn btn-ghost';
       document.getElementById('tabSaved').className = mode === 'saved' ? 'btn btn-outline' : 'btn btn-ghost';
       renderProfileList();
@@ -1731,27 +1426,31 @@
       document.getElementById('biodataModal').classList.add('active');
     }
 
-    // BULLETPROOF NATIVE PRINT-TO-PDF EXPORT FUNCTION
     function exportBiodataPdf() {
-      window.print();
+      const element = document.getElementById('biodataPrintSurface');
+      const candidateName = document.getElementById('bioName').innerText.replace(/\s+/g, '_');
+      
+      const opt = {
+        margin:       10,
+        filename:     `Biodata_${candidateName}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save();
     }
 
     async function handleRegistrationSubmit(e) {
       e.preventDefault();
-      if (!selectedProfileImage) {
-        alert("Please upload a profile photograph.");
-        return;
-      }
+      if (!selectedProfileImage) { alert("Please upload a profile photograph."); return; }
 
       const btn = document.getElementById('regSubmitBtn');
-      btn.innerText = "Submitting Details...";
-      btn.disabled = true;
+      btn.innerText = "Submitting Details..."; btn.disabled = true;
 
       const stateVal = document.getElementById('regState').value;
       let cityVal = document.getElementById('regCity').value;
-      if (cityVal === "Other") {
-        cityVal = document.getElementById('regCityCustom').value.trim();
-      }
+      if (cityVal === "Other") cityVal = document.getElementById('regCityCustom').value.trim();
 
       const profilePayload = {
         fullName: document.getElementById('regFullName').value.trim(),
@@ -1764,9 +1463,7 @@
         profession: document.getElementById('regProfession').value,
         subCaste: document.getElementById('regSubCaste').value,
         annualIncome: document.getElementById('regIncome').value.trim(),
-        city: cityVal,
-        state: stateVal,
-        country: document.getElementById('regCountry').value.trim(),
+        city: cityVal, state: stateVal, country: document.getElementById('regCountry').value.trim(),
         exactAddress: document.getElementById('regExactAddress').value.trim(),
         imageBase64: selectedProfileImage,
         email: document.getElementById('regEmail').value.trim(),
@@ -1782,8 +1479,7 @@
 
       try {
         const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'registerProfile', data: profilePayload })
         });
         const out = await res.json();
@@ -1800,15 +1496,9 @@
           } else {
             openPaymentModal(out.profileId, out.paymentAmount, out.plan, out.upiId);
           }
-        } else {
-          alert("Submission error: " + out.error);
-        }
-      } catch (err) {
-        alert("Transmission failure. Check connection.");
-      } finally {
-        applyPricingUI();
-        btn.disabled = false;
-      }
+        } else { alert("Submission error: " + out.error); }
+      } catch (err) { alert("Transmission failure."); }
+      finally { applyPricingUI(); btn.disabled = false; }
     }
 
     function openPaymentModal(profileId, amount, plan, upiId) {
@@ -1831,57 +1521,31 @@
     }
 
     async function submitPaymentProof() {
-      if (!selectedScreenshotImage) {
-        alert("Please upload your payment confirmation screenshot.");
-        return;
-      }
-
+      if (!selectedScreenshotImage) { alert("Please upload your payment confirmation screenshot."); return; }
       const btn = document.getElementById('submitProofBtn');
-      btn.innerText = "Uploading Receipt...";
-      btn.disabled = true;
-
+      btn.innerText = "Uploading Receipt..."; btn.disabled = true;
       const utr = document.getElementById('payUtrNumber').value.trim();
 
       try {
         const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'submitPaymentProof',
-            data: {
-              profileId: registeredProfileId,
-              screenshotBase64: selectedScreenshotImage,
-              utr: utr
-            }
-          })
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'submitPaymentProof', data: { profileId: registeredProfileId, screenshotBase64: selectedScreenshotImage, utr: utr } })
         });
         const out = await res.json();
         if (out.success) {
-          alert("Payment screenshot uploaded successfully! The administration will verify your receipt and publish your profile live.");
+          alert("Payment screenshot uploaded successfully!");
           closeModal('paymentModal');
           document.getElementById('payUtrNumber').value = "";
           document.getElementById('payScreenshotFile').value = "";
           document.getElementById('screenshotPreviewBox').style.display = 'none';
           selectedScreenshotImage = "";
-        } else {
-          alert("Error: " + out.error);
-        }
-      } catch (err) {
-        alert("Network communication error.");
-      } finally {
-        btn.innerText = "Submit Screenshot for Approval";
-        btn.disabled = false;
-      }
+        } else { alert("Error: " + out.error); }
+      } catch (err) { alert("Network error."); }
+      finally { btn.innerText = "Submit Screenshot for Approval"; btn.disabled = false; }
     }
 
-    function openRegistrationModal() { 
-      applyPricingUI();
-      document.getElementById('registrationModal').classList.add('active'); 
-    }
-
-    function closeModal(id) { 
-      document.getElementById(id).classList.remove('active'); 
-    }
+    function openRegistrationModal() { applyPricingUI(); document.getElementById('registrationModal').classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
   </script>
 </body>
 </html>
