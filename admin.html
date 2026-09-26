@@ -76,12 +76,6 @@
       max-width: 380px; width: 100%; border: 2px solid var(--primary); box-shadow: var(--shadow-lg); text-align: center; margin: auto;
     }
 
-    .contextual-card {
-      position: relative; background: var(--white); border: 2px solid var(--primary); border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg); z-index: 2100; padding: 1.75rem; display: none; width: 95%; max-width: 620px; margin: auto;
-    }
-    .contextual-card.active { display: block; }
-
     .btn {
       min-height: 36px; padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700;
       border-radius: var(--radius-sm); cursor: pointer; border: none; display: inline-flex;
@@ -173,7 +167,7 @@
     @media print {
       body * { visibility: hidden; }
       #adminPrintSurface, #adminPrintSurface * { visibility: visible; }
-      #adminPrintSurface { position: absolute; left: 0; top: 0; width: 100%; background: white !important; padding: 20px; }
+      #adminPrintSurface { position: absolute; left: 0; top: 0; width: 100%; background: white !important; padding: 20px; display: block !important; }
       .header, .filter-wrapper, .card-actions-row, .modal-overlay, #toastNotice, .zoom-lightbox { display: none !important; }
     }
   </style>
