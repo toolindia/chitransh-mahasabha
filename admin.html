@@ -197,9 +197,7 @@
       <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--primary);">Candidate Complete Profile</h3>
       <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;">Detailed Biodata & Family Background</p>
       
-      <div id="viewProfileContentBody" style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.85rem; margin-bottom: 1.25rem;">
-        <!-- Dynamically populated profile details -->
-      </div>
+      <div id="viewProfileContentBody" style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.85rem; margin-bottom: 1.25rem;"></div>
 
       <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
         <button class="btn btn-primary" style="flex: 1;" onclick="downloadSingleProfilePdf()">Download PDF</button>
@@ -362,7 +360,7 @@
     <h3 style="font-size: 1.15rem; margin-bottom: 0.25rem;">Payment Verification</h3>
     <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 0.75rem;">Profile Ref: <strong id="receiptProfileId">-</strong></p>
     <div style="max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0.35rem; background: #fafafa;">
-      <img id="receiptImage" src="" alt="Proof Screenshot" style="width: 100%; border-radius: 4px; display: block;">
+      <img id="receiptImage" src="" alt="Proof Screenshot" style="width: 100%; border-radius: 4px; display: block;" onclick="zoomPhoto(this.src)">
     </div>
     <p id="receiptUtrText" style="font-weight: 700; margin-top: 0.75rem; font-size: 0.85rem; color: var(--dark);"></p>
   </div>
@@ -1351,48 +1349,54 @@
       surface.style.width = "794px"; 
       surface.style.minHeight = "1123px";
       surface.style.backgroundColor = "#FDFBF7"; 
-      surface.style.padding = "36px 32px"; 
+      surface.style.padding = "40px 48px"; 
       surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
       surface.style.boxSizing = "border-box";
       surface.style.position = "relative";
-      surface.style.border = "4px double #800020";
+      surface.style.border = "6px double #E0C098";
 
       const photo = m.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
 
       surface.innerHTML = `
-        <div style="text-align: center; margin-bottom: 24px; border-bottom: 2px solid #EEDBBE; padding-bottom: 16px;">
-          <h1 style="font-family: 'Cinzel', serif; font-size: 28px; color: #800020; margin: 0; font-weight: 900; letter-spacing: 1px;">KAYASTHA VIVAH PATRIKA</h1>
-          <p style="font-size: 13px; color: #827572; margin-top: 6px; font-weight: 600;">शुभ विवाह | दो परिवारों का पवित्र बंधन</p>
-        </div>
-
-        <div style="display: flex; gap: 24px; align-items: flex-start; margin-bottom: 24px; background: #FFF8EE; border: 1.5px solid #F0E2D3; border-radius: 12px; padding: 20px;">
-          <img src="${photo}" style="width: 130px; height: 160px; border-radius: 8px; object-fit: cover; border: 2px solid #FF7E7E; flex-shrink: 0;">
-          <div style="flex-grow: 1;">
-            <h2 style="font-family: 'Cinzel', serif; font-size: 22px; color: #2B2321; margin: 0 0 6px 0;">${m.fullName} <span style="font-size: 14px; color: #FFA259; font-family: 'Plus Jakarta Sans', sans-serif;">(ID: ${m.id})</span></h2>
-            <p style="font-size: 13px; margin: 4px 0; color: #2B2321;"><strong>Age / Height:</strong> ${m.age} Yrs, ${m.height || 'N/A'}</p>
-            <p style="font-size: 13px; margin: 4px 0; color: #2B2321;"><strong>Sub-Caste:</strong> ${m.subCaste || 'Kayastha'} | <strong>Marital Status:</strong> ${m.maritalStatus || 'N/A'}</p>
-            <p style="font-size: 13px; margin: 4px 0; color: #2B2321;"><strong>Education:</strong> ${m.education || 'N/A'}</p>
-            <p style="font-size: 13px; margin: 4px 0; color: #2B2321;"><strong>Profession:</strong> ${m.profession || 'N/A'} (${m.annualIncome || 'Income N/A'})</p>
-            <p style="font-size: 13px; margin: 4px 0; color: #2B2321;"><strong>Location:</strong> ${m.city}, ${m.state}, India</p>
+        <div style="text-align: center; margin-bottom: 25px;">
+          <div style="width: 55px; height: 55px; margin: 0 auto 8px auto; border-radius: 50%; border: 2px solid #D4AF37; display: flex; align-items: center; justify-content: center; background: #FFF8EE;">
+            <span style="font-size: 24px;">🛕</span>
+          </div>
+          <h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0; font-weight: 900; letter-spacing: 1.5px;">KAYASTHA</h1>
+          <h2 style="font-family: 'Cinzel', serif; font-size: 22px; color: #800020; margin: 0 0 12px 0; font-weight: 800; letter-spacing: 1px;">VIVAH PATRIKA</h2>
+          <div style="display: inline-block; border: 1px solid #EEDBBE; background: #FFF8EE; padding: 4px 18px; border-radius: 20px; font-size: 11px; color: #827572; font-weight: 700;">
+            शुभ विवाह &nbsp;|&nbsp; दो परिवारों का पवित्र बंधन
           </div>
         </div>
 
-        <div style="margin-bottom: 20px; border: 1.5px solid #F0E2D3; border-radius: 12px; background: #FFFFFF; padding: 18px 20px;">
-          <h3 style="font-family: 'Cinzel', serif; font-size: 16px; color: #800020; margin: 0 0 10px 0; border-bottom: 1px solid #F0E2D3; padding-bottom: 6px;">Family Background</h3>
-          <p style="font-size: 13px; margin: 6px 0;"><strong>Father's Name & Occupation:</strong> ${m.fatherName || 'N/A'} (${m.fatherOccupation || 'N/A'})</p>
-          <p style="font-size: 13px; margin: 6px 0;"><strong>Mother's Name & Occupation:</strong> ${m.motherName || 'N/A'} (${m.motherOccupation || 'N/A'})</p>
-          <p style="font-size: 13px; margin: 6px 0;"><strong>Other Family Details:</strong> ${m.familyDetails || 'N/A'}</p>
+        <div style="border-top: 1px solid #EEDBBE; margin-bottom: 25px;"></div>
+
+        <div style="display: flex; gap: 24px; align-items: flex-start; margin-bottom: 25px; background: #FFFFFF; border: 1.5px solid #F0E2D3; border-radius: 12px; padding: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="position: relative; flex-shrink: 0;">
+            <img src="${photo}" style="width: 120px; height: 150px; border-radius: 8px; object-fit: cover; border: 2px solid #FF7E7E; display: block;">
+            <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); background: #1E8E3E; color: #fff; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; white-space: nowrap;">
+              ✓ Verified
+            </div>
+          </div>
+          <div style="flex-grow: 1;">
+            <h3 style="font-family: 'Cinzel', serif; font-size: 20px; color: #2B2321; margin: 0 0 8px 0; font-weight: 800;">
+              1. ${m.fullName} <span style="font-size: 13px; color: #FFA259; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;">(ID: ${m.id})</span>
+            </h3>
+            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">📅 <strong>Age / Height:</strong> ${m.age} Yrs, ${m.height || 'N/A'}</p>
+            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">🎓 <strong>Education:</strong> ${m.education || 'N/A'} (${m.subCaste || 'Kayastha'})</p>
+            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">💼 <strong>Profession:</strong> ${m.profession || 'N/A'} (${m.annualIncome || 'Income N/A'})</p>
+            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">📍 <strong>Location:</strong> ${m.city}, ${m.state}, India</p>
+          </div>
         </div>
 
-        <div style="margin-bottom: 20px; border: 1.5px solid #F0E2D3; border-radius: 12px; background: #FFFFFF; padding: 18px 20px;">
-          <h3 style="font-family: 'Cinzel', serif; font-size: 16px; color: #800020; margin: 0 0 10px 0; border-bottom: 1px solid #F0E2D3; padding-bottom: 6px;">Contact & Partner Preferences</h3>
-          <p style="font-size: 13px; margin: 6px 0;"><strong>Phone / WhatsApp:</strong> ${m.phone || 'N/A'}</p>
-          <p style="font-size: 13px; margin: 6px 0;"><strong>Email:</strong> ${m.email || 'N/A'}</p>
-          <p style="font-size: 13px; margin: 6px 0;"><strong>Address:</strong> ${m.exactAddress || 'N/A'}</p>
-          <p style="font-size: 13px; margin: 6px 0;"><strong>Partner Expectations:</strong> ${m.partnerPreferences || 'N/A'}</p>
+        <div style="background-color: #FFF2F2; border: 1.5px solid #FAD4D4; border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; margin-bottom: 25px;">
+          <div style="font-size: 22px; color: #D93025; flex-shrink: 0;">🛡️</div>
+          <p style="font-size: 11px; color: #5A4A48; line-height: 1.4; margin: 0;">
+            Candidate contact numbers and exact street addresses are withheld for privacy. Contact the administrative desk quoting Profile ID.
+          </p>
         </div>
 
-        <div style="text-align: center; margin-top: 40px; font-size: 12px; color: #827572; border-top: 1px solid #F0E2D3; paddingTop: 12px;">
+        <div style="text-align: center; margin-top: 60px; font-size: 11px; color: #827572; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid #F0E2D3; paddingTop: 15px;">
           TRADITION &nbsp;|&nbsp; VALUES &nbsp;|&nbsp; TOGETHERNESS
         </div>
       `;
@@ -1406,7 +1410,7 @@
       }).from(surface).save().then(() => {
         document.body.removeChild(mount);
       });
-  }
+    }
 
     function openSettingsModal() {
       const s = adminState.settings;
@@ -1711,7 +1715,7 @@
         container.innerHTML = matches.map((m, idx) => `
           <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--bg); padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border);">
             <input type="checkbox" id="matchCheck_${idx}" value="${m.id}" checked style="width: 20px; height: 20px; flex-shrink: 0;">
-            <img src="${m.photoUrl || 'https://via.placeholder.com/45'}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+            <img src="${m.photoUrl || 'https://via.placeholder.com/45'}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; cursor: pointer;" onclick="zoomPhoto(this.src)">
             <div style="flex-grow: 1; min-width: 0;">
               <strong style="font-size: 0.88rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.fullName}</strong>
               <div style="font-size: 0.75rem; color: var(--muted);">${m.age} Yrs &bull; ${m.profession}</div>
@@ -1765,7 +1769,7 @@
       document.body.appendChild(mount);
 
       const surface = document.createElement('div');
-      surface.style.width = "794px"; surface.style.backgroundColor = "#FDFBF7"; surface.style.padding = "28px 24px"; surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
+      surface.style.width = "794px"; surface.style.backgroundColor = "#FDFBF7"; surface.style.padding = "36px 32px"; surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
 
       let cardsHtml = selected.map((m, i) => `
         <div style="page-break-inside: avoid; border: 1.5px solid #EEDBBE; border-radius: 12px; background: #FFFFFF; padding: 18px 20px; margin-bottom: 20px;">
@@ -1777,7 +1781,7 @@
       `).join('');
 
       surface.innerHTML = `
-        <div style="text-align: center; margin-bottom: 20px;">
+        <div style="text-align: center; margin-bottom: 25px;">
           <h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0;">KAYASTHA VIVAH PATRIKA</h1>
           <p style="font-size: 12px; color: #666;">Prepared for: ${client.fullName} (${client.id})</p>
         </div>
