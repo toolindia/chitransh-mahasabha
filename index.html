@@ -251,7 +251,6 @@
       border-radius: var(--radius-lg);
       text-align: center;
       box-shadow: var(--shadow-lg);
-      animation: modalScaleIn 0.22s ease forwards;
     }
     .image-zoom-card .modal-close-btn {
       color: var(--white);
@@ -272,7 +271,7 @@
       border-radius: var(--radius-md);
     }
 
-    /* ORIGINAL BIODATA STYLES PRESERVED */
+    /* 100% ORIGINAL EXACT BIODATA STYLES */
     .biodata-sheet { border: 1.5px solid var(--secondary); border-radius: var(--radius-md); padding: 1.25rem; background: #FFF; margin-bottom: 1rem; }
     .biodata-header { display: flex; align-items: center; gap: 1rem; border-bottom: 1.5px solid var(--surface-light); padding-bottom: 0.85rem; margin-bottom: 0.85rem; }
     .biodata-photo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; cursor: pointer; }
@@ -334,7 +333,7 @@
       </div>
 
       <div class="search-action-row">
-        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onfocus="checkGuestGate()" oninput="applyFilters()">
+        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onfocus="checkGuestGate()">
         <button class="btn btn-primary" id="txtSearchBtn" onclick="guardedAction(() => applyFilters())">Search</button>
         <button class="btn btn-outline" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
       </div>
@@ -428,7 +427,7 @@
       <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
     </div>
 
-    <!-- PAGINATION BAR -->
+    <!-- PAGINATION BAR ADDON -->
     <div class="pagination-bar" id="paginationBarContainer" style="display: none;">
       <button class="btn btn-outline" id="prevPageBtn" onclick="changePage(-1)">← Previous</button>
       <div class="pagination-numbers" id="paginationNumbersList"></div>
@@ -436,7 +435,7 @@
     </div>
   </main>
 
-  <!-- IMAGE ZOOM MODAL -->
+  <!-- IMAGE ZOOM MODAL ADDON -->
   <div class="modal-overlay" id="imageZoomModal">
     <div class="image-zoom-card modal-card">
       <button class="modal-close-btn" onclick="closeModal('imageZoomModal')">&times;</button>
@@ -999,6 +998,7 @@
       }
     };
 
+    // ADDON 1: Pagination Variables
     let currentPage = 1;
     const profilesPerPage = 12;
 
@@ -1570,6 +1570,7 @@
       applyFilters();
     }
 
+    // ADDON 1: Pagination Logic Functions
     function changePage(direction) {
       let dataset = state.filtered;
       if (state.mode === 'saved') dataset = dataset.filter(p => state.savedIds.has(p.id));
@@ -1663,6 +1664,7 @@
       }).join('');
     }
 
+    // ADDON 2: Image Zoom Function
     function openZoomModal(imgSrc) {
       document.getElementById('zoomedImageElement').src = imgSrc;
       document.getElementById('imageZoomModal').classList.add('active');
@@ -1724,6 +1726,7 @@
       document.getElementById('biodataModal').classList.add('active');
     }
 
+    // ORIGINAL UNTOUCHED PDF EXPORT FUNCTION
     function exportBiodataPdf() {
       const element = document.getElementById('biodataPrintSurface');
       const candidateName = document.getElementById('bioName').innerText.replace(/\s+/g, '_');
