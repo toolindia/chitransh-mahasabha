@@ -1347,9 +1347,14 @@
     function downloadSingleProfilePdf() {
       const m = adminState.activeViewClient;
       if(!m) return;
+      const sourceBody = document.getElementById('viewProfileContentBody');
+      if(!sourceBody) return;
 
       const mount = document.createElement('div');
-      mount.style.position = "fixed"; mount.style.top = "-10000px"; mount.style.left = "-10000px"; mount.style.width = "794px";
+      mount.style.position = "fixed"; 
+      mount.style.top = "-10000px"; 
+      mount.style.left = "-10000px"; 
+      mount.style.width = "794px";
       document.body.appendChild(mount);
 
       const surface = document.createElement('div');
@@ -1362,60 +1367,30 @@
       surface.style.position = "relative";
       surface.style.border = "6px double #E0C098";
 
-      const photo = m.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
-
-      surface.innerHTML = `
-        <div style="text-align: center; margin-bottom: 25px;">
-          <div style="width: 55px; height: 55px; margin: 0 auto 8px auto; border-radius: 50%; border: 2px solid #D4AF37; display: flex; align-items: center; justify-content: center; background: #FFF8EE;">
-            <span style="font-size: 24px;">🛕</span>
-          </div>
-          <h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0; font-weight: 900; letter-spacing: 1.5px;">KAYASTHA</h1>
-          <h2 style="font-family: 'Cinzel', serif; font-size: 22px; color: #800020; margin: 0 0 12px 0; font-weight: 800; letter-spacing: 1px;">VIVAH PATRIKA</h2>
-          <div style="display: inline-block; border: 1px solid #EEDBBE; background: #FFF8EE; padding: 4px 18px; border-radius: 20px; font-size: 11px; color: #827572; font-weight: 700;">
-            शुभ विवाह &nbsp;|&nbsp; दो परिवारों का पवित्र बंधन
-          </div>
-        </div>
-
-        <div style="border-top: 1px solid #EEDBBE; margin-bottom: 25px;"></div>
-
-        <div style="display: flex; gap: 24px; align-items: flex-start; margin-bottom: 25px; background: #FFFFFF; border: 1.5px solid #F0E2D3; border-radius: 12px; padding: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-          <div style="position: relative; flex-shrink: 0;">
-            <img src="${photo}" style="width: 120px; height: 150px; border-radius: 8px; object-fit: cover; border: 2px solid #FF7E7E; display: block;" crossorigin="anonymous">
-            <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); background: #1E8E3E; color: #fff; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; white-space: nowrap;">
-              ✓ Verified
-            </div>
-          </div>
-          <div style="flex-grow: 1;">
-            <h3 style="font-family: 'Cinzel', serif; font-size: 20px; color: #2B2321; margin: 0 0 8px 0; font-weight: 800;">
-              1. ${m.fullName} <span style="font-size: 13px; color: #FFA259; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;">(ID: ${m.id})</span>
-            </h3>
-            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">📅 <strong>Age / Height:</strong> ${m.age} Yrs, ${m.height || 'N/A'}</p>
-            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">🎓 <strong>Education:</strong> ${m.education || 'N/A'} (${m.subCaste || 'Kayastha'})</p>
-            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">💼 <strong>Profession:</strong> ${m.profession || 'N/A'} (${m.annualIncome || 'Income N/A'})</p>
-            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">📍 <strong>Location:</strong> ${m.city}, ${m.state}, India</p>
-          </div>
-        </div>
-
-        <div style="background-color: #FFF2F2; border: 1.5px solid #FAD4D4; border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; margin-bottom: 25px;">
-          <div style="font-size: 22px; color: #D93025; flex-shrink: 0;">🛡️</div>
-          <p style="font-size: 11px; color: #5A4A48; line-height: 1.4; margin: 0;">
-            Candidate contact numbers and exact street addresses are withheld for privacy. Contact the administrative desk quoting Profile ID.
-          </p>
-        </div>
-
-        <div style="text-align: center; margin-top: 60px; font-size: 11px; color: #827572; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid #F0E2D3; paddingTop: 15px;">
-          TRADITION &nbsp;|&nbsp; VALUES &nbsp;|&nbsp; TOGETHERNESS
-        </div>
+      const headerTitle = document.createElement('div');
+      headerTitle.style.textAlign = "center";
+      headerTitle.style.marginBottom = "20px";
+      headerTitle.innerHTML = `
+        <h2 style="font-family: 'Cinzel', serif; font-size: 22px; color: #800020; margin: 0; font-weight: 800;">Candidate Complete Profile</h2>
+        <p style="font-size: 12px; color: #827572; margin: 4px 0;">Chitransh Mahasabha &bull; ID: ${m.id}</p>
+        <hr style="border: none; border-top: 1px solid #EEDBBE; margin-top: 10px;">
       `;
+      surface.appendChild(headerTitle);
 
+      const clone = sourceBody.cloneNode(true);
+      surface.appendChild(clone);
       mount.appendChild(surface);
-      html2pdf().set({ 
-        margin: 0, 
-        filename: `Vivah_Patrika_${m.id}.pdf`, 
-        image: { type: 'jpeg', quality: 0.98 }, 
+
+      const candidateName = (m.fullName || 'Candidate').replace(/\s+/g, '_');
+      const opt = {
+        margin: 0,
+        filename: `Candidate_Profile_${m.id}_${candidateName}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true, logging: false },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      }).from(surface).save().then(() => {
+      };
+
+      html2pdf().set(opt).from(surface).save().then(() => {
         document.body.removeChild(mount);
       });
     }
