@@ -730,70 +730,25 @@
       "Other": ["Other"]
     };
 
-    // LANGUAGE DICTIONARY FOR ADMIN PORTAL
     let currentLang = 'en';
     const ADMIN_TRANSLATIONS = {
       en: {
-        settings: "⚙️ Settings",
-        export: "Export (.xls)",
-        add: "+ Add",
-        refresh: "Refresh",
-        lock: "Lock",
-        searchPlaceholder: "Search name, ID, city, phone, profession...",
-        searchBtn: "Search",
-        filtersBtn: "Filters ▾",
-        gender: "Gender",
-        allGenders: "All Genders",
-        female: "Female",
-        male: "Male",
-        ageBracket: "Age Bracket",
-        anyAge: "Any Age",
-        maritalStatus: "Marital Status",
-        anyStatus: "Any Status",
-        neverMarried: "Never Married",
-        divorced: "Divorced",
-        widowed: "Widowed",
-        subCaste: "Sub-Caste",
-        allSubCastes: "All Sub-Castes",
-        state: "State",
-        allStates: "All States",
-        cityName: "City Name",
-        cityPlaceholder: "Filter city...",
-        resetFilters: "Reset Filters",
-        adminDesk: "Admin Desk",
-        enterPin: "Enter administrator PIN to unlock controls.",
-        unlock: "Unlock Dashboard"
+        settings: "⚙️ Settings", export: "Export (.xls)", add: "+ Add", refresh: "Refresh", lock: "Lock",
+        searchPlaceholder: "Search name, ID, city, phone, profession...", searchBtn: "Search", filtersBtn: "Filters ▾",
+        gender: "Gender", allGenders: "All Genders", female: "Female", male: "Male",
+        ageBracket: "Age Bracket", anyAge: "Any Age", maritalStatus: "Marital Status", anyStatus: "Any Status",
+        neverMarried: "Never Married", divorced: "Divorced", widowed: "Widowed", subCaste: "Sub-Caste", allSubCastes: "All Sub-Castes",
+        state: "State", allStates: "All States", cityName: "City Name", cityPlaceholder: "Filter city...",
+        resetFilters: "Reset Filters", adminDesk: "Admin Desk", enterPin: "Enter administrator PIN to unlock controls.", unlock: "Unlock Dashboard"
       },
       hi: {
-        settings: "⚙️ सेटिंग्स",
-        export: "एक्सपोर्ट (.xls)",
-        add: "+ जोड़ें",
-        refresh: "रिफ्रेश",
-        lock: "लॉक",
-        searchPlaceholder: "नाम, आईडी, शहर, फोन, पेशा खोजें...",
-        searchBtn: "खोजें",
-        filtersBtn: "फ़िल्टर ▾",
-        gender: "लिंग",
-        allGenders: "सभी लिंग",
-        female: "महिला",
-        male: "पुरुष",
-        ageBracket: "आयु वर्ग",
-        anyAge: "कोई भी आयु",
-        maritalStatus: "वैवाहिक स्थिति",
-        anyStatus: "कोई भी स्थिति",
-        neverMarried: "अविवाहित",
-        divorced: "तलाकशुदा",
-        widowed: "विधवा/विधुर",
-        subCaste: "उप-जाति",
-        allSubCastes: "सभी उप-जातियां",
-        state: "राज्य",
-        allStates: "सभी राज्य",
-        cityName: "शहर का नाम",
-        cityPlaceholder: "शहर फ़िल्टर करें...",
-        resetFilters: "फ़िल्टर रीसेट करें",
-        adminDesk: "एडमिन डेस्क",
-        enterPin: "नियंत्रण अनलॉक करने के लिए एडमिन पिन दर्ज करें।",
-        unlock: "डैशबोर्ड अनलॉक करें"
+        settings: "⚙️ सेटिंग्स", export: "एक्सपोर्ट (.xls)", add: "+ जोड़ें", refresh: "रिफ्रेश", lock: "लॉक",
+        searchPlaceholder: "नाम, आईडी, शहर, फोन, पेशा खोजें...", searchBtn: "खोजें", filtersBtn: "फ़िल्टर ▾",
+        gender: "लिंग", allGenders: "सभी लिंग", female: "महिला", male: "पुरुष",
+        ageBracket: "आयु वर्ग", anyAge: "कोई भी आयु", maritalStatus: "वैवाहिक स्थिति", anyStatus: "कोई भी स्थिति",
+        neverMarried: "अविवाहित", divorced: "तलाकशुदा", widowed: "विधवा/विधुर", subCaste: "उप-जाति", allSubCastes: "सभी उप-जातियां",
+        state: "राज्य", allStates: "सभी राज्य", cityName: "शहर का नाम", cityPlaceholder: "शहर फ़िल्टर करें...",
+        resetFilters: "फ़िल्टर रीसेट करें", adminDesk: "एडमिन डेस्क", enterPin: "नियंत्रण अनलॉक करने के लिए एडमिन पिन दर्ज करें।", unlock: "डैशबोर्ड अनलॉक करें"
       }
     };
 
@@ -856,45 +811,28 @@
 
     function showNotice(msg, isErr = false) {
       const el = document.getElementById('toastNotice');
-      el.innerText = msg;
-      el.style.background = isErr ? "#C5221F" : "#137333";
+      el.innerText = msg; el.style.background = isErr ? "#C5221F" : "#137333";
       el.style.display = "block";
       setTimeout(() => { el.style.display = "none"; }, 3500);
     }
 
     function togglePasswordVisibility(inputId, btn) {
       const input = document.getElementById(inputId);
-      if (input.type === 'password') {
-        input.type = 'text';
-        btn.innerText = '🙈';
-      } else {
-        input.type = 'password';
-        btn.innerText = '👁';
-      }
+      if (input.type === 'password') { input.type = 'text'; btn.innerText = '🙈'; }
+      else { input.type = 'password'; btn.innerText = '👁'; }
     }
 
     function toggleMobileFilters() {
       const panel = document.getElementById('adminFilterPanel');
       const btn = document.getElementById('toggleFilterBtn');
       if (!panel || !btn) return;
-
       const isHidden = window.getComputedStyle(panel).display === 'none';
-      if (isHidden) {
-        panel.classList.add('expanded');
-        panel.style.display = 'grid';
-        btn.innerText = 'Filters ▴';
-      } else {
-        panel.classList.remove('expanded');
-        panel.style.display = 'none';
-        btn.innerText = 'Filters ▾';
-      }
+      if (isHidden) { panel.classList.add('expanded'); panel.style.display = 'grid'; btn.innerText = 'Filters ▴'; }
+      else { panel.classList.remove('expanded'); panel.style.display = 'none'; btn.innerText = 'Filters ▾'; }
     }
 
     function closeAllContextPopups() {
-      document.querySelectorAll('.contextual-card').forEach(c => {
-        c.style.display = 'none';
-        c.classList.remove('active');
-      });
+      document.querySelectorAll('.contextual-card').forEach(c => { c.style.display = 'none'; c.classList.remove('active'); });
       document.getElementById('backdropBarrier').classList.remove('active');
     }
 
@@ -929,37 +867,29 @@
       const el = document.getElementById(elemId);
       if (!el) return;
       el.innerHTML = defaultPlaceholder ? `<option value="">${defaultPlaceholder}</option>` : '';
-      options.forEach(opt => {
-        el.innerHTML += `<option value="${opt}">${opt}</option>`;
-      });
+      options.forEach(opt => { el.innerHTML += `<option value="${opt}">${opt}</option>`; });
     }
 
     function initLocationDropdown(selId) {
       const stateSel = document.getElementById(selId);
       if (!stateSel) return;
       stateSel.innerHTML = `<option value="">Select State</option>`;
-      Object.keys(LOCATION_DATA).forEach(st => {
-        stateSel.innerHTML += `<option value="${st}">${st}</option>`;
-      });
+      Object.keys(LOCATION_DATA).forEach(st => { stateSel.innerHTML += `<option value="${st}">${st}</option>`; });
     }
 
     function initAdminFilterStates() {
       const filterStateSel = document.getElementById('adminFilterState');
       if (!filterStateSel) return;
       filterStateSel.innerHTML = `<option value="">All States</option>`;
-      Object.keys(LOCATION_DATA).forEach(st => {
-        filterStateSel.innerHTML += `<option value="${st}">${st}</option>`;
-      });
+      Object.keys(LOCATION_DATA).forEach(st => { filterStateSel.innerHTML += `<option value="${st}">${st}</option>`; });
     }
 
     function populateCities(stateId, cityId, customId, selectedCity = "") {
       const stateVal = document.getElementById(stateId).value;
       const citySel = document.getElementById(cityId);
       const customInput = document.getElementById(customId);
-      
       citySel.innerHTML = `<option value="">Select City</option>`;
       if (customInput) customInput.style.display = "none";
-
       if (stateVal && LOCATION_DATA[stateVal]) {
         let matched = false;
         LOCATION_DATA[stateVal].forEach(ct => {
@@ -967,13 +897,9 @@
           if (isSelected) matched = true;
           citySel.innerHTML += `<option value="${ct}" ${isSelected ? 'selected' : ''}>${ct}</option>`;
         });
-
         if (selectedCity && !matched) {
           citySel.value = "Other";
-          if (customInput) {
-            customInput.style.display = "block";
-            customInput.value = selectedCity;
-          }
+          if (customInput) { customInput.style.display = "block"; customInput.value = selectedCity; }
         }
       }
     }
@@ -981,11 +907,8 @@
     function checkCustomCity(cityId, customId) {
       const cityVal = document.getElementById(cityId).value;
       const customInput = document.getElementById(customId);
-      if (cityVal === "Other") {
-        customInput.style.display = "block";
-      } else {
-        customInput.style.display = "none";
-      }
+      if (cityVal === "Other") customInput.style.display = "block";
+      else customInput.style.display = "none";
     }
 
     function calculateAutoAge(dobId, ageId) {
@@ -1016,7 +939,6 @@
           let w = img.width, h = img.height;
           if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
           else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
-
           const canvas = document.createElement('canvas');
           canvas.width = w; canvas.height = h;
           const ctx = canvas.getContext('2d');
@@ -1030,15 +952,9 @@
 
     async function unlockAdminPortal() {
       const errorBox = document.getElementById('adminPinErrorAlert');
-      errorBox.style.display = 'none';
-      errorBox.innerText = '';
-
+      errorBox.style.display = 'none'; errorBox.innerText = '';
       const pin = document.getElementById('adminPinInput').value.trim();
-      if (!pin) {
-        errorBox.innerText = "Please enter Admin PIN.";
-        errorBox.style.display = 'block';
-        return;
-      }
+      if (!pin) { errorBox.innerText = "Please enter Admin PIN."; errorBox.style.display = 'block'; return; }
 
       const unlockBtn = document.getElementById('unlockBtn');
       if(unlockBtn) unlockBtn.innerText = "Unlocking...";
@@ -1047,28 +963,21 @@
         const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(pin)}`);
         const data = await res.json();
         if (data.success) {
-          adminState.pin = pin;
-          adminState.profiles = data.profiles;
+          adminState.pin = pin; adminState.profiles = data.profiles;
           if (data.settings) adminState.settings = data.settings;
           localStorage.setItem('cm_admin_pin', pin);
           document.getElementById('authOverlay').classList.remove('active');
-          updateTabCounts();
-          executeAdminSearch();
+          updateTabCounts(); executeAdminSearch();
         } else {
-          errorBox.innerText = "Incorrect Admin PIN. Please try again.";
-          errorBox.style.display = 'block';
+          errorBox.innerText = "Incorrect Admin PIN."; errorBox.style.display = 'block';
         }
       } catch (err) {
-        errorBox.innerText = "Connection error. Please try again.";
-        errorBox.style.display = 'block';
-      } finally {
-        if(unlockBtn) unlockBtn.innerText = "Unlock Dashboard";
-      }
+        errorBox.innerText = "Connection error."; errorBox.style.display = 'block';
+      } finally { if(unlockBtn) unlockBtn.innerText = "Unlock Dashboard"; }
     }
 
     function lockPortal() {
-      adminState.pin = "";
-      localStorage.removeItem('cm_admin_pin');
+      adminState.pin = ""; localStorage.removeItem('cm_admin_pin');
       document.getElementById('authOverlay').classList.add('active');
       document.getElementById('adminPinInput').value = "";
       document.getElementById('adminPinErrorAlert').style.display = 'none';
@@ -1076,11 +985,9 @@
 
     async function triggerManualRefresh() {
       const btn = document.getElementById('refreshBtn');
-      btn.innerText = "...";
-      btn.disabled = true;
+      btn.innerText = "..."; btn.disabled = true;
       await fetchAdminProfiles();
-      btn.innerText = "Refresh";
-      btn.disabled = false;
+      btn.innerText = "Refresh"; btn.disabled = false;
       showNotice("Records synced.");
     }
 
@@ -1092,15 +999,9 @@
         if (data.success) {
           adminState.profiles = data.profiles;
           if (data.settings) adminState.settings = data.settings;
-          updateTabCounts();
-          executeAdminSearch();
-        } else {
-          showNotice("Authorization failed: " + data.error, true);
-          lockPortal();
-        }
-      } catch (err) {
-        showNotice("Network connection error.", true);
-      }
+          updateTabCounts(); executeAdminSearch();
+        } else { showNotice("Auth failed: " + data.error, true); lockPortal(); }
+      } catch (err) { showNotice("Network error.", true); }
     }
 
     function updateTabCounts() {
@@ -1129,29 +1030,16 @@
       const city = document.getElementById('adminFilterCity').value.toLowerCase().trim();
 
       let list = adminState.profiles;
-
-      if (adminState.currentTab !== 'all') {
-        list = list.filter(p => p.status === adminState.currentTab);
-      }
-      if (gender) {
-        list = list.filter(p => p.gender === gender);
-      }
-      if (marital) {
-        list = list.filter(p => p.maritalStatus && p.maritalStatus.toLowerCase().trim() === marital.toLowerCase().trim());
-      }
-      if (subCaste) {
-        list = list.filter(p => p.subCaste === subCaste);
-      }
+      if (adminState.currentTab !== 'all') list = list.filter(p => p.status === adminState.currentTab);
+      if (gender) list = list.filter(p => p.gender === gender);
+      if (marital) list = list.filter(p => p.maritalStatus && p.maritalStatus.toLowerCase().trim() === marital.toLowerCase().trim());
+      if (subCaste) list = list.filter(p => p.subCaste === subCaste);
       if (ageBracket) {
         const [min, max] = ageBracket.split('-').map(Number);
         list = list.filter(p => p.age >= min && p.age <= max);
       }
-      if (state) {
-        list = list.filter(p => p.state === state);
-      }
-      if (city) {
-        list = list.filter(p => p.city && p.city.toLowerCase().includes(city));
-      }
+      if (state) list = list.filter(p => p.state === state);
+      if (city) list = list.filter(p => p.city && p.city.toLowerCase().includes(city));
       if (searchTerm) {
         list = list.filter(p => 
           (p.fullName && String(p.fullName).toLowerCase().includes(searchTerm)) ||
@@ -1194,6 +1082,7 @@
 
         let actionButtons = `
           <button class="btn btn-outline" onclick="openContextualEdit('${p.id}', this)">Edit</button>
+          <button class="btn btn-primary" onclick="adminDownloadPdf('${p.id}')">Download PDF</button>
         `;
         
         if (p.status === "Pending") {
@@ -1206,9 +1095,7 @@
             <button class="btn btn-warning" onclick="openContextualUnpublish('${p.id}', this)">Unpublish</button>
           `;
         } else if (p.status === "Unpublished") {
-          actionButtons += `
-            <button class="btn btn-success" onclick="openContextualPublish('${p.id}', this)">Publish</button>
-          `;
+          actionButtons += `<button class="btn btn-success" onclick="openContextualPublish('${p.id}', this)">Publish</button>`;
         }
 
         if (p.status !== "Deleted") {
@@ -1230,30 +1117,12 @@
             </div>
 
             <div class="card-data-grid">
-              <div class="data-cell">
-                <span class="data-label">Profession</span>
-                <span class="data-val">${p.profession || 'Unspecified'}</span>
-              </div>
-              <div class="data-cell">
-                <span class="data-label">Education</span>
-                <span class="data-val">${p.education || 'Unspecified'}</span>
-              </div>
-              <div class="data-cell">
-                <span class="data-label">Location</span>
-                <span class="data-val">${p.city}, ${p.state}</span>
-              </div>
-              <div class="data-cell">
-                <span class="data-label">Father</span>
-                <span class="data-val">${p.fatherName ? p.fatherName + ' (' + (p.fatherOccupation || 'N/A') + ')' : 'N/A'}</span>
-              </div>
-              <div class="data-cell">
-                <span class="data-label">Mother</span>
-                <span class="data-val">${p.motherName ? p.motherName + ' (' + (p.motherOccupation || 'N/A') + ')' : 'N/A'}</span>
-              </div>
-              <div class="data-cell">
-                <span class="data-label">Phone</span>
-                <span class="data-val"><a href="tel:${p.phone}">${p.phone}</a></span>
-              </div>
+              <div class="data-cell"><span class="data-label">Profession</span><span class="data-val">${p.profession || 'Unspecified'}</span></div>
+              <div class="data-cell"><span class="data-label">Education</span><span class="data-val">${p.education || 'Unspecified'}</span></div>
+              <div class="data-cell"><span class="data-label">Location</span><span class="data-val">${p.city}, ${p.state}</span></div>
+              <div class="data-cell"><span class="data-label">Father</span><span class="data-val">${p.fatherName ? p.fatherName + ' (' + (p.fatherOccupation || 'N/A') + ')' : 'N/A'}</span></div>
+              <div class="data-cell"><span class="data-label">Mother</span><span class="data-val">${p.motherName ? p.motherName + ' (' + (p.motherOccupation || 'N/A') + ')' : 'N/A'}</span></div>
+              <div class="data-cell"><span class="data-label">Phone</span><span class="data-val"><a href="tel:${p.phone}">${p.phone}</a></span></div>
             </div>
 
             <div class="card-footer">
@@ -1262,13 +1131,77 @@
                 <span>Status: <strong style="color: ${p.paymentStatus === 'Verified' ? 'var(--success)' : 'var(--warning)'};">${p.paymentStatus || 'Unverified'}</strong></span>
                 ${hasReceipt ? `<button class="btn btn-outline" style="min-height: 28px; padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="openContextualReceipt('${p.id}', this)">View Receipt ↗</button>` : '<span style="color: var(--muted); font-size: 0.72rem;">No Receipt</span>'}
               </div>
-              <div class="card-actions-row">
-                ${actionButtons}
-              </div>
+              <div class="card-actions-row">${actionButtons}</div>
             </div>
           </div>
         `;
       }).join('');
+    }
+
+    // ADMIN DIRECT SINGLE PROFILE PDF DOWNLOAD FUNCTION
+    function adminDownloadPdf(profileId) {
+      const p = adminState.profiles.find(x => x.id === profileId);
+      if (!p) return;
+
+      const mount = document.createElement('div');
+      mount.style.position = "fixed"; mount.style.top = "-10000px"; mount.style.left = "-10000px"; mount.style.width = "794px";
+      document.body.appendChild(mount);
+
+      const surface = document.createElement('div');
+      surface.style.width = "794px"; surface.style.backgroundColor = "#FDFBF7"; surface.style.padding = "35px 30px"; surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
+
+      surface.innerHTML = `
+        <div style="border: 2px solid #800020; padding: 25px; border-radius: 12px; background: #FFF;">
+          <div style="text-align: center; border-bottom: 2px solid #FF7E7E; padding-bottom: 12px; margin-bottom: 15px;">
+            <h1 style="font-size: 22px; color: #800020; font-weight: 900; margin: 0;">CHITRANSH MAHASABHA</h1>
+            <p style="font-size: 11px; color: #7A6F6D; text-transform: uppercase; margin-top: 4px;">Official Matrimonial Biodata (Admin Export)</p>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 20px; border-bottom: 1px solid #F5DEC2; padding-bottom: 15px; margin-bottom: 15px;">
+            <img src="${p.photoUrl || ''}" style="width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid #FF7E7E;" crossorigin="anonymous">
+            <div>
+              <h2 style="font-size: 20px; font-weight: 800; color: #2B2321; margin: 0;">${p.fullName}</h2>
+              <p style="font-size: 13px; color: #FFA259; font-weight: 700; margin: 3px 0;">ID: ${p.id} &bull; ${p.age} Years &bull; ${p.height || 'Height N/A'}</p>
+              <p style="font-size: 12px; color: #7A6F6D; margin: 0;">${p.city}, ${p.state}, ${p.country || 'India'}</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 12px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 12px 0 5px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 2px;">Professional & Educational Record</h3>
+          <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 4px 0; font-weight: 600;">Education</td><td style="padding: 4px 0;">${p.education}</td></tr>
+            <tr><td style="color: #7A6F6D; padding: 4px 0; font-weight: 600;">Profession</td><td style="padding: 4px 0;">${p.profession}</td></tr>
+            <tr><td style="color: #7A6F6D; padding: 4px 0; font-weight: 600;">Kayastha Sub-Caste</td><td style="padding: 4px 0;">${p.subCaste || 'Kayastha'}</td></tr>
+            <tr><td style="color: #7A6F6D; padding: 4px 0; font-weight: 600;">Annual Income</td><td style="padding: 4px 0;">${p.annualIncome || 'Undisclosed'}</td></tr>
+            <tr><td style="color: #7A6F6D; padding: 4px 0; font-weight: 600;">Marital Status</td><td style="padding: 4px 0;">${p.maritalStatus}</td></tr>
+          </table>
+
+          <h3 style="font-size: 12px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 15px 0 5px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 2px;">Parental & Family Background</h3>
+          <table style="width: 100%; border-collapse: collapse; font-size: 12.5px;">
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 4px 0; font-weight: 600;">Father's Name</td><td style="padding: 4px 0;">${p.fatherName || 'On Record'} (${p.fatherOccupation || 'N/A'})</td></tr>
+            <tr><td style="color: #7A6F6D; padding: 4px 0; font-weight: 600;">Mother's Name</td><td style="padding: 4px 0;">${p.motherName || 'On Record'} (${p.motherOccupation || 'N/A'})</td></tr>
+            <tr><td style="color: #7A6F6D; padding: 4px 0; font-weight: 600;">Family Details</td><td style="padding: 4px 0;">${p.familyDetails || 'Available upon request.'}</td></tr>
+          </table>
+
+          <h3 style="font-size: 12px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 15px 0 5px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 2px;">Partner Preferences</h3>
+          <p style="font-size: 12.5px; line-height: 1.4; margin: 4px 0;">${p.partnerPreferences || 'Open to culturally compatible matches.'}</p>
+        </div>
+      `;
+
+      mount.appendChild(surface);
+      showNotice("Generating Biodata PDF...");
+
+      html2pdf().set({
+        margin: [10, 10, 10, 10],
+        filename: `Biodata_${p.fullName.replace(/\s+/g, '_')}_${p.id}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true }
+      }).from(surface).save().then(() => {
+        showNotice("PDF downloaded successfully!");
+        document.body.removeChild(mount);
+      }).catch(err => {
+        showNotice("PDF error.", true);
+        document.body.removeChild(mount);
+      });
     }
 
     function openSettingsModal() {
@@ -1282,8 +1215,7 @@
 
     async function saveSystemSettings() {
       const btn = document.getElementById('saveSettingsBtn');
-      btn.innerText = "Saving...";
-      btn.disabled = true;
+      btn.innerText = "Saving..."; btn.disabled = true;
 
       const payload = {
         isFreeRegistration: document.getElementById('settingFreeModeToggle').checked,
@@ -1294,31 +1226,18 @@
 
       try {
         const res = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'updateSettings', adminPin: adminState.pin, data: payload })
         });
         const out = await res.json();
-        if (out.success) {
-          adminState.settings = out.settings;
-          closeModal('settingsModal');
-          showNotice("Settings & Pricing updated successfully!");
-        } else {
-          showNotice("Error saving settings: " + out.error, true);
-        }
-      } catch (err) {
-        showNotice("Server communication failure.", true);
-      } finally {
-        btn.innerText = "Save Settings";
-        btn.disabled = false;
-      }
+        if (out.success) { adminState.settings = out.settings; closeModal('settingsModal'); showNotice("Settings updated successfully!"); }
+        else { showNotice("Error: " + out.error, true); }
+      } catch (err) { showNotice("Server error.", true); }
+      finally { btn.innerText = "Save Settings"; btn.disabled = false; }
     }
 
     function openExportModal() {
-      const end = new Date();
-      const start = new Date();
-      start.setDate(end.getDate() - 30);
-
+      const end = new Date(); const start = new Date(); start.setDate(end.getDate() - 30);
       document.getElementById('exportEndDate').value = end.toISOString().split('T')[0];
       document.getElementById('exportStartDate').value = start.toISOString().split('T')[0];
       document.getElementById('exportModal').classList.add('active');
@@ -1333,53 +1252,27 @@
       if (statusFilter !== 'all') records = records.filter(p => p.status === statusFilter);
 
       if (startVal) {
-        const start = new Date(startVal);
-        start.setHours(0, 0, 0, 0);
+        const start = new Date(startVal); start.setHours(0, 0, 0, 0);
         records = records.filter(p => !p.createdDate || new Date(p.createdDate) >= start);
       }
-
       if (endVal) {
-        const end = new Date(endVal);
-        end.setHours(23, 59, 59, 999);
+        const end = new Date(endVal); end.setHours(23, 59, 59, 999);
         records = records.filter(p => !p.createdDate || new Date(p.createdDate) <= end);
       }
 
-      if (records.length === 0) {
-        showNotice("No matching records found for selected date range.", true);
-        return;
-      }
+      if (records.length === 0) { showNotice("No records found.", true); return; }
 
-      let tableHtml = `
-        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-        <head><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head>
-        <body>
-          <table border="1">
-            <tr style="background-color: #FFA259; color: #ffffff; font-weight: bold;">
-              <th>Profile ID</th><th>Registration Date</th><th>Membership Plan</th><th>Full Name</th><th>Status</th><th>Gender</th><th>DOB</th><th>Age</th><th>Height</th><th>Marital Status</th><th>Sub-Caste</th><th>Education</th><th>Profession</th><th>Annual Income</th><th>Father Name</th><th>Father Occupation</th><th>Mother Name</th><th>Mother Occupation</th><th>Phone</th><th>Email</th><th>City</th><th>State</th><th>Country</th><th>Address</th><th>Payment Status</th><th>UTR</th><th>Fee</th><th>Family</th><th>Preferences</th>
-            </tr>
-      `;
-
+      let tableHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table border="1"><tr style="background-color: #FFA259; color: #ffffff; font-weight: bold;"><th>ID</th><th>Date</th><th>Plan</th><th>Name</th><th>Status</th><th>Gender</th><th>DOB</th><th>Age</th><th>Height</th><th>Marital</th><th>SubCaste</th><th>Edu</th><th>Profession</th><th>Income</th><th>Father</th><th>Mother</th><th>Phone</th><th>Email</th><th>City</th><th>State</th></tr>`;
       records.forEach(p => {
-        const regDateFormatted = p.createdDate ? new Date(p.createdDate).toLocaleDateString('en-IN') : 'N/A';
-        tableHtml += `
-          <tr>
-            <td>${p.id || ''}</td><td>${regDateFormatted}</td><td>${p.membershipPlan || 'Annual'}</td><td>${p.fullName || ''}</td><td>${p.status || ''}</td><td>${p.gender || ''}</td><td>${p.dob || ''}</td><td>${p.age || ''}</td><td>${p.height || ''}</td><td>${p.maritalStatus || ''}</td><td>${p.subCaste || ''}</td><td>${p.education || ''}</td><td>${p.profession || ''}</td><td>${p.annualIncome || ''}</td><td>${p.fatherName || ''}</td><td>${p.fatherOccupation || ''}</td><td>${p.motherName || ''}</td><td>${p.motherOccupation || ''}</td><td>${p.phone || ''}</td><td>${p.email || ''}</td><td>${p.city || ''}</td><td>${p.state || ''}</td><td>${p.country || 'India'}</td><td>${p.exactAddress || ''}</td><td>${p.paymentStatus || 'Unverified'}</td><td>${p.paymentUtr || ''}</td><td>${p.paymentAmount || '0'}</td><td>${p.familyDetails || ''}</td><td>${p.partnerPreferences || ''}</td>
-          </tr>
-        `;
+        tableHtml += `<tr><td>${p.id || ''}</td><td>${p.createdDate ? new Date(p.createdDate).toLocaleDateString() : ''}</td><td>${p.membershipPlan || ''}</td><td>${p.fullName || ''}</td><td>${p.status || ''}</td><td>${p.gender || ''}</td><td>${p.dob || ''}</td><td>${p.age || ''}</td><td>${p.height || ''}</td><td>${p.maritalStatus || ''}</td><td>${p.subCaste || ''}</td><td>${p.education || ''}</td><td>${p.profession || ''}</td><td>${p.annualIncome || ''}</td><td>${p.fatherName || ''}</td><td>${p.motherName || ''}</td><td>${p.phone || ''}</td><td>${p.email || ''}</td><td>${p.city || ''}</td><td>${p.state || ''}</td></tr>`;
       });
       tableHtml += `</table></body></html>`;
 
       const blob = new Blob([tableHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Chitransh_Customer_Data.xls`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      closeModal('exportModal');
-      showNotice(`Exported ${records.length} records to Excel.`);
+      const a = document.createElement('a'); a.href = url; a.download = `Chitransh_Customer_Data.xls`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+      closeModal('exportModal'); showNotice(`Exported ${records.length} records.`);
     }
 
     function openContextualConfirm(title, text, btnText, triggerEl, callback) {
@@ -1387,10 +1280,7 @@
       document.getElementById('contextConfirmText').innerText = text;
       const btn = document.getElementById('contextConfirmExecuteBtn');
       btn.innerText = btnText;
-      btn.onclick = async () => {
-        closeAllContextPopups();
-        await callback();
-      };
+      btn.onclick = async () => { closeAllContextPopups(); await callback(); };
       document.getElementById('backdropBarrier').classList.add('active');
       document.getElementById('contextConfirmCard').style.display = 'block';
       document.getElementById('contextConfirmCard').classList.add('active');
@@ -1405,7 +1295,7 @@
           });
           const out = await res.json();
           if (out.success) { showNotice("Profile approved & live!"); fetchAdminProfiles(); }
-          else { showNotice("Approval error: " + out.error, true); }
+          else { showNotice("Error: " + out.error, true); }
         } catch (err) { showNotice("Server error.", true); }
       });
     }
@@ -1418,14 +1308,14 @@
             body: JSON.stringify({ action: 'deleteProfile', data: { profileId: String(profileId).trim(), isAdmin: true } })
           });
           const out = await res.json();
-          if (out.success) { showNotice("Profile marked as Deleted."); fetchAdminProfiles(); }
-          else { showNotice("Delete error: " + out.error, true); }
+          if (out.success) { showNotice("Profile marked Deleted."); fetchAdminProfiles(); }
+          else { showNotice("Error: " + out.error, true); }
         } catch (err) { showNotice("Server error.", true); }
       });
     }
 
     function openContextualUnpublish(profileId, btnEl) {
-      openContextualConfirm("Unpublish Candidate", `Hide profile ${profileId} from public directory?`, "Unpublish Now", btnEl, async () => {
+      openContextualConfirm("Unpublish Candidate", `Hide profile ${profileId} from directory?`, "Unpublish", btnEl, async () => {
         try {
           const res = await fetch(API_ENDPOINT, {
             method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -1434,12 +1324,12 @@
           const out = await res.json();
           if (out.success) { showNotice("Profile Unpublished."); fetchAdminProfiles(); }
           else { showNotice("Error: " + out.error, true); }
-        } catch (err) { showNotice("Failed to update status.", true); }
+        } catch (err) { showNotice("Error.", true); }
       });
     }
 
     function openContextualPublish(profileId, btnEl) {
-      openContextualConfirm("Publish Candidate", `Re-publish profile ${profileId} live on directory?`, "Publish Live", btnEl, async () => {
+      openContextualConfirm("Publish Candidate", `Re-publish profile ${profileId} live?`, "Publish", btnEl, async () => {
         try {
           const res = await fetch(API_ENDPOINT, {
             method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -1448,14 +1338,13 @@
           const out = await res.json();
           if (out.success) { showNotice("Profile is Live."); fetchAdminProfiles(); }
           else { showNotice("Error: " + out.error, true); }
-        } catch (err) { showNotice("Failed to publish.", true); }
+        } catch (err) { showNotice("Error.", true); }
       });
     }
 
     function openContextualEdit(profileId, btnEl) {
       const p = adminState.profiles.find(x => x.id === profileId);
       if (!p) return;
-
       adminEditPhotoBase64 = "";
       document.getElementById('editProfileId').value = p.id;
       document.getElementById('editProfileIdRef').innerText = `${p.fullName} (${p.id})`;
@@ -1478,21 +1367,18 @@
       document.getElementById('editMotherOccupation').value = p.motherOccupation || "";
       document.getElementById('editFamily').value = p.familyDetails || "";
       document.getElementById('editPreferences').value = p.partnerPreferences || "";
-
       document.getElementById('editState').value = p.state || "";
       populateCities('editState', 'editCity', 'editCityCustom', p.city);
 
       document.getElementById('backdropBarrier').classList.add('active');
       const card = document.getElementById('contextEditCard');
-      card.style.display = 'block';
-      card.classList.add('active');
+      card.style.display = 'block'; card.classList.add('active');
     }
 
     async function handleAdminEditSubmit(e) {
       e.preventDefault();
       const btn = document.getElementById('editSubmitBtn');
-      btn.innerText = "Saving Changes...";
-      btn.disabled = true;
+      btn.innerText = "Saving..."; btn.disabled = true;
 
       const stateVal = document.getElementById('editState').value;
       let cityVal = document.getElementById('editCity').value;
@@ -1511,9 +1397,7 @@
         profession: document.getElementById('editProfession').value,
         subCaste: document.getElementById('editSubCaste').value,
         annualIncome: document.getElementById('editIncome').value.trim(),
-        state: stateVal,
-        city: cityVal,
-        country: "India",
+        state: stateVal, city: cityVal, country: "India",
         exactAddress: document.getElementById('editAddress').value.trim(),
         email: document.getElementById('editEmail').value.trim(),
         phone: document.getElementById('editPhone').value.trim(),
@@ -1524,7 +1408,6 @@
         familyDetails: document.getElementById('editFamily').value.trim(),
         partnerPreferences: document.getElementById('editPreferences').value.trim()
       };
-
       if (adminEditPhotoBase64) payload.imageBase64 = adminEditPhotoBase64;
 
       try {
@@ -1533,8 +1416,8 @@
           body: JSON.stringify({ action: 'adminUpdateProfile', adminPin: adminState.pin, data: payload })
         });
         const out = await res.json();
-        if (out.success) { showNotice("Profile details updated!"); closeAllContextPopups(); fetchAdminProfiles(); }
-        else { showNotice("Update error: " + out.error, true); }
+        if (out.success) { showNotice("Updated successfully!"); closeAllContextPopups(); fetchAdminProfiles(); }
+        else { showNotice("Error: " + out.error, true); }
       } catch (err) { showNotice("Server error.", true); }
       finally { btn.innerText = "Save & Apply Changes"; btn.disabled = false; }
     }
@@ -1545,17 +1428,14 @@
       document.getElementById('receiptProfileId').innerText = p.id;
       document.getElementById('receiptImage').src = p.paymentReceiptUrl;
       document.getElementById('receiptUtrText').innerText = p.paymentUtr ? "UTR / Ref: " + p.paymentUtr : "No UTR Entered";
-      
       document.getElementById('backdropBarrier').classList.add('active');
       const card = document.getElementById('contextReceiptCard');
-      card.style.display = 'block';
-      card.classList.add('active');
+      card.style.display = 'block'; card.classList.add('active');
     }
 
     function openContextualMatchmaking(profileId, btnEl) {
       const client = adminState.profiles.find(p => p.id === profileId);
       if (!client) return;
-
       adminState.activeMatchClient = client;
       document.getElementById('matchCandidateName').innerText = `${client.fullName} (${client.gender}, ${client.age} Yrs)`;
 
@@ -1586,8 +1466,7 @@
 
       document.getElementById('backdropBarrier').classList.add('active');
       const card = document.getElementById('contextMatchCard');
-      card.style.display = 'block';
-      card.classList.add('active');
+      card.style.display = 'block'; card.classList.add('active');
     }
 
     function getSelectedMatchedCandidates() {
@@ -1601,9 +1480,9 @@
 
     function sendSelectedMatchesViaWhatsApp() {
       const client = adminState.activeMatchClient;
-      if (!client || !client.phone) { showNotice("Phone number missing.", true); return; }
+      if (!client || !client.phone) { showNotice("Phone missing.", true); return; }
       const selected = getSelectedMatchedCandidates();
-      if (selected.length === 0) { showNotice("Select at least one match.", true); return; }
+      if (selected.length === 0) { showNotice("Select a match.", true); return; }
 
       let cleanPhone = client.phone.toString().replace(/[^0-9]/g, '');
       if (cleanPhone.length === 10) cleanPhone = "91" + cleanPhone;
@@ -1639,18 +1518,10 @@
         </div>
       `).join('');
 
-      surface.innerHTML = `
-        <div style="text-align: center; margin-bottom: 20px;">
-          <h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0;">KAYASTHA VIVAH PATRIKA</h1>
-          <p style="font-size: 12px; color: #666;">Prepared for: ${client.fullName} (${client.id})</p>
-        </div>
-        ${cardsHtml}
-      `;
+      surface.innerHTML = `<div style="text-align: center; margin-bottom: 20px;"><h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0;">KAYASTHA VIVAH PATRIKA</h1><p style="font-size: 12px; color: #666;">Prepared for: ${client.fullName} (${client.id})</p></div>${cardsHtml}`;
 
       mount.appendChild(surface);
-      html2pdf().set({ margin: 10, filename: `Vivah_Patrika.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 } }).from(surface).save().then(() => {
-        document.body.removeChild(mount);
-      });
+      html2pdf().set({ margin: 10, filename: `Vivah_Patrika.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 } }).from(surface).save().then(() => { document.body.removeChild(mount); });
     }
 
     function openAddMemberModal() {
@@ -1661,10 +1532,10 @@
 
     async function handleAdminAddSubmit(e) {
       e.preventDefault();
-      if (!adminAddPhotoBase64) { showNotice("Please upload candidate photo.", true); return; }
+      if (!adminAddPhotoBase64) { showNotice("Please upload photo.", true); return; }
 
       const btn = document.getElementById('addSubmitBtn');
-      btn.innerText = "Adding Candidate..."; btn.disabled = true;
+      btn.innerText = "Adding..."; btn.disabled = true;
 
       const stateVal = document.getElementById('addState').value;
       let cityVal = document.getElementById('addCity').value;
@@ -1700,7 +1571,7 @@
           body: JSON.stringify({ action: 'adminAddProfile', adminPin: adminState.pin, data: payload })
         });
         const out = await res.json();
-        if (out.success) { showNotice("Candidate added successfully!"); closeModal('addMemberModal'); fetchAdminProfiles(); }
+        if (out.success) { showNotice("Candidate added!"); closeModal('addMemberModal'); fetchAdminProfiles(); }
         else { showNotice("Error: " + out.error, true); }
       } catch (err) { showNotice("Network failure.", true); }
       finally { btn.innerText = "Add & Enrol Candidate"; btn.disabled = false; }
