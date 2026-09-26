@@ -82,7 +82,7 @@
     }
 
     .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); box-shadow: var(--shadow-sm); }
-    .btn-primary:hover { opacity: 0.95; transform: translateY(-1px); }
+    .btn-primary:hover { opacity: 0.95; }
     .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
     .btn-outline:hover { background: var(--surface-light); }
     .btn-ghost { background: transparent; color: var(--dark); }
@@ -144,12 +144,7 @@
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto;
       gap: 0.65rem; align-items: flex-end; margin-top: 0.75rem;
     }
-    .filter-grid.expanded { display: grid !important; animation: fadeIn 0.25s ease; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .filter-grid.expanded { display: grid !important; }
 
     .filter-control { display: flex; flex-direction: column; gap: 0.2rem; }
     .filter-control label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--muted); }
@@ -168,25 +163,17 @@
 
     .profile-card {
       background: var(--white); border-radius: var(--radius-md); border: 1px solid var(--border); overflow: hidden;
-      box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; transition: transform 0.25s ease, box-shadow 0.25s ease; cursor: pointer;
-      animation: cardPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer;
     }
-    @keyframes cardPop {
-      0% { opacity: 0; transform: translateY(12px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .profile-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    .profile-img-container { position: relative; width: 100%; height: 260px; background-color: var(--surface-light); overflow: hidden; }
-    .profile-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
-    .profile-card:hover .profile-img { transform: scale(1.05); }
+    .profile-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .profile-img-container { position: relative; width: 100%; height: 260px; background-color: var(--surface-light); }
+    .profile-img { width: 100%; height: 100%; object-fit: cover; }
 
     .shortlist-tag-btn {
       position: absolute; top: 10px; right: 10px; z-index: 2;
       background: rgba(255, 255, 255, 0.95); border: 1px solid var(--border);
       border-radius: 20px; padding: 0.3rem 0.65rem; font-size: 0.72rem; font-weight: 800; cursor: pointer; color: var(--dark);
-      transition: all 0.2s;
     }
-    .shortlist-tag-btn:hover { background: var(--primary); color: var(--white); }
     .shortlist-tag-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
     .profile-body { padding: 1rem; display: flex; flex-direction: column; flex-grow: 1; gap: 0.35rem; }
@@ -201,14 +188,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 2rem;
-      padding: 1rem;
+      margin-top: 1.5rem;
+      padding: 0.85rem 1rem;
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-sm);
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.5rem;
     }
     .pagination-numbers {
       display: flex;
@@ -237,7 +224,7 @@
 
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(6px);
+      background: rgba(43, 35, 33, 0.75); backdrop-filter: blur(4px);
       z-index: 99999; display: none; align-items: center; justify-content: center; padding: 1rem;
     }
     .modal-overlay.active { display: flex !important; }
@@ -245,30 +232,26 @@
     .modal-card {
       background: var(--white); border-radius: var(--radius-md); max-width: 620px; width: 95%;
       max-height: 85vh; overflow-y: auto; position: relative; border: 2px solid var(--primary);
-      box-shadow: var(--shadow-lg); padding: 1.5rem; animation: modalScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      box-shadow: var(--shadow-lg); padding: 1.5rem; animation: modalScaleIn 0.22s ease forwards;
     }
 
     @keyframes modalScaleIn {
-      from { opacity: 0; transform: scale(0.92) translateY(10px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .modal-close-btn { position: absolute; top: 0.75rem; right: 0.75rem; background: transparent; border: none; font-size: 1.4rem; font-weight: 700; cursor: pointer; color: var(--muted); z-index: 10; }
 
-    /* IMAGE ZOOM MODAL STYLES */
+    /* IMAGE ZOOM MODAL */
     .image-zoom-card {
       background: rgba(0, 0, 0, 0.9);
       border: none;
-      max-width: 500px;
+      max-width: 480px;
       padding: 1.5rem;
       border-radius: var(--radius-lg);
       text-align: center;
       box-shadow: var(--shadow-lg);
-      animation: zoomModalIn 0.25s ease forwards;
-    }
-    @keyframes zoomModalIn {
-      from { opacity: 0; transform: scale(0.85); }
-      to { opacity: 1; transform: scale(1); }
+      animation: modalScaleIn 0.22s ease forwards;
     }
     .image-zoom-card .modal-close-btn {
       color: var(--white);
@@ -287,13 +270,12 @@
       max-height: 70vh;
       object-fit: contain;
       border-radius: var(--radius-md);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
+    /* ORIGINAL BIODATA STYLES PRESERVED */
     .biodata-sheet { border: 1.5px solid var(--secondary); border-radius: var(--radius-md); padding: 1.25rem; background: #FFF; margin-bottom: 1rem; }
     .biodata-header { display: flex; align-items: center; gap: 1rem; border-bottom: 1.5px solid var(--surface-light); padding-bottom: 0.85rem; margin-bottom: 0.85rem; }
-    .biodata-photo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; cursor: pointer; transition: transform 0.2s; }
-    .biodata-photo:hover { transform: scale(1.05); }
+    .biodata-photo { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; cursor: pointer; }
     .biodata-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; color: var(--primary); margin: 0.75rem 0 0.25rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
     .biodata-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
     .biodata-table td { padding: 0.3rem 0; }
@@ -352,15 +334,15 @@
       </div>
 
       <div class="search-action-row">
-        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onfocus="checkGuestGate()" oninput="currentPage=1; applyFilters();">
-        <button class="btn btn-primary" id="txtSearchBtn" onclick="guardedAction(() => { currentPage=1; applyFilters(); })">Search</button>
+        <input type="text" id="globalSearchInput" placeholder="Search by name, ID, city, state..." onfocus="checkGuestGate()" oninput="applyFilters()">
+        <button class="btn btn-primary" id="txtSearchBtn" onclick="guardedAction(() => applyFilters())">Search</button>
         <button class="btn btn-outline" id="toggleFilterBtn" onclick="guardedAction(() => toggleFilterDrawer())">Filters ▾</button>
       </div>
 
       <div class="filter-grid" id="mainFilterPanel">
         <div class="filter-control">
           <label id="lblGender">Gender</label>
-          <select id="filterGender" onchange="guardedAction(() => { currentPage=1; applyFilters(); })">
+          <select id="filterGender" onchange="guardedAction(() => applyFilters())">
             <option value="" id="optAllGenders">All Genders</option>
             <option value="Female" id="optFemale">Female</option>
             <option value="Male" id="optMale">Male</option>
@@ -369,7 +351,7 @@
 
         <div class="filter-control">
           <label id="lblAge">Age Bracket</label>
-          <select id="filterAge" onchange="guardedAction(() => { currentPage=1; applyFilters(); })">
+          <select id="filterAge" onchange="guardedAction(() => applyFilters())">
             <option value="" id="optAnyAge">Any Age</option>
             <option value="21-25">21 - 25</option>
             <option value="26-30">26 - 30</option>
@@ -380,7 +362,7 @@
 
         <div class="filter-control">
           <label id="lblMarital">Marital Status</label>
-          <select id="filterMarital" onchange="guardedAction(() => { currentPage=1; applyFilters(); })">
+          <select id="filterMarital" onchange="guardedAction(() => applyFilters())">
             <option value="" id="optAnyStatus">Any Status</option>
             <option value="Never Married" id="optNeverMarried">Never Married</option>
             <option value="Divorced" id="optDivorced">Divorced</option>
@@ -390,28 +372,28 @@
 
         <div class="filter-control">
           <label id="lblSubCaste">Sub-Caste</label>
-          <select id="filterSubCaste" onchange="guardedAction(() => { currentPage=1; applyFilters(); })">
+          <select id="filterSubCaste" onchange="guardedAction(() => applyFilters())">
             <option value="" id="optAllSubCastes">All Sub-Castes</option>
           </select>
         </div>
 
         <div class="filter-control">
           <label id="lblEdu">Education</label>
-          <select id="filterEducation" onchange="guardedAction(() => { currentPage=1; applyFilters(); })">
+          <select id="filterEducation" onchange="guardedAction(() => applyFilters())">
             <option value="" id="optAllQual">All Qualifications</option>
           </select>
         </div>
 
         <div class="filter-control">
           <label id="lblProf">Profession</label>
-          <select id="filterProfession" onchange="guardedAction(() => { currentPage=1; applyFilters(); })">
+          <select id="filterProfession" onchange="guardedAction(() => applyFilters())">
             <option value="" id="optAllOcc">All Occupations</option>
           </select>
         </div>
 
         <div class="filter-control">
           <label id="lblHeight">Min Height</label>
-          <select id="filterHeight" onchange="guardedAction(() => { currentPage=1; applyFilters(); })">
+          <select id="filterHeight" onchange="guardedAction(() => applyFilters())">
             <option value="" id="optAnyHeight">Any Height</option>
             <option value="5.0">Above 5'0"</option>
             <option value="5.4">Above 5'4"</option>
@@ -1029,6 +1011,7 @@
       initDropdownOptions();
       initLocationDropdowns();
       checkCachedSessionAndProfiles();
+      checkUserSession();
       fetchSystemSettings();
       fetchActiveProfiles();
     });
@@ -1247,6 +1230,15 @@
       }
       if (age >= 18 && age <= 100) {
         document.getElementById(ageInputId).value = age;
+      }
+    }
+
+    function checkUserSession() {
+      const stored = localStorage.getItem('cm_session');
+      if (stored) {
+        state.user = JSON.parse(stored);
+        renderNavUser();
+        fetchUserShortlists();
       }
     }
 
@@ -1612,7 +1604,6 @@
       document.getElementById('profileCounter').innerText = `Displaying ${dataset.length} active candidate profiles (Page ${currentPage} of ${totalPages})`;
       document.getElementById('savedCounter').innerText = state.savedIds.size;
 
-      // Render Pagination Bar UI
       const paginationBar = document.getElementById('paginationBarContainer');
       const paginationList = document.getElementById('paginationNumbersList');
       if (dataset.length > profilesPerPage) {
