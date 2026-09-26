@@ -1220,25 +1220,36 @@
       `;
 
       document.body.appendChild(container);
-      showNotice("Preparing Formatted PDF...");
+      showNotice("Generating PDF...");
 
-      setTimeout(() => {
-        const opt = {
-          margin:       0,
-          filename:     `Biodata_${p.fullName.replace(/\s+/g, '_')}_${p.id}.pdf`,
-          image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true, logging: false, windowWidth: 794 },
-          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
+      const imgElem = container.querySelector('img');
+      const proceedWithPdf = () => {
+        setTimeout(() => {
+          const opt = {
+            margin:       0,
+            filename:     `Biodata_${p.fullName.replace(/\s+/g, '_')}_${p.id}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, logging: false, windowWidth: 794 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          };
 
-        html2pdf().set(opt).from(container).save().then(() => {
-          showNotice("PDF downloaded successfully!");
-          document.body.removeChild(container);
-        }).catch(err => {
-          showNotice("PDF generation failed.", true);
-          document.body.removeChild(container);
-        });
-      }, 400);
+          html2pdf().set(opt).from(container).save().then(() => {
+            showNotice("PDF downloaded successfully!");
+            document.body.removeChild(container);
+          }).catch(err => {
+            showNotice("PDF error.", true);
+            document.body.removeChild(container);
+          });
+        }, 400);
+      };
+
+      if (imgElem && p.photoUrl) {
+        imgElem.onload = proceedWithPdf;
+        imgElem.onerror = proceedWithPdf;
+        setTimeout(proceedWithPdf, 1500);
+      } else {
+        proceedWithPdf();
+      }
     }
 
     function openSettingsModal() {
