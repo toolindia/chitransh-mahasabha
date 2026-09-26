@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -383,44 +383,52 @@
     <div class="modal-card">
       <button class="modal-close-btn" onclick="closeModal('biodataModal')">&times;</button>
       
-      <div id="biodataPrintSurface" class="biodata-sheet">
-        <div style="text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 0.4rem; margin-bottom: 0.85rem;">
-          <h1 style="font-size: 1.25rem; color: var(--primary); font-weight: 800;">CHITRANSH MAHASABHA</h1>
-          <p style="font-size: 0.7rem; color: var(--muted); text-transform: uppercase;">Official Matrimonial Biodata</p>
-        </div>
-
-        <div class="biodata-header">
-          <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate" onclick="zoomPhoto(this.src)">
-          <div>
-            <h2 id="bioName" style="font-size: 1.15rem; font-weight: 800;">Candidate Name</h2>
-            <p id="bioBasic" style="font-size: 0.82rem; color: var(--secondary); font-weight: 700;">Age - Height</p>
-            <p id="bioLocation" style="font-size: 0.78rem; color: var(--muted);">City, State, Country</p>
+      <div id="biodataPrintSurface" class="biodata-sheet" style="padding: 36px 32px; background: #FDFBF7; border: 6px double #E0C098; box-sizing: border-box; position: relative; font-family: 'Plus Jakarta Sans', sans-serif;">
+        <div style="text-align: center; margin-bottom: 25px;">
+          <div style="width: 55px; height: 55px; margin: 0 auto 8px auto; border-radius: 50%; border: 2px solid #D4AF37; display: flex; align-items: center; justify-content: center; background: #FFF8EE;">
+            <span style="font-size: 24px;">🛕</span>
+          </div>
+          <h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0; font-weight: 900; letter-spacing: 1.5px;">KAYASTHA</h1>
+          <h2 style="font-family: 'Cinzel', serif; font-size: 22px; color: #800020; margin: 0 0 12px 0; font-weight: 800; letter-spacing: 1px;">VIVAH PATRIKA</h2>
+          <div style="display: inline-block; border: 1px solid #EEDBBE; background: #FFF8EE; padding: 4px 18px; border-radius: 20px; font-size: 11px; color: #827572; font-weight: 700;">
+            शुभ विवाह &nbsp;|&nbsp; दो परिवारों का पवित्र बंधन
           </div>
         </div>
 
-        <div class="biodata-title">Professional & Educational Record</div>
-        <table class="biodata-table">
-          <tr><td>Education</td><td id="bioEdu">-</td></tr>
-          <tr><td>Profession</td><td id="bioProf">-</td></tr>
-          <tr><td>Annual Income</td><td id="bioIncome">-</td></tr>
-          <tr><td>Marital Status</td><td id="bioMarital">-</td></tr>
-          <tr><td>Sub-Caste</td><td id="bioSubCaste">-</td></tr>
-        </table>
+        <div style="border-top: 1px solid #EEDBBE; margin-bottom: 25px;"></div>
 
-        <div class="biodata-title">Parental & Family Background</div>
-        <table class="biodata-table">
-          <tr><td>Father's Name</td><td id="bioFatherName">-</td></tr>
-          <tr><td>Father's Occupation</td><td id="bioFatherOcc">-</td></tr>
-          <tr><td>Mother's Name</td><td id="bioMotherName">-</td></tr>
-          <tr><td>Mother's Occupation</td><td id="bioMotherOcc">-</td></tr>
-          <tr><td>Other Family Details</td><td id="bioFamily">-</td></tr>
-        </table>
+        <div style="display: flex; gap: 24px; align-items: flex-start; margin-bottom: 25px; background: #FFFFFF; border: 1.5px solid #F0E2D3; border-radius: 12px; padding: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="position: relative; flex-shrink: 0;">
+            <img id="bioPhoto" class="biodata-photo" src="" alt="Candidate" style="width: 120px; height: 150px; border-radius: 8px; object-fit: cover; border: 2px solid #FF7E7E; display: block; cursor: pointer;" onclick="zoomPhoto(this.src)">
+            <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); background: #1E8E3E; color: #fff; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; white-space: nowrap;">
+              ✓ Verified
+            </div>
+          </div>
+          <div style="flex-grow: 1;">
+            <h3 style="font-family: 'Cinzel', serif; font-size: 20px; color: #2B2321; margin: 0 0 8px 0; font-weight: 800;">
+              <span id="bioName">Candidate Name</span> <span id="bioIdSpan" style="font-size: 13px; color: #FFA259; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;"></span>
+            </h3>
+            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">📅 <strong>Age / Height:</strong> <span id="bioBasic">-</span></p>
+            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">🎓 <strong>Education:</strong> <span id="bioEdu">-</span> (<span id="bioSubCaste">-</span>)</p>
+            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">💼 <strong>Profession:</strong> <span id="bioProf">-</span> (<span id="bioIncome">-</span>)</p>
+            <p style="font-size: 12.5px; margin: 5px 0; color: #2B2321;">📍 <strong>Location:</strong> <span id="bioLocation">-</span></p>
+          </div>
+        </div>
 
-        <div class="biodata-title">Partner Preferences</div>
-        <p id="bioPreferences" style="font-size: 0.82rem; line-height: 1.4;">-</p>
+        <div style="background-color: #FFF2F2; border: 1.5px solid #FAD4D4; border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; margin-bottom: 25px;">
+          <div style="font-size: 22px; color: #D93025; flex-shrink: 0;">🛡️</div>
+          <p style="font-size: 11px; color: #5A4A48; line-height: 1.4; margin: 0;">
+            Candidate contact numbers and exact street addresses are withheld for privacy. Contact the administrative desk quoting Profile ID.
+          </p>
+        </div>
 
-        <div style="margin-top: 0.85rem; background: var(--surface-light); padding: 0.45rem; border-radius: 4px; font-size: 0.72rem; text-align: center;">
-          Candidate contact numbers & other confidential details are withheld for privacy. Contact Ghaziabad Chitransh Mahasabha desk quoting Profile ID.
+        <div style="display: none;">
+          <!-- Hidden data points for reference preservation -->
+          <span id="bioMarital"></span><span id="bioFatherName"></span><span id="bioFatherOcc"></span><span id="bioMotherName"></span><span id="bioMotherOcc"></span><span id="bioFamily"></span><span id="bioPreferences"></span>
+        </div>
+
+        <div style="text-align: center; margin-top: 60px; font-size: 11px; color: #827572; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid #F0E2D3; paddingTop: 15px;">
+          TRADITION &nbsp;|&nbsp; VALUES &nbsp;|&nbsp; TOGETHERNESS
         </div>
       </div>
 
@@ -1616,8 +1624,9 @@
       if (!p) return;
 
       document.getElementById('bioName').innerText = p.fullName;
-      document.getElementById('bioBasic').innerText = `${p.age} Years • ${p.height || 'Height Unspecified'}`;
-      document.getElementById('bioLocation').innerText = `${p.city}, ${p.state}, ${p.country}`;
+      document.getElementById('bioIdSpan').innerText = `(ID: ${p.id})`;
+      document.getElementById('bioBasic').innerText = `${p.age} Yrs, ${p.height || 'N/A'}`;
+      document.getElementById('bioLocation').innerText = `${p.city}, ${p.state}, ${p.country || 'India'}`;
       document.getElementById('bioPhoto').src = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
       document.getElementById('bioEdu').innerText = p.education;
       document.getElementById('bioProf').innerText = p.profession;
@@ -1640,9 +1649,9 @@
       const candidateName = document.getElementById('bioName').innerText.replace(/\s+/g, '_');
       const opt = {
         margin: [10, 10, 10, 10],
-        filename: `Biodata_${candidateName}.pdf`,
+        filename: `Vivah_Patrika_${candidateName}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
       html2pdf().set(opt).from(element).save();
