@@ -1220,23 +1220,25 @@
       `;
 
       document.body.appendChild(container);
-      showNotice("Generating Centered PDF...");
+      showNotice("Preparing Formatted PDF...");
 
-      const opt = {
-        margin:       0,
-        filename:     `Biodata_${p.fullName.replace(/\s+/g, '_')}_${p.id}.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
+      setTimeout(() => {
+        const opt = {
+          margin:       0,
+          filename:     `Biodata_${p.fullName.replace(/\s+/g, '_')}_${p.id}.pdf`,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, logging: false, windowWidth: 794 },
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
 
-      html2pdf().set(opt).from(container).save().then(() => {
-        showNotice("PDF downloaded successfully!");
-        document.body.removeChild(container);
-      }).catch(err => {
-        showNotice("PDF error.", true);
-        document.body.removeChild(container);
-      });
+        html2pdf().set(opt).from(container).save().then(() => {
+          showNotice("PDF downloaded successfully!");
+          document.body.removeChild(container);
+        }).catch(err => {
+          showNotice("PDF generation failed.", true);
+          document.body.removeChild(container);
+        });
+      }, 400);
     }
 
     function openSettingsModal() {
