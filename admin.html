@@ -37,7 +37,9 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 6rem; }
+    
+    /* FIX: Ensure body never loses scroll ability when modals open */
+    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 6rem; overflow-y: auto !important; }
 
     .header {
       background: var(--white); border-bottom: 1px solid var(--border); padding: 0.85rem 1.25rem;
@@ -66,26 +68,23 @@
     @keyframes fadeInZoom { from { opacity: 0; } to { opacity: 1; } }
     .zoom-content { max-width: 90%; max-height: 85vh; border-radius: var(--radius-md); border: 3px solid var(--accent); box-shadow: var(--shadow-lg); object-fit: contain; }
 
+    /* FIX: Correct modal overlay scrolling so body doesn't lock up */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px); z-index: 2000; display: none;
+      overflow-y: auto !important; padding: 2rem 1rem;
     }
-    .modal-overlay.active { display: block; }
-
-    #authOverlay.modal-overlay, #addMemberModal.modal-overlay, #exportModal.modal-overlay, #settingsModal.modal-overlay {
-      display: none; align-items: flex-start; justify-content: center; padding: 1.5rem 0.85rem; overflow-y: auto;
-    }
-    #authOverlay.active, #addMemberModal.active, #exportModal.active, #settingsModal.active { display: flex; }
+    .modal-overlay.active { display: flex !important; align-items: flex-start; justify-content: center; }
 
     .auth-box {
       background: var(--white); border-radius: var(--radius-md); padding: 1.5rem;
-      max-width: 380px; width: 100%; border: 2px solid var(--primary); box-shadow: var(--shadow-lg); text-align: center;
+      max-width: 380px; width: 100%; border: 2px solid var(--primary); box-shadow: var(--shadow-lg); text-align: center; margin: auto;
     }
 
     .contextual-card {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      position: relative;
       background: var(--white); border: 2px solid var(--primary); border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg); z-index: 2100; padding: 1.5rem; display: none; max-width: 95%;
+      box-shadow: var(--shadow-lg); z-index: 2100; padding: 1.75rem; display: none; width: 95%; max-width: 620px; margin: auto;
     }
     .contextual-card.active { display: block; }
 
@@ -184,196 +183,202 @@
   </div>
 
   <div id="toastNotice">Notification</div>
-  <div id="backdropBarrier" class="modal-overlay" onclick="closeAllContextPopups()"></div>
 
   <!-- Contextual Confirm Modal -->
-  <div id="contextConfirmCard" class="contextual-card" style="width: 320px; text-align: center;">
-    <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
-    <h3 style="font-size: 1.15rem; margin-bottom: 0.35rem; color: var(--primary);" id="contextConfirmTitle">Confirm</h3>
-    <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.4rem;" id="contextConfirmText">Proceed with this update?</p>
-    <div style="display: flex; gap: 0.5rem; justify-content: center;">
-      <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()">Cancel</button>
-      <button class="btn btn-danger" style="flex: 1;" id="contextConfirmExecuteBtn">Confirm</button>
+  <div id="contextConfirmCard" class="modal-overlay">
+    <div class="auth-box" style="max-width: 320px; text-align: center; margin: auto;">
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.35rem; color: var(--primary);" id="contextConfirmTitle">Confirm</h3>
+      <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.4rem;" id="contextConfirmText">Proceed with this update?</p>
+      <div style="display: flex; gap: 0.5rem; justify-content: center;">
+        <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()">Cancel</button>
+        <button class="btn btn-danger" style="flex: 1;" id="contextConfirmExecuteBtn">Confirm</button>
+      </div>
     </div>
   </div>
 
   <!-- Contextual Edit Modal -->
-  <div id="contextEditCard" class="contextual-card" style="width: 95%; max-width: 620px;">
-    <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
-    <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtEditTitle">Edit Candidate Details</h3>
-    <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;"><span id="txtEditing">Editing</span>: <strong id="editProfileIdRef">-</strong></p>
+  <div id="contextEditCard" class="modal-overlay">
+    <div class="auth-box" style="width: 95%; max-width: 620px; text-align: left; margin: auto; position: relative; padding: 2rem 1.5rem;">
+      <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtEditTitle">Edit Candidate Details</h3>
+      <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;"><span id="txtEditing">Editing</span>: <strong id="editProfileIdRef">-</strong></p>
 
-    <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)">
-      <input type="hidden" id="editProfileId">
+      <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)">
+        <input type="hidden" id="editProfileId">
 
-      <div class="form-row-2">
-        <div class="form-group">
-          <label id="lblEditName">Full Name *</label>
-          <input type="text" id="editName" required>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblEditName">Full Name *</label>
+            <input type="text" id="editName" required>
+          </div>
+          <div class="form-group">
+            <label id="lblEditGender">Gender *</label>
+            <select id="editGender" required>
+              <option value="Female" id="optEditFemale">Female</option>
+              <option value="Male" id="optEditMale">Male</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label id="lblEditGender">Gender *</label>
-          <select id="editGender" required>
-            <option value="Female" id="optEditFemale">Female</option>
-            <option value="Male" id="optEditMale">Male</option>
-          </select>
-        </div>
-      </div>
 
-      <div class="form-row-2">
-        <div class="form-group">
-          <label id="lblEditDob">Date of Birth</label>
-          <input type="date" id="editDob" onchange="calculateAutoAge('editDob', 'editAge')">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblEditDob">Date of Birth</label>
+            <input type="date" id="editDob" onchange="calculateAutoAge('editDob', 'editAge')">
+          </div>
+          <div class="form-group">
+            <label id="lblEditAge">Age *</label>
+            <input type="number" id="editAge" min="18" max="80" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label id="lblEditAge">Age *</label>
-          <input type="number" id="editAge" min="18" max="80" required>
-        </div>
-      </div>
 
-      <div class="form-row-2">
-        <div class="form-group">
-          <label id="lblEditHeight">Height *</label>
-          <input type="text" id="editHeight" required>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblEditHeight">Height *</label>
+            <input type="text" id="editHeight" required>
+          </div>
+          <div class="form-group">
+            <label id="lblEditMarital">Marital Status *</label>
+            <select id="editMarital" required>
+              <option value="Never Married" id="optEditNeverMarried">Never Married</option>
+              <option value="Divorced" id="optEditDivorced">Divorced</option>
+              <option value="Widowed" id="optEditWidowed">Widowed</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label id="lblEditMarital">Marital Status *</label>
-          <select id="editMarital" required>
-            <option value="Never Married" id="optEditNeverMarried">Never Married</option>
-            <option value="Divorced" id="optEditDivorced">Divorced</option>
-            <option value="Widowed" id="optEditWidowed">Widowed</option>
-          </select>
-        </div>
-      </div>
 
-      <div class="form-row-2">
-        <div class="form-group">
-          <label id="lblEditEdu">Highest Education *</label>
-          <select id="editEducation" required></select>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblEditEdu">Highest Education *</label>
+            <select id="editEducation" required></select>
+          </div>
+          <div class="form-group">
+            <label id="lblEditProf">Profession / Occupation *</label>
+            <select id="editProfession" required></select>
+          </div>
         </div>
-        <div class="form-group">
-          <label id="lblEditProf">Profession / Occupation *</label>
-          <select id="editProfession" required></select>
-        </div>
-      </div>
 
-      <div class="form-row-2">
-        <div class="form-group">
-          <label id="lblEditSubCaste">Kayastha Sub-Caste *</label>
-          <select id="editSubCaste" required></select>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblEditSubCaste">Kayastha Sub-Caste *</label>
+            <select id="editSubCaste" required></select>
+          </div>
+          <div class="form-group">
+            <label id="lblEditIncome">Annual Income *</label>
+            <input type="text" id="editIncome" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label id="lblEditIncome">Annual Income *</label>
-          <input type="text" id="editIncome" required>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblEditState">State *</label>
+            <select id="editState" required onchange="populateCities('editState', 'editCity', 'editCityCustom')">
+              <option value="">Select State</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label id="lblEditCity">City *</label>
+            <select id="editCity" required onchange="checkCustomCity('editCity', 'editCityCustom')">
+              <option value="">Select City</option>
+            </select>
+            <input type="text" id="editCityCustom" placeholder="Type city" style="display: none; margin-top: 0.35rem;">
+          </div>
         </div>
-      </div>
 
-      <div class="form-row-2">
         <div class="form-group">
-          <label id="lblEditState">State *</label>
-          <select id="editState" required onchange="populateCities('editState', 'editCity', 'editCityCustom')">
-            <option value="">Select State</option>
-          </select>
+          <label id="lblEditAddress">Residential Address *</label>
+          <input type="text" id="editAddress" required>
         </div>
+
+        <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;" id="lblEditFamilySec">
+          Parental & Family Background
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblEditFather">Father's Name</label>
+            <input type="text" id="editFatherName">
+          </div>
+          <div class="form-group">
+            <label id="lblEditFatherOcc">Father's Occupation</label>
+            <select id="editFatherOccupation"></select>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblEditMother">Mother's Name</label>
+            <input type="text" id="editMotherName">
+          </div>
+          <div class="form-group">
+            <label id="lblEditMotherOcc">Mother's Occupation</label>
+            <select id="editMotherOccupation"></select>
+          </div>
+        </div>
+
         <div class="form-group">
-          <label id="lblEditCity">City *</label>
-          <select id="editCity" required onchange="checkCustomCity('editCity', 'editCityCustom')">
-            <option value="">Select City</option>
-          </select>
-          <input type="text" id="editCityCustom" placeholder="Type city" style="display: none; margin-top: 0.35rem;">
+          <label id="lblEditFamilyDetails">Other Family Details</label>
+          <textarea id="editFamily" rows="2"></textarea>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label id="lblEditAddress">Residential Address *</label>
-        <input type="text" id="editAddress" required>
-      </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label id="lblEditEmail">Email Address *</label>
+            <input type="email" id="editEmail" required>
+          </div>
+          <div class="form-group">
+            <label id="lblEditPhone">Phone / WhatsApp *</label>
+            <input type="tel" id="editPhone" required>
+          </div>
+        </div>
 
-      <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;" id="lblEditFamilySec">
-        Parental & Family Background
-      </div>
-
-      <div class="form-row-2">
         <div class="form-group">
-          <label id="lblEditFather">Father's Name</label>
-          <input type="text" id="editFatherName">
+          <label id="lblEditPhoto">Update Photo (Leave blank to keep current)</label>
+          <input type="file" id="editPhotoFile" accept="image/*" onchange="handleAdminEditPhoto(event)">
         </div>
+
         <div class="form-group">
-          <label id="lblEditFatherOcc">Father's Occupation</label>
-          <select id="editFatherOccupation"></select>
+          <label id="lblEditPreferences">Partner Preferences</label>
+          <textarea id="editPreferences" rows="2"></textarea>
         </div>
-      </div>
 
-      <div class="form-row-2">
-        <div class="form-group">
-          <label id="lblEditMother">Mother's Name</label>
-          <input type="text" id="editMotherName">
-        </div>
-        <div class="form-group">
-          <label id="lblEditMotherOcc">Mother's Occupation</label>
-          <select id="editMotherOccupation"></select>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label id="lblEditFamilyDetails">Other Family Details</label>
-        <textarea id="editFamily" rows="2"></textarea>
-      </div>
-
-      <div class="form-row-2">
-        <div class="form-group">
-          <label id="lblEditEmail">Email Address *</label>
-          <input type="email" id="editEmail" required>
-        </div>
-        <div class="form-group">
-          <label id="lblEditPhone">Phone / WhatsApp *</label>
-          <input type="tel" id="editPhone" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label id="lblEditPhoto">Update Photo (Leave blank to keep current)</label>
-        <input type="file" id="editPhotoFile" accept="image/*" onchange="handleAdminEditPhoto(event)">
-      </div>
-
-      <div class="form-group">
-        <label id="lblEditPreferences">Partner Preferences</label>
-        <textarea id="editPreferences" rows="2"></textarea>
-      </div>
-
-      <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="editSubmitBtn">Save & Apply Changes</button>
-    </form>
+        <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="editSubmitBtn">Save & Apply Changes</button>
+      </form>
+    </div>
   </div>
 
   <!-- Contextual Receipt Modal -->
-  <div id="contextReceiptCard" class="contextual-card" style="width: 380px; text-align: center;">
-    <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
-    <h3 style="font-size: 1.15rem; margin-bottom: 0.25rem;">Payment Verification</h3>
-    <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 0.75rem;">Profile Ref: <strong id="receiptProfileId">-</strong></p>
-    <div style="max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0.35rem; background: #fafafa;">
-      <img id="receiptImage" src="" alt="Proof Screenshot" style="width: 100%; border-radius: 4px; display: block; cursor: zoom-in;" onclick="openZoomLightbox(this.src)">
+  <div id="contextReceiptCard" class="modal-overlay">
+    <div class="auth-box" style="max-width: 380px; text-align: center; margin: auto; position: relative;">
+      <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.25rem;">Payment Verification</h3>
+      <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 0.75rem;">Profile Ref: <strong id="receiptProfileId">-</strong></p>
+      <div style="max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0.35rem; background: #fafafa;">
+        <img id="receiptImage" src="" alt="Proof Screenshot" style="width: 100%; border-radius: 4px; display: block; cursor: zoom-in;" onclick="openZoomLightbox(this.src)">
+      </div>
+      <p id="receiptUtrText" style="font-weight: 700; margin-top: 0.75rem; font-size: 0.85rem; color: var(--dark);"></p>
     </div>
-    <p id="receiptUtrText" style="font-weight: 700; margin-top: 0.75rem; font-size: 0.85rem; color: var(--dark);"></p>
   </div>
 
   <!-- Contextual Matchmaking Modal -->
-  <div id="contextMatchCard" class="contextual-card" style="width: 95%; max-width: 580px;">
-    <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
-    <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtMatchTitle">Candidate Matching Desk</h3>
-    <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.85rem;"><span id="txtMatchesFor">Matches for</span>: <strong id="matchCandidateName">-</strong></p>
+  <div id="contextMatchCard" class="modal-overlay">
+    <div class="auth-box" style="width: 95%; max-width: 580px; text-align: left; margin: auto; position: relative; padding: 2rem 1.5rem;">
+      <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtMatchTitle">Candidate Matching Desk</h3>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.85rem;"><span id="txtMatchesFor">Matches for</span>: <strong id="matchCandidateName">-</strong></p>
 
-    <div id="matchingResultsList" style="display: flex; flex-direction: column; gap: 0.65rem; max-height: 340px; overflow-y: auto; margin-bottom: 1.2rem; padding-right: 0.25rem;"></div>
+      <div id="matchingResultsList" style="display: flex; flex-direction: column; gap: 0.65rem; max-height: 340px; overflow-y: auto; margin-bottom: 1.2rem; padding-right: 0.25rem;"></div>
 
-    <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
-      <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()" id="txtCloseMatch">Close</button>
-      <button class="btn btn-primary" style="flex: 1;" onclick="exportSanitizedMatchPdf()" id="txtPdfMatch">Download Clean PDF</button>
-      <button class="btn btn-whatsapp" style="flex: 2; min-width: 180px;" onclick="sendSelectedMatchesViaWhatsApp()" id="txtWaMatch">Send via WhatsApp</button>
+      <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
+        <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()" id="txtCloseMatch">Close</button>
+        <button class="btn btn-primary" style="flex: 1;" onclick="exportSanitizedMatchPdf()" id="txtPdfMatch">Download Clean PDF</button>
+        <button class="btn btn-whatsapp" style="flex: 2; min-width: 180px;" onclick="sendSelectedMatchesViaWhatsApp()" id="txtWaMatch">Send via WhatsApp</button>
+      </div>
     </div>
   </div>
 
   <!-- EXCEL EXPORT MODAL -->
   <div class="modal-overlay" id="exportModal">
-    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: 2rem auto;">
+    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: auto;">
       <button class="close-btn" onclick="closeModal('exportModal')">&times;</button>
       <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: #1D6F42;" id="txtExportTitle">Export to Excel (.xls)</h3>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;" id="txtExportDesc">Filter customer biodata records by registration date range.</p>
@@ -407,7 +412,7 @@
 
   <!-- SETTINGS MODAL -->
   <div class="modal-overlay" id="settingsModal">
-    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: 2rem auto;">
+    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: auto;">
       <button class="close-btn" onclick="closeModal('settingsModal')">&times;</button>
       <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--dark);" id="txtSettingsTitle">Membership & Pricing Settings</h3>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;" id="txtSettingsDesc">Control registration fee tiers & free enrolment access.</p>
@@ -447,7 +452,7 @@
 
   <!-- PIN UNLOCK GATE (ADMIN PIN: 1108) -->
   <div id="authOverlay" class="modal-overlay active">
-    <div class="auth-box" style="margin: 4rem auto;">
+    <div class="auth-box" style="margin: auto;">
       <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;" id="txtAdminDesk">Admin Desk</h2>
       <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.2rem;" id="txtEnterPin">Enter administrator PIN to unlock controls.</p>
 
@@ -464,7 +469,7 @@
 
   <!-- Direct Candidate Enrolment Modal -->
   <div class="modal-overlay" id="addMemberModal">
-    <div class="auth-box" style="max-width: 620px; text-align: left; position: relative; margin: 1.5rem auto;">
+    <div class="auth-box" style="max-width: 620px; text-align: left; position: relative; margin: auto; padding: 2rem 1.5rem;">
       <button class="close-btn" onclick="closeModal('addMemberModal')">&times;</button>
       <h3 style="margin-bottom: 0.25rem;" id="txtAddCandidateTitle">Direct Candidate Enrolment</h3>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;" id="txtAddCandidateDesc">Directly add candidates with automated verified status.</p>
@@ -847,8 +852,12 @@
     }
 
     function closeAllContextPopups() {
-      document.querySelectorAll('.contextual-card').forEach(c => { c.style.display = 'none'; c.classList.remove('active'); });
-      document.getElementById('backdropBarrier').classList.remove('active');
+      document.querySelectorAll('.modal-overlay').forEach(m => {
+        if(m.id !== 'authOverlay') m.classList.remove('active');
+      });
+      document.querySelectorAll('.contextual-card').forEach(c => {
+        c.classList.remove('active');
+      });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -1305,8 +1314,6 @@
       const btn = document.getElementById('contextConfirmExecuteBtn');
       btn.innerText = btnText;
       btn.onclick = async () => { closeAllContextPopups(); await callback(); };
-      document.getElementById('backdropBarrier').classList.add('active');
-      document.getElementById('contextConfirmCard').style.display = 'block';
       document.getElementById('contextConfirmCard').classList.add('active');
     }
 
@@ -1394,9 +1401,7 @@
       document.getElementById('editState').value = p.state || "";
       populateCities('editState', 'editCity', 'editCityCustom', p.city);
 
-      document.getElementById('backdropBarrier').classList.add('active');
-      const card = document.getElementById('contextEditCard');
-      card.style.display = 'block'; card.classList.add('active');
+      document.getElementById('contextEditCard').classList.add('active');
     }
 
     async function handleAdminEditSubmit(e) {
@@ -1452,9 +1457,7 @@
       document.getElementById('receiptProfileId').innerText = p.id;
       document.getElementById('receiptImage').src = p.paymentReceiptUrl;
       document.getElementById('receiptUtrText').innerText = p.paymentUtr ? "UTR / Ref: " + p.paymentUtr : "No UTR Entered";
-      document.getElementById('backdropBarrier').classList.add('active');
-      const card = document.getElementById('contextReceiptCard');
-      card.style.display = 'block'; card.classList.add('active');
+      document.getElementById('contextReceiptCard').classList.add('active');
     }
 
     function openContextualMatchmaking(profileId, btnEl) {
@@ -1488,9 +1491,7 @@
         `).join('');
       }
 
-      document.getElementById('backdropBarrier').classList.add('active');
-      const card = document.getElementById('contextMatchCard');
-      card.style.display = 'block'; card.classList.add('active');
+      document.getElementById('contextMatchCard').classList.add('active');
     }
 
     function getSelectedMatchedCandidates() {
