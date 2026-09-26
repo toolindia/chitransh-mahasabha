@@ -206,7 +206,7 @@
 
   <!-- Contextual Edit Modal -->
   <div class="modal-overlay" id="contextEditCard">
-    <div class="contextual-card">
+    <div class="contextual-card" id="contextEditCardInner">
       <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
       <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtEditTitle">Edit Candidate Details</h3>
       <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;"><span id="txtEditing">Editing</span>: <strong id="editProfileIdRef">-</strong></p>
@@ -369,7 +369,7 @@
 
   <!-- Contextual Matchmaking Modal -->
   <div class="modal-overlay" id="contextMatchCard">
-    <div class="contextual-card">
+    <div class="contextual-card" id="contextMatchCardInner">
       <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
       <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtMatchTitle">Candidate Matching Desk</h3>
       <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.85rem;"><span id="txtMatchesFor">Matches for</span>: <strong id="matchCandidateName">-</strong></p>
@@ -1346,44 +1346,44 @@
 
     function downloadSingleProfilePdf() {
       const m = adminState.activeViewClient;
-      if(!m) return;
       const sourceBody = document.getElementById('viewProfileContentBody');
-      if(!sourceBody) return;
+      if(!m || !sourceBody) return;
 
       const mount = document.createElement('div');
-      mount.style.position = "fixed"; 
-      mount.style.top = "-10000px"; 
-      mount.style.left = "-10000px"; 
+      mount.style.position = "fixed";
+      mount.style.top = "-10000px";
+      mount.style.left = "-10000px";
       mount.style.width = "794px";
       document.body.appendChild(mount);
 
       const surface = document.createElement('div');
-      surface.style.width = "794px"; 
+      surface.style.width = "794px";
       surface.style.minHeight = "1123px";
-      surface.style.backgroundColor = "#FDFBF7"; 
-      surface.style.padding = "40px 48px"; 
+      surface.style.backgroundColor = "#FFFFFF";
+      surface.style.padding = "40px";
       surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
       surface.style.boxSizing = "border-box";
-      surface.style.position = "relative";
-      surface.style.border = "6px double #E0C098";
+      surface.style.color = "#2B2321";
 
       const headerTitle = document.createElement('div');
       headerTitle.style.textAlign = "center";
       headerTitle.style.marginBottom = "20px";
+      headerTitle.style.borderBottom = "2px solid #FF7E7E";
+      headerTitle.style.paddingBottom = "15px";
       headerTitle.innerHTML = `
-        <h2 style="font-family: 'Cinzel', serif; font-size: 22px; color: #800020; margin: 0; font-weight: 800;">Candidate Complete Profile</h2>
-        <p style="font-size: 12px; color: #827572; margin: 4px 0;">Chitransh Mahasabha &bull; ID: ${m.id}</p>
-        <hr style="border: none; border-top: 1px solid #EEDBBE; margin-top: 10px;">
+        <h2 style="font-family: 'Cinzel', serif; font-size: 24px; color: #800020; margin: 0; font-weight: 800;">Chitransh Mahasabha</h2>
+        <p style="font-size: 13px; color: #827572; margin: 4px 0; font-weight: 700;">Candidate Biodata & Complete Profile &bull; ID: ${m.id}</p>
       `;
       surface.appendChild(headerTitle);
 
       const clone = sourceBody.cloneNode(true);
+      clone.style.color = "#2B2321";
       surface.appendChild(clone);
       mount.appendChild(surface);
 
       const candidateName = (m.fullName || 'Candidate').replace(/\s+/g, '_');
       const opt = {
-        margin: 0,
+        margin: 10,
         filename: `Candidate_Profile_${m.id}_${candidateName}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true, logging: false },
@@ -1606,7 +1606,9 @@
       populateCities('editState', 'editCity', 'editCityCustom', p.city);
 
       document.getElementById('backdropBarrier').classList.add('active');
-      document.getElementById('contextEditCard').classList.add('active');
+      const editCard = document.getElementById('contextEditCard');
+      editCard.classList.add('active');
+      editCard.querySelector('.contextual-card').classList.add('active');
     }
 
     async function handleAdminEditSubmit(e) {
@@ -1704,7 +1706,9 @@
       }
 
       document.getElementById('backdropBarrier').classList.add('active');
-      document.getElementById('contextMatchCard').classList.add('active');
+      const matchCard = document.getElementById('contextMatchCard');
+      matchCard.classList.add('active');
+      matchCard.querySelector('.contextual-card').classList.add('active');
     }
 
     function getSelectedMatchedCandidates() {
