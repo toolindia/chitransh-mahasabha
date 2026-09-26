@@ -1430,19 +1430,22 @@
       const element = document.getElementById('biodataPrintSurface');
       const candidateName = document.getElementById('bioName').innerText.replace(/\s+/g, '_');
       
-      element.style.width = "100%";
-      element.style.maxWidth = "720px";
-      element.style.margin = "0 auto";
-      element.style.boxSizing = "border-box";
+      const container = document.createElement('div');
+      container.style.position = "fixed"; container.style.top = "-10000px"; container.style.left = "-10000px"; container.style.width = "794px";
+      container.style.background = "#FFF"; container.style.padding = "30px"; container.style.boxSizing = "border-box";
+      container.innerHTML = element.innerHTML;
+      document.body.appendChild(container);
 
       const opt = {
-        margin: [12, 10, 12, 10],
-        filename: `Biodata_${candidateName}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true, windowWidth: 794 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        margin:       10,
+        filename:     `Biodata_${candidateName}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, windowWidth: 794 },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
-      html2pdf().set(opt).from(element).save();
+      html2pdf().set(opt).from(container).save().then(() => {
+        document.body.removeChild(container);
+      });
     }
 
     async function handleRegistrationSubmit(e) {
@@ -1495,7 +1498,7 @@
           selectedProfileImage = "";
 
           if (out.isFree) {
-            document.getElementById('freeAssignedProfileId').innerText = out.profileId;
+            document.getElementById('freeProfileIdDisplay').innerText = out.profileId;
             document.getElementById('freeSuccessModal').classList.add('active');
           } else {
             openPaymentModal(out.profileId, out.paymentAmount, out.plan, out.upiId);
