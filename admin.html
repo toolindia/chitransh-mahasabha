@@ -37,8 +37,6 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    
-    /* FIX: Ensure body never loses scroll ability when modals open */
     body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 6rem; overflow-y: auto !important; }
 
     .header {
@@ -68,7 +66,6 @@
     @keyframes fadeInZoom { from { opacity: 0; } to { opacity: 1; } }
     .zoom-content { max-width: 90%; max-height: 85vh; border-radius: var(--radius-md); border: 3px solid var(--accent); box-shadow: var(--shadow-lg); object-fit: contain; }
 
-    /* FIX: Correct modal overlay scrolling so body doesn't lock up */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px); z-index: 2000; display: none;
@@ -82,8 +79,7 @@
     }
 
     .contextual-card {
-      position: relative;
-      background: var(--white); border: 2px solid var(--primary); border-radius: var(--radius-md);
+      position: relative; background: var(--white); border: 2px solid var(--primary); border-radius: var(--radius-md);
       box-shadow: var(--shadow-lg); z-index: 2100; padding: 1.75rem; display: none; width: 95%; max-width: 620px; margin: auto;
     }
     .contextual-card.active { display: block; }
@@ -1176,64 +1172,70 @@
       const p = adminState.profiles.find(x => x.id === profileId);
       if (!p) return;
 
-      const mount = document.createElement('div');
-      mount.style.position = "fixed"; mount.style.top = "-10000px"; mount.style.left = "-10000px"; mount.style.width = "794px";
-      document.body.appendChild(mount);
+      const container = document.createElement('div');
+      container.style.position = "fixed";
+      container.style.top = "0";
+      container.style.left = "0";
+      container.style.width = "794px";
+      container.style.background = "#FDFBF7";
+      container.style.padding = "40px";
+      container.style.zIndex = "999999";
+      container.style.boxSizing = "border-box";
 
-      const surface = document.createElement('div');
-      surface.style.width = "724px"; surface.style.margin = "0 auto"; surface.style.backgroundColor = "#FDFBF7"; surface.style.padding = "25px 25px"; surface.style.boxSizing = "border-box"; surface.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
-
-      surface.innerHTML = `
-        <div style="border: 2px solid #800020; padding: 22px; border-radius: 12px; background: #FFF; box-sizing: border-box;">
-          <div style="text-align: center; border-bottom: 2px solid #FF7E7E; padding-bottom: 10px; margin-bottom: 12px;">
-            <h1 style="font-size: 20px; color: #800020; font-weight: 900; margin: 0;">CHITRANSH MAHASABHA</h1>
-            <p style="font-size: 10px; color: #7A6F6D; text-transform: uppercase; margin-top: 3px;">Official Matrimonial Biodata (Admin Export)</p>
+      container.innerHTML = `
+        <div style="border: 2px solid #800020; padding: 30px; border-radius: 12px; background: #FFF; box-sizing: border-box; width: 100%;">
+          <div style="text-align: center; border-bottom: 2px solid #FF7E7E; padding-bottom: 12px; margin-bottom: 15px;">
+            <h1 style="font-size: 24px; color: #800020; font-weight: 900; margin: 0;">CHITRANSH MAHASABHA</h1>
+            <p style="font-size: 11px; color: #7A6F6D; text-transform: uppercase; margin-top: 4px;">Official Matrimonial Biodata (Admin Export)</p>
           </div>
 
-          <div style="display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #F5DEC2; padding-bottom: 12px; margin-bottom: 12px;">
-            <img src="${p.photoUrl || ''}" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 2px solid #FF7E7E;" crossorigin="anonymous">
+          <div style="display: flex; align-items: center; gap: 20px; border-bottom: 1px solid #F5DEC2; padding-bottom: 15px; margin-bottom: 15px;">
+            <img src="${p.photoUrl || ''}" style="width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid #FF7E7E;" crossorigin="anonymous">
             <div>
-              <h2 style="font-size: 18px; font-weight: 800; color: #2B2321; margin: 0;">${p.fullName}</h2>
-              <p style="font-size: 12px; color: #FFA259; font-weight: 700; margin: 2px 0;">ID: ${p.id} &bull; ${p.age} Years &bull; ${p.height || 'Height N/A'}</p>
-              <p style="font-size: 11px; color: #7A6F6D; margin: 0;">${p.city}, ${p.state}, ${p.country || 'India'}</p>
+              <h2 style="font-size: 20px; font-weight: 800; color: #2B2321; margin: 0;">${p.fullName}</h2>
+              <p style="font-size: 13px; color: #FFA259; font-weight: 700; margin: 3px 0;">ID: ${p.id} &bull; ${p.age} Years &bull; ${p.height || 'Height N/A'}</p>
+              <p style="font-size: 12px; color: #7A6F6D; margin: 0;">${p.city}, ${p.state}, ${p.country || 'India'}</p>
             </div>
           </div>
 
-          <h3 style="font-size: 11px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 10px 0 4px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 2px;">Professional & Educational Record</h3>
-          <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 3px 0; font-weight: 600;">Education</td><td style="padding: 3px 0;">${p.education}</td></tr>
-            <tr><td style="color: #7A6F6D; padding: 3px 0; font-weight: 600;">Profession</td><td style="padding: 3px 0;">${p.profession}</td></tr>
-            <tr><td style="color: #7A6F6D; padding: 3px 0; font-weight: 600;">Kayastha Sub-Caste</td><td style="padding: 3px 0;">${p.subCaste || 'Kayastha'}</td></tr>
-            <tr><td style="color: #7A6F6D; padding: 3px 0; font-weight: 600;">Annual Income</td><td style="padding: 3px 0;">${p.annualIncome || 'Undisclosed'}</td></tr>
-            <tr><td style="color: #7A6F6D; padding: 3px 0; font-weight: 600;">Marital Status</td><td style="padding: 3px 0;">${p.maritalStatus}</td></tr>
+          <h3 style="font-size: 12px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 15px 0 6px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 3px;">Professional & Educational Record</h3>
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Education</td><td style="padding: 5px 0; color: #2B2321;">${p.education}</td></tr>
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Profession</td><td style="padding: 5px 0; color: #2B2321;">${p.profession}</td></tr>
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Kayastha Sub-Caste</td><td style="padding: 5px 0; color: #2B2321;">${p.subCaste || 'Kayastha'}</td></tr>
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Annual Income</td><td style="padding: 5px 0; color: #2B2321;">${p.annualIncome || 'Undisclosed'}</td></tr>
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Marital Status</td><td style="padding: 5px 0; color: #2B2321;">${p.maritalStatus}</td></tr>
           </table>
 
-          <h3 style="font-size: 11px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 12px 0 4px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 2px;">Parental & Family Background</h3>
-          <table style="width: 100%; border-collapse: collapse; font-size: 11.5px;">
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 3px 0; font-weight: 600;">Father's Name</td><td style="padding: 3px 0;">${p.fatherName || 'On Record'} (${p.fatherOccupation || 'N/A'})</td></tr>
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 3px 0; font-weight: 600;">Mother's Name</td><td style="padding: 3px 0;">${p.motherName || 'On Record'} (${p.motherOccupation || 'N/A'})</td></tr>
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 3px 0; font-weight: 600;">Family Details</td><td style="padding: 3px 0;">${p.familyDetails || 'Available upon request.'}</td></tr>
+          <h3 style="font-size: 12px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 18px 0 6px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 3px;">Parental & Family Background</h3>
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Father's Name</td><td style="padding: 5px 0; color: #2B2321;">${p.fatherName || 'On Record'} (${p.fatherOccupation || 'N/A'})</td></tr>
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Mother's Name</td><td style="padding: 5px 0; color: #2B2321;">${p.motherName || 'On Record'} (${p.motherOccupation || 'N/A'})</td></tr>
+            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Family Details</td><td style="padding: 5px 0; color: #2B2321;">${p.familyDetails || 'Available upon request.'}</td></tr>
           </table>
 
-          <h3 style="font-size: 11px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 12px 0 4px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 2px;">Partner Preferences</h3>
-          <p style="font-size: 11.5px; line-height: 1.35; margin: 3px 0;">${p.partnerPreferences || 'Open to culturally compatible matches.'}</p>
+          <h3 style="font-size: 12px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 18px 0 6px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 3px;">Partner Preferences</h3>
+          <p style="font-size: 13px; line-height: 1.4; margin: 5px 0; color: #2B2321;">${p.partnerPreferences || 'Open to culturally compatible matches.'}</p>
         </div>
       `;
 
-      mount.appendChild(surface);
-      showNotice("Generating Biodata PDF...");
+      document.body.appendChild(container);
+      showNotice("Generating Centered PDF...");
 
-      html2pdf().set({
-        margin: [10, 10, 10, 10],
-        filename: `Biodata_${p.fullName.replace(/\s+/g, '_')}_${p.id}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, windowWidth: 794 }
-      }).from(surface).save().then(() => {
+      const opt = {
+        margin:       0,
+        filename:     `Biodata_${p.fullName.replace(/\s+/g, '_')}_${p.id}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(container).save().then(() => {
         showNotice("PDF downloaded successfully!");
-        document.body.removeChild(mount);
+        document.body.removeChild(container);
       }).catch(err => {
         showNotice("PDF error.", true);
-        document.body.removeChild(mount);
+        document.body.removeChild(container);
       });
     }
 
