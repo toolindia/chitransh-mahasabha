@@ -7,1594 +7,377 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --primary: #FF7E7E;
       --secondary: #FFA259;
       --accent: #FFCB56;
-      --surface-light: #FFF8EE;
-      --bg: #FDFBF7;
+      --surface-light: #FFEDB9;
+      --bg: #FFFDF9;
       --dark: #2B2321;
-      --muted: #827572;
-      --border: #F0E2D3;
+      --muted: #7A6F6D;
+      --border: #F5DEC2;
       --white: #FFFFFF;
-      --success: #1E8E3E;
-      --success-bg: #E6F4EA;
-      --warning: #D97706;
-      --warning-bg: #FEF3C7;
-      --danger: #D93025;
-      --danger-bg: #FCE8E6;
       --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
-      --shadow-sm: 0 2px 6px rgba(43, 35, 33, 0.04);
-      --shadow-md: 0 6px 18px rgba(43, 35, 33, 0.08);
-      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.22);
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 4px 12px rgba(255, 126, 126, 0.08);
+      --shadow-md: 0 10px 28px rgba(255, 126, 126, 0.15);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg); color: var(--dark); line-height: 1.5; padding-bottom: 6rem; overflow-y: auto !important; }
-
-    .header {
-      background: var(--white); border-bottom: 1px solid var(--border); padding: 0.85rem 1.25rem;
-      display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    
+    html, body {
+      background-color: var(--bg); color: var(--dark); line-height: 1.5;
+      margin: 0; padding: 0; padding-bottom: 4rem; width: 100%; min-height: 100%;
     }
 
-    .brand { font-size: 1.15rem; font-weight: 800; color: var(--primary); }
-    .brand span { color: var(--secondary); }
-    .header-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
-
-    .container { max-width: 1200px; margin: 1rem auto; padding: 0 0.85rem; }
-
-    #toastNotice {
-      position: fixed; top: 16px; right: 16px; left: 16px; max-width: 360px; margin: 0 auto;
-      background: #2B2321; color: #fff; text-align: center; padding: 0.75rem 1rem; border-radius: 30px; font-size: 0.82rem; font-weight: 700;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3); z-index: 9999; display: none;
+    .admin-header {
+      background: var(--white); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0;
+      z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.04);
     }
 
-    .zoom-lightbox {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.9); backdrop-filter: blur(8px);
-      z-index: 100000; display: none; align-items: center; justify-content: center; padding: 1.5rem;
-      animation: fadeInZoom 0.25s ease forwards;
-    }
-    .zoom-lightbox.active { display: flex !important; }
-    @keyframes fadeInZoom { from { opacity: 0; } to { opacity: 1; } }
-    .zoom-content { max-width: 90%; max-height: 85vh; border-radius: var(--radius-md); border: 3px solid var(--accent); box-shadow: var(--shadow-lg); object-fit: contain; }
-
-    .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(43, 35, 33, 0.65); backdrop-filter: blur(3px); z-index: 2000; display: none;
-      overflow-y: auto !important; padding: 2rem 1rem;
-    }
-    .modal-overlay.active { display: flex !important; align-items: flex-start; justify-content: center; }
-
-    .auth-box {
-      background: var(--white); border-radius: var(--radius-md); padding: 1.5rem;
-      max-width: 380px; width: 100%; border: 2px solid var(--primary); box-shadow: var(--shadow-lg); text-align: center; margin: auto;
-    }
+    .brand-title { font-size: 1.2rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.35rem; }
+    .brand-title span { color: var(--secondary); }
 
     .btn {
-      min-height: 36px; padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: 700;
-      border-radius: var(--radius-sm); cursor: pointer; border: none; display: inline-flex;
-      align-items: center; justify-content: center; gap: 0.35rem; transition: all 0.2s ease; text-decoration: none; user-select: none;
+      min-height: 38px; padding: 0.4rem 1rem; font-size: 0.82rem; font-weight: 700;
+      border-radius: var(--radius-sm); cursor: pointer; border: none; transition: all 0.2s;
+      text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
     }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); }
-    .btn-success { background: var(--success); color: var(--white); }
-    .btn-warning { background: var(--warning); color: var(--white); }
-    .btn-danger { background: var(--danger); color: var(--white); }
-    .btn-whatsapp { background: #25D366; color: var(--white); }
-    .btn-excel { background: #1D6F42; color: var(--white); }
-    .btn-settings { background: #3B4252; color: var(--white); }
-    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--dark); }
-    .btn-lang { background: var(--surface-light); color: var(--dark); border: 1px solid var(--border); font-size: 0.75rem; padding: 0.3rem 0.6rem; }
-    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); box-shadow: var(--shadow-sm); }
+    .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+    .btn-outline:hover { background: var(--surface-light); }
+    .btn-danger { background: #D93025; color: var(--white); }
+    .btn-success { background: #1E8E3E; color: var(--white); }
 
-    .switch-row {
-      display: flex; align-items: center; justify-content: space-between; background: var(--surface-light);
-      border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem;
-    }
-    .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 34px; }
-    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .3s; border-radius: 50%; }
-    input:checked + .slider { background-color: var(--success); }
-    input:checked + .slider:before { transform: translateX(22px); }
+    .main-container { max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem; }
 
-    .filter-wrapper { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm); }
-    .status-tab-row { display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.65rem; margin-bottom: 0.85rem; border-bottom: 1px solid var(--border); scrollbar-width: none; }
-    .status-tab-row::-webkit-scrollbar { display: none; }
-    .tab-btn { white-space: nowrap; padding: 0.35rem 0.85rem; font-size: 0.78rem; font-weight: 700; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; flex-shrink: 0; }
-    .tab-btn.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm); }
+    .stat-card h4 { font-size: 0.75rem; text-transform: uppercase; color: var(--muted); font-weight: 800; }
+    .stat-card p { font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-top: 0.25rem; }
 
-    .search-box-row { display: flex; gap: 0.5rem; align-items: center; justify-content: space-between; }
-    .filter-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) auto; gap: 0.65rem; align-items: flex-end; margin-top: 0.75rem; }
-    .filter-grid.expanded { display: grid !important; }
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; }
+    .card-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 1rem; color: var(--dark); display: flex; justify-content: space-between; align-items: center; }
 
-    .filter-control { display: flex; flex-direction: column; gap: 0.25rem; }
-    .filter-control label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); }
-    .filter-control input, .filter-control select { height: 38px; padding: 0.45rem 0.65rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background-color: var(--bg); font-size: 0.82rem; outline: none; }
+    .table-responsive { width: 100%; overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+    .data-table th { background: var(--surface-light); color: var(--dark); padding: 0.75rem; font-weight: 800; }
+    .data-table td { padding: 0.75rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
 
-    .password-input-wrapper { position: relative; display: flex; align-items: center; margin-bottom: 0.85rem; }
-    .password-input-wrapper input { width: 100%; height: 42px; padding: 0.6rem 2.4rem 0.6rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); text-align: center; font-size: 1rem; outline: none; }
-    .toggle-password-btn { position: absolute; right: 0.65rem; background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--muted); display: flex; align-items: center; }
+    .badge { padding: 0.25rem 0.5rem; border-radius: 6px; font-size: 0.72rem; font-weight: 700; }
+    .badge-pending { background: #FEF7E0; color: #B06000; }
+    .badge-approved { background: #E6F4EA; color: #137333; }
+    .badge-rejected { background: #FCE8E6; color: #C5221F; }
 
-    .auth-error-box { display: none; background-color: #FCE8E6; border: 1px solid #D93025; color: #C5221F; font-size: 0.8rem; font-weight: 700; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); margin-bottom: 0.85rem; text-align: center; }
+    .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: flex-end; }
+    .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
+    .form-group label { font-size: 0.78rem; font-weight: 700; color: var(--dark); }
+    .form-group input, .form-group select { padding: 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); }
 
-    .skeleton-admin-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); height: 140px; margin-bottom: 1rem; animation: pulse 1.2s infinite ease-in-out; }
-    @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-
-    .profile-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.15rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.2s; }
-    .profile-card:hover { border-color: var(--secondary); }
-
-    .card-top-row { display: flex; align-items: center; justify-content: space-between; gap: 0.85rem; }
-    .card-user-info { display: flex; align-items: center; gap: 0.85rem; flex: 1; min-width: 0; }
-    .profile-avatar { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; cursor: zoom-in; transition: transform 0.2s; }
-    .profile-avatar:hover { transform: scale(1.05); }
-    .card-title-group { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
-    .card-name { font-size: 1.05rem; font-weight: 800; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .card-subtext { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
-    .card-id-pill { font-size: 0.72rem; font-weight: 700; color: var(--secondary); }
-
-    .badge { padding: 0.3rem 0.65rem; border-radius: 20px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
-    .badge-Pending { background: var(--warning-bg); color: var(--warning); }
-    .badge-Active { background: var(--success-bg); color: var(--success); }
-    .badge-Unpublished { background: #F3F4F6; color: #6B7280; }
-    .badge-Deleted { background: var(--danger-bg); color: var(--danger); }
-
-    .card-data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.65rem 1.25rem; background: var(--surface-light); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.85rem 1rem; }
-    @media (max-width: 600px) { .card-data-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; padding: 0.75rem; } }
-    .data-cell { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
-    .data-label { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.4px; }
-    .data-val { font-size: 0.84rem; font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .data-val a { color: var(--primary); text-decoration: none; font-weight: 700; }
-
-    .card-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.65rem; padding-top: 0.75rem; border-top: 1px dashed var(--border); }
-    .card-meta-notes { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
-    .card-actions-row { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
-    @media (max-width: 600px) { .card-actions-row { width: 100%; display: grid; grid-template-columns: 1fr 1fr; } .card-actions-row .btn { width: 100%; } }
-
-    .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; border: none; background: transparent; font-size: 1.4rem; cursor: pointer; color: var(--muted); }
-    .form-group { margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
-    .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--dark); }
-    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); }
-    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
-    @media (max-width: 550px) { .form-row-2 { grid-template-columns: 1fr; } }
-
-    /* NATIVE PRINT STYLES FOR BLANK-FREE PDF EXPORT */
-    @media print {
-      body * { visibility: hidden; }
-      #adminPrintSurface, #adminPrintSurface * { visibility: visible; }
-      #adminPrintSurface { position: absolute; left: 0; top: 0; width: 100%; background: white !important; padding: 20px; display: block !important; }
-      .header, .filter-wrapper, .card-actions-row, .modal-overlay, #toastNotice, .zoom-lightbox { display: none !important; }
-    }
+    .login-wrapper { max-width: 400px; margin: 5rem auto; padding: 2rem; background: var(--white); border-radius: var(--radius-lg); border: 2px solid var(--primary); box-shadow: var(--shadow-md); text-align: center; }
+    
+    .zoom-lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43,35,33,0.9); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+    .zoom-lightbox.active { display: flex; }
+    .zoom-content { max-width: 90%; max-height: 85vh; border-radius: var(--radius-md); border: 3px solid var(--accent); }
   </style>
 </head>
 <body>
 
-  <!-- HIDDEN PRINT CONTAINER FOR NATIVE PDF EXPORT -->
-  <div id="adminPrintSurface" style="display: none;"></div>
-
-  <div class="zoom-lightbox" id="zoomLightbox" onclick="closeZoomLightbox()">
-    <img id="zoomLightboxImg" class="zoom-content" src="" alt="Zoomed Candidate">
+  <!-- ZOOM LIGHTBOX -->
+  <div class="zoom-lightbox" id="zoomLightbox" onclick="this.classList.remove('active')">
+    <img id="zoomLightboxImg" class="zoom-content" src="" alt="Zoomed View">
   </div>
 
-  <div id="toastNotice">Notification</div>
-
-  <!-- Contextual Confirm Modal -->
-  <div id="contextConfirmCard" class="modal-overlay">
-    <div class="auth-box" style="max-width: 320px; text-align: center; margin: auto;">
-      <h3 style="font-size: 1.15rem; margin-bottom: 0.35rem; color: var(--primary);" id="contextConfirmTitle">Confirm</h3>
-      <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.4rem;" id="contextConfirmText">Proceed with this update?</p>
-      <div style="display: flex; gap: 0.5rem; justify-content: center;">
-        <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()">Cancel</button>
-        <button class="btn btn-danger" style="flex: 1;" id="contextConfirmExecuteBtn">Confirm</button>
+  <!-- ADMIN LOGIN VIEW -->
+  <div id="adminLoginView" class="login-wrapper">
+    <h2 style="color: var(--primary); margin-bottom: 0.5rem;">Admin Portal</h2>
+    <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.5rem;">Chitransh Mahasabha Management Desk</p>
+    <form onsubmit="handleAdminLogin(event)">
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label>Admin Passcode</label>
+        <input type="password" id="adminPasscode" required placeholder="Enter passcode">
       </div>
-    </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Access Admin Dashboard</button>
+    </form>
   </div>
 
-  <!-- Contextual Edit Modal -->
-  <div id="contextEditCard" class="modal-overlay">
-    <div class="auth-box" style="width: 95%; max-width: 620px; text-align: left; margin: auto; position: relative; padding: 2rem 1.5rem;">
-      <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
-      <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtEditTitle">Edit Candidate Details</h3>
-      <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem;"><span id="txtEditing">Editing</span>: <strong id="editProfileIdRef">-</strong></p>
+  <!-- ADMIN DASHBOARD VIEW -->
+  <div id="adminDashboardView" style="display: none;">
+    <header class="admin-header">
+      <div class="brand-title">Chitransh<span>Admin</span></div>
+      <button class="btn btn-outline" onclick="adminLogout()">Sign Out</button>
+    </header>
 
-      <form id="adminEditForm" onsubmit="handleAdminEditSubmit(event)">
-        <input type="hidden" id="editProfileId">
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblEditName">Full Name *</label>
-            <input type="text" id="editName" required>
-          </div>
-          <div class="form-group">
-            <label id="lblEditGender">Gender *</label>
-            <select id="editGender" required>
-              <option value="Female" id="optEditFemale">Female</option>
-              <option value="Male" id="optEditMale">Male</option>
-            </select>
-          </div>
+    <main class="main-container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h4>Total Profiles</h4>
+          <p id="statTotalProfiles">0</p>
         </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblEditDob">Date of Birth</label>
-            <input type="date" id="editDob" onchange="calculateAutoAge('editDob', 'editAge')">
-          </div>
-          <div class="form-group">
-            <label id="lblEditAge">Age *</label>
-            <input type="number" id="editAge" min="18" max="80" required>
-          </div>
+        <div class="stat-card">
+          <h4>Pending Approvals</h4>
+          <p id="statPendingProfiles">0</p>
         </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblEditHeight">Height *</label>
-            <input type="text" id="editHeight" required>
-          </div>
-          <div class="form-group">
-            <label id="lblEditMarital">Marital Status *</label>
-            <select id="editMarital" required>
-              <option value="Never Married" id="optEditNeverMarried">Never Married</option>
-              <option value="Divorced" id="optEditDivorced">Divorced</option>
-              <option value="Widowed" id="optEditWidowed">Widowed</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblEditEdu">Highest Education *</label>
-            <select id="editEducation" required></select>
-          </div>
-          <div class="form-group">
-            <label id="lblEditProf">Profession / Occupation *</label>
-            <select id="editProfession" required></select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblEditSubCaste">Kayastha Sub-Caste *</label>
-            <select id="editSubCaste" required></select>
-          </div>
-          <div class="form-group">
-            <label id="lblEditIncome">Annual Income *</label>
-            <input type="text" id="editIncome" required>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblEditState">State *</label>
-            <select id="editState" required onchange="populateCities('editState', 'editCity', 'editCityCustom')">
-              <option value="">Select State</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label id="lblEditCity">City *</label>
-            <select id="editCity" required onchange="checkCustomCity('editCity', 'editCityCustom')">
-              <option value="">Select City</option>
-            </select>
-            <input type="text" id="editCityCustom" placeholder="Type city" style="display: none; margin-top: 0.35rem;">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblEditAddress">Residential Address *</label>
-          <input type="text" id="editAddress" required>
-        </div>
-
-        <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;" id="lblEditFamilySec">
-          Parental & Family Background
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblEditFather">Father's Name</label>
-            <input type="text" id="editFatherName">
-          </div>
-          <div class="form-group">
-            <label id="lblEditFatherOcc">Father's Occupation</label>
-            <select id="editFatherOccupation"></select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblEditMother">Mother's Name</label>
-            <input type="text" id="editMotherName">
-          </div>
-          <div class="form-group">
-            <label id="lblEditMotherOcc">Mother's Occupation</label>
-            <select id="editMotherOccupation"></select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblEditFamilyDetails">Other Family Details</label>
-          <textarea id="editFamily" rows="2"></textarea>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblEditEmail">Email Address *</label>
-            <input type="email" id="editEmail" required>
-          </div>
-          <div class="form-group">
-            <label id="lblEditPhone">Phone / WhatsApp *</label>
-            <input type="tel" id="editPhone" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblEditPhoto">Update Photo (Leave blank to keep current)</label>
-          <input type="file" id="editPhotoFile" accept="image/*" onchange="handleAdminEditPhoto(event)">
-        </div>
-
-        <div class="form-group">
-          <label id="lblEditPreferences">Partner Preferences</label>
-          <textarea id="editPreferences" rows="2"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px; margin-top: 0.5rem;" id="editSubmitBtn">Save & Apply Changes</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Contextual Receipt Modal -->
-  <div id="contextReceiptCard" class="modal-overlay">
-    <div class="auth-box" style="max-width: 380px; text-align: center; margin: auto; position: relative;">
-      <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
-      <h3 style="font-size: 1.15rem; margin-bottom: 0.25rem;">Payment Verification</h3>
-      <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 0.75rem;">Profile Ref: <strong id="receiptProfileId">-</strong></p>
-      <div style="max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0.35rem; background: #fafafa;">
-        <img id="receiptImage" src="" alt="Proof Screenshot" style="width: 100%; border-radius: 4px; display: block; cursor: zoom-in;" onclick="openZoomLightbox(this.src)">
-      </div>
-      <p id="receiptUtrText" style="font-weight: 700; margin-top: 0.75rem; font-size: 0.85rem; color: var(--dark);"></p>
-    </div>
-  </div>
-
-  <!-- Contextual Matchmaking Modal -->
-  <div id="contextMatchCard" class="modal-overlay">
-    <div class="auth-box" style="width: 95%; max-width: 580px; text-align: left; margin: auto; position: relative; padding: 2rem 1.5rem;">
-      <button class="close-btn" onclick="closeAllContextPopups()">&times;</button>
-      <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem;" id="txtMatchTitle">Candidate Matching Desk</h3>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.85rem;"><span id="txtMatchesFor">Matches for</span>: <strong id="matchCandidateName">-</strong></p>
-
-      <div id="matchingResultsList" style="display: flex; flex-direction: column; gap: 0.65rem; max-height: 340px; overflow-y: auto; margin-bottom: 1.2rem; padding-right: 0.25rem;"></div>
-
-      <div style="display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap;">
-        <button class="btn btn-outline" style="flex: 1;" onclick="closeAllContextPopups()" id="txtCloseMatch">Close</button>
-        <button class="btn btn-primary" style="flex: 1;" onclick="exportSanitizedMatchPdf()" id="txtPdfMatch">Download Clean PDF</button>
-        <button class="btn btn-whatsapp" style="flex: 2; min-width: 180px;" onclick="sendSelectedMatchesViaWhatsApp()" id="txtWaMatch">Send via WhatsApp</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- EXCEL EXPORT MODAL -->
-  <div class="modal-overlay" id="exportModal">
-    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: auto;">
-      <button class="close-btn" onclick="closeModal('exportModal')">&times;</button>
-      <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: #1D6F42;" id="txtExportTitle">Export to Excel (.xls)</h3>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;" id="txtExportDesc">Filter customer biodata records by registration date range.</p>
-
-      <div class="form-group">
-        <label id="lblStartDate">Start Date (From)</label>
-        <input type="date" id="exportStartDate">
-      </div>
-
-      <div class="form-group">
-        <label id="lblEndDate">End Date (To)</label>
-        <input type="date" id="exportEndDate">
-      </div>
-
-      <div class="form-group">
-        <label id="lblStatusInclusion">Status Inclusion</label>
-        <select id="exportStatusSelect">
-          <option value="all" id="optExpAll">All Records (Active, Pending, Unpublished)</option>
-          <option value="Active" id="optExpActive">Active Only</option>
-          <option value="Pending" id="optExpPending">Pending Approval Only</option>
-          <option value="Unpublished" id="optExpUnpublished">Unpublished Only</option>
-        </select>
-      </div>
-
-      <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
-        <button class="btn btn-excel" style="width: 100%; min-height: 42px;" onclick="executeExcelExport()" id="btnExecExport">Download Excel Sheet (.xls)</button>
-        <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="closeModal('exportModal')" id="btnCancelExport">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SETTINGS MODAL -->
-  <div class="modal-overlay" id="settingsModal">
-    <div class="auth-box" style="max-width: 440px; text-align: left; position: relative; margin: auto;">
-      <button class="close-btn" onclick="closeModal('settingsModal')">&times;</button>
-      <h3 style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--dark);" id="txtSettingsTitle">Membership & Pricing Settings</h3>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.25rem;" id="txtSettingsDesc">Control registration fee tiers & free enrolment access.</p>
-
-      <div class="switch-row">
-        <div>
-          <strong style="font-size: 0.9rem; color: var(--dark);" id="lblFreeMode">Free Registration Mode</strong>
-          <p style="font-size: 0.75rem; color: var(--muted);" id="lblFreeModeDesc">If ON, candidates register without payment and go straight to review.</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="settingFreeModeToggle">
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <div class="form-group">
-        <label id="lblMonthlyFeeSet">Monthly Membership Fee (₹) *</label>
-        <input type="number" id="settingMonthlyFee" required placeholder="e.g. 499">
-      </div>
-
-      <div class="form-group">
-        <label id="lblAnnualFeeSet">Annual Membership Fee (₹) *</label>
-        <input type="number" id="settingAnnualFee" required placeholder="e.g. 1999">
-      </div>
-
-      <div class="form-group">
-        <label id="lblUpiSet">UPI ID for Payments *</label>
-        <input type="text" id="settingUpiId" required placeholder="name@icici">
-      </div>
-
-      <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;">
-        <button class="btn btn-primary" style="width: 100%; min-height: 42px;" id="saveSettingsBtn" onclick="saveSystemSettings()">Save Settings</button>
-        <button class="btn btn-outline" style="width: 100%; min-height: 38px;" onclick="closeModal('settingsModal')" id="btnCancelSettings">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- PIN UNLOCK GATE (ADMIN PIN: 1108) -->
-  <div id="authOverlay" class="modal-overlay active">
-    <div class="auth-box" style="margin: auto;">
-      <h2 style="margin-bottom: 0.35rem; color: var(--primary); font-size: 1.3rem;" id="txtAdminDesk">Admin Desk</h2>
-      <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1.2rem;" id="txtEnterPin">Enter administrator PIN to unlock controls.</p>
-
-      <div id="adminPinErrorAlert" class="auth-error-box"></div>
-
-      <div class="password-input-wrapper">
-        <input type="password" id="adminPinInput" placeholder="Enter PIN" onkeydown="if(event.key==='Enter') unlockAdminPortal()">
-        <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('adminPinInput', this)">👁</button>
-      </div>
-
-      <button class="btn btn-primary" style="width: 100%; min-height: 44px;" id="unlockBtn" onclick="unlockAdminPortal()">Unlock Dashboard</button>
-    </div>
-  </div>
-
-  <!-- Direct Candidate Enrolment Modal -->
-  <div class="modal-overlay" id="addMemberModal">
-    <div class="auth-box" style="max-width: 620px; text-align: left; position: relative; margin: auto; padding: 2rem 1.5rem;">
-      <button class="close-btn" onclick="closeModal('addMemberModal')">&times;</button>
-      <h3 style="margin-bottom: 0.25rem;" id="txtAddCandidateTitle">Direct Candidate Enrolment</h3>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;" id="txtAddCandidateDesc">Directly add candidates with automated verified status.</p>
-
-      <form id="adminAddForm" onsubmit="handleAdminAddSubmit(event)">
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblAddName">Full Name *</label>
-            <input type="text" id="addName" required placeholder="Full Name">
-          </div>
-          <div class="form-group">
-            <label id="lblAddGender">Gender *</label>
-            <select id="addGender" required>
-              <option value="Female" id="optAddFemale">Female</option>
-              <option value="Male" id="optAddMale">Male</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblAddDob">Date of Birth *</label>
-            <input type="date" id="addDob" required onchange="calculateAutoAge('addDob', 'addAge')">
-          </div>
-          <div class="form-group">
-            <label id="lblAddAge">Age *</label>
-            <input type="number" id="addAge" min="18" max="80" required placeholder="Years">
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblAddHeight">Height *</label>
-            <input type="text" id="addHeight" required placeholder="5'7&quot;">
-          </div>
-          <div class="form-group">
-            <label id="lblAddMarital">Marital Status *</label>
-            <select id="addMarital" required>
-              <option value="Never Married" id="optAddNeverMarried">Never Married</option>
-              <option value="Divorced" id="optAddDivorced">Divorced</option>
-              <option value="Widowed" id="optAddWidowed">Widowed</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblAddEdu">Highest Education *</label>
-            <select id="addEducation" required></select>
-          </div>
-          <div class="form-group">
-            <label id="lblAddProf">Profession / Occupation *</label>
-            <select id="addProfession" required></select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblAddSubCaste">Kayastha Sub-Caste *</label>
-            <select id="addSubCaste" required></select>
-          </div>
-          <div class="form-group">
-            <label id="lblAddIncome">Annual Income *</label>
-            <input type="text" id="addIncome" required placeholder="e.g. 10 Lakhs PA">
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblAddState">State *</label>
-            <select id="addState" required onchange="populateCities('addState', 'addCity', 'addCityCustom')">
-              <option value="">Select State</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label id="lblAddCity">City *</label>
-            <select id="addCity" required onchange="checkCustomCity('addCity', 'addCityCustom')">
-              <option value="">Select City</option>
-            </select>
-            <input type="text" id="addCityCustom" placeholder="Type city" style="display: none; margin-top: 0.35rem;">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblAddAddress">Exact House Address *</label>
-          <input type="text" id="addAddress" required placeholder="Residential details">
-        </div>
-
-        <div style="margin: 1rem 0 0.4rem 0; font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase;" id="lblAddFamilySec">
-          Parental & Family Background
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblAddFather">Father's Name *</label>
-            <input type="text" id="addFatherName" required placeholder="Father's Full Name">
-          </div>
-          <div class="form-group">
-            <label id="lblAddFatherOcc">Father's Occupation *</label>
-            <select id="addFatherOccupation" required></select>
-          </div>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblAddMother">Mother's Name *</label>
-            <input type="text" id="addMotherName" required placeholder="Mother's Full Name">
-          </div>
-          <div class="form-group">
-            <label id="lblAddMotherOcc">Mother's Occupation *</label>
-            <select id="addMotherOccupation" required></select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblAddFamilyDetails">Other Family Details</label>
-          <textarea id="addFamily" rows="2" placeholder="Siblings, native place, background, etc."></textarea>
-        </div>
-
-        <div class="form-row-2">
-          <div class="form-group">
-            <label id="lblAddEmail">Email Address *</label>
-            <input type="email" id="addEmail" required placeholder="email@domain.com">
-          </div>
-          <div class="form-group">
-            <label id="lblAddPhone">Phone / WhatsApp *</label>
-            <input type="tel" id="addPhone" required placeholder="+91 00000 00000">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblAddPhoto">Candidate Photo *</label>
-          <input type="file" id="addPhotoFile" accept="image/*" required onchange="handleAdminAddPhoto(event)">
-        </div>
-
-        <div class="form-group">
-          <label id="lblAddPreferences">Partner Preferences</label>
-          <textarea id="addPreferences" rows="2" placeholder="Expectations"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 44px;" id="addSubmitBtn">Add & Enrol Candidate</button>
-      </form>
-    </div>
-  </div>
-
-  <header class="header">
-    <div class="brand">Chitransh<span>Mahasabha</span></div>
-    <div class="header-actions">
-      <button class="btn btn-lang" id="langSwitchBtn" onclick="toggleLanguage()">🇮🇳 हिंदी</button>
-      <button class="btn btn-settings" id="btnSettings" onclick="openSettingsModal()">⚙️ Settings</button>
-      <button class="btn btn-excel" id="btnExport" onclick="openExportModal()">Export (.xls)</button>
-      <button class="btn btn-primary" id="btnAdd" onclick="openAddMemberModal()">+ Add</button>
-      <button id="refreshBtn" class="btn btn-outline" onclick="triggerManualRefresh()">Refresh</button>
-      <button class="btn btn-danger" id="btnLock" onclick="lockPortal()">Lock</button>
-    </div>
-  </header>
-
-  <div class="container">
-    <div class="filter-wrapper">
-      <div class="status-tab-row">
-        <button class="tab-btn active" onclick="filterByStatus('all', this)" id="tabAll">All (<span id="countAll">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Pending', this)" id="tabPending">Pending (<span id="countPending">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Active', this)" id="tabActive">Active (<span id="countActive">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Unpublished', this)" id="tabUnpublished">Unpublished (<span id="countUnpublished">0</span>)</button>
-        <button class="tab-btn" onclick="filterByStatus('Deleted', this)" id="tabDeleted">Deleted (<span id="countDeleted">0</span>)</button>
-      </div>
-
-      <div class="search-box-row">
-        <input type="text" id="adminSearchInput" onkeydown="if(event.key==='Enter') executeAdminSearch()" placeholder="Search name, ID, city, phone, profession..." style="flex: 1; height: 40px; padding: 0.45rem 0.85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg);">
-        <button class="btn btn-primary" style="min-height: 40px;" id="txtAdminSearchBtn" onclick="executeAdminSearch()">Search</button>
-        <button class="btn btn-outline" style="min-height: 40px;" id="toggleFilterBtn" onclick="toggleMobileFilters()">Filters ▾</button>
-      </div>
-
-      <div class="filter-grid" id="adminFilterPanel">
-        <div class="filter-control">
-          <label id="lblAdminGender">Gender</label>
-          <select id="adminFilterGender" onchange="executeAdminSearch()">
-            <option value="" id="optAdminAllGenders">All Genders</option>
-            <option value="Female" id="optAdminFemale">Female</option>
-            <option value="Male" id="optAdminMale">Male</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblAdminAge">Age Bracket</label>
-          <select id="adminFilterAge" onchange="executeAdminSearch()">
-            <option value="" id="optAdminAnyAge">Any Age</option>
-            <option value="21-25">21 - 25</option>
-            <option value="26-30">26 - 30</option>
-            <option value="31-35">31 - 35</option>
-            <option value="36-45">36 - 45</option>
-            <option value="46-80">45+</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblAdminMarital">Marital Status</label>
-          <select id="adminFilterMarital" onchange="executeAdminSearch()">
-            <option value="" id="optAdminAnyStatus">Any Status</option>
-            <option value="Never Married" id="optAdminNeverMarried">Never Married</option>
-            <option value="Divorced" id="optAdminDivorced">Divorced</option>
-            <option value="Widowed" id="optAdminWidowed">Widowed</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblAdminSubCaste">Sub-Caste</label>
-          <select id="adminFilterSubCaste" onchange="executeAdminSearch()">
-            <option value="" id="optAdminAllSubCastes">All Sub-Castes</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblAdminState">State</label>
-          <select id="adminFilterState" onchange="executeAdminSearch()">
-            <option value="" id="optAdminAllStates">All States</option>
-          </select>
-        </div>
-
-        <div class="filter-control">
-          <label id="lblAdminCity">City Name</label>
-          <input type="text" id="adminFilterCity" onkeydown="if(event.key==='Enter') executeAdminSearch()" placeholder="Filter city...">
-        </div>
-
-        <div class="filter-control">
-          <button class="btn btn-outline" style="width: 100%; min-height: 38px;" id="txtAdminReset" onclick="resetAdminFilters()">Reset Filters</button>
+        <div class="stat-card">
+          <h4>Pending Payments</h4>
+          <p id="statPendingPayments">0</p>
         </div>
       </div>
-    </div>
 
-    <!-- ADMIN SKELETON LOADERS -->
-    <div id="adminProfilesContainer">
-      <div class="skeleton-admin-card"></div>
-      <div class="skeleton-admin-card"></div>
-      <div class="skeleton-admin-card"></div>
-    </div>
+      <!-- SYSTEM SETTINGS CONTROL CARD -->
+      <div class="card">
+        <div class="card-title">Portal Settings & Fee Configuration</div>
+        <form onsubmit="updateSystemSettings(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Registration Mode</label>
+              <select id="settingFreeMode" onchange="toggleFeeInputs(this.value)">
+                <option value="false">Paid Membership (UPI Verification)</option>
+                <option value="true">Free Registration Mode (Direct Live)</option>
+              </select>
+            </div>
+            <div class="form-group" id="groupMonthlyFee">
+              <label>Monthly Fee (₹)</label>
+              <input type="number" id="settingMonthlyFee" value="499">
+            </div>
+            <div class="form-group" id="groupAnnualFee">
+              <label>Annual Fee (₹)</label>
+              <input type="number" id="settingAnnualFee" value="1999">
+            </div>
+            <div class="form-group" id="groupUpiId">
+              <label>Official UPI ID</label>
+              <input type="text" id="settingUpiId" value="sinha361@icici">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary" style="height: 38px;">Save Settings</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- PENDING PROFILES APPROVAL -->
+      <div class="card">
+        <div class="card-title">Pending Profile Registrations</div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>ID & Name</th>
+                <th>Details</th>
+                <th>Plan</th>
+                <th>Contact</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pendingProfilesTableBody">
+              <tr><td colspan="6" style="text-align: center; color: var(--muted);">Loading pending records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAYMENT VERIFICATION QUEUE -->
+      <div class="card">
+        <div class="card-title">Payment Verification Queue</div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Receipt</th>
+                <th>Profile ID</th>
+                <th>UTR / Ref No</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="paymentQueueTableBody">
+              <tr><td colspan="5" style="text-align: center; color: var(--muted);">Loading payment receipts...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
   </div>
 
   <script>
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxJZa4h95IcJaStGuC2DDVMXzOS7YQc-XEQmvHj9faddLEaADpispPetjZhrNQ6GWmu/exec";
 
-    const SUBCASTE_LIST = [
-      "Ambashtha", "Asthana", "Bhatnagar", "Bose", "Das", "Dey", "Dutta", "Gaur", "Ghosh", "Guha",
-      "Karan", "Kulshreshtha", "Mathur", "Mitra", "Mohanty", "Nigam", "Palit", "Pramanik", "Sarkar",
-      "Saxena", "Sen", "Sinha", "Srivastava", "Surajdhwaj", "Others"
-    ];
-
-    const EDUCATION_OPTIONS = [
-      "10th", "12th", "Diploma", "ITI", "B.A.", "B.Com", "B.Sc.", "B.Tech / B.E.",
-      "BCA", "BBA", "M.A.", "M.Com", "M.Sc.", "MCA", "MBA", "M.Tech", "M.E.",
-      "MBBS", "BDS", "LLB", "LLM", "PhD", "Other"
-    ];
-
-    const OCCUPATION_OPTIONS = [
-      "Software Engineer / IT Professional", "Doctor", "Dentist", "Engineer",
-      "Teacher / Professor", "Government Employee", "Civil Services", "Chartered Accountant",
-      "Lawyer", "Architect", "Business Owner / Entrepreneur", "Banking / Finance Professional",
-      "Consultant", "Marketing / Sales Professional", "HR Professional", "Designer",
-      "Researcher / Scientist", "Defence / Armed Forces", "Police", "Freelancer",
-      "Homemaker", "Retired", "Student", "Other"
-    ];
-
-    const LOCATION_DATA = {
-      "Uttar Pradesh": ["Ghaziabad", "Noida", "Lucknow", "Kanpur", "Varanasi", "Prayagraj", "Agra", "Meerut", "Bareilly", "Gorakhpur", "Aligarh", "Moradabad", "Other"],
-      "Delhi NCR": ["Central Delhi", "East Delhi", "New Delhi", "North Delhi", "South Delhi", "West Delhi", "Gurugram", "Faridabad", "Other"],
-      "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga", "Bihar Sharif", "Ara", "Begusarai", "Katihar", "Other"],
-      "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Satna", "Ratlam", "Other"],
-      "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Navi Mumbai", "Solapur", "Other"],
-      "Rajasthan": ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Ajmer", "Udaipur", "Bhilwara", "Alwar", "Other"],
-      "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri", "Other"],
-      "Karnataka": ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru", "Belagavi", "Other"],
-      "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Other"],
-      "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Other"],
-      "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Deoghar", "Hazaribagh", "Other"],
-      "Uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani", "Rishikesh", "Other"],
-      "Haryana": ["Faridabad", "Gurugram", "Panipat", "Ambala", "Karnal", "Hisar", "Rohtak", "Other"],
-      "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali", "Other"],
-      "Other": ["Other"]
-    };
-
-    let currentLang = 'en';
-    const ADMIN_TRANSLATIONS = {
-      en: {
-        settings: "⚙️ Settings", export: "Export (.xls)", add: "+ Add", refresh: "Refresh", lock: "Lock",
-        searchPlaceholder: "Search name, ID, city, phone, profession...", searchBtn: "Search", filtersBtn: "Filters ▾",
-        gender: "Gender", allGenders: "All Genders", female: "Female", male: "Male",
-        ageBracket: "Age Bracket", anyAge: "Any Age", maritalStatus: "Marital Status", anyStatus: "Any Status",
-        neverMarried: "Never Married", divorced: "Divorced", widowed: "Widowed", subCaste: "Sub-Caste", allSubCastes: "All Sub-Castes",
-        state: "State", allStates: "All States", cityName: "City Name", cityPlaceholder: "Filter city...",
-        resetFilters: "Reset Filters", adminDesk: "Admin Desk", enterPin: "Enter administrator PIN to unlock controls.", unlock: "Unlock Dashboard"
-      },
-      hi: {
-        settings: "⚙️ सेटिंग्स", export: "एक्सपोर्ट (.xls)", add: "+ जोड़ें", refresh: "रिफ्रेश", lock: "लॉक",
-        searchPlaceholder: "नाम, आईडी, शहर, फोन, पेशा खोजें...", searchBtn: "खोजें", filtersBtn: "फ़िल्टर ▾",
-        gender: "लिंग", allGenders: "सभी लिंग", female: "महिला", male: "पुरुष",
-        ageBracket: "आयु वर्ग", anyAge: "कोई भी आयु", maritalStatus: "वैवाहिक स्थिति", anyStatus: "कोई भी स्थिति",
-        neverMarried: "अविवाहित", divorced: "तलाकशुदा", widowed: "विधवा/विधुर", subCaste: "उप-जाति", allSubCastes: "सभी उप-जातियां",
-        state: "राज्य", allStates: "सभी राज्य", cityName: "शहर का नाम", cityPlaceholder: "शहर फ़िल्टर करें...",
-        resetFilters: "फ़िल्टर रीसेट करें", adminDesk: "एडमिन डेस्क", enterPin: "नियंत्रण अनलॉक करने के लिए एडमिन पिन दर्ज करें।", unlock: "डैशबोर्ड अनलॉक करें"
-      }
-    };
-
-    function toggleLanguage() {
-      currentLang = currentLang === 'en' ? 'hi' : 'en';
-      document.getElementById('langSwitchBtn').innerText = currentLang === 'en' ? '🇮🇳 हिंदी' : '🇬🇧 English';
-      applyAdminTranslations();
-    }
-
-    function applyAdminTranslations() {
-      const t = ADMIN_TRANSLATIONS[currentLang];
-      document.getElementById('btnSettings').innerText = t.settings;
-      document.getElementById('btnExport').innerText = t.export;
-      document.getElementById('btnAdd').innerText = t.add;
-      document.getElementById('refreshBtn').innerText = t.refresh;
-      document.getElementById('btnLock').innerText = t.lock;
-      document.getElementById('adminSearchInput').placeholder = t.searchPlaceholder;
-      document.getElementById('txtAdminSearchBtn').innerText = t.searchBtn;
-      document.getElementById('toggleFilterBtn').innerText = t.filtersBtn;
-      document.getElementById('lblAdminGender').innerText = t.gender;
-      document.getElementById('optAdminAllGenders').innerText = t.allGenders;
-      document.getElementById('optAdminFemale').innerText = t.female;
-      document.getElementById('optAdminMale').innerText = t.male;
-      document.getElementById('lblAdminAge').innerText = t.ageBracket;
-      document.getElementById('optAdminAnyAge').innerText = t.anyAge;
-      document.getElementById('lblAdminMarital').innerText = t.maritalStatus;
-      document.getElementById('optAdminAnyStatus').innerText = t.anyStatus;
-      document.getElementById('optAdminNeverMarried').innerText = t.neverMarried;
-      document.getElementById('optAdminDivorced').innerText = t.divorced;
-      document.getElementById('optAdminWidowed').innerText = t.widowed;
-      document.getElementById('lblAdminSubCaste').innerText = t.subCaste;
-      document.getElementById('optAdminAllSubCastes').innerText = t.allSubCastes;
-      document.getElementById('lblAdminState').innerText = t.state;
-      document.getElementById('optAdminAllStates').innerText = t.allStates;
-      document.getElementById('lblAdminCity').innerText = t.cityName;
-      document.getElementById('adminFilterCity').placeholder = t.cityPlaceholder;
-      document.getElementById('txtAdminReset').innerText = t.resetFilters;
-      document.getElementById('txtAdminDesk').innerText = t.adminDesk;
-      document.getElementById('txtEnterPin').innerText = t.enterPin;
-      document.getElementById('unlockBtn').innerText = t.unlock;
-    }
-
-    let adminState = {
-      pin: "",
-      profiles: [],
-      filtered: [],
-      currentTab: "all",
-      activeMatchClient: null,
-      compatibleMatches: [],
-      settings: {
-        isFreeRegistration: false,
-        monthlyFee: "499",
-        annualFee: "1999",
-        upiId: "sinha361@icici"
-      }
-    };
-
-    let adminAddPhotoBase64 = "";
-    let adminEditPhotoBase64 = "";
-
-    function showNotice(msg, isErr = false) {
-      const el = document.getElementById('toastNotice');
-      el.innerText = msg; el.style.background = isErr ? "#C5221F" : "#137333";
-      el.style.display = "block";
-      setTimeout(() => { el.style.display = "none"; }, 3500);
-    }
-
-    function togglePasswordVisibility(inputId, btn) {
-      const input = document.getElementById(inputId);
-      if (input.type === 'password') { input.type = 'text'; btn.innerText = '🙈'; }
-      else { input.type = 'password'; btn.innerText = '👁'; }
-    }
-
-    function toggleMobileFilters() {
-      const panel = document.getElementById('adminFilterPanel');
-      const btn = document.getElementById('toggleFilterBtn');
-      if (!panel || !btn) return;
-      const isHidden = window.getComputedStyle(panel).display === 'none';
-      if (isHidden) { panel.classList.add('expanded'); panel.style.display = 'grid'; btn.innerText = 'Filters ▴'; }
-      else { panel.classList.remove('expanded'); panel.style.display = 'none'; btn.innerText = 'Filters ▾'; }
-    }
-
-    function closeAllContextPopups() {
-      document.querySelectorAll('.modal-overlay').forEach(m => {
-        if(m.id !== 'authOverlay') m.classList.remove('active');
-      });
-      document.querySelectorAll('.contextual-card').forEach(c => {
-        c.classList.remove('active');
-      });
-    }
-
     window.addEventListener('DOMContentLoaded', () => {
-      initDropdownOptions();
-      initLocationDropdown('addState');
-      initLocationDropdown('editState');
-      initAdminFilterStates();
-      
-      const cachedPin = localStorage.getItem('cm_admin_pin');
-      if (cachedPin === "1108") {
-        document.getElementById('adminPinInput').value = "1108";
-        unlockAdminPortal();
+      const session = sessionStorage.getItem('cm_admin_auth');
+      if (session === 'true') {
+        showDashboard();
       }
     });
 
-    function initDropdownOptions() {
-      populateSelect('addEducation', EDUCATION_OPTIONS, 'Select Qualification');
-      populateSelect('addProfession', OCCUPATION_OPTIONS, 'Select Occupation');
-      populateSelect('addSubCaste', SUBCASTE_LIST, 'Select Sub-Caste');
-      populateSelect('addFatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
-      populateSelect('addMotherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
-      populateSelect('editEducation', EDUCATION_OPTIONS, 'Select Qualification');
-      populateSelect('editProfession', OCCUPATION_OPTIONS, 'Select Occupation');
-      populateSelect('editSubCaste', SUBCASTE_LIST, 'Select Sub-Caste');
-      populateSelect('editFatherOccupation', OCCUPATION_OPTIONS, 'Select Father\'s Occupation');
-      populateSelect('editMotherOccupation', OCCUPATION_OPTIONS, 'Select Mother\'s Occupation');
-      populateSelect('adminFilterSubCaste', SUBCASTE_LIST, 'All Sub-Castes');
-    }
-
-    function populateSelect(elemId, options, defaultPlaceholder) {
-      const el = document.getElementById(elemId);
-      if (!el) return;
-      el.innerHTML = defaultPlaceholder ? `<option value="">${defaultPlaceholder}</option>` : '';
-      options.forEach(opt => { el.innerHTML += `<option value="${opt}">${opt}</option>`; });
-    }
-
-    function initLocationDropdown(selId) {
-      const stateSel = document.getElementById(selId);
-      if (!stateSel) return;
-      stateSel.innerHTML = `<option value="">Select State</option>`;
-      Object.keys(LOCATION_DATA).forEach(st => { stateSel.innerHTML += `<option value="${st}">${st}</option>`; });
-    }
-
-    function initAdminFilterStates() {
-      const filterStateSel = document.getElementById('adminFilterState');
-      if (!filterStateSel) return;
-      filterStateSel.innerHTML = `<option value="">All States</option>`;
-      Object.keys(LOCATION_DATA).forEach(st => { filterStateSel.innerHTML += `<option value="${st}">${st}</option>`; });
-    }
-
-    function populateCities(stateId, cityId, customId, selectedCity = "") {
-      const stateVal = document.getElementById(stateId).value;
-      const citySel = document.getElementById(cityId);
-      const customInput = document.getElementById(customId);
-      citySel.innerHTML = `<option value="">Select City</option>`;
-      if (customInput) customInput.style.display = "none";
-      if (stateVal && LOCATION_DATA[stateVal]) {
-        let matched = false;
-        LOCATION_DATA[stateVal].forEach(ct => {
-          const isSelected = ct === selectedCity;
-          if (isSelected) matched = true;
-          citySel.innerHTML += `<option value="${ct}" ${isSelected ? 'selected' : ''}>${ct}</option>`;
-        });
-        if (selectedCity && !matched) {
-          citySel.value = "Other";
-          if (customInput) { customInput.style.display = "block"; customInput.value = selectedCity; }
-        }
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const code = document.getElementById('adminPasscode').value.trim();
+      // Simple secure passcode check (can be synced with backend if required)
+      if (code === "Chitransh@2026" || code === "admin123") {
+        sessionStorage.setItem('cm_admin_auth', 'true');
+        showDashboard();
+      } else {
+        alert("Incorrect passcode!");
       }
     }
 
-    function checkCustomCity(cityId, customId) {
-      const cityVal = document.getElementById(cityId).value;
-      const customInput = document.getElementById(customId);
-      if (cityVal === "Other") customInput.style.display = "block";
-      else customInput.style.display = "none";
+    function showDashboard() {
+      document.getElementById('adminLoginView').style.display = 'none';
+      document.getElementById('adminDashboardView').style.display = 'block';
+      fetchAdminData();
     }
 
-    function calculateAutoAge(dobId, ageId) {
-      const dobVal = document.getElementById(dobId).value;
-      if (!dobVal) return;
-      const dobDate = new Date(dobVal);
-      const today = new Date();
-      let age = today.getFullYear() - dobDate.getFullYear();
-      const m = today.getMonth() - dobDate.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) age--;
-      if (age >= 18 && age <= 100) document.getElementById(ageId).value = age;
+    function adminLogout() {
+      sessionStorage.removeItem('cm_admin_auth');
+      location.reload();
     }
 
-    function handleAdminAddPhoto(e) {
-      compressImage(e.target.files[0], 350, 0.45, (base64) => { adminAddPhotoBase64 = base64; });
+    function toggleFeeInputs(val) {
+      const isFree = val === 'true';
+      document.getElementById('groupMonthlyFee').style.display = isFree ? 'none' : 'flex';
+      document.getElementById('groupAnnualFee').style.display = isFree ? 'none' : 'flex';
+      document.getElementById('groupUpiId').style.display = isFree ? 'none' : 'flex';
     }
 
-    function handleAdminEditPhoto(e) {
-      compressImage(e.target.files[0], 350, 0.45, (base64) => { adminEditPhotoBase64 = base64; });
-    }
-
-    function compressImage(file, maxDim, quality, callback) {
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          let w = img.width, h = img.height;
-          if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
-          else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
-          const canvas = document.createElement('canvas');
-          canvas.width = w; canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, w, h);
-          callback(canvas.toDataURL('image/jpeg', quality));
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    async function unlockAdminPortal() {
-      const errorBox = document.getElementById('adminPinErrorAlert');
-      errorBox.style.display = 'none'; errorBox.innerText = '';
-      const pin = document.getElementById('adminPinInput').value.trim();
-      if (!pin) { errorBox.innerText = "Please enter Admin PIN."; errorBox.style.display = 'block'; return; }
-
-      const unlockBtn = document.getElementById('unlockBtn');
-      if(unlockBtn) unlockBtn.innerText = "Unlocking...";
-
+    async function fetchAdminData() {
       try {
-        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(pin)}`);
+        const res = await fetch(`${API_ENDPOINT}?action=getAdminData`);
         const data = await res.json();
         if (data.success) {
-          adminState.pin = pin; adminState.profiles = data.profiles;
-          if (data.settings) adminState.settings = data.settings;
-          localStorage.setItem('cm_admin_pin', pin);
-          document.getElementById('authOverlay').classList.remove('active');
-          updateTabCounts(); executeAdminSearch();
-        } else {
-          errorBox.innerText = "Incorrect Admin PIN."; errorBox.style.display = 'block';
+          document.getElementById('statTotalProfiles').innerText = data.stats.totalProfiles || 0;
+          document.getElementById('statPendingProfiles').innerText = data.stats.pendingProfiles || 0;
+          document.getElementById('statPendingPayments').innerText = data.stats.pendingPayments || 0;
+
+          if (data.settings) {
+            document.getElementById('settingFreeMode').value = String(data.settings.isFreeRegistration);
+            document.getElementById('settingMonthlyFee').value = data.settings.monthlyFee;
+            document.getElementById('settingAnnualFee').value = data.settings.annualFee;
+            document.getElementById('settingUpiId').value = data.settings.upiId;
+            toggleFeeInputs(String(data.settings.isFreeRegistration));
+          }
+
+          renderPendingProfiles(data.pendingProfiles || []);
+          renderPaymentQueue(data.paymentQueue || []);
         }
       } catch (err) {
-        errorBox.innerText = "Connection error."; errorBox.style.display = 'block';
-      } finally { if(unlockBtn) unlockBtn.innerText = "Unlock Dashboard"; }
-    }
-
-    function lockPortal() {
-      adminState.pin = ""; localStorage.removeItem('cm_admin_pin');
-      document.getElementById('authOverlay').classList.add('active');
-      document.getElementById('adminPinInput').value = "";
-      document.getElementById('adminPinErrorAlert').style.display = 'none';
-    }
-
-    async function triggerManualRefresh() {
-      const btn = document.getElementById('refreshBtn');
-      btn.innerText = "..."; btn.disabled = true;
-      await fetchAdminProfiles();
-      btn.innerText = "Refresh"; btn.disabled = false;
-      showNotice("Records synced.");
-    }
-
-    async function fetchAdminProfiles() {
-      if (!adminState.pin) return;
-      try {
-        const res = await fetch(`${API_ENDPOINT}?action=getAdminProfiles&adminPin=${encodeURIComponent(adminState.pin)}`);
-        const data = await res.json();
-        if (data.success) {
-          adminState.profiles = data.profiles;
-          if (data.settings) adminState.settings = data.settings;
-          updateTabCounts(); executeAdminSearch();
-        } else { showNotice("Auth failed: " + data.error, true); lockPortal(); }
-      } catch (err) { showNotice("Network error.", true); }
-    }
-
-    function updateTabCounts() {
-      const p = adminState.profiles;
-      document.getElementById('countAll').innerText = p.length;
-      document.getElementById('countPending').innerText = p.filter(x => x.status === 'Pending').length;
-      document.getElementById('countActive').innerText = p.filter(x => x.status === 'Active').length;
-      document.getElementById('countUnpublished').innerText = p.filter(x => x.status === 'Unpublished').length;
-      document.getElementById('countDeleted').innerText = p.filter(x => x.status === 'Deleted').length;
-    }
-
-    function filterByStatus(status, el) {
-      adminState.currentTab = status;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      el.classList.add('active');
-      executeAdminSearch();
-    }
-
-    function executeAdminSearch() {
-      const searchTerm = document.getElementById('adminSearchInput').value.toLowerCase().trim();
-      const gender = document.getElementById('adminFilterGender').value;
-      const ageBracket = document.getElementById('adminFilterAge').value;
-      const marital = document.getElementById('adminFilterMarital').value;
-      const subCaste = document.getElementById('adminFilterSubCaste').value;
-      const state = document.getElementById('adminFilterState').value;
-      const city = document.getElementById('adminFilterCity').value.toLowerCase().trim();
-
-      let list = adminState.profiles;
-      if (adminState.currentTab !== 'all') list = list.filter(p => p.status === adminState.currentTab);
-      if (gender) list = list.filter(p => p.gender === gender);
-      if (marital) list = list.filter(p => p.maritalStatus && p.maritalStatus.toLowerCase().trim() === marital.toLowerCase().trim());
-      if (subCaste) list = list.filter(p => p.subCaste === subCaste);
-      if (ageBracket) {
-        const [min, max] = ageBracket.split('-').map(Number);
-        list = list.filter(p => p.age >= min && p.age <= max);
+        console.error("Failed to load admin data", err);
       }
-      if (state) list = list.filter(p => p.state === state);
-      if (city) list = list.filter(p => p.city && p.city.toLowerCase().includes(city));
-      if (searchTerm) {
-        list = list.filter(p => 
-          (p.fullName && String(p.fullName).toLowerCase().includes(searchTerm)) ||
-          (p.id && String(p.id).toLowerCase().includes(searchTerm)) ||
-          (p.city && String(p.city).toLowerCase().includes(searchTerm)) ||
-          (p.state && String(p.state).toLowerCase().includes(searchTerm)) ||
-          (p.profession && String(p.profession).toLowerCase().includes(searchTerm)) ||
-          (p.education && String(p.education).toLowerCase().includes(searchTerm)) ||
-          (p.phone && String(p.phone).toLowerCase().includes(searchTerm)) ||
-          (p.subCaste && String(p.subCaste).toLowerCase().includes(searchTerm))
-        );
-      }
-
-      adminState.filtered = list;
-      renderAdminCards();
     }
 
-    function resetAdminFilters() {
-      document.getElementById('adminSearchInput').value = '';
-      document.getElementById('adminFilterGender').value = '';
-      document.getElementById('adminFilterAge').value = '';
-      document.getElementById('adminFilterMarital').value = '';
-      document.getElementById('adminFilterSubCaste').value = '';
-      document.getElementById('adminFilterState').value = '';
-      document.getElementById('adminFilterCity').value = '';
-      executeAdminSearch();
-      showNotice("Filters reset.");
-    }
-
-    function renderAdminCards() {
-      const container = document.getElementById('adminProfilesContainer');
-      if (adminState.filtered.length === 0) {
-        container.innerHTML = `<div style="text-align: center; color: var(--muted); padding: 3rem 0;">No matching candidate records found.</div>`;
+    function renderPendingProfiles(profiles) {
+      const tbody = document.getElementById('pendingProfilesTableBody');
+      if (profiles.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--muted);">No pending profiles to review.</td></tr>`;
         return;
       }
 
-      container.innerHTML = adminState.filtered.map(p => {
-        const photo = p.photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
-        const hasReceipt = (p.paymentReceiptUrl && p.paymentReceiptUrl.length > 20);
-
-        let actionButtons = `
-          <button class="btn btn-outline" onclick="openContextualEdit('${p.id}', this)">Edit</button>
-          <button class="btn btn-primary" onclick="adminDownloadPdf('${p.id}')">Download PDF</button>
-        `;
-        
-        if (p.status === "Pending") {
-          actionButtons += `<button class="btn btn-success" onclick="openContextualApprove('${p.id}', this)">Approve</button>`;
-        }
-        
-        if (p.status === "Active") {
-          actionButtons += `
-            <button class="btn btn-primary" onclick="openContextualMatchmaking('${p.id}', this)">Matches</button>
-            <button class="btn btn-warning" onclick="openContextualUnpublish('${p.id}', this)">Unpublish</button>
-          `;
-        } else if (p.status === "Unpublished") {
-          actionButtons += `<button class="btn btn-success" onclick="openContextualPublish('${p.id}', this)">Publish</button>`;
-        }
-
-        if (p.status !== "Deleted") {
-          actionButtons += `<button class="btn btn-danger" onclick="openContextualDelete('${p.id}', this)">Delete</button>`;
-        }
-
-        return `
-          <div class="profile-card">
-            <div class="card-top-row">
-              <div class="card-user-info">
-                <img src="${photo}" class="profile-avatar" alt="${p.fullName}" onclick="openZoomLightbox('${photo}')" title="Click to Zoom">
-                <div class="card-title-group">
-                  <div class="card-name">${p.fullName}</div>
-                  <div class="card-subtext">${p.gender} &bull; ${p.age} Yrs &bull; ${p.height || 'Height N/A'}</div>
-                  <div class="card-id-pill">ID: ${p.id} &bull; Sub-Caste: ${p.subCaste || 'Kayastha'}</div>
-                </div>
-              </div>
-              <span class="badge badge-${p.status}">${p.status}</span>
-            </div>
-
-            <div class="card-data-grid">
-              <div class="data-cell"><span class="data-label">Profession</span><span class="data-val">${p.profession || 'Unspecified'}</span></div>
-              <div class="data-cell"><span class="data-label">Education</span><span class="data-val">${p.education || 'Unspecified'}</span></div>
-              <div class="data-cell"><span class="data-label">Location</span><span class="data-val">${p.city}, ${p.state}</span></div>
-              <div class="data-cell"><span class="data-label">Father</span><span class="data-val">${p.fatherName ? p.fatherName + ' (' + (p.fatherOccupation || 'N/A') + ')' : 'N/A'}</span></div>
-              <div class="data-cell"><span class="data-label">Mother</span><span class="data-val">${p.motherName ? p.motherName + ' (' + (p.motherOccupation || 'N/A') + ')' : 'N/A'}</span></div>
-              <div class="data-cell"><span class="data-label">Phone</span><span class="data-val"><a href="tel:${p.phone}">${p.phone}</a></span></div>
-            </div>
-
-            <div class="card-footer">
-              <div class="card-meta-notes">
-                <span>Fee: <strong>₹${p.paymentAmount || '0'}</strong></span>
-                <span>Status: <strong style="color: ${p.paymentStatus === 'Verified' ? 'var(--success)' : 'var(--warning)'};">${p.paymentStatus || 'Unverified'}</strong></span>
-                ${hasReceipt ? `<button class="btn btn-outline" style="min-height: 28px; padding: 0.2rem 0.55rem; font-size: 0.72rem;" onclick="openContextualReceipt('${p.id}', this)">View Receipt ↗</button>` : '<span style="color: var(--muted); font-size: 0.72rem;">No Receipt</span>'}
-              </div>
-              <div class="card-actions-row">${actionButtons}</div>
-            </div>
-          </div>
-        `;
-      }).join('');
+      tbody.innerHTML = profiles.map(p => `
+        <tr>
+          <td><img src="${p.photoUrl || ''}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; cursor: pointer;" onclick="openZoom('${p.photoUrl}')"></td>
+          <td><strong>${p.id}</strong><br>${p.fullName} (${p.age} Yrs)</td>
+          <td>${p.gender} • ${p.subCaste || 'Kayastha'}<br>${p.city}, ${p.state}</td>
+          <td><span class="badge badge-pending">${p.membershipPlan}</span></td>
+          <td>${p.email}<br>${p.phone}</td>
+          <td>
+            <button class="btn btn-success" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="approveProfile('${p.id}')">Approve</button>
+            <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="rejectProfile('${p.id}')">Reject</button>
+          </td>
+        </tr>
+      `).join('');
     }
 
-    function openZoomLightbox(imgSrc) {
-      if (!imgSrc) return;
-      document.getElementById('zoomLightboxImg').src = imgSrc;
-      document.getElementById('zoomLightbox').classList.add('active');
+    function renderPaymentQueue(queue) {
+      const tbody = document.getElementById('paymentQueueTableBody');
+      if (queue.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--muted);">No pending payment receipts.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = queue.map(q => `
+        <tr>
+          <td><img src="${q.screenshotUrl || ''}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; cursor: pointer;" onclick="openZoom('${q.screenshotUrl}')"></td>
+          <td><strong>${q.profileId}</strong></td>
+          <td><code>${q.utr || 'Not Provided'}</code></td>
+          <td><span class="badge badge-pending">Verification Pending</span></td>
+          <td>
+            <button class="btn btn-success" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="verifyPayment('${q.profileId}')">Verify & Live</button>
+          </td>
+        </tr>
+      `).join('');
     }
 
-    function closeZoomLightbox() {
-      document.getElementById('zoomLightbox').classList.remove('active');
+    async function approveProfile(profileId) {
+      if (!confirm(`Approve profile ${profileId}?`)) return;
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'adminApproveProfile', data: { profileId } })
+        });
+        const out = await res.json();
+        if (out.success) { alert("Profile approved successfully!"); fetchAdminData(); }
+        else { alert("Error: " + out.error); }
+      } catch (err) { alert("Network error."); }
     }
 
-    // BULLETPROOF NATIVE PRINT-TO-PDF EXPORT FUNCTION FOR ADMIN
-    function adminDownloadPdf(profileId) {
-      const p = adminState.profiles.find(x => x.id === profileId);
-      if (!p) return;
-
-      const surface = document.getElementById('adminPrintSurface');
-      surface.style.display = "block";
-      surface.innerHTML = `
-        <div style="border: 2px solid #800020; padding: 30px; border-radius: 12px; background: #FFF; width: 100%;">
-          <div style="text-align: center; border-bottom: 2px solid #FF7E7E; padding-bottom: 12px; margin-bottom: 15px;">
-            <h1 style="font-size: 24px; color: #800020; font-weight: 900; margin: 0;">CHITRANSH MAHASABHA</h1>
-            <p style="font-size: 11px; color: #7A6F6D; text-transform: uppercase; margin-top: 4px;">Official Matrimonial Biodata (Admin Export)</p>
-          </div>
-
-          <div style="display: flex; align-items: center; gap: 20px; border-bottom: 1px solid #F5DEC2; padding-bottom: 15px; margin-bottom: 15px;">
-            <img src="${p.photoUrl || ''}" style="width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid #FF7E7E;">
-            <div>
-              <h2 style="font-size: 20px; font-weight: 800; color: #2B2321; margin: 0;">${p.fullName}</h2>
-              <p style="font-size: 13px; color: #FFA259; font-weight: 700; margin: 3px 0;">ID: ${p.id} &bull; ${p.age} Years &bull; ${p.height || 'Height N/A'}</p>
-              <p style="font-size: 12px; color: #7A6F6D; margin: 0;">${p.city}, ${p.state}, ${p.country || 'India'}</p>
-            </div>
-          </div>
-
-          <h3 style="font-size: 12px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 15px 0 6px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 3px;">Professional & Educational Record</h3>
-          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Education</td><td style="padding: 5px 0; color: #2B2321;">${p.education}</td></tr>
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Profession</td><td style="padding: 5px 0; color: #2B2321;">${p.profession}</td></tr>
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Kayastha Sub-Caste</td><td style="padding: 5px 0; color: #2B2321;">${p.subCaste || 'Kayastha'}</td></tr>
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Annual Income</td><td style="padding: 5px 0; color: #2B2321;">${p.annualIncome || 'Undisclosed'}</td></tr>
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Marital Status</td><td style="padding: 5px 0; color: #2B2321;">${p.maritalStatus}</td></tr>
-          </table>
-
-          <h3 style="font-size: 12px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 18px 0 6px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 3px;">Parental & Family Background</h3>
-          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Father's Name</td><td style="padding: 5px 0; color: #2B2321;">${p.fatherName || 'On Record'} (${p.fatherOccupation || 'N/A'})</td></tr>
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Mother's Name</td><td style="padding: 5px 0; color: #2B2321;">${p.motherName || 'On Record'} (${p.motherOccupation || 'N/A'})</td></tr>
-            <tr><td style="color: #7A6F6D; width: 35%; padding: 5px 0; font-weight: 600;">Family Details</td><td style="padding: 5px 0; color: #2B2321;">${p.familyDetails || 'Available upon request.'}</td></tr>
-          </table>
-
-          <h3 style="font-size: 12px; text-transform: uppercase; color: #FF7E7E; font-weight: 800; margin: 18px 0 6px 0; border-bottom: 1px solid #F5DEC2; padding-bottom: 3px;">Partner Preferences</h3>
-          <p style="font-size: 13px; line-height: 1.4; margin: 5px 0; color: #2B2321;">${p.partnerPreferences || 'Open to culturally compatible matches.'}</p>
-        </div>
-      `;
-
-      window.print();
-      setTimeout(() => {
-        surface.style.display = "none";
-        surface.innerHTML = "";
-      }, 1000);
+    async function rejectProfile(profileId) {
+      if (!confirm(`Reject profile ${profileId}?`)) return;
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'adminRejectProfile', data: { profileId } })
+        });
+        const out = await res.json();
+        if (out.success) { alert("Profile rejected."); fetchAdminData(); }
+        else { alert("Error: " + out.error); }
+      } catch (err) { alert("Network error."); }
     }
 
-    function openSettingsModal() {
-      const s = adminState.settings;
-      document.getElementById('settingFreeModeToggle').checked = s.isFreeRegistration;
-      document.getElementById('settingMonthlyFee').value = s.monthlyFee || "499";
-      document.getElementById('settingAnnualFee').value = s.annualFee || "1999";
-      document.getElementById('settingUpiId').value = s.upiId || "sinha361@icici";
-      document.getElementById('settingsModal').classList.add('active');
+    async function verifyPayment(profileId) {
+      if (!confirm(`Verify payment for ${profileId} and make profile live?`)) return;
+      try {
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'adminVerifyPayment', data: { profileId } })
+        });
+        const out = await res.json();
+        if (out.success) { alert("Payment verified & profile activated!"); fetchAdminData(); }
+        else { alert("Error: " + out.error); }
+      } catch (err) { alert("Network error."); }
     }
 
-    async function saveSystemSettings() {
-      const btn = document.getElementById('saveSettingsBtn');
-      btn.innerText = "Saving..."; btn.disabled = true;
-
-      const payload = {
-        isFreeRegistration: document.getElementById('settingFreeModeToggle').checked,
-        monthlyFee: document.getElementById('settingMonthlyFee').value.trim(),
-        annualFee: document.getElementById('settingAnnualFee').value.trim(),
+    async function updateSystemSettings(e) {
+      e.preventDefault();
+      const settingsPayload = {
+        isFreeRegistration: document.getElementById('settingFreeMode').value === 'true',
+        monthlyFee: document.getElementById('settingMonthlyFee').value,
+        annualFee: document.getElementById('settingAnnualFee').value,
         upiId: document.getElementById('settingUpiId').value.trim()
       };
 
       try {
         const res = await fetch(API_ENDPOINT, {
           method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'updateSettings', adminPin: adminState.pin, data: payload })
+          body: JSON.stringify({ action: 'adminUpdateSettings', data: settingsPayload })
         });
         const out = await res.json();
-        if (out.success) { adminState.settings = out.settings; closeModal('settingsModal'); showNotice("Settings updated successfully!"); }
-        else { showNotice("Error: " + out.error, true); }
-      } catch (err) { showNotice("Server error.", true); }
-      finally { btn.innerText = "Save Settings"; btn.disabled = false; }
+        if (out.success) { alert("Settings updated successfully!"); fetchAdminData(); }
+        else { alert("Error: " + out.error); }
+      } catch (err) { alert("Network error."); }
     }
 
-    function openExportModal() {
-      const end = new Date(); const start = new Date(); start.setDate(end.getDate() - 30);
-      document.getElementById('exportEndDate').value = end.toISOString().split('T')[0];
-      document.getElementById('exportStartDate').value = start.toISOString().split('T')[0];
-      document.getElementById('exportModal').classList.add('active');
+    function openZoom(url) {
+      if (!url) return;
+      document.getElementById('zoomLightboxImg').src = url;
+      document.getElementById('zoomLightbox').classList.add('active');
     }
-
-    function executeExcelExport() {
-      const startVal = document.getElementById('exportStartDate').value;
-      const endVal = document.getElementById('exportEndDate').value;
-      const statusFilter = document.getElementById('exportStatusSelect').value;
-
-      let records = adminState.profiles;
-      if (statusFilter !== 'all') records = records.filter(p => p.status === statusFilter);
-
-      if (startVal) {
-        const start = new Date(startVal); start.setHours(0, 0, 0, 0);
-        records = records.filter(p => !p.createdDate || new Date(p.createdDate) >= start);
-      }
-      if (endVal) {
-        const end = new Date(endVal); end.setHours(23, 59, 59, 999);
-        records = records.filter(p => !p.createdDate || new Date(p.createdDate) <= end);
-      }
-
-      if (records.length === 0) { showNotice("No records found.", true); return; }
-
-      let tableHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table border="1"><tr style="background-color: #FFA259; color: #ffffff; font-weight: bold;"><th>ID</th><th>Date</th><th>Plan</th><th>Name</th><th>Status</th><th>Gender</th><th>DOB</th><th>Age</th><th>Height</th><th>Marital</th><th>SubCaste</th><th>Edu</th><th>Profession</th><th>Income</th><th>Father</th><th>Mother</th><th>Phone</th><th>Email</th><th>City</th><th>State</th></tr>`;
-      records.forEach(p => {
-        tableHtml += `<tr><td>${p.id || ''}</td><td>${p.createdDate ? new Date(p.createdDate).toLocaleDateString() : ''}</td><td>${p.membershipPlan || ''}</td><td>${p.fullName || ''}</td><td>${p.status || ''}</td><td>${p.gender || ''}</td><td>${p.dob || ''}</td><td>${p.age || ''}</td><td>${p.height || ''}</td><td>${p.maritalStatus || ''}</td><td>${p.subCaste || ''}</td><td>${p.education || ''}</td><td>${p.profession || ''}</td><td>${p.annualIncome || ''}</td><td>${p.fatherName || ''}</td><td>${p.motherName || ''}</td><td>${p.phone || ''}</td><td>${p.email || ''}</td><td>${p.city || ''}</td><td>${p.state || ''}</td></tr>`;
-      });
-      tableHtml += `</table></body></html>`;
-
-      const blob = new Blob([tableHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `Chitransh_Customer_Data.xls`;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-      closeModal('exportModal'); showNotice(`Exported ${records.length} records.`);
-    }
-
-    function openContextualConfirm(title, text, btnText, triggerEl, callback) {
-      document.getElementById('contextConfirmTitle').innerText = title;
-      document.getElementById('contextConfirmText').innerText = text;
-      const btn = document.getElementById('contextConfirmExecuteBtn');
-      btn.innerText = btnText;
-      btn.onclick = async () => { closeAllContextPopups(); await callback(); };
-      document.getElementById('contextConfirmCard').classList.add('active');
-    }
-
-    function openContextualApprove(profileId, btnEl) {
-      openContextualConfirm("Approve Candidate", `Approve payment & publish candidate ${profileId} live?`, "Approve & Live", btnEl, async () => {
-        try {
-          const res = await fetch(API_ENDPOINT, {
-            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'approveProfile', adminPin: adminState.pin, data: { profileId: profileId } })
-          });
-          const out = await res.json();
-          if (out.success) { showNotice("Profile approved & live!"); fetchAdminProfiles(); }
-          else { showNotice("Error: " + out.error, true); }
-        } catch (err) { showNotice("Server error.", true); }
-      });
-    }
-
-    function openContextualDelete(profileId, btnEl) {
-      openContextualConfirm("Delete Candidate", `Permanently mark profile ${profileId} as Deleted?`, "Confirm Delete", btnEl, async () => {
-        try {
-          const res = await fetch(API_ENDPOINT, {
-            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'deleteProfile', data: { profileId: String(profileId).trim(), isAdmin: true } })
-          });
-          const out = await res.json();
-          if (out.success) { showNotice("Profile marked Deleted."); fetchAdminProfiles(); }
-          else { showNotice("Error: " + out.error, true); }
-        } catch (err) { showNotice("Server error.", true); }
-      });
-    }
-
-    function openContextualUnpublish(profileId, btnEl) {
-      openContextualConfirm("Unpublish Candidate", `Hide profile ${profileId} from directory?`, "Unpublish", btnEl, async () => {
-        try {
-          const res = await fetch(API_ENDPOINT, {
-            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'updateProfileStatus', adminPin: adminState.pin, data: { profileId: profileId, status: "Unpublished" } })
-          });
-          const out = await res.json();
-          if (out.success) { showNotice("Profile Unpublished."); fetchAdminProfiles(); }
-          else { showNotice("Error: " + out.error, true); }
-        } catch (err) { showNotice("Error.", true); }
-      });
-    }
-
-    function openContextualPublish(profileId, btnEl) {
-      openContextualConfirm("Publish Candidate", `Re-publish profile ${profileId} live?`, "Publish", btnEl, async () => {
-        try {
-          const res = await fetch(API_ENDPOINT, {
-            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'updateProfileStatus', adminPin: adminState.pin, data: { profileId: profileId, status: "Active" } })
-          });
-          const out = await res.json();
-          if (out.success) { showNotice("Profile is Live."); fetchAdminProfiles(); }
-          else { showNotice("Error: " + out.error, true); }
-        } catch (err) { showNotice("Error.", true); }
-      });
-    }
-
-    function openContextualEdit(profileId, btnEl) {
-      const p = adminState.profiles.find(x => x.id === profileId);
-      if (!p) return;
-      adminEditPhotoBase64 = "";
-      document.getElementById('editProfileId').value = p.id;
-      document.getElementById('editProfileIdRef').innerText = `${p.fullName} (${p.id})`;
-      document.getElementById('editName').value = p.fullName || "";
-      document.getElementById('editGender').value = p.gender || "Female";
-      document.getElementById('editDob').value = p.dob || "";
-      document.getElementById('editAge').value = p.age || "";
-      document.getElementById('editHeight').value = p.height || "";
-      document.getElementById('editMarital').value = p.maritalStatus || "Never Married";
-      document.getElementById('editEducation').value = p.education || "";
-      document.getElementById('editProfession').value = p.profession || "";
-      document.getElementById('editSubCaste').value = p.subCaste || "";
-      document.getElementById('editIncome').value = p.annualIncome || "";
-      document.getElementById('editAddress').value = p.exactAddress || "";
-      document.getElementById('editEmail').value = p.email || "";
-      document.getElementById('editPhone').value = p.phone || "";
-      document.getElementById('editFatherName').value = p.fatherName || "";
-      document.getElementById('editFatherOccupation').value = p.fatherOccupation || "";
-      document.getElementById('editMotherName').value = p.motherName || "";
-      document.getElementById('editMotherOccupation').value = p.motherOccupation || "";
-      document.getElementById('editFamily').value = p.familyDetails || "";
-      document.getElementById('editPreferences').value = p.partnerPreferences || "";
-      document.getElementById('editState').value = p.state || "";
-      populateCities('editState', 'editCity', 'editCityCustom', p.city);
-
-      document.getElementById('contextEditCard').classList.add('active');
-    }
-
-    async function handleAdminEditSubmit(e) {
-      e.preventDefault();
-      const btn = document.getElementById('editSubmitBtn');
-      btn.innerText = "Saving..."; btn.disabled = true;
-
-      const stateVal = document.getElementById('editState').value;
-      let cityVal = document.getElementById('editCity').value;
-      if (cityVal === "Other") cityVal = document.getElementById('editCityCustom').value.trim();
-
-      const profileId = document.getElementById('editProfileId').value;
-      const payload = {
-        profileId: profileId,
-        fullName: document.getElementById('editName').value.trim(),
-        gender: document.getElementById('editGender').value,
-        dob: document.getElementById('editDob').value,
-        age: parseInt(document.getElementById('editAge').value),
-        height: document.getElementById('editHeight').value.trim(),
-        maritalStatus: document.getElementById('editMarital').value,
-        education: document.getElementById('editEducation').value,
-        profession: document.getElementById('editProfession').value,
-        subCaste: document.getElementById('editSubCaste').value,
-        annualIncome: document.getElementById('editIncome').value.trim(),
-        state: stateVal, city: cityVal, country: "India",
-        exactAddress: document.getElementById('editAddress').value.trim(),
-        email: document.getElementById('editEmail').value.trim(),
-        phone: document.getElementById('editPhone').value.trim(),
-        fatherName: document.getElementById('editFatherName').value.trim(),
-        fatherOccupation: document.getElementById('editFatherOccupation').value,
-        motherName: document.getElementById('editMotherName').value.trim(),
-        motherOccupation: document.getElementById('editMotherOccupation').value,
-        familyDetails: document.getElementById('editFamily').value.trim(),
-        partnerPreferences: document.getElementById('editPreferences').value.trim()
-      };
-      if (adminEditPhotoBase64) payload.imageBase64 = adminEditPhotoBase64;
-
-      try {
-        const res = await fetch(API_ENDPOINT, {
-          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'adminUpdateProfile', adminPin: adminState.pin, data: payload })
-        });
-        const out = await res.json();
-        if (out.success) { showNotice("Updated successfully!"); closeAllContextPopups(); fetchAdminProfiles(); }
-        else { showNotice("Error: " + out.error, true); }
-      } catch (err) { showNotice("Server error.", true); }
-      finally { btn.innerText = "Save & Apply Changes"; btn.disabled = false; }
-    }
-
-    function openContextualReceipt(profileId, btnEl) {
-      const p = adminState.profiles.find(x => x.id === profileId);
-      if (!p || !p.paymentReceiptUrl) { showNotice("No receipt attached.", true); return; }
-      document.getElementById('receiptProfileId').innerText = p.id;
-      document.getElementById('receiptImage').src = p.paymentReceiptUrl;
-      document.getElementById('receiptUtrText').innerText = p.paymentUtr ? "UTR / Ref: " + p.paymentUtr : "No UTR Entered";
-      document.getElementById('contextReceiptCard').classList.add('active');
-    }
-
-    function openContextualMatchmaking(profileId, btnEl) {
-      const client = adminState.profiles.find(p => p.id === profileId);
-      if (!client) return;
-      adminState.activeMatchClient = client;
-      document.getElementById('matchCandidateName').innerText = `${client.fullName} (${client.gender}, ${client.age} Yrs)`;
-
-      const targetGender = client.gender === "Male" ? "Female" : "Male";
-      const matches = adminState.profiles.filter(p => {
-        if (p.status !== "Active" || p.gender !== targetGender) return false;
-        if (client.gender === "Male") return p.age <= client.age + 2 && p.age >= client.age - 8;
-        else return p.age >= client.age - 2 && p.age <= client.age + 8;
-      });
-
-      adminState.compatibleMatches = matches;
-      const container = document.getElementById('matchingResultsList');
-      if (matches.length === 0) {
-        container.innerHTML = `<p style="text-align: center; color: var(--muted); padding: 2rem;">No matching ${targetGender} profiles currently active.</p>`;
-      } else {
-        container.innerHTML = matches.map((m, idx) => `
-          <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--bg); padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border);">
-            <input type="checkbox" id="matchCheck_${idx}" value="${m.id}" checked style="width: 20px; height: 20px; flex-shrink: 0;">
-            <img src="${m.photoUrl || 'https://via.placeholder.com/45'}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
-            <div style="flex-grow: 1; min-width: 0;">
-              <strong style="font-size: 0.88rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.fullName}</strong>
-              <div style="font-size: 0.75rem; color: var(--muted);">${m.age} Yrs &bull; ${m.profession}</div>
-              <div style="font-size: 0.72rem; color: var(--secondary); font-weight: 700;">${m.city}, ${m.state}</div>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      document.getElementById('contextMatchCard').classList.add('active');
-    }
-
-    function getSelectedMatchedCandidates() {
-      const selected = [];
-      adminState.compatibleMatches.forEach((m, idx) => {
-        const checkbox = document.getElementById(`matchCheck_${idx}`);
-        if (checkbox && checkbox.checked) selected.push(m);
-      });
-      return selected;
-    }
-
-    function sendSelectedMatchesViaWhatsApp() {
-      const client = adminState.activeMatchClient;
-      if (!client || !client.phone) { showNotice("Phone missing.", true); return; }
-      const selected = getSelectedMatchedCandidates();
-      if (selected.length === 0) { showNotice("Select a match.", true); return; }
-
-      let cleanPhone = client.phone.toString().replace(/[^0-9]/g, '');
-      if (cleanPhone.length === 10) cleanPhone = "91" + cleanPhone;
-
-      let msg = `*KAYASTHA VIVAH PATRIKA*\n\nNamaste ${client.fullName},\nAapke anuroop chune gaye sambandhon ka vivaran:\n\n`;
-      selected.forEach((m, idx) => {
-        msg += `*${idx + 1}. ${m.fullName}* (ID: ${m.id})\n* Age / Height: ${m.age} Yrs, ${m.height || 'N/A'}\n* Education: ${m.education} (${m.subCaste || 'Kayastha'})\n* Profession: ${m.profession}\n* Location: ${m.city}, ${m.state}\n\n`;
-      });
-      msg += `_Contact Ghaziabad Chitransh Mahasabha desk quoting Profile ID._`;
-
-      const waUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`;
-      window.open(waUrl, '_blank') || (window.location.href = waUrl);
-    }
-
-    function exportSanitizedMatchPdf() {
-      const client = adminState.activeMatchClient;
-      const selected = getSelectedMatchedCandidates();
-      if (!client || selected.length === 0) { showNotice("No matches selected.", true); return; }
-
-      const surface = document.getElementById('adminPrintSurface');
-      surface.style.display = "block";
-
-      let cardsHtml = selected.map((m, i) => `
-        <div style="page-break-inside: avoid; border: 1.5px solid #EEDBBE; border-radius: 12px; background: #FFFFFF; padding: 18px 20px; margin-bottom: 20px;">
-          <h3 style="font-family: 'Cinzel', serif; font-size: 19px; color: #800020; margin: 0 0 10px 0;">${i + 1}. ${m.fullName} (ID: ${m.id})</h3>
-          <p style="font-size: 12px; margin: 4px 0;">Age: ${m.age} Yrs | Height: ${m.height || 'N/A'} | Sub-Caste: ${m.subCaste || 'Kayastha'}</p>
-          <p style="font-size: 12px; margin: 4px 0;">Education: ${m.education} | Profession: ${m.profession}</p>
-          <p style="font-size: 12px; margin: 4px 0;">Location: ${m.city}, ${m.state}</p>
-        </div>
-      `).join('');
-
-      surface.innerHTML = `
-        <div style="padding: 20px; background: #FDFBF7; font-family: 'Plus Jakarta Sans', sans-serif;">
-          <div style="text-align: center; margin-bottom: 20px;">
-            <h1 style="font-family: 'Cinzel', serif; font-size: 26px; color: #800020; margin: 0;">KAYASTHA VIVAH PATRIKA</h1>
-            <p style="font-size: 12px; color: #666;">Prepared for: ${client.fullName} (${client.id})</p>
-          </div>
-          ${cardsHtml}
-        </div>
-      `;
-
-      window.print();
-      setTimeout(() => {
-        surface.style.display = "none";
-        surface.innerHTML = "";
-      }, 1000);
-    }
-
-    function openAddMemberModal() {
-      adminAddPhotoBase64 = "";
-      document.getElementById('adminAddForm').reset();
-      document.getElementById('addMemberModal').classList.add('active');
-    }
-
-    async function handleAdminAddSubmit(e) {
-      e.preventDefault();
-      if (!adminAddPhotoBase64) { showNotice("Please upload photo.", true); return; }
-
-      const btn = document.getElementById('addSubmitBtn');
-      btn.innerText = "Adding..."; btn.disabled = true;
-
-      const stateVal = document.getElementById('addState').value;
-      let cityVal = document.getElementById('addCity').value;
-      if (cityVal === "Other") cityVal = document.getElementById('addCityCustom').value.trim();
-
-      const payload = {
-        fullName: document.getElementById('addName').value.trim(),
-        gender: document.getElementById('addGender').value,
-        dob: document.getElementById('addDob').value,
-        age: parseInt(document.getElementById('addAge').value),
-        height: document.getElementById('addHeight').value.trim(),
-        maritalStatus: document.getElementById('addMarital').value,
-        education: document.getElementById('addEducation').value,
-        profession: document.getElementById('addProfession').value,
-        subCaste: document.getElementById('addSubCaste').value,
-        annualIncome: document.getElementById('addIncome').value.trim(),
-        state: stateVal, city: cityVal, country: "India",
-        exactAddress: document.getElementById('addAddress').value.trim(),
-        email: document.getElementById('addEmail').value.trim(),
-        phone: document.getElementById('addPhone').value.trim(),
-        fatherName: document.getElementById('addFatherName').value.trim(),
-        fatherOccupation: document.getElementById('addFatherOccupation').value,
-        motherName: document.getElementById('addMotherName').value.trim(),
-        motherOccupation: document.getElementById('addMotherOccupation').value,
-        familyDetails: document.getElementById('addFamily').value.trim(),
-        partnerPreferences: document.getElementById('addPreferences').value.trim(),
-        status: "Active", imageBase64: adminAddPhotoBase64
-      };
-
-      try {
-        const res = await fetch(API_ENDPOINT, {
-          method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'adminAddProfile', adminPin: adminState.pin, data: payload })
-        });
-        const out = await res.json();
-        if (out.success) { showNotice("Candidate added!"); closeModal('addMemberModal'); fetchAdminProfiles(); }
-        else { showNotice("Error: " + out.error, true); }
-      } catch (err) { showNotice("Network failure.", true); }
-      finally { btn.innerText = "Add & Enrol Candidate"; btn.disabled = false; }
-    }
-
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
   </script>
 </body>
 </html>
