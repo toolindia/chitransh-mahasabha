@@ -102,7 +102,7 @@
     }
     .search-action-row input {
       flex: 1; min-width: 200px; height: 42px; padding: 0.5rem 0.85rem; 
-      border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.88rem; outline: none; background: var(--bg); color: var(--dark);
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; background: var(--bg); color: var(--dark);
       transition: border-color 0.2s;
     }
     .search-action-row input:focus { border-color: var(--primary); background: var(--white); }
@@ -861,7 +861,7 @@
       user: null,
       mode: 'all',
       currentPage: 1,
-      pageSize: 12, // Exactly 12 profiles per page
+      pageSize: 12,
       settings: {
         isFreeRegistration: false,
         monthlyFee: "499",
@@ -1288,7 +1288,7 @@
         return true;
       });
 
-      state.currentPage = 1; // Reset to page 1 on filter change
+      state.currentPage = 1;
       renderProfileList();
     }
 
@@ -1309,7 +1309,6 @@
       applyFilters();
     }
 
-    // ZOOM LIGHTBOX FUNCTIONS
     function openZoomLightbox(imgSrc) {
       if (!imgSrc) return;
       document.getElementById('zoomLightboxImg').src = imgSrc;
@@ -1320,7 +1319,6 @@
       document.getElementById('zoomLightbox').classList.remove('active');
     }
 
-    // AMAZON STYLE PAGINATION & RENDER
     function renderProfileList() {
       const container = document.getElementById('profilesContainer');
       const paginationContainer = document.getElementById('paginationContainer');
@@ -1336,7 +1334,6 @@
         return;
       }
 
-      // Calculate Pagination Slice (12 per page)
       const totalPages = Math.ceil(dataset.length / state.pageSize);
       if (state.currentPage > totalPages) state.currentPage = totalPages;
       const startIndex = (state.currentPage - 1) * state.pageSize;
@@ -1373,7 +1370,6 @@
         `;
       }).join('');
 
-      // Render Pagination Buttons
       if (totalPages > 1) {
         let pagHtml = `<button class="page-btn" ${state.currentPage === 1 ? 'disabled' : ''} onclick="changePage(${state.currentPage - 1})">&larr; Prev</button>`;
         for (let i = 1; i <= totalPages; i++) {
@@ -1440,9 +1436,17 @@
     function exportBiodataPdf() {
       const element = document.getElementById('biodataPrintSurface');
       const candidateName = document.getElementById('bioName').innerText.replace(/\s+/g, '_');
+      
+      element.style.width = "100%";
+      element.style.maxWidth = "720px";
+      element.style.margin = "0 auto";
+      element.style.boxSizing = "border-box";
+
       const opt = {
-        margin: [10, 10, 10, 10], filename: `Biodata_${candidateName}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 },
+        margin: [12, 10, 12, 10],
+        filename: `Biodata_${candidateName}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true, windowWidth: 794 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
       html2pdf().set(opt).from(element).save();
